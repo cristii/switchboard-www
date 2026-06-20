@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/colors.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/typography.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/styles.css">
+<script src="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/_ds_bundle.js"></script>
+<style>
+  html { scroll-behavior: smooth; }
+  .toc-link { display:block; padding:7px 0 7px 14px; border-left:2px solid rgba(21,33,31,.16); color:#54605C; text-decoration:none; font-size:.88rem; line-height:1.35; transition:color .15s ease, border-color .15s ease; }
+  .toc-link:hover { color:#15211F; }
+  .toc-link.active { color:#B45309; border-left-color:#B45309; font-weight:600; }
+  .legal h2 { scroll-margin-top:92px; }
+  @media (max-width: 900px) {
+    .nav-links { display:none !important; }
+    .legal-grid { grid-template-columns:1fr !important; }
+    .legal-toc { display:none !important; }
+  }
+</style>
+</helmet>
+
+<div style="font-family:'Inter',system-ui,sans-serif;color:#15211F;background-color:#E9E8DF;background-image:repeating-linear-gradient(0deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),repeating-linear-gradient(90deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),url('assets/grain.svg');min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased;">
+
+  <!-- Header -->
+  <header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(6px);background:rgba(233,232,223,.82);border-bottom:1.5px solid #15211F;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="The Daily Log.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <svg width="28" height="28" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <span style="display:flex;flex-direction:column;line-height:1;">
+          <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.32rem;letter-spacing:-.03em;">Switchboard</b>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.58rem;letter-spacing:.22em;color:#54605C;margin-top:3px;">AI SYSTEMS</span>
+        </span>
+      </a>
+      <nav class="nav-links" style="display:flex;gap:22px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.85rem;">
+        <a href="Services.dc.html" style="color:inherit;text-decoration:none;">Services</a>
+        <a href="Process.dc.html" style="color:inherit;text-decoration:none;">Process</a>
+        <a href="Pricing.dc.html" style="color:inherit;text-decoration:none;">Pricing</a>
+        <a href="About.dc.html" style="color:inherit;text-decoration:none;">About</a>
+        <a href="Contact.dc.html" style="color:inherit;text-decoration:none;">Contact</a>
+      </nav>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="sm" href="Pricing.dc.html#book" hint-size="150px,40px">Book a call →</x-import>
+    </div>
+  </header>
+
+  <!-- Doc hero -->
+  <section style="border-bottom:1.5px solid #15211F;background:#E1E2D7;">
+    <div style="max-width:1180px;margin:0 auto;padding:58px 24px 46px;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="100px,18px">Legal</x-import>
+      <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.1rem,4.4vw,3.2rem);letter-spacing:-.02em;line-height:1.04;margin:12px 0 14px;">Privacy Policy</h1>
+      <p style="font-size:1.08rem;color:#232b29;max-width:42em;margin:0;line-height:1.6;">How Switchboard AI Systems collects, uses and protects your information — in plain language, the same way I build everything else.</p>
+      <div style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;border:1.5px solid #15211F;background:#fff;border-radius:20px;padding:6px 14px;font-size:.82rem;font-weight:500;box-shadow:3px 3px 0 rgba(21,33,31,.08);">
+        <span style="width:7px;height:7px;border-radius:50%;background:#3F7A4E;"></span>Last updated · June 2026
+      </div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <section style="max-width:1180px;margin:0 auto;padding:54px 24px 66px;">
+    <div class="legal-grid" style="display:grid;grid-template-columns:230px 1fr;gap:54px;align-items:start;">
+
+      <!-- TOC -->
+      <aside class="legal-toc" style="position:sticky;top:92px;">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#54605C;margin-bottom:12px;">On this page</div>
+        <nav data-toc style="display:flex;flex-direction:column;">
+          <a class="toc-link" href="#who">Who I am</a>
+          <a class="toc-link" href="#collect">What I collect</a>
+          <a class="toc-link" href="#use">How I use it</a>
+          <a class="toc-link" href="#basis">Legal basis (GDPR)</a>
+          <a class="toc-link" href="#tools">Third-party tools</a>
+          <a class="toc-link" href="#cookies">Cookies</a>
+          <a class="toc-link" href="#retention">Data retention</a>
+          <a class="toc-link" href="#rights">Your rights</a>
+          <a class="toc-link" href="#contact">Contact</a>
+        </nav>
+      </aside>
+
+      <!-- Article -->
+      <article class="legal" style="max-width:720px;color:#232b29;font-size:1.04rem;line-height:1.72;">
+
+        <p style="margin:0 0 30px;padding:16px 18px;background:#fff;border:1.5px solid #15211F;border-radius:12px;box-shadow:4px 4px 0 rgba(21,33,31,.08);font-size:.94rem;color:#54605C;">
+          <b style="color:#15211F;">Plain-English summary:</b> I collect only what I need to reply to you and deliver projects, I never sell your data, and you can ask me to delete it at any time. The detail is below.
+        </p>
+
+        <h2 id="who" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.01em;color:#15211F;margin:0 0 12px;">Who I am</h2>
+        <p style="margin:0 0 28px;">Switchboard AI Systems is the independent automation and AI practice of Cristi Șatcovschi, based in Bucharest, Romania. For the purposes of the EU General Data Protection Regulation (GDPR), I am the data controller for the information described here. You can reach me any time at <a href="mailto:cristi.satcovschi@gmail.com" style="color:#B45309;font-weight:600;text-decoration:none;border-bottom:2px solid rgba(180,83,9,.3);">cristi.satcovschi@gmail.com</a>.</p>
+
+        <h2 id="collect" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.01em;color:#15211F;margin:0 0 12px;">What I collect</h2>
+        <p style="margin:0 0 14px;">I only collect information you choose to share or that is needed to run a project:</p>
+        <ul style="margin:0 0 28px;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;">
+          <li style="display:flex;gap:11px;"><span style="width:20px;height:20px;flex:none;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/mail.svg') center/contain no-repeat;mask:url('assets/icons/mail.svg') center/contain no-repeat;"></span><span><b style="color:#15211F;">Contact details</b> — your name, email and anything you write in the contact form or chat agent.</span></li>
+          <li style="display:flex;gap:11px;"><span style="width:20px;height:20px;flex:none;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/workflow.svg') center/contain no-repeat;mask:url('assets/icons/workflow.svg') center/contain no-repeat;"></span><span><b style="color:#15211F;">Project information</b> — the tools, processes and access details you provide so I can build and connect your automations.</span></li>
+          <li style="display:flex;gap:11px;"><span style="width:20px;height:20px;flex:none;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/chart.svg') center/contain no-repeat;mask:url('assets/icons/chart.svg') center/contain no-repeat;"></span><span><b style="color:#15211F;">Basic usage data</b> — anonymous analytics about how this site is used, to keep it fast and working.</span></li>
+        </ul>
+
+        <h2 id="use" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.01em;color:#15211F;margin:0 0 12px;">How I use it</h2>
+        <p style="margin:0 0 14px;">Your information is used to respond to enquiries, scope and deliver projects, send invoices, and provide support. I do not sell, rent or trade your personal data, and I never use client data to train public AI models.</p>
+        <p style="margin:0 0 28px;">When you talk to the AI intake agent, your messages are processed to draft a project scope and help me reply faster — nothing more.</p>
+
+        <h2 id="basis" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.01em;color:#15211F;margin:0 0 12px;">Legal basis (GDPR)</h2>
+        <p style="margin:0 0 28px;">I process your data under one of three lawful bases: your <b style="color:#15211F;">consent</b> (when you contact me), the <b style="color:#15211F;">performance of a contract</b> (when we work together on a project), and my <b style="color:#15211F;">legitimate interest</b> in running and improving this service. Where consent is the basis, you can withdraw it at any time.</p>
+
+        <h2 id="tools" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.01em;color:#15211F;margin:0 0 12px;">Third-party tools</h2>
+        <p style="margin:0 0 14px;">Automation work means connecting trusted platforms. Depending on your project, your data may be processed by services such as n8n, Trigger.dev, OpenAI, Google Workspace and your own CRM or payment providers. Each acts as a processor under its own privacy terms, and I only connect the ones a project actually requires.</p>
+        <p style="margin:0 0 28px;">Some processors may store data outside the EU; where that happens, I rely on their standard contractual clauses and equivalent safeguards.</p>
+
+        <h2 id="cookies" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.01em;color:#15211F;margin:0 0 12px;">Cookies</h2>
+        <p style="margin:0 0 28px;">This site uses only essential cookies and privacy-friendly analytics. I don't run advertising trackers or sell your browsing behaviour. You can block cookies in your browser without breaking the core of the site.</p>
+
+        <h2 id="retention" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.01em;color:#15211F;margin:0 0 12px;">Data retention</h2>
+        <p style="margin:0 0 28px;">I keep enquiry data only as long as needed to follow up, and project data for the duration of our engagement plus any period required for invoicing and legal obligations. After that, it's deleted or anonymised.</p>
+
+        <h2 id="rights" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.01em;color:#15211F;margin:0 0 12px;">Your rights</h2>
+        <p style="margin:0 0 14px;">Under GDPR you can ask to access, correct, export or delete your personal data, restrict or object to processing, and withdraw consent. To exercise any of these, just email me — no forms, no friction. You also have the right to complain to your local data protection authority.</p>
+
+        <h2 id="contact" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.01em;color:#15211F;margin:0 0 12px;">Contact</h2>
+        <p style="margin:0 0 26px;">Questions about privacy, or want your data removed? Email <a href="mailto:cristi.satcovschi@gmail.com" style="color:#B45309;font-weight:600;text-decoration:none;border-bottom:2px solid rgba(180,83,9,.3);">cristi.satcovschi@gmail.com</a> or message <a href="https://t.me/cristi_42" target="_blank" rel="noopener" style="color:#B45309;font-weight:600;text-decoration:none;border-bottom:2px solid rgba(180,83,9,.3);">@cristi_42</a> on Telegram.</p>
+
+        <p style="margin:0;padding:14px 16px;border-left:3px solid rgba(21,33,31,.3);background:rgba(21,33,31,.04);font-size:.9rem;color:#54605C;font-style:italic;">This policy is provided as a clear starting point and should be reviewed by qualified legal counsel before being relied upon for your specific situation.</p>
+
+      </article>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#11201E;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:26px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.82rem;">
+      <span style="display:inline-flex;align-items:center;gap:9px;">
+        <svg width="22" height="22" viewBox="0 0 30 30" fill="none" stroke="#E9E8DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;">Switchboard AI Systems</b>
+      </span>
+      <span style="display:flex;gap:18px;flex-wrap:wrap;">
+        <a href="Privacy Policy.dc.html" style="color:#B45309;text-decoration:none;font-weight:600;">Privacy</a>
+        <a href="Terms of Service.dc.html" style="color:#9aa49d;text-decoration:none;">Terms</a>
+      </span>
+      <span style="color:#9aa49d;">© 2026 — All rights reserved.</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const links = Array.from(document.querySelectorAll('.toc-link'));
+    const map = {};
+    links.forEach((l) => { const id = l.getAttribute('href').slice(1); const el = document.getElementById(id); if (el) map[id] = l; });
+    const ids = Object.keys(map);
+    if (!ids.length || !('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          links.forEach((l) => l.classList.remove('active'));
+          map[en.target.id].classList.add('active');
+        }
+      });
+    }, { rootMargin: '-88px 0px -65% 0px', threshold: 0 });
+    ids.forEach((id) => io.observe(document.getElementById(id)));
+  }
+}
+</script>
+</body>
+</html>

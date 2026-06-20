@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/colors.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/typography.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/styles.css">
+<script src="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/_ds_bundle.js"></script>
+<style>
+  @keyframes pListen { 0% { box-shadow: 0 0 0 0 rgba(180,83,9,.5), 6px 6px 0 rgba(21,33,31,.12); } 70% { box-shadow: 0 0 0 22px rgba(180,83,9,0), 6px 6px 0 rgba(21,33,31,.12); } 100% { box-shadow: 0 0 0 0 rgba(180,83,9,0), 6px 6px 0 rgba(21,33,31,.12); } }
+  @keyframes pPacket { 0% { top: 4%; opacity: 0; } 14% { opacity: 1; } 86% { opacity: 1; } 100% { top: 50%; opacity: 0; } }
+  @keyframes pPacketDown { 0% { top: 50%; opacity: 0; } 14% { opacity: 1; } 86% { opacity: 1; } 100% { top: 96%; opacity: 0; } }
+  @keyframes pSpin { to { transform: rotate(360deg); } }
+  @keyframes pErr { 0%, 100% { box-shadow: 6px 6px 0 rgba(21,33,31,.12); border-color: #15211F; } 50% { box-shadow: 0 0 0 7px rgba(193,42,42,.28), 6px 6px 0 rgba(21,33,31,.12); border-color: #C12A2A; } }
+  .pnode { transition: transform .45s cubic-bezier(.2,.8,.2,1), border-color .35s ease, box-shadow .35s ease; }
+  .pstep.is-active .pnode { transform: scale(1.07); border-color: var(--orange); }
+  .pstep.is-active .pnode-label { color: var(--orange); }
+  .pstep.is-active .nio { background: var(--orange); border-color: var(--orange); }
+  .pstep.is-active .n-trigger { animation: pListen 1.9s ease-out infinite; }
+  .pstep.is-active .packet-a { animation: pPacket 2.4s linear infinite; }
+  .pstep.is-active .packet-b { animation: pPacketDown 2.4s linear .4s infinite; }
+  .pstep.is-active .ring { animation: pSpin 7s linear infinite; transform-origin: 50% 50%; }
+  .pstep.is-active.pstep-err .pnode { animation: pErr 2.1s ease-in-out infinite; }
+  .pstep-err .pnode:hover { animation: pErr .75s ease-in-out infinite !important; }
+  .pstep.is-active .lockbadge { opacity: 1; transform: scale(1) rotate(0deg); }
+  .lockbadge { opacity: 0; transform: scale(.5) rotate(-12deg); transition: opacity .5s ease, transform .5s cubic-bezier(.2,.8,.2,1); }
+  .pstep.is-active .dual-wire { stroke: var(--orange); }
+  .scrollcue { animation: pBob 1.8s ease-in-out infinite; }
+  @keyframes pBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  @media (max-width: 920px) {
+    .pgrid { grid-template-columns: 1fr !important; }
+    .pleft { position: static !important; height: auto !important; padding: 40px 0 6px !important; }
+    .pright { min-height: auto !important; padding: 6px 4px 64px !important; }
+    .pstep { min-height: auto !important; padding-top: 8px !important; }
+    .spine { display: none !important; }
+    .pnode { width: 132px !important; height: 132px !important; }
+    .nav-links { display: none !important; }
+  }
+</style>
+</helmet>
+
+<div style="font-family:'Inter',system-ui,sans-serif;color:#15211F;background-color:#E9E8DF;background-image:repeating-linear-gradient(0deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),repeating-linear-gradient(90deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),url('assets/grain.svg');min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased;">
+
+  <!-- Header -->
+  <header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(6px);background:rgba(233,232,223,.82);border-bottom:1.5px solid #15211F;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <svg width="28" height="28" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <span style="display:flex;flex-direction:column;line-height:1;">
+          <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.32rem;letter-spacing:-.03em;">Switchboard</b>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.58rem;letter-spacing:.22em;color:#54605C;margin-top:3px;">AI SYSTEMS</span>
+        </span>
+      </a>
+      <nav class="nav-links" style="display:flex;gap:26px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.85rem;">
+        <a href="The Daily Log.dc.html" style="color:inherit;text-decoration:none;">Daily Log</a>
+        <a href="Pricing.dc.html" style="color:inherit;text-decoration:none;">Pricing</a>
+        <a href="#top" style="color:#B45309;text-decoration:none;border-bottom:2px solid #B45309;padding-bottom:2px;">Process</a>
+      </nav>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="sm" href="Pricing.dc.html#book" hint-size="150px,40px">Book a call →</x-import>
+    </div>
+  </header>
+
+  <!-- Intro -->
+  <section id="top" style="max-width:1180px;margin:0 auto;padding:78px 24px 30px;text-align:center;">
+    <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:14px;">
+      <span style="width:18px;height:18px;background:#B45309;-webkit-mask:url('assets/icons/workflow.svg') center/contain no-repeat;mask:url('assets/icons/workflow.svg') center/contain no-repeat;display:inline-block;"></span>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="280px,18px">How we work together</x-import>
+    </div>
+    <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.3rem,5vw,3.9rem);line-height:1.05;letter-spacing:-.02em;margin:0 auto;max-width:15em;">
+      Your project, built like a
+      <span style="color:#B45309;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.HandUnderline" hint-size="200px,1em">workflow.</x-import></span>
+    </h1>
+    <p style="margin:24px auto 26px;font-size:1.12rem;max-width:34em;color:#232b29;line-height:1.55;">
+      Every engagement runs like one of the automations we build for you — a clear sequence of connected steps, each handing clean results to the next. Scroll down to follow the path from first call to a system you own.
+    </p>
+    <div class="scrollcue" style="display:inline-flex;flex-direction:column;align-items:center;gap:6px;color:#54605C;font-family:'Caveat',cursive;font-size:1.3rem;">
+      ↓ follow the wires
+    </div>
+  </section>
+
+  <!-- ================= STEP 1 — Webhook Trigger ================= -->
+  <section class="pstep is-active" style="position:relative;display:grid;grid-template-columns:42% 58%;align-items:start;min-height:100vh;border-top:1.5px solid #15211F;">
+    <div class="pleft" style="position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;">
+      <div class="spine" style="position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);background:repeating-linear-gradient(180deg,rgba(21,33,31,.22) 0 8px,transparent 8px 16px);"></div>
+      <div class="packet-a" style="position:absolute;left:50%;top:4%;width:11px;height:11px;border-radius:50%;background:var(--orange);transform:translateX(-50%);opacity:0;box-shadow:0 0 10px rgba(180,83,9,.6);"></div>
+      <div class="pnode n-trigger" style="position:relative;z-index:2;width:172px;height:172px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#fff;border:2px solid #15211F;border-radius:18px;box-shadow:6px 6px 0 rgba(21,33,31,.12);">
+        <span class="nio" style="position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;background:#15211F;border:2px solid #15211F;"></span>
+        <span class="nio" style="position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;background:#15211F;border:2px solid #15211F;"></span>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#15211F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 10-13h-7z"></path></svg>
+        <span class="pnode-label" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;">Webhook</span>
+      </div>
+    </div>
+    <div class="pright" style="min-height:128vh;display:flex;flex-direction:column;justify-content:center;padding:60px 7% 60px 3%;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1rem;color:#B45309;">01</span>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="200px,18px">Discovery · the trigger</x-import>
+      </div>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.7rem,3vw,2.6rem);letter-spacing:-.02em;line-height:1.08;margin:0 0 16px;max-width:14em;">Every system starts by listening.</h2>
+      <p style="font-size:1.06rem;line-height:1.6;color:#232b29;margin:0 0 26px;max-width:32em;">A webhook sits quietly until something happens, then fires. Discovery is the same: before we build anything, we listen. We map your current tools, find where work is getting stuck, and agree on exactly what success looks like.</p>
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:30em;">
+        <div style="display:flex;gap:13px;">
+          <span style="width:20px;height:20px;flex:none;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/target.svg') center/contain no-repeat;mask:url('assets/icons/target.svg') center/contain no-repeat;"></span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:3px;">What happens</div><p style="margin:0;font-size:.98rem;color:#232b29;">Discovery sessions, a map of your tech stack, and a clearly scoped project.</p></div>
+        </div>
+        <div style="display:flex;gap:13px;">
+          <span style="width:20px;height:20px;flex:none;margin-top:2px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:3px;">The output</div><p style="margin:0;font-size:.98rem;color:#232b29;">A clear blueprint of the system we're about to build — no surprises.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STEP 2 — Switch Node ================= -->
+  <section class="pstep" style="position:relative;display:grid;grid-template-columns:42% 58%;align-items:start;min-height:100vh;background:#E1E2D7;border-top:1.5px solid #15211F;">
+    <div class="pleft" style="position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;">
+      <div class="spine" style="position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);background:repeating-linear-gradient(180deg,rgba(21,33,31,.22) 0 8px,transparent 8px 16px);"></div>
+      <div class="packet-a" style="position:absolute;left:50%;top:4%;width:11px;height:11px;border-radius:50%;background:var(--orange);transform:translateX(-50%);opacity:0;box-shadow:0 0 10px rgba(180,83,9,.6);"></div>
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;">
+        <div class="pnode n-switch" style="position:relative;width:172px;height:172px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#fff;border:2px solid #15211F;border-radius:18px;box-shadow:6px 6px 0 rgba(21,33,31,.12);">
+          <span class="nio" style="position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;background:#15211F;border:2px solid #15211F;"></span>
+          <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#15211F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h5"></path><path d="M8 12c5 0 4-6 9-6"></path><path d="M8 12c5 0 4 6 9 6"></path><circle cx="18" cy="6" r="1.6"></circle><circle cx="18" cy="18" r="1.6"></circle></svg>
+          <span class="pnode-label" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;">Switch</span>
+        </div>
+        <svg width="180" height="64" viewBox="0 0 180 64" fill="none" style="margin-top:-2px;"><path class="dual-wire" d="M90 0 C90 26 40 30 30 62" stroke="rgba(21,33,31,.3)" stroke-width="2" stroke-dasharray="6 6" stroke-linecap="round"></path><path class="dual-wire" d="M90 0 C90 26 140 30 150 62" stroke="rgba(21,33,31,.3)" stroke-width="2" stroke-dasharray="6 6" stroke-linecap="round"></path><circle cx="30" cy="62" r="4" fill="#B45309"></circle><circle cx="150" cy="62" r="4" fill="#B45309"></circle></svg>
+      </div>
+    </div>
+    <div class="pright" style="min-height:128vh;display:flex;flex-direction:column;justify-content:center;padding:60px 7% 60px 3%;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1rem;color:#B45309;">02</span>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="240px,18px">Build &amp; feedback · the switch</x-import>
+      </div>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.7rem,3vw,2.6rem);letter-spacing:-.02em;line-height:1.08;margin:0 0 16px;max-width:14em;">We build it — and adjust as we go.</h2>
+      <p style="font-size:1.06rem;line-height:1.6;color:#232b29;margin:0 0 26px;max-width:32em;">A switch node sends work down whichever path fits the moment. Our build phase works the same way: we develop layer by layer, then branch based on your feedback. Business needs shift — regular check-ins let us route around them instead of grinding to a halt.</p>
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:30em;">
+        <div style="display:flex;gap:13px;">
+          <span style="width:20px;height:20px;flex:none;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/refresh.svg') center/contain no-repeat;mask:url('assets/icons/refresh.svg') center/contain no-repeat;"></span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:3px;">What happens</div><p style="margin:0;font-size:.98rem;color:#232b29;">Active development, weekly progress reviews, and quick iterative adjustments.</p></div>
+        </div>
+        <div style="display:flex;gap:13px;">
+          <span style="width:20px;height:20px;flex:none;margin-top:2px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:3px;">The output</div><p style="margin:0;font-size:.98rem;color:#232b29;">A working, end-to-end version of your automated system you can try.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STEP 3 — Error Trigger (dark) ================= -->
+  <section class="pstep pstep-err" style="position:relative;display:grid;grid-template-columns:42% 58%;align-items:start;min-height:100vh;background:#11201E;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div class="pleft" style="position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;">
+      <div class="spine" style="position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);background:repeating-linear-gradient(180deg,rgba(233,232,223,.22) 0 8px,transparent 8px 16px);"></div>
+      <div class="packet-a" style="position:absolute;left:50%;top:4%;width:11px;height:11px;border-radius:50%;background:#C12A2A;transform:translateX(-50%);opacity:0;box-shadow:0 0 12px rgba(193,42,42,.7);"></div>
+      <div class="pnode n-error" style="position:relative;z-index:2;width:172px;height:172px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#fff;border:2px solid #15211F;border-radius:18px;box-shadow:6px 6px 0 rgba(21,33,31,.12);cursor:pointer;">
+        <span class="nio" style="position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;background:#15211F;border:2px solid #15211F;"></span>
+        <span class="nio" style="position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;background:#15211F;border:2px solid #15211F;"></span>
+        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#C12A2A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 22 20H2z"></path><path d="M12 9v5"></path><circle cx="12" cy="17.3" r=".4" fill="#C12A2A" stroke="none"></circle></svg>
+        <span class="pnode-label" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:#15211F;">Error Trigger</span>
+      </div>
+    </div>
+    <div class="pright" style="min-height:128vh;display:flex;flex-direction:column;justify-content:center;padding:60px 7% 60px 3%;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1rem;color:#FBBF24;">03</span>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" tone="amber" hint-size="240px,18px">QA &amp; testing · the error trigger</x-import>
+      </div>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.7rem,3vw,2.6rem);letter-spacing:-.02em;line-height:1.08;margin:0 0 16px;max-width:14em;color:#E9E8DF;">We try to break it — on purpose.</h2>
+      <p style="font-size:1.06rem;line-height:1.6;color:#C8CEC6;margin:0 0 26px;max-width:32em;">An error trigger is the safety net that catches a workflow the moment something goes wrong. Before going live, we deliberately feed your system bad data, dropped connections, and odd user behaviour — so when the real world throws a curveball, it's already handled. <span style="font-family:'Caveat',cursive;font-size:1.18rem;color:#FBBF24;">(hover the node — that's us catching an error)</span></p>
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:30em;">
+        <div style="display:flex;gap:13px;">
+          <span style="width:20px;height:20px;flex:none;margin-top:2px;background:#FBBF24;-webkit-mask:url('assets/icons/funnel.svg') center/contain no-repeat;mask:url('assets/icons/funnel.svg') center/contain no-repeat;"></span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:#9aa49d;margin-bottom:3px;">What happens</div><p style="margin:0;font-size:.98rem;color:#C8CEC6;">Edge-case testing, load simulation, and fail-safe configuration.</p></div>
+        </div>
+        <div style="display:flex;gap:13px;">
+          <span style="width:20px;height:20px;flex:none;margin-top:2px;background:#7FBF8E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:#9aa49d;margin-bottom:3px;">The output</div><p style="margin:0;font-size:.98rem;color:#C8CEC6;">A hardened, resilient system ready for live traffic.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STEP 4 — Set & Push (dual node) ================= -->
+  <section class="pstep" style="position:relative;display:grid;grid-template-columns:42% 58%;align-items:start;min-height:100vh;background:#E1E2D7;border-top:1.5px solid #15211F;">
+    <div class="pleft" style="position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;">
+      <div class="spine" style="position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);background:repeating-linear-gradient(180deg,rgba(21,33,31,.22) 0 8px,transparent 8px 16px);"></div>
+      <div class="packet-a" style="position:absolute;left:50%;top:4%;width:11px;height:11px;border-radius:50%;background:var(--orange);transform:translateX(-50%);opacity:0;box-shadow:0 0 10px rgba(180,83,9,.6);"></div>
+      <div style="position:relative;z-index:2;display:flex;align-items:center;gap:0;">
+        <div class="pnode" style="position:relative;width:140px;height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#fff;border:2px solid #15211F;border-radius:16px;box-shadow:6px 6px 0 rgba(21,33,31,.12);">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#15211F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="7" x2="19" y2="7"></line><circle cx="9" cy="7" r="2.2"></circle><line x1="5" y1="14" x2="19" y2="14"></line><circle cx="15" cy="14" r="2.2"></circle></svg>
+          <span class="pnode-label" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.04em;">Set</span>
+        </div>
+        <div style="width:30px;height:2px;background:#15211F;"></div>
+        <div class="pnode" style="position:relative;width:140px;height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#fff;border:2px solid #15211F;border-radius:16px;box-shadow:6px 6px 0 rgba(21,33,31,.12);">
+          <span class="lockbadge" style="position:absolute;top:-13px;right:-13px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:#3F7A4E;border:2px solid #15211F;border-radius:50%;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+          </span>
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#15211F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-8-8 18-2.5-7.5z"></path></svg>
+          <span class="pnode-label" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.04em;">Push</span>
+        </div>
+      </div>
+    </div>
+    <div class="pright" style="min-height:128vh;display:flex;flex-direction:column;justify-content:center;padding:60px 7% 60px 3%;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1rem;color:#B45309;">04</span>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="220px,18px">Handoff · set &amp; push</x-import>
+      </div>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.7rem,3vw,2.6rem);letter-spacing:-.02em;line-height:1.08;margin:0 0 16px;max-width:14em;">We hand you the keys.</h2>
+      <p style="font-size:1.06rem;line-height:1.6;color:#232b29;margin:0 0 26px;max-width:32em;">The last two nodes in any workflow set the final values and push them where they belong. Handoff is the same: we deploy to your live environment, lock it in, and make sure your team can run it without us. You finish this step owning a system, not renting one.</p>
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:30em;">
+        <div style="display:flex;gap:13px;">
+          <span style="width:20px;height:20px;flex:none;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/people.svg') center/contain no-repeat;mask:url('assets/icons/people.svg') center/contain no-repeat;"></span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:3px;">What happens</div><p style="margin:0;font-size:.98rem;color:#232b29;">Migration to your live environment, hands-on training, and clear documentation.</p></div>
+        </div>
+        <div style="display:flex;gap:13px;">
+          <span style="width:20px;height:20px;flex:none;margin-top:2px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>
+          <div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:3px;">The output</div><p style="margin:0;font-size:.98rem;color:#232b29;">A fully operational system, under your control.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STEP 5 — Schedule Trigger (tiers) ================= -->
+  <section class="pstep" style="position:relative;display:grid;grid-template-columns:42% 58%;align-items:start;min-height:100vh;border-top:1.5px solid #15211F;">
+    <div class="pleft" style="position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;">
+      <div class="spine" style="position:absolute;left:50%;top:0;height:50%;width:2px;transform:translateX(-50%);background:repeating-linear-gradient(180deg,rgba(21,33,31,.22) 0 8px,transparent 8px 16px);"></div>
+      <div class="packet-a" style="position:absolute;left:50%;top:4%;width:11px;height:11px;border-radius:50%;background:var(--orange);transform:translateX(-50%);opacity:0;box-shadow:0 0 10px rgba(180,83,9,.6);"></div>
+      <div class="pnode n-schedule" style="position:relative;z-index:2;width:172px;height:172px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#fff;border:2px solid #15211F;border-radius:18px;box-shadow:6px 6px 0 rgba(21,33,31,.12);">
+        <span class="nio" style="position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:13px;height:13px;border-radius:50%;background:#15211F;border:2px solid #15211F;"></span>
+        <svg class="ring" width="92" height="92" viewBox="0 0 92 92" fill="none" style="position:absolute;"><circle cx="46" cy="46" r="42" stroke="rgba(180,83,9,.45)" stroke-width="2" stroke-dasharray="3 9" stroke-linecap="round"></circle></svg>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#15211F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.5 2"></path></svg>
+        <span class="pnode-label" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;">Schedule</span>
+      </div>
+    </div>
+    <div class="pright" style="min-height:128vh;display:flex;flex-direction:column;justify-content:center;padding:60px 7% 60px 3%;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1rem;color:#B45309;">05</span>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="220px,18px">Retainer · the schedule trigger</x-import>
+      </div>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.7rem,3vw,2.6rem);letter-spacing:-.02em;line-height:1.08;margin:0 0 16px;max-width:14em;">We keep it running on a schedule.</h2>
+      <p style="font-size:1.06rem;line-height:1.6;color:#232b29;margin:0 0 26px;max-width:32em;">A schedule trigger wakes up at set intervals and does its job without being asked. An automated system is a living thing — rules change, the apps you connect to update, your volume grows. Optional retainers keep everything tuned and humming in the background.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:38em;">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,210px" style="display:flex;flex-direction:column;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;">Tier 1</div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.16rem;letter-spacing:-.01em;margin:5px 0 8px;">Basic Support &amp; Monitoring</h3>
+          <p style="font-size:.9rem;color:#54605C;margin:0 0 12px;line-height:1.5;">Best for smaller setups — simple lead capture or email automation.</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;">
+            <li style="display:flex;gap:9px;font-size:.88rem;line-height:1.35;"><span style="width:16px;height:16px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Uptime monitoring</li>
+            <li style="display:flex;gap:9px;font-size:.88rem;line-height:1.35;"><span style="width:16px;height:16px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Minor bug fixes</li>
+            <li style="display:flex;gap:9px;font-size:.88rem;line-height:1.35;"><span style="width:16px;height:16px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>General health checks</li>
+          </ul>
+        </x-import>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" featured="true" hint-size="100%,210px" style="display:flex;flex-direction:column;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:#B45309;">Tier 2</div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.16rem;letter-spacing:-.01em;margin:5px 0 8px;">Growth &amp; Systems Maintenance</h3>
+          <p style="font-size:.9rem;color:#54605C;margin:0 0 12px;line-height:1.5;">For complex CRM routing, e-commerce syncs, or AI workflows.</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;">
+            <li style="display:flex;gap:9px;font-size:.88rem;line-height:1.35;"><span style="width:16px;height:16px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Priority support</li>
+            <li style="display:flex;gap:9px;font-size:.88rem;line-height:1.35;"><span style="width:16px;height:16px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Continuous optimization</li>
+            <li style="display:flex;gap:9px;font-size:.88rem;line-height:1.35;"><span style="width:16px;height:16px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Architecture scaling as you grow</li>
+          </ul>
+        </x-import>
+      </div>
+    </div>
+  </section>
+
+  <!-- Closing CTA (no pricing) -->
+  <section style="background:#15211F;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:60px 24px;text-align:center;">
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.8rem,3.4vw,2.7rem);letter-spacing:-.02em;line-height:1.06;margin:0 auto;max-width:15em;color:#E9E8DF;">That's the whole workflow.<br><span style="color:#B45309;">Yours starts with one call.</span></h2>
+      <p style="font-size:1.08rem;line-height:1.6;color:#C8CEC6;margin:18px auto 28px;max-width:32em;">Fifteen minutes to map where your time is leaking — then we trigger step one.</p>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="lg" href="Pricing.dc.html#book" arrow="true" hint-size="260px,56px" style="min-height:56px;font-size:1.05rem;padding:1.05em 1.9em;">Book a discovery call</x-import>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#11201E;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:26px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.82rem;">
+      <span style="display:inline-flex;align-items:center;gap:9px;">
+        <svg width="22" height="22" viewBox="0 0 30 30" fill="none" stroke="#E9E8DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;">Switchboard AI Systems</b>
+      </span>
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#9aa49d;font-size:.72rem;">Discover · Build · Test · Handoff · Maintain</span>
+      <span style="color:#9aa49d;">© 2026 — All rights reserved.</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const root = document;
+    const steps = Array.from(root.querySelectorAll('.pstep'));
+    if (!steps.length) return;
+
+    const update = () => {
+      const cy = window.innerHeight / 2;
+      let best = null, bestDist = Infinity;
+      steps.forEach((s) => {
+        const r = s.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > window.innerHeight) return;
+        const center = r.top + r.height / 2;
+        const d = Math.abs(center - cy);
+        if (d < bestDist) { bestDist = d; best = s; }
+      });
+      steps.forEach((s) => s.classList.toggle('is-active', s === best));
+    };
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { update(); ticking = false; });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/colors.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/typography.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/styles.css">
+<script src="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/_ds_bundle.js"></script>
+<style>
+  @media (max-width: 920px) {
+    .sb-3 { grid-template-columns: 1fr !important; }
+    .sb-prices { grid-template-columns: 1fr !important; gap: 22px !important; }
+    .sb-pop { transform: none !important; }
+    .sb-steps { grid-template-columns: 1fr !important; }
+    .sb-steparrow { display: none !important; }
+    .sb-mobcta { display: flex !important; }
+    .sb-body { padding-bottom: 96px !important; }
+    .sb-h1 { font-size: 2.3rem !important; }
+  }
+</style>
+</helmet>
+
+<div class="sb-body" style="font-family:'Inter',system-ui,sans-serif;color:#15211F;background-color:#E9E8DF;background-image:repeating-linear-gradient(0deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),repeating-linear-gradient(90deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),url('assets/grain.svg');min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased;">
+
+  <!-- Header: clean, distraction-free, no nav links -->
+  <header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(6px);background:rgba(233,232,223,.82);border-bottom:1.5px solid #15211F;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <svg width="28" height="28" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <span style="display:flex;flex-direction:column;line-height:1;">
+          <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.32rem;letter-spacing:-.03em;">Switchboard</b>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.58rem;letter-spacing:.22em;color:#54605C;margin-top:3px;">AI SYSTEMS</span>
+        </span>
+      </a>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="sm" href="#book" hint-size="180px,40px">Book a Walkthrough →</x-import>
+    </div>
+  </header>
+
+  <!-- Hero: centered, no distractions -->
+  <section id="top" style="max-width:1180px;margin:0 auto;padding:72px 24px 44px;text-align:center;">
+    <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:14px;">
+      <span style="width:18px;height:18px;background:#B45309;-webkit-mask:url('assets/icons/workflow.svg') center/contain no-repeat;mask:url('assets/icons/workflow.svg') center/contain no-repeat;display:inline-block;"></span>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="320px,18px">Done-for-you automation &amp; AI</x-import>
+    </div>
+    <h1 class="sb-h1" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.4rem,5.2vw,4rem);line-height:1.05;letter-spacing:-.02em;margin:0 auto;max-width:15em;">
+      Turn your bottlenecks into
+      <span style="color:#B45309;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.HandUnderline" hint-size="360px,1em">automated revenue.</x-import></span>
+    </h1>
+    <p style="margin:24px auto 30px;font-size:1.12rem;max-width:36em;color:#232b29;line-height:1.55;">
+      Custom automation and AI chatbots that plug leaky sales funnels, handle your back-office, and never take a day off. We build it, we connect it, and we maintain it — you just answer the phone when it rings.
+    </p>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="lg" href="#book" arrow="true" hint-size="280px,56px" style="min-height:56px;font-size:1.05rem;padding:1.05em 1.9em;">Book a Quick Walkthrough</x-import>
+      <p style="font-family:'Caveat',cursive;font-size:1.28rem;color:#15211F;margin:0;">↳ free 15-minute discovery call — no pushy sales pitch</p>
+    </div>
+  </section>
+
+  <!-- Audience pivot -->
+  <section style="background:#E1E2D7;border-top:1.5px solid #15211F;border-bottom:1.5px solid #15211F;padding:58px 0;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+      <div style="text-align:center;margin-bottom:38px;">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="120px,18px">Who it's for</x-import>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.8rem,3vw,2.4rem);letter-spacing:-.02em;margin:12px 0 0;">Built for the way you do business.</h2>
+      </div>
+      <div class="sb-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,260px">
+          <span style="display:inline-flex;width:46px;height:46px;align-items:center;justify-content:center;border:1.5px solid #15211F;border-radius:12px;background:#E9E8DF;margin-bottom:16px;">
+            <span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;display:inline-block;"></span>
+          </span>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.24rem;margin:0 0 9px;letter-spacing:-.01em;">Home Services &amp; Trades</h3>
+          <p style="font-size:.96rem;color:#54605C;margin:0;line-height:1.55;">Never miss a job while you're in the field. Instantly capture leads, deploy AI receptionists to answer pricing questions, and automate your quote follow-ups so your schedule stays full.</p>
+        </x-import>
+
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,260px">
+          <span style="display:inline-flex;width:46px;height:46px;align-items:center;justify-content:center;border:1.5px solid #15211F;border-radius:12px;background:#E9E8DF;margin-bottom:16px;">
+            <span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/chart.svg') center/contain no-repeat;mask:url('assets/icons/chart.svg') center/contain no-repeat;display:inline-block;"></span>
+          </span>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.24rem;margin:0 0 9px;letter-spacing:-.01em;">E-commerce &amp; Media Buyers</h3>
+          <p style="font-size:.96rem;color:#54605C;margin:0;line-height:1.55;">Scale your return on ad spend without breaking your systems. Sync Meta lead ads instantly, trigger abandoned-cart recovery, and let AI agents handle first-tier customer support on their own.</p>
+        </x-import>
+
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,260px">
+          <span style="display:inline-flex;width:46px;height:46px;align-items:center;justify-content:center;border:1.5px solid #15211F;border-radius:12px;background:#E9E8DF;margin-bottom:16px;">
+            <span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/link.svg') center/contain no-repeat;mask:url('assets/icons/link.svg') center/contain no-repeat;display:inline-block;"></span>
+          </span>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.24rem;margin:0 0 9px;letter-spacing:-.01em;">Small Business &amp; SaaS</h3>
+          <p style="font-size:.96rem;color:#54605C;margin:0;line-height:1.55;">Eliminate manual data entry. Connect your disjointed software, automate user onboarding, and build a hands-free back-office that scales as your revenue grows.</p>
+        </x-import>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing table -->
+  <section id="pricing" style="max-width:1180px;margin:0 auto;padding:64px 24px 56px;">
+    <div style="text-align:center;margin-bottom:14px;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="120px,18px">Pricing</x-import>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.9rem,3.2vw,2.6rem);letter-spacing:-.02em;margin:12px 0 0;">Transparent pricing. No hidden hourly fees.</h2>
+      <p style="font-size:1.05rem;color:#54605C;max-width:40em;margin:14px auto 0;">Choose the system that fits your current volume. We build it, we test it, and we hand you the keys.</p>
+    </div>
+
+    <div class="sb-prices" style="display:grid;grid-template-columns:1fr 1.08fr 1fr;gap:18px;align-items:start;margin-top:44px;">
+
+      <!-- Tier 1 -->
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="sunken" hint-size="100%,560px" style="display:flex;flex-direction:column;height:100%;padding:28px 26px;">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.2rem;letter-spacing:-.01em;">The Foundation</div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin:14px 0 2px;">
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2.9rem;color:#B45309;line-height:1;">$800</span>
+          <span style="font-size:.82rem;color:#54605C;font-weight:600;">one-time</span>
+        </div>
+        <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">Best for quick lead capture and stopping manual data entry.</p>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:#15211F;margin:20px 0 12px;padding-top:18px;border-top:1.5px solid rgba(21,33,31,.16);">Scope · 1–3 core workflows</div>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;flex:1;">
+          <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Instant SMS &amp; Slack lead alerts</li>
+          <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Direct CRM &amp; ad-platform syncing</li>
+          <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Automated &ldquo;received&rdquo; replies</li>
+          <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Basic AI auto-responder — instant smart replies to web forms</li>
+        </ul>
+        <p style="font-size:.84rem;color:#54605C;margin:18px 0 16px;font-style:italic;">25% upfront to schedule.</p>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="ghost" href="#book" hint-size="100%,48px" style="width:100%;min-height:48px;">Map My Automation</x-import>
+      </x-import>
+
+      <!-- Tier 2 — featured / decoy -->
+      <div class="sb-pop" style="transform:translateY(-16px);">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" featured="true" hint-size="100%,620px" style="display:flex;flex-direction:column;height:100%;padding:28px 26px;position:relative;">
+          <div style="position:absolute;top:-15px;left:50%;transform:translateX(-50%);">
+            <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="solid" hint-size="120px,26px">Most Popular</x-import>
+          </div>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.2rem;letter-spacing:-.01em;">The Growth Engine</div>
+          <div style="display:flex;align-items:baseline;gap:8px;margin:14px 0 2px;">
+            <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:3.2rem;color:#B45309;line-height:1;">$1,500</span>
+            <span style="font-size:.82rem;color:#54605C;font-weight:600;">one-time</span>
+          </div>
+          <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">Best for automating follow-ups and scaling your back-office.</p>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:#15211F;margin:20px 0 12px;padding-top:18px;border-top:1.5px solid rgba(21,33,31,.16);">Scope · 4–7 multi-step workflows</div>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;flex:1;">
+            <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;font-weight:600;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Everything in The Foundation, plus:</li>
+            <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Multi-step follow-up sequences</li>
+            <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Smart lead routing &amp; conditional logic</li>
+            <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Standard AI chatbot — answers FAQs &amp; books appointments</li>
+            <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Auto-invoicing &amp; review generation</li>
+          </ul>
+          <p style="font-size:.84rem;color:#54605C;margin:18px 0 16px;font-style:italic;">50% upfront, 50% on go-live. Includes 30 days of active monitoring.</p>
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="lg" href="#book" arrow="true" hint-size="100%,56px" style="width:100%;min-height:56px;">Map My Automation</x-import>
+        </x-import>
+      </div>
+
+      <!-- Tier 3 -->
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="sunken" hint-size="100%,560px" style="display:flex;flex-direction:column;height:100%;padding:28px 26px;">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.2rem;letter-spacing:-.01em;">Custom Infrastructure</div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin:14px 0 2px;">
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2.9rem;color:#B45309;line-height:1;">$4,000+</span>
+        </div>
+        <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">Best for high-volume routing and advanced autonomous agents.</p>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;color:#15211F;margin:20px 0 12px;padding-top:18px;border-top:1.5px solid rgba(21,33,31,.16);">Scope · 8+ workflows</div>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;flex:1;">
+          <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;font-weight:600;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Everything in The Growth Engine, plus:</li>
+          <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>High-volume request routing &amp; queueing</li>
+          <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Advanced data transformations &amp; clean-up</li>
+          <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Custom dashboards &amp; client portals</li>
+          <li style="display:flex;gap:10px;font-size:.93rem;line-height:1.4;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Custom RAG AI agents — trained on your business data &amp; catalogs</li>
+        </ul>
+        <p style="font-size:.84rem;color:#54605C;margin:18px 0 16px;font-style:italic;">Paid discovery phase required. Includes 30 days of active monitoring.</p>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="ghost" href="#book" hint-size="100%,48px" style="width:100%;min-height:48px;">Request an Audit</x-import>
+      </x-import>
+
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section style="background:#E1E2D7;border-top:1.5px solid #15211F;border-bottom:1.5px solid #15211F;padding:58px 0;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+      <div style="text-align:center;margin-bottom:42px;">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="120px,18px">How it works</x-import>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.8rem,3vw,2.4rem);letter-spacing:-.02em;margin:12px 0 0;">From bottleneck to automated in 3 steps.</h2>
+      </div>
+      <div class="sb-steps" style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:stretch;gap:18px;">
+
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,200px" style="height:100%;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2rem;color:#B45309;line-height:1;">01</div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.16rem;margin:12px 0 7px;">Map the mess</h3>
+          <p style="font-size:.93rem;color:#54605C;margin:0;line-height:1.5;">We get on a short call to map out exactly where you're losing time or dropping leads.</p>
+        </x-import>
+        <div class="sb-steparrow" style="display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.7rem;color:#B45309;">→</div>
+
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,200px" style="height:100%;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2rem;color:#B45309;line-height:1;">02</div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.16rem;margin:12px 0 7px;">The build</h3>
+          <p style="font-size:.93rem;color:#54605C;margin:0;line-height:1.5;">We connect your tools, write the logic, and train your AI. You don't have to learn a single new piece of software.</p>
+        </x-import>
+        <div class="sb-steparrow" style="display:flex;align-items:center;justify-content:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.7rem;color:#B45309;">→</div>
+
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,200px" style="height:100%;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2rem;color:#B45309;line-height:1;">03</div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.16rem;margin:12px 0 7px;">The handover</h3>
+          <p style="font-size:.93rem;color:#54605C;margin:0;line-height:1.5;">We test it with live data, hand you the keys, and watch your business run faster.</p>
+        </x-import>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Guarantee / risk reversal -->
+  <section style="background:#11201E;color:#E9E8DF;">
+    <div style="max-width:1180px;margin:0 auto;padding:56px 24px;">
+      <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap;max-width:54em;margin:0 auto;">
+        <span style="display:inline-flex;width:60px;height:60px;flex:none;align-items:center;justify-content:center;border:1.5px solid #3F7A4E;border-radius:14px;background:rgba(63,122,78,.16);">
+          <span style="width:30px;height:30px;background:#7FBF8E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;"></span>
+        </span>
+        <div style="flex:1;min-width:260px;">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" tone="amber" hint-size="200px,18px">Risk reversal</x-import>
+          <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.6rem,2.8vw,2.2rem);letter-spacing:-.02em;line-height:1.08;margin:12px 0 14px;color:#E9E8DF;">The &ldquo;We Build It, You Run It&rdquo; Guarantee</h2>
+          <p style="font-size:1.05rem;line-height:1.6;color:#C8CEC6;margin:0;">You're hiring us to eliminate technical headaches, not create new ones. Every Growth Engine and Custom Infrastructure build includes <b style="color:#FBBF24;">30 days of active monitoring</b>. If a third-party app changes its code or a connection breaks in your first month, we fix the workflow for free.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section style="max-width:820px;margin:0 auto;padding:64px 24px 56px;">
+    <div style="text-align:center;margin-bottom:36px;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="120px,18px">FAQ</x-import>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.8rem,3vw,2.4rem);letter-spacing:-.02em;margin:12px 0 0;">Frequently asked questions.</h2>
+    </div>
+    <div data-faq style="display:flex;flex-direction:column;gap:14px;">
+
+      <div data-faq-item style="border:1.5px solid #15211F;border-radius:14px;background:#fff;box-shadow:4px 4px 0 rgba(21,33,31,.1);overflow:hidden;">
+        <button data-faq-q style="width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px;background:transparent;border:none;cursor:pointer;padding:20px 22px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.06rem;color:#15211F;letter-spacing:-.01em;line-height:1.3;">
+          <span>I'm a local tradesman — I don't know anything about tech. Will this work for me?</span>
+          <span data-faq-icon style="flex:none;width:22px;height:22px;font-size:1.6rem;line-height:1;color:#B45309;transition:transform .2s ease;">+</span>
+        </button>
+        <div data-faq-a style="display:none;padding:0 22px 20px;font-size:.98rem;color:#54605C;line-height:1.6;">Yes. You won't have to log into any complex software. We build systems that work through the tools you already use — like a simple text message when a new lead comes in, or an AI answering your website chat while you're driving.</div>
+      </div>
+
+      <div data-faq-item style="border:1.5px solid #15211F;border-radius:14px;background:#fff;box-shadow:4px 4px 0 rgba(21,33,31,.1);overflow:hidden;">
+        <button data-faq-q style="width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px;background:transparent;border:none;cursor:pointer;padding:20px 22px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.06rem;color:#15211F;letter-spacing:-.01em;line-height:1.3;">
+          <span>What's the difference between the AI chatbot in Tier 2 and Tier 3?</span>
+          <span data-faq-icon style="flex:none;width:22px;height:22px;font-size:1.6rem;line-height:1;color:#B45309;transition:transform .2s ease;">+</span>
+        </button>
+        <div data-faq-a style="display:none;padding:0 22px 20px;font-size:.98rem;color:#54605C;line-height:1.6;">The Tier 2 bot is a standard AI trained on a fixed set of FAQs — your pricing, hours and core services — designed to capture leads and book calls. The Tier 3 bot is a far more advanced agent that can read thousands of your past support tickets or scan a massive product catalog to troubleshoot complex customer issues on its own.</div>
+      </div>
+
+      <div data-faq-item style="border:1.5px solid #15211F;border-radius:14px;background:#fff;box-shadow:4px 4px 0 rgba(21,33,31,.1);overflow:hidden;">
+        <button data-faq-q style="width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px;background:transparent;border:none;cursor:pointer;padding:20px 22px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.06rem;color:#15211F;letter-spacing:-.01em;line-height:1.3;">
+          <span>Are there ongoing monthly fees?</span>
+          <span data-faq-icon style="flex:none;width:22px;height:22px;font-size:1.6rem;line-height:1;color:#B45309;transition:transform .2s ease;">+</span>
+        </button>
+        <div data-faq-a style="display:none;padding:0 22px 20px;font-size:.98rem;color:#54605C;line-height:1.6;">No. Our build fees are one-time. You're only responsible for the raw software costs of the tools you use — for example, a few dollars a month for your AI usage, or your existing CRM subscription.</div>
+      </div>
+
+      <div data-faq-item style="border:1.5px solid #15211F;border-radius:14px;background:#fff;box-shadow:4px 4px 0 rgba(21,33,31,.1);overflow:hidden;">
+        <button data-faq-q style="width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px;background:transparent;border:none;cursor:pointer;padding:20px 22px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.06rem;color:#15211F;letter-spacing:-.01em;line-height:1.3;">
+          <span>How long does a build take?</span>
+          <span data-faq-icon style="flex:none;width:22px;height:22px;font-size:1.6rem;line-height:1;color:#B45309;transition:transform .2s ease;">+</span>
+        </button>
+        <div data-faq-a style="display:none;padding:0 22px 20px;font-size:.98rem;color:#54605C;line-height:1.6;">Foundation packages are typically deployed in under 7 days. Growth Engines take 2 to 3 weeks. Custom Infrastructure timelines are scoped during our discovery call.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section id="book" style="background:#15211F;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:64px 24px;text-align:center;">
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.9rem,3.6vw,2.9rem);letter-spacing:-.02em;line-height:1.06;margin:0 auto;max-width:16em;color:#E9E8DF;">Stop paying yourself to do <span style="color:#B45309;">data entry.</span></h2>
+      <p style="font-size:1.1rem;line-height:1.6;color:#C8CEC6;margin:20px auto 30px;max-width:34em;">Book a free 15-minute mapping call. We'll show you exactly how much time and money you can buy back.</p>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="lg" href="#book" arrow="true" hint-size="300px,58px" style="min-height:58px;font-size:1.08rem;padding:1.1em 2em;">Book My Free Walkthrough</x-import>
+      <p style="font-family:'Caveat',cursive;font-size:1.3rem;color:#FBBF24;margin:22px 0 0;">↳ no pushy sales pitch — just a map of what's possible</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#11201E;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:26px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.82rem;">
+      <span style="display:inline-flex;align-items:center;gap:9px;">
+        <svg width="22" height="22" viewBox="0 0 30 30" fill="none" stroke="#E9E8DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;">Switchboard AI Systems</b>
+      </span>
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#9aa49d;font-size:.72rem;">Done-for-you · Built · Connected · Maintained</span>
+      <span style="color:#9aa49d;">© 2026 — All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- Sticky mobile CTA -->
+  <div class="sb-mobcta" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:80;padding:12px 16px;background:rgba(233,232,223,.94);backdrop-filter:blur(8px);border-top:1.5px solid #15211F;">
+    <a href="#book" style="display:flex;align-items:center;justify-content:center;gap:.5em;width:100%;min-height:52px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.02rem;text-transform:uppercase;letter-spacing:.02em;color:#fff;background:#B45309;border:2px solid #8a3f07;border-radius:10px;text-decoration:none;box-shadow:3px 3px 0 #15211F;">Book a Walkthrough →</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const root = document;
+    root.querySelectorAll('[data-faq-item]').forEach((item) => {
+      const btn = item.querySelector('[data-faq-q]');
+      const ans = item.querySelector('[data-faq-a]');
+      const icon = item.querySelector('[data-faq-icon]');
+      btn.addEventListener('click', () => {
+        const open = ans.style.display === 'block';
+        // close all
+        root.querySelectorAll('[data-faq-item]').forEach((it) => {
+          it.querySelector('[data-faq-a]').style.display = 'none';
+          const ic = it.querySelector('[data-faq-icon]');
+          ic.textContent = '+';
+          ic.style.transform = 'none';
+        });
+        if (!open) {
+          ans.style.display = 'block';
+          icon.textContent = '+';
+          icon.style.transform = 'rotate(45deg)';
+        }
+      });
+    });
+  }
+}
+</script>
+</body>
+</html>

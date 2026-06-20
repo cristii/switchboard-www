@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/colors.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/typography.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/_ds_bundle.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  /* sidebar nav */
+  .docnav{display:block;font-family:'Inter',sans-serif;font-size:.875rem;color:#374441;text-decoration:none;padding:6px 12px;border-radius:8px;border-left:2px solid transparent;margin:1px 0;line-height:1.35;cursor:pointer;}
+  .docnav:hover{background:rgba(21,33,31,.05);color:#15211F;}
+  .docnav.is-active{color:#B45309;background:rgba(180,83,9,.09);border-left-color:#B45309;font-weight:600;}
+  .navgroup-title{display:flex;align-items:center;justify-content:space-between;width:100%;background:transparent;border:none;cursor:pointer;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#15211F;padding:9px 12px 7px;}
+  .navgroup-title .chev{transition:transform .2s ease;color:#9aa49d;}
+  .navgroup.collapsed .navgroup-items{display:none;}
+  .navgroup.collapsed .chev{transform:rotate(-90deg);}
+  .subhead{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:#9aa49d;padding:10px 12px 3px;}
+  /* doc content typography */
+  .doc-content{font-family:'Inter',sans-serif;color:#232b29;font-size:1rem;line-height:1.7;}
+  .doc-content h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.02em;margin:38px 0 14px;scroll-margin-top:90px;line-height:1.2;}
+  .doc-content h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.12rem;letter-spacing:-.01em;margin:26px 0 10px;}
+  .doc-content p{margin:0 0 16px;}
+  .doc-content ul,.doc-content ol{margin:0 0 18px;padding-left:22px;}
+  .doc-content li{margin:6px 0;}
+  .doc-content a{color:#B45309;text-decoration:none;border-bottom:1px solid rgba(180,83,9,.4);cursor:pointer;}
+  .doc-content a:hover{border-bottom-color:#B45309;}
+  .doc-content code{font-family:'JetBrains Mono',monospace;font-size:.84em;background:rgba(21,33,31,.07);border:1px solid rgba(21,33,31,.12);border-radius:5px;padding:1px 6px;color:#15211F;}
+  .doc-content strong{font-weight:700;color:#15211F;}
+  .callout{margin:20px 0;padding:14px 18px;border:1.5px solid #15211F;border-left-width:5px;border-radius:10px;background:#fff;font-size:.94rem;line-height:1.6;}
+  .callout p{margin:0;}
+  .callout.tip{border-left-color:#3F7A4E;}
+  .callout.warn{border-left-color:#C12A2A;}
+  .callout.note{border-left-color:#B45309;}
+  .callout .clabel{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:5px;}
+  .callout.tip .clabel{color:#3F7A4E;}
+  .callout.warn .clabel{color:#C12A2A;}
+  .callout.note .clabel{color:#B45309;}
+  /* code card */
+  .codecard{margin:18px 0;border:1.5px solid #15211F;border-radius:12px;overflow:hidden;box-shadow:4px 4px 0 rgba(21,33,31,.1);}
+  .cc-head{background:#21252b;display:flex;align-items:center;gap:7px;padding:9px 13px;border-bottom:1px solid #14161b;}
+  .cc-head .d1,.cc-head .d2,.cc-head .d3{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .cc-head .d1{background:#e06c75;}.cc-head .d2{background:#e5c07b;}.cc-head .d3{background:#98c379;}
+  .cc-file{margin-left:8px;font-family:'JetBrains Mono',monospace;color:#9da5b4;font-size:.72rem;}
+  .codecard pre{margin:0;background:#282c34;color:#abb2bf;padding:15px 17px;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;}
+  .k{color:#c678dd;}.fn{color:#61afef;}.s{color:#98c379;}.n{color:#d19a66;}.p{color:#e06c75;}.cm{color:#7f848e;font-style:italic;}.ty{color:#e5c07b;}.cy{color:#56b6c2;}
+  /* tabs */
+  .tabrow{display:flex;gap:4px;margin:18px 0 0;flex-wrap:wrap;}
+  .tabbtn{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.03em;padding:7px 14px;border:1.5px solid #15211F;border-bottom:none;border-radius:9px 9px 0 0;background:#E1E2D7;color:#54605C;cursor:pointer;margin-bottom:-1.5px;}
+  .tabbtn.is-active{background:#21252b;color:#fff;border-color:#15211F;}
+  .tabpanel.hide{display:none;}
+  .tabpanel .codecard{margin-top:0;border-top-left-radius:0;}
+  /* toc */
+  .toclink{display:block;font-family:'Inter',sans-serif;font-size:.82rem;color:#54605C;text-decoration:none;padding:4px 0 4px 12px;border-left:2px solid rgba(21,33,31,.12);cursor:pointer;line-height:1.4;}
+  .toclink:hover{color:#15211F;}
+  .toclink.is-active{color:#B45309;border-left-color:#B45309;font-weight:600;}
+  /* search */
+  .searchbtn:hover{border-color:#B45309;}
+  .resitem{display:flex;flex-direction:column;gap:3px;padding:12px 16px;border:1.5px solid transparent;border-radius:10px;cursor:pointer;text-decoration:none;}
+  .resitem:hover{background:rgba(180,83,9,.08);border-color:#B45309;}
+  kbd{font-family:'JetBrains Mono',monospace;font-size:.68rem;background:#fff;border:1.5px solid #15211F;border-radius:5px;padding:1px 6px;color:#15211F;box-shadow:1px 1px 0 rgba(21,33,31,.2);}
+  .homecard:hover{transform:translateY(-3px);box-shadow:7px 7px 0 rgba(21,33,31,.13);}
+  .homecard{transition:transform .14s ease,box-shadow .14s ease;}
+  .pndcard:hover{border-color:#B45309;}
+  .startlink:hover{color:#B45309;}
+  @media (max-width:1100px){ .docshell{grid-template-columns:260px 1fr !important;} .tocaside{display:none !important;} }
+  @media (max-width:860px){
+    .docshell{grid-template-columns:1fr !important;}
+    .sidebar{position:fixed !important;top:64px;bottom:0;left:0;width:280px;z-index:55;transform:translateX(-100%);transition:transform .25s ease;box-shadow:8px 0 24px rgba(0,0,0,.12);}
+    .sidebar.open{transform:translateX(0);}
+    .menubtn{display:inline-flex !important;}
+    .searchbtn{min-width:0 !important;}
+    .homecards{grid-template-columns:1fr !important;}
+    .home-bp{grid-template-columns:1fr !important;}
+  }
+</style>
+</helmet>
+
+<div style="font-family:'Inter',system-ui,sans-serif;color:#15211F;background-color:#E9E8DF;background-image:repeating-linear-gradient(0deg, rgba(21,33,31,0.02) 0 1px, transparent 1px 32px),repeating-linear-gradient(90deg, rgba(21,33,31,0.02) 0 1px, transparent 1px 32px),url('assets/grain.svg');min-height:100vh;-webkit-font-smoothing:antialiased;">
+
+  <!-- Top bar -->
+  <header style="position:sticky;top:0;z-index:60;height:64px;backdrop-filter:blur(6px);background:rgba(233,232,223,.9);border-bottom:1.5px solid #15211F;">
+    <div style="height:100%;padding:0 20px;display:flex;align-items:center;gap:16px;">
+      <button class="menubtn" data-menu style="display:none;align-items:center;justify-content:center;width:38px;height:38px;background:#fff;border:1.5px solid #15211F;border-radius:9px;cursor:pointer;flex:none;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#15211F" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg>
+      </button>
+      <a data-go="" href="#" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;flex:none;">
+        <svg width="26" height="26" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle><path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path></svg>
+        <span style="display:flex;align-items:baseline;gap:8px;">
+          <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.18rem;letter-spacing:-.03em;">Switchboard</b>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.66rem;letter-spacing:.14em;color:#54605C;text-transform:uppercase;">Docs</span>
+        </span>
+      </a>
+      <button class="searchbtn" data-search-open style="flex:1;max-width:460px;min-width:120px;margin:0 auto;display:flex;align-items:center;gap:10px;height:40px;padding:0 12px;background:#fff;border:1.5px solid #15211F;border-radius:10px;cursor:pointer;color:#54605C;font-family:'Inter',sans-serif;font-size:.9rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#54605C" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+        <span style="flex:1;text-align:left;">Search the docs…</span>
+        <kbd>⌘K</kbd>
+      </button>
+      <nav class="nav-links" style="display:flex;gap:22px;align-items:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.84rem;flex:none;">
+        <a href="The Daily Log.dc.html" style="color:inherit;text-decoration:none;">Daily Log</a>
+        <a href="Pricing.dc.html" style="color:inherit;text-decoration:none;">Pricing</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Shell -->
+  <div class="docshell" style="display:grid;grid-template-columns:270px 1fr 240px;align-items:start;max-width:1440px;margin:0 auto;">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" style="position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;background:#E1E2D7;border-right:1.5px solid #15211F;padding:14px 12px 60px;">
+      <nav>
+        <div class="navgroup">
+          <button class="navgroup-title" data-group="learn">Learn <span class="chev">▾</span></button>
+          <div class="navgroup-items">
+            <a class="docnav" data-go="introduction" href="#">Introduction</a>
+            <a class="docnav" data-go="core-concepts" href="#">Core concepts</a>
+            <a class="docnav" data-go="installation" href="#">Installation &amp; environment</a>
+            <div class="subhead">Quickstart</div>
+            <a class="docnav" data-go="quickstart-n8n" href="#">Your first n8n webhook</a>
+            <a class="docnav" data-go="quickstart-trigger" href="#">Scaling AI agents with Trigger.dev</a>
+            <div class="subhead">Design patterns</div>
+            <a class="docnav" data-go="idempotency" href="#">Idempotency in workflows</a>
+            <a class="docnav" data-go="rate-limits" href="#">Handling rate limits</a>
+          </div>
+        </div>
+        <div class="navgroup">
+          <button class="navgroup-title" data-group="reference">Reference <span class="chev">▾</span></button>
+          <div class="navgroup-items">
+            <div class="subhead">n8n</div>
+            <a class="docnav" data-go="n8n-standard" href="#">Nodes (standard)</a>
+            <a class="docnav" data-go="n8n-custom" href="#">Nodes (custom)</a>
+            <a class="docnav" data-go="n8n-expressions" href="#">Expressions &amp; JSON transforms</a>
+            <div class="subhead">Trigger.dev</div>
+            <a class="docnav" data-go="trigger-workflows" href="#">Workflows &amp; tasks</a>
+            <div class="subhead">Blueprints</div>
+            <a class="docnav" data-go="bp-slack-notion-llm" href="#">AI &amp; LLMs</a>
+            <a class="docnav" data-go="bp-api" href="#">API integrations</a>
+            <a class="docnav" data-go="bp-data" href="#">Data transformation</a>
+          </div>
+        </div>
+        <div class="navgroup">
+          <button class="navgroup-title" data-group="guides">Guides <span class="chev">▾</span></button>
+          <div class="navgroup-items">
+            <a class="docnav" data-go="guide-billing" href="#">Payments &amp; billing</a>
+            <a class="docnav" data-go="guide-crm" href="#">Operational CRM</a>
+            <a class="docnav" data-go="guide-support" href="#">Customer support</a>
+            <a class="docnav" data-go="guide-errors" href="#">Error handling &amp; monitoring</a>
+            <a class="docnav" data-go="guide-scaling" href="#">Scaling to high-throughput</a>
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main style="min-width:0;padding:40px clamp(20px,4vw,64px) 80px;">
+
+      <!-- HOME -->
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:12px;">
+          <span style="width:17px;height:17px;background:#B45309;-webkit-mask:url('assets/icons/lightbulb.svg') center/contain no-repeat;mask:url('assets/icons/lightbulb.svg') center/contain no-repeat;display:inline-block;"></span>
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="200px,18px">Documentation</x-import>
+        </div>
+        <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.1rem,4vw,3.1rem);letter-spacing:-.02em;line-height:1.05;margin:0 0 14px;max-width:16em;">Build automations that <span style="color:#B45309;">don't break.</span></h1>
+        <p style="font-size:1.1rem;color:#232b29;max-width:36em;line-height:1.55;margin:0 0 26px;">Production patterns, engine references and copy-paste blueprints for n8n, Trigger.dev and AI workflows — written by the team that ships them for clients.</p>
+        <button class="searchbtn" data-search-open style="width:100%;max-width:560px;display:flex;align-items:center;gap:12px;height:52px;padding:0 16px;background:#fff;border:2px solid #15211F;border-radius:12px;cursor:pointer;color:#54605C;font-family:'Inter',sans-serif;font-size:1rem;box-shadow:4px 4px 0 rgba(21,33,31,.1);margin-bottom:48px;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#54605C" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+          <span style="flex:1;text-align:left;">Try “webhook”, “timeout”, “idempotency”…</span>
+          <kbd>⌘K</kbd>
+        </button>
+
+        <div class="homecards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:48px;">
+          <div class="homecard" data-go="introduction" style="cursor:pointer;background:#fff;border:1.5px solid #15211F;border-radius:14px;box-shadow:4px 4px 0 rgba(21,33,31,.1);padding:22px 22px 18px;">
+            <span style="display:inline-flex;width:42px;height:42px;align-items:center;justify-content:center;border:1.5px solid #15211F;border-radius:11px;background:rgba(180,83,9,.1);margin-bottom:14px;"><span style="width:22px;height:22px;background:#B45309;-webkit-mask:url('assets/icons/lightbulb.svg') center/contain no-repeat;mask:url('assets/icons/lightbulb.svg') center/contain no-repeat;"></span></span>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.2rem;margin:0 0 6px;letter-spacing:-.01em;">Learn</h3>
+            <p style="font-size:.9rem;color:#54605C;margin:0 0 14px;line-height:1.5;">Concepts and quickstarts — why event-driven, and how to ship your first workflow.</p>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <span class="startlink" data-go="core-concepts" style="font-size:.86rem;color:#15211F;cursor:pointer;">→ Core concepts</span>
+              <span class="startlink" data-go="quickstart-n8n" style="font-size:.86rem;color:#15211F;cursor:pointer;">→ Your first n8n webhook</span>
+              <span class="startlink" data-go="idempotency" style="font-size:.86rem;color:#15211F;cursor:pointer;">→ Idempotency in workflows</span>
+            </div>
+          </div>
+          <div class="homecard" data-go="n8n-standard" style="cursor:pointer;background:#fff;border:1.5px solid #15211F;border-radius:14px;box-shadow:4px 4px 0 rgba(21,33,31,.1);padding:22px 22px 18px;">
+            <span style="display:inline-flex;width:42px;height:42px;align-items:center;justify-content:center;border:1.5px solid #15211F;border-radius:11px;background:rgba(63,122,78,.12);margin-bottom:14px;"><span style="width:22px;height:22px;background:#3F7A4E;-webkit-mask:url('assets/icons/workflow.svg') center/contain no-repeat;mask:url('assets/icons/workflow.svg') center/contain no-repeat;"></span></span>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.2rem;margin:0 0 6px;letter-spacing:-.01em;">Reference</h3>
+            <p style="font-size:.9rem;color:#54605C;margin:0 0 14px;line-height:1.5;">Factual, skimmable node-by-node docs and a searchable blueprint library.</p>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <span class="startlink" data-go="n8n-standard" style="font-size:.86rem;color:#15211F;cursor:pointer;">→ n8n nodes (standard)</span>
+              <span class="startlink" data-go="trigger-workflows" style="font-size:.86rem;color:#15211F;cursor:pointer;">→ Trigger.dev workflows</span>
+              <span class="startlink" data-go="n8n-expressions" style="font-size:.86rem;color:#15211F;cursor:pointer;">→ Expressions &amp; JSON</span>
+            </div>
+          </div>
+          <div class="homecard" data-go="guide-crm" style="cursor:pointer;background:#fff;border:1.5px solid #15211F;border-radius:14px;box-shadow:4px 4px 0 rgba(21,33,31,.1);padding:22px 22px 18px;">
+            <span style="display:inline-flex;width:42px;height:42px;align-items:center;justify-content:center;border:1.5px solid #15211F;border-radius:11px;background:rgba(124,92,196,.13);margin-bottom:14px;"><span style="width:22px;height:22px;background:#7C5CC4;-webkit-mask:url('assets/icons/funnel.svg') center/contain no-repeat;mask:url('assets/icons/funnel.svg') center/contain no-repeat;"></span></span>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.2rem;margin:0 0 6px;letter-spacing:-.01em;">Guides</h3>
+            <p style="font-size:.9rem;color:#54605C;margin:0 0 14px;line-height:1.5;">End-to-end recipes organized by business outcome — billing, CRM, support.</p>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <span class="startlink" data-go="guide-billing" style="font-size:.86rem;color:#15211F;cursor:pointer;">→ Payments &amp; billing</span>
+              <span class="startlink" data-go="guide-crm" style="font-size:.86rem;color:#15211F;cursor:pointer;">→ Operational CRM</span>
+              <span class="startlink" data-go="guide-support" style="font-size:.86rem;color:#15211F;cursor:pointer;">→ Customer support</span>
+            </div>
+          </div>
+        </div>
+
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.02em;margin:0 0 4px;">Popular blueprints</h2>
+        <p style="font-size:.95rem;color:#54605C;margin:0 0 18px;">Pre-built templates with documented schemas and downloadable source.</p>
+        <div class="home-bp" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+          <div class="homecard" data-go="bp-slack-notion-llm" style="cursor:pointer;background:#fff;border:1.5px solid #15211F;border-radius:14px;box-shadow:4px 4px 0 rgba(21,33,31,.1);padding:18px 20px;">
+            <div style="display:flex;gap:7px;margin-bottom:10px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="violet" hint-size="60px,22px">AI</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="50px,22px">JSON</x-import></div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.04rem;margin:0 0 5px;letter-spacing:-.01em;">Slack → Notion → LLM</h3>
+            <p style="font-size:.86rem;color:#54605C;margin:0;line-height:1.5;">Summarize Slack threads with an LLM and file them in Notion automatically.</p>
+          </div>
+          <div class="homecard" data-go="bp-api" style="cursor:pointer;background:#fff;border:1.5px solid #15211F;border-radius:14px;box-shadow:4px 4px 0 rgba(21,33,31,.1);padding:18px 20px;">
+            <div style="display:flex;gap:7px;margin-bottom:10px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="amber" hint-size="80px,22px">n8n</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="70px,22px">Webhooks</x-import></div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.04rem;margin:0 0 5px;letter-spacing:-.01em;">Resilient API sync</h3>
+            <p style="font-size:.86rem;color:#54605C;margin:0;line-height:1.5;">Two-way sync between any REST API and your database with retries built in.</p>
+          </div>
+          <div class="homecard" data-go="bp-data" style="cursor:pointer;background:#fff;border:1.5px solid #15211F;border-radius:14px;box-shadow:4px 4px 0 rgba(21,33,31,.1);padding:18px 20px;">
+            <div style="display:flex;gap:7px;margin-bottom:10px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="green" hint-size="90px,22px">Transform</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="50px,22px">JSON</x-import></div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.04rem;margin:0 0 5px;letter-spacing:-.01em;">Flatten nested payloads</h3>
+            <p style="font-size:.86rem;color:#54605C;margin:0;line-height:1.5;">Reshape messy nested webhook bodies into clean flat database rows.</p>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ARTICLE -->
+      <sc-if value="{{ isArticle }}">
+      <div style="max-width:760px;">
+        <div style="display:flex;align-items:center;gap:8px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:#9aa49d;margin-bottom:14px;">
+          <span data-go="" style="cursor:pointer;color:#54605C;">Docs</span>
+          <span>/</span>
+          <span style="color:#B45309;">{{ groupLabel }}</span>
+        </div>
+        <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.9rem,3.4vw,2.6rem);letter-spacing:-.02em;line-height:1.1;margin:0 0 12px;">{{ title }}</h1>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="solid" hint-size="70px,22px">{{ tierLabel }}</x-import>
+          <span style="font-size:.84rem;color:#9aa49d;">{{ read }}</span>
+        </div>
+        <p style="font-size:1.15rem;line-height:1.6;color:#54605C;margin:14px 0 6px;">{{ lead }}</p>
+        <div style="height:1.5px;background:rgba(21,33,31,.14);margin:20px 0 4px;"></div>
+
+        {{ articleBody }}
+
+        <!-- Artifact -->
+        <sc-if value="{{ hasArtifact }}">
+        <div style="margin:34px 0 8px;background:#11201E;color:#E9E8DF;border:1.5px solid #000;border-radius:14px;padding:22px 24px;box-shadow:6px 6px 0 rgba(21,33,31,.15);">
+          <div style="display:flex;align-items:center;gap:8px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:#FBBF24;margin-bottom:8px;">
+            <span style="width:16px;height:16px;background:#FBBF24;-webkit-mask:url('assets/icons/link.svg') center/contain no-repeat;mask:url('assets/icons/link.svg') center/contain no-repeat;"></span>The artifact
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:1rem;color:#E9E8DF;">{{ artName }}</div>
+              <div style="font-size:.86rem;color:#9aa49d;margin-top:3px;">{{ artDesc }}</div>
+            </div>
+            <button data-download style="display:inline-flex;align-items:center;gap:8px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.02em;color:#fff;background:#B45309;border:2px solid #8a3f07;border-radius:10px;padding:.7em 1.2em;cursor:pointer;box-shadow:3px 3px 0 #000;">Download {{ artType }} →</button>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- Prev / next -->
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:38px;padding-top:24px;border-top:1.5px solid rgba(21,33,31,.14);">
+          <sc-if value="{{ hasPrev }}">
+          <a class="pndcard" data-go="{{ prevId }}" href="#" style="flex:1;min-width:200px;background:#fff;border:1.5px solid #15211F;border-radius:12px;padding:14px 18px;text-decoration:none;color:inherit;box-shadow:3px 3px 0 rgba(21,33,31,.1);transition:border-color .15s;">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#9aa49d;">← Previous</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1rem;margin-top:4px;color:#B45309;">{{ prevTitle }}</div>
+          </a>
+          </sc-if>
+          <sc-if value="{{ hasNext }}">
+          <a class="pndcard" data-go="{{ nextId }}" href="#" style="flex:1;min-width:200px;background:#fff;border:1.5px solid #15211F;border-radius:12px;padding:14px 18px;text-decoration:none;color:inherit;box-shadow:3px 3px 0 rgba(21,33,31,.1);text-align:right;transition:border-color .15s;">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:#9aa49d;">Next →</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1rem;margin-top:4px;color:#B45309;">{{ nextTitle }}</div>
+          </a>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+    </main>
+
+    <!-- Right TOC -->
+    <aside class="tocaside" style="position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;padding:40px 20px;">
+      <sc-if value="{{ isArticle }}">
+      <div>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:#9aa49d;margin-bottom:10px;">On this page</div>
+        <sc-for list="{{ toc }}" as="t" hint-placeholder-count="4">
+          <a class="toclink" data-toc="{{ t.id }}" href="#">{{ t.label }}</a>
+        </sc-for>
+      </div>
+      </sc-if>
+    </aside>
+
+  </div>
+
+  <!-- Mobile sidebar scrim -->
+  <div data-scrim style="display:none;position:fixed;inset:64px 0 0;background:rgba(17,32,30,.4);z-index:54;"></div>
+
+  <!-- Search overlay -->
+  <sc-if value="{{ searchOpen }}">
+  <div data-search-overlay style="position:fixed;inset:0;z-index:90;display:flex;align-items:flex-start;justify-content:center;padding:14vh 20px 20px;background:rgba(17,32,30,.45);backdrop-filter:blur(3px);">
+    <div data-search-panel style="width:100%;max-width:620px;background:#E9E8DF;border:1.5px solid #15211F;border-radius:16px;box-shadow:10px 10px 0 rgba(21,33,31,.18);overflow:hidden;">
+      <div style="display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1.5px solid #15211F;background:#fff;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#54605C" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.5" y2="16.5"></line></svg>
+        <input data-search-input type="text" placeholder="Search webhook, timeout, idempotency…" value="{{ query }}" onInput="{{ onQuery }}" style="flex:1;border:none;outline:none;background:transparent;font-family:'Inter',sans-serif;font-size:1.05rem;color:#15211F;" />
+        <kbd>esc</kbd>
+      </div>
+      <div style="max-height:52vh;overflow-y:auto;padding:10px;">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:#9aa49d;padding:6px 8px 8px;">{{ resultsLabel }}</div>
+        <sc-for list="{{ results }}" as="r" hint-placeholder-count="5">
+          <a class="resitem" data-go="{{ r.id }}" href="#">
+            <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.96rem;color:#15211F;">{{ r.title }}</span>
+            <span style="font-size:.82rem;color:#54605C;">{{ r.tier }} · {{ r.snippet }}</span>
+          </a>
+        </sc-for>
+        <sc-if value="{{ noResults }}">
+          <div style="padding:22px 12px;font-family:'Caveat',cursive;font-size:1.3rem;color:#54605C;">↳ nothing under that term — try “webhook” or “retry”</div>
+        </sc-if>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;padding:10px 18px;border-top:1.5px solid rgba(21,33,31,.18);font-size:.74rem;color:#54605C;background:#E1E2D7;">
+        <span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span>
+        <span style="margin-left:auto;font-family:'Caveat',cursive;font-size:1.1rem;">simulated search · demo</span>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { id: null, searchOpen: false, query: '' };
+
+  // ---- content helpers ----
+  static code(file, inner) {
+    return '<div class="codecard"><div class="cc-head"><span class="d1"></span><span class="d2"></span><span class="d3"></span><span class="cc-file">' + file + '</span></div><pre>' + inner + '</pre></div>';
+  }
+  static tabs(arr) {
+    let h = '<div class="tabwrap"><div class="tabrow">';
+    arr.forEach((t, i) => { h += '<button class="tabbtn' + (i === 0 ? ' is-active' : '') + '" data-tab="' + i + '">' + t.label + '</button>'; });
+    h += '</div>';
+    arr.forEach((t, i) => { h += '<div class="tabpanel' + (i === 0 ? '' : ' hide') + '" data-panel="' + i + '">' + Component.code(t.file, t.body) + '</div>'; });
+    h += '</div>';
+    return h;
+  }
+  static note(kind, label, html) {
+    return '<blockquote class="callout ' + kind + '"><span class="clabel">' + label + '</span><p>' + html + '</p></blockquote>';
+  }
+
+  componentDidMount() {
+    this.buildArticles();
+    // delegated navigation + UI
+    document.addEventListener('click', (e) => {
+      const go = e.target.closest('[data-go]');
+      if (go) { e.preventDefault(); this.navTo(go.getAttribute('data-go') || null); return; }
+      const grp = e.target.closest('[data-group]');
+      if (grp) { grp.closest('.navgroup').classList.toggle('collapsed'); return; }
+      const tab = e.target.closest('[data-tab]');
+      if (tab) { this.switchTab(tab); return; }
+      const toc = e.target.closest('[data-toc]');
+      if (toc) { e.preventDefault(); this.scrollToHeading(toc.getAttribute('data-toc')); return; }
+      if (e.target.closest('[data-search-open]')) { this.setState({ searchOpen: true, query: '' }); return; }
+      if (e.target.closest('[data-menu]')) { this.toggleMenu(); return; }
+      if (e.target.closest('[data-scrim]')) { this.toggleMenu(false); return; }
+      if (e.target.closest('[data-download]')) { return; }
+      const ov = e.target.closest('[data-search-overlay]');
+      if (ov && !e.target.closest('[data-search-panel]')) { this.setState({ searchOpen: false }); return; }
+    });
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); this.setState({ searchOpen: !this.state.searchOpen, query: '' }); }
+      if (e.key === 'Escape' && this.state.searchOpen) this.setState({ searchOpen: false });
+    });
+    this.syncActive();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    prevState = prevState || {};
+    if (prevState.id !== this.state.id) {
+      window.scrollTo(0, 0);
+      this.syncActive();
+      this.initSpy();
+    }
+    if (this.state.searchOpen && !prevState.searchOpen) {
+      setTimeout(() => { const i = document.querySelector('[data-search-input]'); if (i) i.focus(); }, 30);
+    }
+  }
+
+  toggleMenu(force) {
+    const sb = document.querySelector('.sidebar');
+    const sc = document.querySelector('[data-scrim]');
+    if (!sb) return;
+    const open = force === undefined ? !sb.classList.contains('open') : force;
+    sb.classList.toggle('open', open);
+    if (sc) sc.style.display = open ? 'block' : 'none';
+  }
+
+  navTo(id) {
+    this.toggleMenu(false);
+    this.setState({ id: id || null, searchOpen: false });
+  }
+
+  switchTab(btn) {
+    const wrap = btn.closest('.tabwrap');
+    const i = btn.getAttribute('data-tab');
+    wrap.querySelectorAll('.tabbtn').forEach((b) => b.classList.toggle('is-active', b === btn));
+    wrap.querySelectorAll('.tabpanel').forEach((p) => p.classList.toggle('hide', p.getAttribute('data-panel') !== i));
+  }
+
+  scrollToHeading(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY - 84;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+
+  syncActive() {
+    document.querySelectorAll('[data-go]').forEach((el) => {
+      const v = el.getAttribute('data-go');
+      if (el.classList.contains('docnav')) el.classList.toggle('is-active', v === this.state.id);
+    });
+  }
+
+  initSpy() {
+    if (this._spy) this._spy.disconnect();
+    const heads = Array.from(document.querySelectorAll('.doc-content h2[id]'));
+    if (!heads.length) return;
+    const links = Array.from(document.querySelectorAll('.toclink'));
+    this._spy = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          const id = en.target.id;
+          links.forEach((l) => l.classList.toggle('is-active', l.getAttribute('data-toc') === id));
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    heads.forEach((h) => this._spy.observe(h));
+  }
+
+  // ---- article data ----
+  buildArticles() {
+    const c = Component.code, t = Component.tabs, note = Component.note;
+
+    const sWebhookTs =
+      '<span class="k">export const</span> webhook = <span class="fn">defineEndpoint</span>({\n' +
+      '  <span class="p">id</span>: <span class="s">"lead-intake"</span>,\n' +
+      '  <span class="p">run</span>: <span class="k">async</span> (req, io) =&gt; {\n' +
+      '    <span class="k">const</span> lead = <span class="fn">parse</span>(req.body);      <span class="cm">// validate first</span>\n' +
+      '    <span class="k">await</span> io.<span class="fn">runTask</span>(<span class="s">"sync-crm"</span>, () =&gt; <span class="fn">push</span>(lead));\n' +
+      '    <span class="k">return</span> { <span class="p">status</span>: <span class="n">200</span> };       <span class="cm">// ack fast</span>\n' +
+      '  },\n});';
+    const sWebhookJson =
+      '{\n  <span class="p">"method"</span>: <span class="s">"POST"</span>,\n' +
+      '  <span class="p">"url"</span>: <span class="s">"https://api.switchboard.dev/lead-intake"</span>,\n' +
+      '  <span class="p">"headers"</span>: { <span class="p">"x-signature"</span>: <span class="s">"{{ hmac }}"</span> },\n' +
+      '  <span class="p">"body"</span>: { <span class="p">"email"</span>: <span class="s">"jane@acme.co"</span>, <span class="p">"source"</span>: <span class="s">"meta-ads"</span> }\n}';
+    const sRedis =
+      '<span class="k">const</span> key = <span class="s">"evt:"</span> + event.id;\n' +
+      '<span class="k">if</span> (<span class="k">await</span> redis.<span class="fn">set</span>(key, <span class="n">1</span>, <span class="s">"NX"</span>, <span class="s">"EX"</span>, <span class="n">86400</span>) === <span class="k">null</span>)\n' +
+      '  <span class="k">return</span> io.logger.<span class="fn">info</span>(<span class="s">"duplicate — skipped"</span>);';
+    const sSplit =
+      '<span class="cm">// Item Lists → "Split Out" — no Code node needed</span>\n' +
+      '<span class="p">fieldToSplitOut</span>: <span class="s">"body.data"</span>,\n' +
+      '<span class="p">include</span>:         <span class="s">"id, email, status"</span>';
+    const sTrigger =
+      'client.<span class="fn">defineJob</span>({\n' +
+      '  <span class="p">id</span>: <span class="s">"agent-run"</span>,\n' +
+      '  <span class="p">concurrencyLimit</span>: <span class="n">5</span>,        <span class="cm">// cap parallel agents</span>\n' +
+      '  <span class="p">run</span>: <span class="k">async</span> (payload, io) =&gt; {\n' +
+      '    <span class="k">await</span> io.<span class="fn">runTask</span>(<span class="s">"think"</span>, () =&gt; agent.<span class="fn">invoke</span>(payload));\n' +
+      '  },\n});';
+    const sHmac =
+      '<span class="k">const</span> ok = crypto\n' +
+      '  .<span class="fn">createHmac</span>(<span class="s">"sha256"</span>, secret)\n' +
+      '  .<span class="fn">update</span>(raw)\n' +
+      '  .<span class="fn">digest</span>(<span class="s">"hex"</span>) === sig;   <span class="cm">// constant-time in prod</span>';
+
+    const ORDER = ['introduction','core-concepts','installation','quickstart-n8n','quickstart-trigger','idempotency','rate-limits','n8n-standard','n8n-custom','n8n-expressions','trigger-workflows','bp-slack-notion-llm','bp-api','bp-data','guide-billing','guide-crm','guide-support','guide-errors','guide-scaling'];
+
+    const A = {};
+    const tocOf = (...pairs) => pairs.map((p) => ({ id: p[0], label: p[1] }));
+    // generic builder
+    const gen = (intro, points, codeBlock, extraToc) => {
+      let h = '<h2 id="overview">Overview</h2>';
+      intro.forEach((p) => { h += '<p>' + p + '</p>'; });
+      h += '<h2 id="key-points">Key points</h2><ul>' + points.map((x) => '<li>' + x + '</li>').join('') + '</ul>';
+      if (codeBlock) h += '<h2 id="example">Example</h2>' + codeBlock;
+      return h;
+    };
+    const genToc = (hasCode) => hasCode ? tocOf(['overview','Overview'],['key-points','Key points'],['example','Example']) : tocOf(['overview','Overview'],['key-points','Key points']);
+
+    // ---- marquee: introduction ----
+    A['introduction'] = { tier: 'Learn', group: 'Learn', read: '3 min read', title: 'Introduction',
+      lead: 'How this knowledge base is organized, and the fastest path from a question to working code.',
+      toc: tocOf(['overview','Overview'],['three-tiers','The three tiers'],['conventions','Conventions']),
+      body:
+        '<h2 id="overview">Overview</h2><p>This is the engineering reference behind every system we ship. It covers <strong>n8n</strong>, <strong>Trigger.dev</strong>, and the AI workflows that sit on top of them — written for technical people who want the exact pattern, not a sales pitch.</p>' +
+        note('tip','Start here','New to event-driven automation? Read <a data-go="core-concepts">Core concepts</a>, then build <a data-go="quickstart-n8n">your first n8n webhook</a>.') +
+        '<h2 id="three-tiers">The three tiers</h2><p>Everything is grouped so you can move from understanding to copy-paste in seconds:</p><ul>' +
+        '<li><strong>Learn</strong> — concepts and quickstarts. <em>Why</em> a pattern exists.</li>' +
+        '<li><strong>Reference</strong> — strictly factual, skimmable node and API docs, plus the blueprint library.</li>' +
+        '<li><strong>Guides</strong> — end-to-end recipes organized by business outcome.</li></ul>' +
+        '<h2 id="conventions">Conventions</h2><p>Code blocks are copy-ready. Where an engine offers two approaches, we show them as tabs (for example a <code>JavaScript Node</code> vs a raw <code>JSON / HTTP Request</code>). Blueprints always ship with a downloadable artifact and a documented schema.</p>' };
+
+    // ---- marquee: core concepts ----
+    A['core-concepts'] = { tier: 'Learn', group: 'Learn', read: '6 min read', title: 'Core concepts: event-driven architecture',
+      lead: 'Why reliable automation is built on events and queues — not cron jobs and hope.',
+      toc: tocOf(['overview','Overview'],['events','Events vs. polling'],['queues','Queues & retries'],['idem','Idempotency']),
+      body:
+        '<h2 id="overview">Overview</h2><p>An event-driven system reacts the instant something happens — a form submit, a payment, a new row — instead of asking “anything new yet?” on a timer. That single shift removes most of the latency and waste in a workflow.</p>' +
+        '<h2 id="events">Events vs. polling</h2><p>Polling burns API quota and adds delay equal to your interval. A webhook delivers the payload the moment the event occurs.</p>' +
+        note('warn','Watch out','Webhooks can be delivered more than once, out of order, or replayed by an attacker. Plan for it — see <a data-go="idempotency">Idempotency</a>.') +
+        '<h2 id="queues">Queues & retries</h2><p>Wrap any outbound call in a task so a slow or failing third party retries on its own instead of taking down the whole run.</p>' + c('worker.ts', sTrigger) +
+        '<h2 id="idem">Idempotency</h2><p>Because delivery is “at least once”, every handler must be safe to run twice. The cheapest guard is a single key in a fast store.</p>' + c('idempotency.ts', sRedis) };
+
+    // ---- marquee: quickstart n8n (tabbed + artifact) ----
+    A['quickstart-n8n'] = { tier: 'Learn', group: 'Learn', read: '8 min read', title: 'Your first production-grade n8n webhook',
+      lead: 'Stand up a webhook that captures leads, validates the payload, and survives bad input — in about ten minutes.',
+      toc: tocOf(['overview','Overview'],['setup','Set up the node'],['validate','Validate the payload'],['errors','Handle errors'],['next','Next steps']),
+      artifact: { name: 'lead-intake.n8n.json', type: 'JSON', desc: 'Importable n8n workflow — webhook + validation + CRM sync.' },
+      body:
+        '<h2 id="overview">Overview</h2><p>A “hello world” webhook is easy. A <em>production</em> one acknowledges fast, validates input, and never double-processes. We will build all three.</p>' +
+        note('note','Prerequisites','An n8n instance (cloud or self-hosted) and a CRM or Slack destination. No coding required for the base flow.') +
+        '<h2 id="setup">Set up the node</h2><p>Drop a <strong>Webhook</strong> trigger node and set the method to <code>POST</code>. Acknowledge immediately and do the real work in a follow-up task so the sender never times out.</p>' +
+        t([{ label: 'JavaScript Node', file: 'webhook.ts', body: sWebhookTs }, { label: 'JSON / HTTP Request', file: 'request.json', body: sWebhookJson }]) +
+        '<h2 id="validate">Validate the payload</h2><p>Never trust an inbound body. Reject anything missing required fields before it touches your CRM, and verify the signature header so forged calls bounce at the door.</p>' + c('verify.ts', sHmac) +
+        '<h2 id="errors">Handle errors</h2><p>Attach an <strong>Error Trigger</strong> so a failed run pings you in Slack instead of failing silently. Pair it with the idempotency guard below so retries are safe.</p>' + c('guard.ts', sRedis) +
+        note('tip','Ship it','Import the artifact below, point the destination node at your CRM, and you have a working lead-intake pipeline.') +
+        '<h2 id="next">Next steps</h2><ul><li><a data-go="idempotency">Make the handler idempotent</a></li><li><a data-go="rate-limits">Add rate-limit handling</a></li><li><a data-go="bp-api">Browse the API integration blueprint</a></li></ul>' };
+
+    // ---- marquee: idempotency ----
+    A['idempotency'] = { tier: 'Learn', group: 'Learn', read: '5 min read', title: 'Idempotency in workflows',
+      lead: 'A one-line guard that stops duplicate webhook deliveries from firing a second run.',
+      toc: tocOf(['overview','Overview'],['guard','The guard'],['key','Choosing a key'],['pitfalls','Pitfalls']),
+      body:
+        '<h2 id="overview">Overview</h2><p>Idempotent means “running it twice has the same effect as running it once.” Since webhook delivery is at-least-once, this is not optional — it is the difference between one invoice and three.</p>' +
+        '<h2 id="guard">The guard</h2><p>Record each event id the first time you see it. If the key already exists, skip.</p>' + c('idempotency.ts', sRedis) +
+        '<h2 id="key">Choosing a key</h2><p>Use the provider’s event id when one exists. If not, hash the stable fields of the payload — never the timestamp.</p>' +
+        note('warn','Common mistake','A TTL that is shorter than the provider’s retry window lets a late retry slip through. Match or exceed it (24h is a safe default).') +
+        '<h2 id="pitfalls">Pitfalls</h2><ul><li>Setting the key <em>after</em> the side effect instead of before.</li><li>Using a per-instance in-memory set that resets on deploy.</li><li>Forgetting that two different events can share a payload — include the type in the key.</li></ul>' };
+
+    // ---- marquee: blueprint slack→notion→llm ----
+    A['bp-slack-notion-llm'] = { tier: 'Reference', group: 'Blueprints', read: 'Blueprint', title: 'Blueprint: Slack → Notion → LLM',
+      lead: 'Summarize a Slack thread with an LLM and file the result in Notion — fully automated, with graceful failure.',
+      toc: tocOf(['overview','What it does'],['arch','Architecture'],['schema','Schema'],['edge','Edge cases']),
+      artifact: { name: 'slack-notion-llm.json', type: 'JSON', desc: 'Importable workflow with the LLM + Notion nodes pre-wired.' },
+      body:
+        '<h2 id="overview">What it does</h2><p>When a thread is tagged in Slack, this blueprint pulls the messages, asks an LLM for a structured summary, and creates a Notion page in the right database — no human in the loop.</p>' +
+        '<h2 id="arch">Architecture</h2><ul><li><strong>Trigger</strong> — Slack event for the reaction/tag.</li><li><strong>Transform</strong> — flatten the thread into clean text.</li><li><strong>LLM</strong> — summarize with a fixed schema prompt.</li><li><strong>Output</strong> — create the Notion page; on failure, post back to Slack.</li></ul>' + c('transform.node', sSplit) +
+        '<h2 id="schema">Schema</h2><p>Documented inputs and outputs so you can swap pieces safely.</p>' +
+        '<ul><li><code>input.channel</code> — Slack channel id <em>(required)</em></li><li><code>input.thread_ts</code> — thread timestamp <em>(required)</em></li><li><code>output.notion_page_id</code> — created page id</li><li><code>output.summary</code> — string, ≤ 280 chars</li></ul>' +
+        '<h2 id="edge">Edge cases</h2>' +
+        note('warn','Fails gracefully','If the LLM returns malformed JSON or Notion is down, the run posts the raw summary back into the Slack thread instead of dropping it — nothing is ever lost.') +
+        '<ul><li>Empty thread → skips, logs a notice.</li><li>Rate-limited by Notion → retries with backoff (see <a data-go="rate-limits">rate limits</a>).</li></ul>' };
+
+    // ---- generated (lighter but real) ----
+    const G = {
+      'installation': { tier:'Learn', group:'Learn', read:'4 min read', title:'Installation & environment',
+        lead:'Get an n8n and Trigger.dev environment running locally before you ship anything.',
+        intro:['Run both engines locally so you can test workflows against real payloads before touching production.','Keep secrets in environment variables — never inside a node — so the same workflow JSON moves cleanly between staging and live.'],
+        points:['Use Docker for a reproducible n8n instance.','Separate staging and production credentials.','Store webhook signing secrets as environment variables.'], code:c('worker.ts', sTrigger) },
+      'quickstart-trigger': { tier:'Learn', group:'Learn', read:'7 min read', title:'Scaling AI agents with Trigger.dev',
+        lead:'Run many AI agents in parallel without melting your rate limits or your bill.',
+        intro:['Trigger.dev gives long-running AI tasks durable execution and built-in concurrency control — the two things a raw API loop lacks.','Cap concurrency so a burst of work queues instead of hammering the model provider all at once.'],
+        points:['Set a concurrencyLimit to bound parallel agents.','Wrap each model call in a task for automatic retries.','Stream tokens back to the client over SSE for instant feel.'], code:c('agent.ts', sTrigger) },
+      'rate-limits': { tier:'Learn', group:'Learn', read:'5 min read', title:'Handling rate limits in third-party APIs',
+        lead:'Throttle a burst of items through an API without tripping its limit — no external queue required.',
+        intro:['Most third-party limits are per-second or per-minute. Spacing your calls keeps you under the ceiling without dropping work.','When you do get a 429, respect the Retry-After header instead of retrying blindly.'],
+        points:['Add a wait between items to stay under the per-second cap.','Read and honor Retry-After on 429 responses.','Back off exponentially, then give up after a sane ceiling.'], code:c('guard.ts', sRedis) },
+      'n8n-standard': { tier:'Reference', group:'n8n', read:'Reference', title:'n8n Nodes (standard)',
+        lead:'Best-practice notes for the standard nodes you will reach for in almost every workflow.',
+        intro:['These are the nodes shipped with n8n. The notes below cover the gotchas that bite people in production.','Prefer visual nodes over the Code node wherever possible — they are easier to hand off to a client.'],
+        points:['Split Out — loop arrays without a Code node.','Set — shape and rename fields explicitly.','IF / Switch — branch on conditions; keep paths labelled.','HTTP Request — your escape hatch for any REST API.'], code:c('split-out.node', sSplit) },
+      'n8n-custom': { tier:'Reference', group:'n8n', read:'Reference', title:'n8n Nodes (custom)',
+        lead:'When the standard set is not enough, a small custom node keeps logic out of brittle Code nodes.',
+        intro:['Custom nodes package reusable logic with a clean UI so non-technical operators can configure it safely.','Keep them small and single-purpose — one node, one job.'],
+        points:['Declare typed inputs so misuse fails loudly.','Version your node package alongside the workflow.','Document outputs the same way you would an API.'], code:c('node.ts', sWebhookTs) },
+      'n8n-expressions': { tier:'Reference', group:'n8n', read:'Reference', title:'Expressions & JSON transforms',
+        lead:'The expression syntax and JSON-path patterns that handle 90% of data reshaping.',
+        intro:['n8n expressions let you reference any upstream field inline. Combined with Split Out and Set, they replace most Code nodes.','Reach for JSON-path to pluck nested values without writing JavaScript.'],
+        points:['Reference upstream data with the json accessor.','Use Split Out for arrays, Set for renames.','Validate shape early so bad data fails fast.'], code:c('expression.txt', sSplit) },
+      'trigger-workflows': { tier:'Reference', group:'Trigger.dev', read:'Reference', title:'Trigger.dev workflows & tasks',
+        lead:'Task management, concurrency, and TypeScript patterns for durable jobs.',
+        intro:['A Trigger.dev job is durable: if it crashes mid-run it resumes, not restarts. Model each external call as its own task to get that guarantee per step.','TypeScript types on your payload catch mistakes before they ever run.'],
+        points:['One runTask per external side effect.','Set concurrencyLimit to protect downstreams.','Type the payload to catch errors at build time.'], code:c('job.ts', sTrigger) },
+      'bp-api': { tier:'Reference', group:'Blueprints', read:'Blueprint', title:'Blueprint: Resilient API sync',
+        lead:'Two-way sync between any REST API and your database, with retries and idempotency built in.',
+        artifact:{ name:'api-sync.json', type:'JSON', desc:'Importable workflow with retry + idempotency wiring.' },
+        intro:['This blueprint keeps a remote API and your database in sync in both directions without dropping or duplicating records.','Every write is idempotent and every fetch retries on transient failure.'],
+        points:['Signature verification on inbound webhooks.','Idempotency key on every write.','Exponential backoff on 429 / 5xx.'], code:c('verify.ts', sHmac) },
+      'bp-data': { tier:'Reference', group:'Blueprints', read:'Blueprint', title:'Blueprint: Flatten nested payloads',
+        lead:'Reshape messy nested webhook bodies into clean, flat database rows.',
+        artifact:{ name:'flatten-payload.json', type:'JSON', desc:'Reusable Set + Split Out workflow for nested JSON.' },
+        intro:['Webhook bodies from CRMs and ad platforms are deeply nested. Your database wants flat columns.','This blueprint maps nested fields to a flat schema with a single reusable Set node.'],
+        points:['Split Out to expand arrays into items.','Set to map nested paths to flat columns.','Document the resulting schema for downstream nodes.'], code:c('split-out.node', sSplit) },
+      'guide-billing': { tier:'Guide', group:'Guides', read:'Recipe', title:'Payments & billing automation',
+        lead:'Automate subscription logic, invoices, and revenue-recognition syncs end to end.',
+        intro:['Billing events are high-stakes: a duplicate charge or a missed invoice is a customer problem. Idempotency is mandatory here.','This recipe wires payment webhooks to your ledger and accounting tool with safe retries.'],
+        points:['Verify every payment webhook signature.','Make ledger writes idempotent by event id.','Reconcile nightly to catch any gaps.'], code:c('guard.ts', sRedis) },
+      'guide-crm': { tier:'Guide', group:'Guides', read:'Recipe', title:'Operational CRM automation',
+        lead:'Lead scoring, data enrichment, and contact synchronization that runs itself.',
+        intro:['Sales teams lose deals to slow follow-up and stale data. This recipe captures, enriches, and routes leads the moment they arrive.','Enrichment and scoring happen before the lead ever lands in a rep’s queue.'],
+        points:['Instant capture from forms and ad platforms.','Enrich with a third-party data source.','Score and route to the right owner automatically.'], code:c('lead-intake.ts', sWebhookTs) },
+      'guide-support': { tier:'Guide', group:'Guides', read:'Recipe', title:'Customer support automation',
+        lead:'AI-driven ticket triage and automated resolution for first-tier requests.',
+        intro:['Most support volume is repetitive. An AI agent can triage, tag, and resolve tier-one tickets, escalating only what truly needs a human.','The agent reads your knowledge base so answers stay accurate and on-brand.'],
+        points:['Auto-classify and tag incoming tickets.','Draft or send replies for common questions.','Escalate edge cases with full context attached.'], code:c('agent.ts', sTrigger) },
+      'guide-errors': { tier:'Guide', group:'Guides', read:'Recipe', title:'Error handling & monitoring',
+        lead:'Catch failures before your client does, and know exactly what broke.',
+        intro:['A silent failure is worse than a loud one. Every production workflow needs an error path and an alert.','Pair an Error Trigger with structured logging so you can see what failed and why in seconds.'],
+        points:['Attach an Error Trigger to every workflow.','Alert to Slack with the failing payload.','Log structured context, not just a stack trace.'], code:c('guard.ts', sRedis) },
+      'guide-scaling': { tier:'Guide', group:'Guides', read:'Recipe', title:'Scaling to high-throughput',
+        lead:'Keep a workflow fast and stable as volume grows from hundreds to millions of events.',
+        intro:['What works at 100 events a day falls over at 100,000. Queues, concurrency caps, and idempotency are what carry you across that gap.','Push heavy work into durable tasks so a spike queues instead of crashing.'],
+        points:['Queue inbound events; process at a controlled rate.','Cap concurrency on every downstream call.','Make every step idempotent and retry-safe.'], code:c('worker.ts', sTrigger) },
+    };
+    Object.keys(G).forEach((id) => {
+      const g = G[id];
+      A[id] = { tier:g.tier, group:g.group, read:g.read, title:g.title, lead:g.lead,
+        toc: genToc(!!g.code), body: gen(g.intro, g.points, g.code), artifact: g.artifact };
+    });
+
+    this.ARTICLES = A;
+    this.ORDER = ORDER;
+    // search index
+    this.SEARCH = ORDER.map((id) => ({ id, title: A[id].title, tier: A[id].group, snippet: A[id].lead }));
+    this.forceUpdate();
+  }
+
+  renderVals() {
+    const A = this.ARTICLES || {};
+    const ORDER = this.ORDER || [];
+    const id = this.state.id;
+    const a = id ? A[id] : null;
+    const idx = ORDER.indexOf(id);
+    const prevId = idx > 0 ? ORDER[idx - 1] : null;
+    const nextId = idx >= 0 && idx < ORDER.length - 1 ? ORDER[idx + 1] : null;
+    const prev = prevId ? A[prevId] : null;
+    const next = nextId ? A[nextId] : null;
+
+    const q = (this.state.query || '').trim().toLowerCase();
+    const idxArr = this.SEARCH || [];
+    const results = q ? idxArr.filter((r) => (r.title + ' ' + r.snippet + ' ' + r.tier).toLowerCase().includes(q)) : idxArr.slice(0, 6);
+
+    return {
+      isHome: !a,
+      isArticle: !!a,
+      title: a ? a.title : '',
+      lead: a ? a.lead : '',
+      tierLabel: a ? a.tier : '',
+      groupLabel: a ? a.group : '',
+      read: a ? a.read : '',
+      toc: a ? a.toc : [],
+      articleBody: a ? React.createElement('div', { className: 'doc-content', dangerouslySetInnerHTML: { __html: a.body } }) : null,
+      hasArtifact: !!(a && a.artifact),
+      artName: a && a.artifact ? a.artifact.name : '',
+      artType: a && a.artifact ? a.artifact.type : '',
+      artDesc: a && a.artifact ? a.artifact.desc : '',
+      hasPrev: !!prev, prevId: prevId || '', prevTitle: prev ? prev.title : '',
+      hasNext: !!next, nextId: nextId || '', nextTitle: next ? next.title : '',
+      searchOpen: !!this.state.searchOpen,
+      query: this.state.query || '',
+      results,
+      noResults: q && results.length === 0,
+      resultsLabel: q ? (results.length + ' result' + (results.length === 1 ? '' : 's')) : 'Suggested',
+      onQuery: (e) => this.setState({ query: e.target.value }),
+    };
+  }
+}
+</script>
+</body>
+</html>

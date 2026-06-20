@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Marketing site" description="Switchboard one-page lead-gen landing: hero, services, proof, pricing CTA — paper & ink, hard offset shadows." -->
+<helmet>
+<script src="./ds-base.js"></script>
+</helmet>
+
+<div style="font-family:'Inter',system-ui,sans-serif;color:#15211F;background-color:#E9E8DF;background-image:repeating-linear-gradient(0deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),repeating-linear-gradient(90deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),url('../../assets/grain.svg');min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased;">
+
+  <!-- Header -->
+  <header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(6px);background:rgba(233,232,223,.82);border-bottom:1.5px solid #15211F;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;">
+      <a href="#top" style="display:flex;flex-direction:column;line-height:1;text-decoration:none;color:inherit;">
+        <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.42rem;letter-spacing:-.03em;">Switchboard</b>
+        <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.6rem;letter-spacing:.22em;color:#54605C;margin-top:3px;">AI SYSTEMS</span>
+      </a>
+      <nav style="display:flex;gap:30px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.85rem;">
+        <a href="#services" style="color:inherit;text-decoration:none;">Services</a>
+        <a href="#proof" style="color:inherit;text-decoration:none;">Results</a>
+        <a href="#pricing" style="color:inherit;text-decoration:none;">Pricing</a>
+      </nav>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="sm" href="#pricing" hint-size="150px,40px">Book a call →</x-import>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="top" style="max-width:1180px;margin:0 auto;padding:64px 24px 40px;">
+    <div style="max-width:18em;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="320px,18px">AI chatbots · automation · results</x-import>
+    </div>
+    <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.6rem,5.4vw,4.2rem);line-height:1.04;letter-spacing:-.02em;margin:14px 0 0;max-width:14em;">
+      Don't read about my service.
+      <span style="color:#B45309;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.HandUnderline" hint-size="240px,1em">Chat with it.</x-import></span>
+    </h1>
+    <p style="margin:24px 0 22px;font-size:1.06rem;max-width:34em;color:#232b29;line-height:1.55;">
+      I build website assistants for small businesses that answer visitor questions instantly, qualify leads, and book calls — so you don't have to. No forms, no waiting.
+    </p>
+    <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" href="#pricing" hint-size="200px,46px">Start with a free demo →</x-import>
+      <a href="#services" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.02em;border-bottom:2px solid #B45309;padding-bottom:2px;text-decoration:none;color:inherit;">See what I build</a>
+    </div>
+    <p style="font-family:'Caveat',cursive;font-size:1.2rem;color:#15211F;margin-top:18px;">↳ replace this copy with your own offer</p>
+  </section>
+
+  <!-- Services -->
+  <section id="services" style="background:#E1E2D7;padding:62px 0;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="160px,18px">My services</x-import>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.9rem,3vw,2.5rem);letter-spacing:-.02em;margin:14px 0 36px;max-width:16em;">AI systems that turn conversations into results.</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="paper" hint-size="100%,200px">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2rem;color:#B45309;line-height:1;">01</div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.18rem;margin:12px 0 7px;">AI Chatbot Architecture</h3>
+          <p style="font-size:.92rem;color:#54605C;margin:0;line-height:1.5;">A website assistant trained on your services, FAQs and rules — ready to answer visitors and guide them to the next step.</p>
+        </x-import>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="paper" hint-size="100%,200px">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2rem;color:#B45309;line-height:1;">02</div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.18rem;margin:12px 0 7px;">Omnichannel Funnels</h3>
+          <p style="font-size:.92rem;color:#54605C;margin:0;line-height:1.5;">Connect website, email, WhatsApp and social into one lead journey — so visitors don't get lost between channels.</p>
+        </x-import>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="paper" hint-size="100%,200px">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2rem;color:#B45309;line-height:1;">03</div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.18rem;margin:12px 0 7px;">Custom n8n Workflows</h3>
+          <p style="font-size:.92rem;color:#54605C;margin:0;line-height:1.5;">Automations that move leads from chat to CRM, email, calendar and reports — follow-up without the copy-paste.</p>
+        </x-import>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proof -->
+  <section id="proof" style="background:#11201E;color:#E9E8DF;">
+    <div style="max-width:1180px;margin:0 auto;padding:48px 24px;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" tone="amber" hint-size="260px,18px">Why "results" isn't just a word</x-import>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.5rem,2.6vw,2.1rem);letter-spacing:-.02em;max-width:14em;margin:12px 0 30px;color:#E9E8DF;">The assistant earns its keep in the first month.</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Stat" value="<5s" label="Average time to answer a visitor — day or night" onDark="true" hint-size="100%,80px"></x-import>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Stat" value="3×" label="More qualified enquiries vs. a static contact form" onDark="true" hint-size="100%,80px"></x-import>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Stat" value="10 min" label="From your site to a working demo you can try" onDark="true" hint-size="100%,80px"></x-import>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing / closing CTA -->
+  <section id="pricing" style="background:#15211F;color:#E9E8DF;">
+    <div style="max-width:1180px;margin:0 auto;padding:48px 24px;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;">
+      <div>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.6rem,3vw,2.3rem);letter-spacing:-.02em;color:#E9E8DF;margin:0;">Don't read another section.<br><span style="color:#B45309;">Try the assistant.</span></h2>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Pill" active="true" onDark="true" hint-size="120px,30px">Conversation</x-import>
+          <span style="color:#B45309;">→</span>
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Pill" onDark="true" hint-size="120px,30px">Qualified lead</x-import>
+          <span style="color:#B45309;">→</span>
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Pill" onDark="true" hint-size="110px,30px">Booked call</x-import>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" href="#top" hint-size="200px,46px">Try the chatbot →</x-import>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="light" href="#top" hint-size="200px,46px">Book a 15-min call →</x-import>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</x-dc>
+</body>
+</html>

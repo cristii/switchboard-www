@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/colors.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/typography.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/styles.css">
+<script src="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/_ds_bundle.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  @keyframes calc-nodeIn{0%{opacity:0;transform:translateY(10px) scale(.94);}100%{opacity:1;transform:none;}}
+  @keyframes calc-packet{0%{top:-2px;opacity:0;}20%{opacity:1;}80%{opacity:1;}100%{top:26px;opacity:0;}}
+  @keyframes calc-pulse{0%,100%{box-shadow:5px 5px 0 rgba(21,33,31,.12);}50%{box-shadow:0 0 0 6px rgba(180,83,9,.2),5px 5px 0 rgba(21,33,31,.12);}}
+  @keyframes calc-pop{0%{transform:translateY(0) scale(1);}40%{transform:translateY(-3px) scale(1.06);}100%{transform:translateY(0) scale(1);}}
+  @keyframes calc-floatup{0%{opacity:0;transform:translateY(6px);}25%{opacity:1;}100%{opacity:0;transform:translateY(-22px);}}
+  .wfnode{animation:calc-nodeIn .4s cubic-bezier(.2,.8,.2,1);}
+  .wfnode.heavy{animation:calc-pulse 2.2s ease-in-out infinite;}
+  .nodewrap:first-child .connector{display:none;}
+  .connector{position:relative;width:2px;height:26px;margin:0 auto;background:repeating-linear-gradient(180deg,rgba(21,33,31,.3) 0 6px,transparent 6px 12px);}
+  .cpacket{position:absolute;left:50%;top:0;width:8px;height:8px;border-radius:50%;background:#B45309;transform:translateX(-50%);box-shadow:0 0 8px rgba(180,83,9,.6);animation:calc-packet 2.2s linear infinite;}
+  .chip{display:inline-flex;align-items:center;gap:8px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;padding:9px 13px;border:1.5px solid #15211F;border-radius:10px;background:#fff;color:#15211F;cursor:pointer;transition:transform .1s ease,box-shadow .1s ease,background .15s;box-shadow:2px 2px 0 rgba(21,33,31,.12);}
+  .chip:hover{transform:translateY(-1px);}
+  .chip.on{background:#B45309;color:#fff;border-color:#8a3f07;box-shadow:2px 2px 0 #15211F;}
+  .chip .cdot{width:18px;height:18px;flex:none;background:#15211F;}
+  .chip.on .cdot{background:#fff;}
+  .presetbtn{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;padding:10px 15px;border:2px solid #15211F;border-radius:10px;background:#E9E8DF;color:#15211F;cursor:pointer;box-shadow:3px 3px 0 rgba(21,33,31,.18);transition:transform .12s ease,box-shadow .12s ease;}
+  .presetbtn:hover{transform:translateY(-2px);box-shadow:5px 5px 0 rgba(21,33,31,.22);}
+  .presetbtn.on{background:#15211F;color:#E9E8DF;box-shadow:3px 3px 0 #B45309;}
+  .modelcard{flex:1;min-width:0;text-align:left;background:#fff;border:1.5px solid #15211F;border-radius:11px;padding:11px 12px;cursor:pointer;transition:transform .1s ease,box-shadow .12s ease;box-shadow:2px 2px 0 rgba(21,33,31,.1);}
+  .modelcard:hover{transform:translateY(-1px);}
+  .modelcard.sel{border:2px solid #B45309;box-shadow:3px 3px 0 #B45309;}
+  .pillopt{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;padding:8px 12px;border:1.5px solid #15211F;border-radius:9px;background:#fff;cursor:pointer;color:#54605C;transition:all .12s;}
+  .pillopt.sel{background:#15211F;color:#E9E8DF;}
+  .switch{width:46px;height:26px;border-radius:20px;border:1.5px solid #15211F;background:#E1E2D7;position:relative;cursor:pointer;flex:none;transition:background .18s;}
+  .switch .knob{position:absolute;top:1.5px;left:2px;width:19px;height:19px;border-radius:50%;background:#15211F;transition:transform .18s cubic-bezier(.2,.8,.2,1);}
+  .switch.on{background:#B45309;}
+  .switch.on .knob{transform:translateX(20px);background:#fff;}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;background:#E1E2D7;border:1.5px solid #15211F;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:#B45309;border:2px solid #15211F;cursor:pointer;box-shadow:2px 2px 0 rgba(21,33,31,.25);}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#B45309;border:2px solid #15211F;cursor:pointer;}
+  .flash{animation:calc-pop .45s ease;}
+  .tipdot{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border:1.3px solid #9aa49d;color:#9aa49d;border-radius:50%;font-size:.62rem;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;cursor:help;}
+  .ctabtn{transition:transform .12s ease,box-shadow .12s ease;}
+  .ctabtn:hover{transform:translateY(-2px);}
+  @media (max-width:980px){
+    .nav-links{display:none !important;}
+    .calc-grid{grid-template-columns:1fr !important;}
+    .cost-panel{position:static !important;height:auto !important;}
+    .mobile-total{display:flex !important;}
+    .calc-wrap{padding-bottom:96px !important;}
+  }
+</style>
+</helmet>
+
+<div class="calc-wrap" style="font-family:'Inter',system-ui,sans-serif;color:#15211F;background-color:#E9E8DF;background-image:repeating-linear-gradient(0deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),repeating-linear-gradient(90deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),url('assets/grain.svg');min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased;">
+
+  <!-- Header -->
+  <header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(6px);background:rgba(233,232,223,.82);border-bottom:1.5px solid #15211F;">
+    <div style="max-width:1240px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <svg width="28" height="28" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle><path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path></svg>
+        <span style="display:flex;flex-direction:column;line-height:1;">
+          <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.32rem;letter-spacing:-.03em;">Switchboard</b>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.58rem;letter-spacing:.22em;color:#54605C;margin-top:3px;">AI SYSTEMS</span>
+        </span>
+      </a>
+      <nav class="nav-links" style="display:flex;gap:26px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.85rem;">
+        <a href="Services.dc.html" style="color:inherit;text-decoration:none;">Services</a>
+        <a href="Process.dc.html" style="color:inherit;text-decoration:none;">Process</a>
+        <a href="#top" style="color:#B45309;text-decoration:none;border-bottom:2px solid #B45309;padding-bottom:2px;">Calculator</a>
+        <a href="Pricing.dc.html" style="color:inherit;text-decoration:none;">Pricing</a>
+      </nav>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="sm" href="Pricing.dc.html#book" hint-size="150px,40px">Book a call →</x-import>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="top" style="max-width:1240px;margin:0 auto;padding:60px 24px 22px;text-align:center;">
+    <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:12px;">
+      <span style="width:17px;height:17px;background:#B45309;-webkit-mask:url('assets/icons/chart.svg') center/contain no-repeat;mask:url('assets/icons/chart.svg') center/contain no-repeat;display:inline-block;"></span>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="240px,18px">Cost calculator</x-import>
+    </div>
+    <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.3rem,4.6vw,3.6rem);line-height:1.05;letter-spacing:-.02em;margin:0 auto;max-width:15em;">Estimate your automation cost in
+      <span style="color:#B45309;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.HandUnderline" hint-size="180px,1em">60 seconds.</x-import></span>
+    </h1>
+    <p style="margin:18px auto 18px;font-size:1.08rem;max-width:32em;color:#232b29;line-height:1.55;">Build your workflow on the left, watch the price update on the right. Transparent infrastructure &amp; AI costs — no hidden API bills, no surprises.</p>
+    <div style="display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;font-size:.86rem;color:#54605C;">
+      <span style="display:inline-flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;border-radius:50%;background:#3F7A4E;display:inline-block;"></span>Typical client spends <b style="color:#15211F;">$30–$120/mo</b></span>
+      <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.74rem;border:1.5px solid #15211F;border-radius:20px;padding:4px 11px;background:#fff;">Built with n8n</span>
+    </div>
+  </section>
+
+  <!-- Presets -->
+  <section style="max-width:1240px;margin:0 auto;padding:6px 24px 8px;">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;">
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:#54605C;">Quick start:</span>
+      <button class="presetbtn {{ p_chatbot }}" data-preset="chatbot">🤖&nbsp; AI Chatbot</button>
+      <button class="presetbtn {{ p_leadgen }}" data-preset="leadgen">Lead generation</button>
+      <button class="presetbtn {{ p_ecommerce }}" data-preset="ecommerce">E-commerce sync</button>
+      <button class="presetbtn {{ p_content }}" data-preset="content">Content pipeline</button>
+    </div>
+  </section>
+
+  <!-- Calculator -->
+  <section id="calc" style="max-width:1240px;margin:0 auto;padding:24px 24px 70px;">
+    <div class="calc-grid" style="display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:start;">
+
+      <!-- LEFT: workflow builder -->
+      <div style="background:#fff;border:1.5px solid #15211F;border-radius:18px;box-shadow:5px 5px 0 rgba(21,33,31,.1);padding:24px;min-height:560px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap;">
+          <div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.15rem;letter-spacing:-.01em;">Your workflow</div>
+            <div style="font-size:.84rem;color:#54605C;">Tap an app to add it to the flow.</div>
+          </div>
+          <!-- complexity meter -->
+          <div style="min-width:200px;">
+            <div style="display:flex;justify-content:space-between;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:5px;">
+              <span>Complexity</span><span style="color:{{ cxColor }};">{{ cxLabel }}</span>
+            </div>
+            <div style="height:9px;border:1.5px solid #15211F;border-radius:6px;background:#E1E2D7;overflow:hidden;">
+              <div style="height:100%;width:{{ cxPct }}%;background:{{ cxColor }};transition:width .4s cubic-bezier(.2,.8,.2,1),background .4s;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- app chips -->
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;">
+          <button class="chip {{ a_gmail }}" data-app="gmail"><span class="cdot" style="-webkit-mask:url('assets/icons/mail.svg') center/contain no-repeat;mask:url('assets/icons/mail.svg') center/contain no-repeat;"></span>Gmail</button>
+          <button class="chip {{ a_shopify }}" data-app="shopify"><span class="cdot" style="-webkit-mask:url('assets/icons/storefront.svg') center/contain no-repeat;mask:url('assets/icons/storefront.svg') center/contain no-repeat;"></span>Shopify</button>
+          <button class="chip {{ a_airtable }}" data-app="airtable"><span class="cdot" style="-webkit-mask:url('assets/icons/workflow.svg') center/contain no-repeat;mask:url('assets/icons/workflow.svg') center/contain no-repeat;"></span>Airtable</button>
+          <button class="chip {{ a_slack }}" data-app="slack"><span class="cdot" style="-webkit-mask:url('assets/icons/send.svg') center/contain no-repeat;mask:url('assets/icons/send.svg') center/contain no-repeat;"></span>Slack</button>
+          <button class="chip {{ a_openai }}" data-app="openai"><span class="cdot" style="-webkit-mask:url('assets/icons/assistant.svg') center/contain no-repeat;mask:url('assets/icons/assistant.svg') center/contain no-repeat;"></span>OpenAI</button>
+        </div>
+
+        <!-- node canvas -->
+        <div style="display:flex;flex-direction:column;align-items:center;padding:8px 0;">
+          <sc-for list="{{ nodes }}" as="n" hint-placeholder-count="3">
+            <div class="nodewrap" style="width:100%;max-width:330px;display:flex;flex-direction:column;align-items:center;">
+              <div class="connector"><span class="cpacket"></span></div>
+              <div class="wfnode {{ n.cls }}" style="width:100%;display:flex;align-items:center;gap:13px;background:#fff;border:1.5px solid #15211F;border-left:5px solid {{ n.accent }};border-radius:13px;padding:13px 15px;box-shadow:5px 5px 0 rgba(21,33,31,.12);">
+                <span style="width:24px;height:24px;flex:none;background:{{ n.accent }};-webkit-mask:url('{{ n.iconUrl }}') center/contain no-repeat;mask:url('{{ n.iconUrl }}') center/contain no-repeat;"></span>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.98rem;letter-spacing:-.01em;line-height:1.2;">{{ n.label }}</div>
+                  <div style="font-size:.76rem;color:#54605C;">{{ n.sub }}</div>
+                </div>
+                <span style="font-family:'JetBrains Mono','Bricolage Grotesque',monospace;font-size:.78rem;font-weight:600;color:{{ n.costColor }};white-space:nowrap;">{{ n.cost }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- RIGHT: cost panel -->
+      <div class="cost-panel" style="position:sticky;top:86px;background:#fff;border:1.5px solid #15211F;border-radius:18px;box-shadow:6px 6px 0 rgba(21,33,31,.12);overflow:hidden;">
+        <div style="max-height:calc(100vh - 110px);overflow-y:auto;">
+
+        <!-- Usage -->
+        <div style="padding:20px 22px;border-bottom:1.5px solid rgba(21,33,31,.12);">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:#15211F;margin-bottom:14px;display:flex;align-items:center;gap:7px;">Usage <span class="tipdot" title="Execution = one full run of your automation, start to finish.">?</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+            <span style="font-size:.86rem;color:#54605C;">Executions / month</span>
+            <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.05rem;color:#B45309;">{{ execLabel }}</span>
+          </div>
+          <input type="range" min="0" max="100" step="1" value="{{ execPos }}" onInput="{{ onExec }}" />
+          <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#9aa49d;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;margin-top:6px;"><span>1k</span><span>10k</span><span>100k</span></div>
+        </div>
+
+        <!-- Integrations -->
+        <div style="padding:20px 22px;border-bottom:1.5px solid rgba(21,33,31,.12);">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:#15211F;margin-bottom:12px;">Integrations</div>
+          <sc-if value="{{ hasIntegrations }}">
+            <sc-for list="{{ integrations }}" as="ig" hint-placeholder-count="2">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:.9rem;">
+                <span style="display:inline-flex;align-items:center;gap:9px;"><span style="width:16px;height:16px;background:{{ ig.color }};-webkit-mask:url('{{ ig.iconUrl }}') center/contain no-repeat;mask:url('{{ ig.iconUrl }}') center/contain no-repeat;"></span>{{ ig.name }}</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:#54605C;">{{ ig.cost }}</span>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ noIntegrations }}">
+            <div style="font-family:'Caveat',cursive;font-size:1.15rem;color:#9aa49d;">↳ add an app on the left to begin</div>
+          </sc-if>
+        </div>
+
+        <!-- AI usage -->
+        <sc-if value="{{ aiActive }}">
+        <div style="padding:20px 22px;border-bottom:1.5px solid rgba(21,33,31,.12);background:rgba(124,92,196,.05);">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:#7C5CC4;margin-bottom:14px;display:flex;align-items:center;gap:7px;">AI usage <span class="tipdot" title="Tokens ≈ words plus a bit of context the model reads each turn.">?</span></div>
+
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;">
+            <span style="font-size:.86rem;color:#54605C;">Messages / month</span>
+            <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1rem;color:#7C5CC4;">{{ msgLabel }}</span>
+          </div>
+          <input type="range" min="0" max="100" step="1" value="{{ msgPos }}" onInput="{{ onMessages }}" />
+          <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#9aa49d;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;margin:6px 0 16px;"><span>100</span><span>1k</span><span>10k</span></div>
+
+          <div style="font-size:.82rem;color:#54605C;margin-bottom:7px;">Response length</div>
+          <div style="display:flex;gap:7px;margin-bottom:16px;">
+            <button class="pillopt {{ t_short }}" data-token="short">Short</button>
+            <button class="pillopt {{ t_medium }}" data-token="medium">Medium</button>
+            <button class="pillopt {{ t_long }}" data-token="long">Long</button>
+          </div>
+
+          <div style="font-size:.82rem;color:#54605C;margin-bottom:8px;">Model</div>
+          <div style="display:flex;gap:8px;margin-bottom:16px;">
+            <div class="modelcard {{ m_mini }}" data-model="mini">
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.84rem;">GPT-4o mini</div>
+              <div style="font-size:.72rem;color:#54605C;margin-top:2px;">$0.003 / 1k · ⚡ fast</div>
+            </div>
+            <div class="modelcard {{ m_4o }}" data-model="4o">
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.84rem;">GPT-4o</div>
+              <div style="font-size:.72rem;color:#54605C;margin-top:2px;">$0.01 / 1k · balanced</div>
+            </div>
+            <div class="modelcard {{ m_opus }}" data-model="opus">
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.84rem;">Claude Opus</div>
+              <div style="font-size:.72rem;color:#54605C;margin-top:2px;">$0.03 / 1k · 💎 premium</div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid rgba(21,33,31,.1);">
+            <span style="font-size:.9rem;display:inline-flex;align-items:center;gap:7px;">Conversation memory <span class="tipdot" title="Remembers past messages so the assistant stays in context. Adds a small database cost.">?</span></span>
+            <div class="switch {{ memOn }}" data-memory></div>
+          </div>
+
+          <div style="font-size:.82rem;color:#54605C;margin:8px 0 8px;">Assistant can also…</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <label style="display:flex;align-items:center;justify-content:space-between;font-size:.88rem;cursor:pointer;" data-tool="crm"><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:16px;height:16px;background:#7C5CC4;-webkit-mask:url('assets/icons/people.svg') center/contain no-repeat;mask:url('assets/icons/people.svg') center/contain no-repeat;"></span>Look up CRM data</span><div class="switch {{ tool_crm }}" style="transform:scale(.82);"></div></label>
+            <label style="display:flex;align-items:center;justify-content:space-between;font-size:.88rem;cursor:pointer;" data-tool="email"><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:16px;height:16px;background:#7C5CC4;-webkit-mask:url('assets/icons/mail.svg') center/contain no-repeat;mask:url('assets/icons/mail.svg') center/contain no-repeat;"></span>Send emails</span><div class="switch {{ tool_email }}" style="transform:scale(.82);"></div></label>
+            <label style="display:flex;align-items:center;justify-content:space-between;font-size:.88rem;cursor:pointer;" data-tool="api"><span style="display:inline-flex;align-items:center;gap:8px;"><span style="width:16px;height:16px;background:#7C5CC4;-webkit-mask:url('assets/icons/link.svg') center/contain no-repeat;mask:url('assets/icons/link.svg') center/contain no-repeat;"></span>Call other apps</span><div class="switch {{ tool_api }}" style="transform:scale(.82);"></div></label>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;padding-top:10px;border-top:1px solid rgba(21,33,31,.1);font-size:.84rem;">
+            <span style="color:#54605C;">≈ {{ tokenLabel }} tokens / mo</span>
+            <span style="font-family:'JetBrains Mono',monospace;color:#7C5CC4;font-weight:600;">{{ aiCostLabel }}</span>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- Hosting -->
+        <div style="padding:20px 22px;border-bottom:1.5px solid rgba(21,33,31,.12);">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:#15211F;margin-bottom:12px;">Hosting</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px;">
+            <button class="modelcard {{ h_vps }}" data-host="vps"><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.86rem;">Self-hosted VPS</div><div style="font-size:.72rem;color:#54605C;margin-top:2px;">Cheapest · you own it</div></button>
+            <button class="modelcard {{ h_cloud }}" data-host="cloud"><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:.86rem;">n8n Cloud</div><div style="font-size:.72rem;color:#54605C;margin-top:2px;">Managed · zero setup</div></button>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:.84rem;color:#54605C;">
+            <span>{{ hostTier }}</span>
+            <span style="font-family:'JetBrains Mono',monospace;color:#15211F;font-weight:600;">{{ hostCostLabel }}</span>
+          </div>
+        </div>
+
+        <!-- Result -->
+        <div style="padding:22px;background:#11201E;color:#E9E8DF;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:#FBBF24;margin-bottom:6px;">Estimated monthly cost</div>
+          <div style="position:relative;display:flex;align-items:baseline;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;line-height:1;">
+            <span style="font-size:2.9rem;">$</span><span class="js-total-low" style="font-size:2.9rem;">0</span>
+            <span style="font-size:1.6rem;color:#9aa49d;">–</span>
+            <span style="font-size:2.9rem;">$</span><span class="js-total-high" style="font-size:2.9rem;">0</span>
+            <span data-delta style="position:absolute;right:0;top:-6px;font-size:1rem;color:#FBBF24;opacity:0;pointer-events:none;"></span>
+          </div>
+          <div style="margin-top:14px;display:flex;flex-direction:column;gap:5px;">
+            <sc-for list="{{ breakdown }}" as="b" hint-placeholder-count="3">
+              <div style="display:flex;justify-content:space-between;font-size:.84rem;color:#C8CEC6;">
+                <span>{{ b.label }}</span><span style="font-family:'JetBrains Mono',monospace;color:#E9E8DF;">{{ b.value }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <sc-if value="{{ hasTip }}">
+          <div style="margin-top:14px;display:flex;gap:9px;align-items:flex-start;background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.3);border-radius:10px;padding:11px 13px;">
+            <span style="width:17px;height:17px;flex:none;margin-top:1px;background:#FBBF24;-webkit-mask:url('assets/icons/lightbulb.svg') center/contain no-repeat;mask:url('assets/icons/lightbulb.svg') center/contain no-repeat;"></span>
+            <span style="font-size:.84rem;color:#F2E6C4;line-height:1.45;">{{ tip }}</span>
+          </div>
+          </sc-if>
+        </div>
+
+        <!-- CTA -->
+        <div style="padding:20px 22px;display:flex;flex-direction:column;gap:10px;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.02rem;letter-spacing:-.01em;text-align:center;margin-bottom:2px;">Want me to build this for you?</div>
+          <a class="ctabtn" href="Pricing.dc.html#book" style="display:flex;align-items:center;justify-content:center;gap:.5em;min-height:50px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.95rem;text-transform:uppercase;letter-spacing:.02em;color:#fff;background:#B45309;border:2px solid #8a3f07;border-radius:10px;text-decoration:none;box-shadow:3px 3px 0 #15211F;">Book a call →</a>
+          <div style="display:flex;gap:10px;">
+            <a class="ctabtn" href="Pricing.dc.html#book" style="flex:1;display:flex;align-items:center;justify-content:center;min-height:46px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.84rem;text-transform:uppercase;letter-spacing:.02em;color:#15211F;background:#E9E8DF;border:2px solid #15211F;border-radius:10px;text-decoration:none;box-shadow:3px 3px 0 rgba(21,33,31,.18);">Get exact quote</a>
+            <button class="ctabtn" data-download style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-height:46px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.84rem;text-transform:uppercase;letter-spacing:.02em;color:#15211F;background:#fff;border:2px solid #15211F;border-radius:10px;cursor:pointer;box-shadow:3px 3px 0 rgba(21,33,31,.18);">Download</button>
+          </div>
+          <p style="text-align:center;font-size:.76rem;color:#9aa49d;margin:4px 0 0;">Estimate only · used by freelancers &amp; small businesses</p>
+        </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Mobile sticky total -->
+  <div class="mobile-total" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:70;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:rgba(17,32,30,.96);backdrop-filter:blur(8px);border-top:1.5px solid #000;color:#E9E8DF;">
+    <div style="line-height:1.1;">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;color:#FBBF24;">Est. monthly</div>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.3rem;">$<span class="js-total-low">0</span>–$<span class="js-total-high">0</span></div>
+    </div>
+    <a href="Pricing.dc.html#book" style="display:inline-flex;align-items:center;gap:.4em;min-height:46px;padding:0 1.3em;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.9rem;text-transform:uppercase;letter-spacing:.02em;color:#fff;background:#B45309;border:2px solid #8a3f07;border-radius:10px;text-decoration:none;box-shadow:2px 2px 0 #000;">Book a call →</a>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    apps: { gmail: false, shopify: false, airtable: false, slack: false, openai: false },
+    executions: 10000,
+    hosting: 'vps',
+    messages: 2000,
+    tokenLen: 'medium',
+    model: 'mini',
+    memory: false,
+    tools: { crm: false, email: false, api: false },
+    preset: null,
+  };
+
+  // ---- constants ----
+  static EXEC_RATE = 0.0005;
+  static MODEL_PRICE = { mini: 0.003, '4o': 0.01, opus: 0.03 };
+  static TOK = { short: 100, medium: 300, long: 800 };
+  static APP_META = {
+    gmail:    { name: 'Gmail',    iconUrl: 'assets/icons/mail.svg',       color: '#B45309', low: 0, high: 0 },
+    shopify:  { name: 'Shopify',  iconUrl: 'assets/icons/storefront.svg', color: '#3F7A4E', low: 5, high: 8 },
+    airtable: { name: 'Airtable', iconUrl: 'assets/icons/workflow.svg',   color: '#B45309', low: 3, high: 5 },
+    slack:    { name: 'Slack',    iconUrl: 'assets/icons/send.svg',       color: '#B45309', low: 0, high: 0 },
+    openai:   { name: 'OpenAI',   iconUrl: 'assets/icons/assistant.svg',  color: '#7C5CC4', low: 0, high: 0 },
+  };
+
+  fmt(n) { return Math.round(n).toLocaleString('en-US'); }
+  money(n) { return '$' + Math.round(n); }
+  execTier(e) { return e <= 5000 ? 0 : e <= 25000 ? 1 : 2; }
+
+  // ---- cost compute ----
+  compute() {
+    const s = this.state;
+    const C = Component;
+    const tier = this.execTier(s.executions);
+
+    const hostTable = {
+      vps: [[10, 15], [20, 30], [30, 40]],
+      cloud: [[20, 25], [30, 40], [45, 60]],
+    };
+    const tierName = ['Starter tier', 'Growth tier', 'Scale tier'][tier];
+    const [hLow, hHigh] = hostTable[s.hosting][tier];
+
+    const ec = s.executions * C.EXEC_RATE;
+    const execLow = ec * 0.8, execHigh = ec * 1.2;
+
+    let intLow = 0, intHigh = 0;
+    Object.keys(s.apps).forEach((k) => {
+      if (s.apps[k] && k !== 'openai') { intLow += C.APP_META[k].low; intHigh += C.APP_META[k].high; }
+    });
+
+    const ai = s.apps.openai;
+    const tpm = C.TOK[s.tokenLen];
+    const totalTokens = ai ? s.messages * tpm * 2 : 0;
+    const aiBase = ai ? (totalTokens / 1000) * C.MODEL_PRICE[s.model] : 0;
+    const aiLow = aiBase * 0.85, aiHigh = aiBase * 1.3;
+
+    const memLow = ai && s.memory ? 8 : 0;
+    const memHigh = ai && s.memory ? 12 : 0;
+    let toolsN = 0;
+    if (ai) Object.keys(s.tools).forEach((t) => { if (s.tools[t]) toolsN++; });
+    const toolLow = toolsN * 1, toolHigh = toolsN * 2.5;
+
+    const low = hLow + execLow + intLow + aiLow + memLow + toolLow;
+    const high = hHigh + execHigh + intHigh + aiHigh + memHigh + toolHigh;
+
+    return {
+      tier, tierName, hLow, hHigh, execLow, execHigh, intLow, intHigh,
+      ai, totalTokens, aiLow, aiHigh, memLow, memHigh, toolLow, toolHigh, toolsN,
+      low, high,
+    };
+  }
+
+  complexity() {
+    const s = this.state;
+    let n = 0;
+    Object.keys(s.apps).forEach((k) => { if (s.apps[k]) n += 12; });
+    if (s.apps.openai) n += 18;
+    if (s.apps.openai && s.memory) n += 14;
+    if (s.apps.openai) Object.keys(s.tools).forEach((t) => { if (s.tools[t]) n += 8; });
+    n += this.execTier(s.executions) * 7;
+    n = Math.max(8, Math.min(100, n));
+    let label = 'Simple', color = '#3F7A4E';
+    if (n > 62) { label = 'Complex'; color = '#C12A2A'; }
+    else if (n > 34) { label = 'Moderate'; color = '#B45309'; }
+    return { pct: n, label, color };
+  }
+
+  buildNodes(c) {
+    const s = this.state, M = Component.APP_META;
+    const nodes = [];
+    nodes.push({ key: 'trigger', label: 'Trigger', sub: s.apps.openai ? 'Chat widget' : 'Webhook', iconUrl: 'assets/icons/target.svg', accent: '#15211F', cost: 'free', costColor: '#9aa49d', cls: '' });
+    ['gmail', 'shopify', 'airtable', 'slack'].forEach((k) => {
+      if (s.apps[k]) {
+        const m = M[k];
+        const cost = m.high === 0 ? 'free' : '$' + m.low + (m.high !== m.low ? '–' + m.high : '');
+        nodes.push({ key: k, label: m.name, sub: 'Integration', iconUrl: m.iconUrl, accent: m.color, cost, costColor: m.high ? '#54605C' : '#9aa49d', cls: '' });
+      }
+    });
+    if (s.apps.openai) {
+      const mLabel = { mini: 'GPT-4o mini', '4o': 'GPT-4o', opus: 'Claude Opus' }[s.model];
+      const heavy = s.model === 'opus' || s.messages >= 5000;
+      nodes.push({ key: 'llm', label: mLabel, sub: 'AI model', iconUrl: 'assets/icons/assistant.svg', accent: '#7C5CC4', cost: this.money(c.aiLow) + '–' + this.money(c.aiHigh), costColor: '#7C5CC4', cls: heavy ? 'heavy' : '' });
+      if (s.memory) nodes.push({ key: 'mem', label: 'Memory', sub: 'Remembers conversations', iconUrl: 'assets/icons/refresh.svg', accent: '#7C5CC4', cost: this.money(c.memLow) + '–' + this.money(c.memHigh), costColor: '#7C5CC4', cls: '' });
+      if (s.tools.crm) nodes.push({ key: 'crm', label: 'CRM lookup', sub: 'Tool', iconUrl: 'assets/icons/people.svg', accent: '#3F7A4E', cost: 'usage', costColor: '#9aa49d', cls: '' });
+      if (s.tools.email) nodes.push({ key: 'email', label: 'Email sender', sub: 'Tool', iconUrl: 'assets/icons/mail.svg', accent: '#3F7A4E', cost: 'usage', costColor: '#9aa49d', cls: '' });
+      if (s.tools.api) nodes.push({ key: 'api', label: 'API call', sub: 'Tool', iconUrl: 'assets/icons/link.svg', accent: '#3F7A4E', cost: 'usage', costColor: '#9aa49d', cls: '' });
+    }
+    nodes.push({ key: 'out', label: s.apps.openai ? 'Response' : 'Done', sub: 'Output', iconUrl: 'assets/icons/check.svg', accent: '#3F7A4E', cost: '', costColor: '#9aa49d', cls: '' });
+    return nodes;
+  }
+
+  tipFor(c) {
+    const s = this.state;
+    if (s.apps.openai && s.model === 'opus') return 'Most clients start with GPT-4o mini and upgrade later — that alone saves about 70% on AI cost.';
+    if (this.execTier(s.executions) === 2) return 'Batch your executions where you can — grouping runs can cut billable executions by ~30% for the same work.';
+    if (s.apps.openai && s.memory && s.messages >= 5000) return 'A high message volume with full memory gets pricey — trimming the memory window keeps quality with a smaller bill.';
+    if (c.high < 35) return 'This is a lean setup — exactly where most clients start before layering on AI and follow-ups.';
+    return 'Every number here is the raw infrastructure cost. Our build fee is one-time — no recurring agency markup on top.';
+  }
+
+  // ---- handlers ----
+  posToExec(p) {
+    const e = 1000 * Math.pow(10, p / 50);
+    if (e < 10000) return Math.round(e / 100) * 100;
+    return Math.round(e / 1000) * 1000;
+  }
+  execToPos(e) { return Math.max(0, Math.min(100, 50 * Math.log10(e / 1000))); }
+  posToMsg(p) {
+    const m = 100 * Math.pow(10, p / 50);
+    return m < 1000 ? Math.round(m / 50) * 50 : Math.round(m / 100) * 100;
+  }
+  msgToPos(m) { return Math.max(0, Math.min(100, 50 * Math.log10(m / 100))); }
+
+  componentDidMount() {
+    const root = document;
+    root.addEventListener('click', (e) => {
+      const app = e.target.closest('[data-app]');
+      if (app) { const k = app.getAttribute('data-app'); this.setState((s) => ({ apps: Object.assign({}, s.apps, { [k]: !s.apps[k] }), preset: null })); return; }
+      const pre = e.target.closest('[data-preset]'); if (pre) { this.applyPreset(pre.getAttribute('data-preset')); return; }
+      const md = e.target.closest('[data-model]'); if (md) { this.setState({ model: md.getAttribute('data-model') }); return; }
+      const tk = e.target.closest('[data-token]'); if (tk) { this.setState({ tokenLen: tk.getAttribute('data-token') }); return; }
+      const hs = e.target.closest('[data-host]'); if (hs) { this.setState({ hosting: hs.getAttribute('data-host') }); return; }
+      if (e.target.closest('[data-memory]')) { this.setState((s) => ({ memory: !s.memory })); return; }
+      const tl = e.target.closest('[data-tool]'); if (tl) { const t = tl.getAttribute('data-tool'); this.setState((s) => ({ tools: Object.assign({}, s.tools, { [t]: !s.tools[t] }) })); return; }
+      if (e.target.closest('[data-download]')) { this.downloadEstimate(); return; }
+    });
+    this._lastLow = 0; this._lastHigh = 0;
+    this.animateTotals();
+  }
+  componentDidUpdate() { this.animateTotals(); }
+
+  applyPreset(p) {
+    const base = { apps: { gmail: false, shopify: false, airtable: false, slack: false, openai: false }, tools: { crm: false, email: false, api: false }, memory: false, model: 'mini', tokenLen: 'medium', messages: 2000, executions: 10000, hosting: 'vps', preset: p };
+    if (p === 'chatbot') Object.assign(base, { apps: { gmail: false, shopify: false, airtable: false, slack: false, openai: true }, memory: true, model: 'mini', messages: 2000, tokenLen: 'medium', tools: { crm: true, email: false, api: false }, executions: 8000 });
+    if (p === 'leadgen') Object.assign(base, { apps: { gmail: true, shopify: false, airtable: true, slack: true, openai: false }, executions: 5000 });
+    if (p === 'ecommerce') Object.assign(base, { apps: { gmail: true, shopify: true, airtable: true, slack: false, openai: false }, executions: 25000 });
+    if (p === 'content') Object.assign(base, { apps: { gmail: false, shopify: false, airtable: true, slack: true, openai: true }, model: '4o', tokenLen: 'long', messages: 1000, executions: 12000 });
+    this.setState(base);
+  }
+
+  animateTotals() {
+    const c = this.compute();
+    const tgtLow = Math.round(c.low), tgtHigh = Math.round(c.high);
+    const lowEls = document.querySelectorAll('.js-total-low');
+    const highEls = document.querySelectorAll('.js-total-high');
+    if (!lowEls.length) return;
+    const fromLow = this._lastLow || 0, fromHigh = this._lastHigh || 0;
+    if (fromLow === tgtLow && fromHigh === tgtHigh) return;
+    // delta bubble
+    const delta = tgtHigh - fromHigh;
+    const db = document.querySelector('[data-delta]');
+    if (db && Math.abs(delta) >= 1 && (fromLow || fromHigh)) {
+      db.textContent = (delta > 0 ? '+$' : '-$') + Math.abs(delta);
+      db.style.animation = 'none'; void db.offsetWidth; db.style.animation = 'calc-floatup 1s ease forwards';
+    }
+    const numEl = lowEls[0] && lowEls[0].closest('div');
+    document.querySelectorAll('.js-total-high').forEach((el) => { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
+    const start = performance.now(), dur = 480;
+    if (this._raf) cancelAnimationFrame(this._raf);
+    const step = (now) => {
+      const t = Math.min(1, (now - start) / dur);
+      const e = 1 - Math.pow(1 - t, 3);
+      const vl = Math.round(fromLow + (tgtLow - fromLow) * e);
+      const vh = Math.round(fromHigh + (tgtHigh - fromHigh) * e);
+      lowEls.forEach((el) => { el.textContent = vl; });
+      highEls.forEach((el) => { el.textContent = vh; });
+      if (t < 1) this._raf = requestAnimationFrame(step);
+      else { this._lastLow = tgtLow; this._lastHigh = tgtHigh; }
+    };
+    this._raf = requestAnimationFrame(step);
+  }
+
+  downloadEstimate() {
+    const s = this.state, c = this.compute();
+    const apps = Object.keys(s.apps).filter((k) => s.apps[k]).map((k) => Component.APP_META[k].name).join(', ') || 'none';
+    const lines = [
+      'SWITCHBOARD — AUTOMATION COST ESTIMATE', '======================================', '',
+      'Executions / month: ' + this.fmt(s.executions),
+      'Integrations: ' + apps,
+      'Hosting: ' + (s.hosting === 'vps' ? 'Self-hosted VPS' : 'n8n Cloud') + ' (' + c.tierName + ')',
+    ];
+    if (s.apps.openai) {
+      lines.push('AI model: ' + s.model + ' | messages/mo: ' + this.fmt(s.messages) + ' | length: ' + s.tokenLen + ' | memory: ' + (s.memory ? 'on' : 'off'));
+      lines.push('Est. tokens/mo: ~' + this.fmt(c.totalTokens));
+    }
+    lines.push('', 'ESTIMATED MONTHLY COST: $' + Math.round(c.low) + ' – $' + Math.round(c.high), '',
+      'Hosting: $' + Math.round(c.hLow) + '–$' + Math.round(c.hHigh),
+      'Executions: $' + Math.round(c.execLow) + '–$' + Math.round(c.execHigh));
+    if (c.intHigh) lines.push('Integrations: $' + Math.round(c.intLow) + '–$' + Math.round(c.intHigh));
+    if (s.apps.openai) lines.push('AI usage: $' + Math.round(c.aiLow) + '–$' + Math.round(c.aiHigh));
+    lines.push('', 'Estimate only. Book a call for an exact quote → Switchboard AI Systems');
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'switchboard-estimate.txt';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  renderVals() {
+    const s = this.state;
+    const c = this.compute();
+    const cx = this.complexity();
+    const M = Component.APP_META;
+
+    const integrations = Object.keys(s.apps).filter((k) => s.apps[k]).map((k) => {
+      const m = M[k];
+      let cost = m.high === 0 ? 'free' : '$' + m.low + (m.high !== m.low ? '–$' + m.high : '');
+      if (k === 'openai') cost = 'usage-based';
+      return { name: m.name, iconUrl: m.iconUrl, color: m.color, cost };
+    });
+
+    const breakdown = [];
+    breakdown.push({ label: 'Hosting', value: '$' + Math.round(c.hLow) + '–$' + Math.round(c.hHigh) });
+    breakdown.push({ label: 'Executions', value: '$' + Math.round(c.execLow) + '–$' + Math.round(c.execHigh) });
+    if (c.intHigh > 0) breakdown.push({ label: 'Integration APIs', value: '$' + Math.round(c.intLow) + '–$' + Math.round(c.intHigh) });
+    if (s.apps.openai) breakdown.push({ label: 'AI usage', value: '$' + Math.round(c.aiLow) + '–$' + Math.round(c.aiHigh) });
+    if (s.apps.openai && s.memory) breakdown.push({ label: 'Memory (vector DB)', value: '$' + Math.round(c.memLow) + '–$' + Math.round(c.memHigh) });
+
+    const tier = this.execTier(s.executions);
+    const hostTierLabel = (s.hosting === 'vps' ? 'VPS · ' : 'Cloud · ') + ['Starter', 'Growth', 'Scale'][tier] + ' tier';
+
+    return {
+      // chips
+      a_gmail: s.apps.gmail ? 'on' : '', a_shopify: s.apps.shopify ? 'on' : '', a_airtable: s.apps.airtable ? 'on' : '', a_slack: s.apps.slack ? 'on' : '', a_openai: s.apps.openai ? 'on' : '',
+      // presets
+      p_chatbot: s.preset === 'chatbot' ? 'on' : '', p_leadgen: s.preset === 'leadgen' ? 'on' : '', p_ecommerce: s.preset === 'ecommerce' ? 'on' : '', p_content: s.preset === 'content' ? 'on' : '',
+      // complexity
+      cxPct: cx.pct, cxLabel: cx.label, cxColor: cx.color,
+      // nodes
+      nodes: this.buildNodes(c),
+      // usage
+      execLabel: this.fmt(s.executions), execPos: Math.round(this.execToPos(s.executions)),
+      onExec: (e) => this.setState({ executions: this.posToExec(+e.target.value), preset: null }),
+      // integrations
+      integrations, hasIntegrations: integrations.length > 0, noIntegrations: integrations.length === 0,
+      // ai
+      aiActive: s.apps.openai,
+      msgLabel: this.fmt(s.messages), msgPos: Math.round(this.msgToPos(s.messages)),
+      onMessages: (e) => this.setState({ messages: this.posToMsg(+e.target.value), preset: null }),
+      t_short: s.tokenLen === 'short' ? 'sel' : '', t_medium: s.tokenLen === 'medium' ? 'sel' : '', t_long: s.tokenLen === 'long' ? 'sel' : '',
+      m_mini: s.model === 'mini' ? 'sel' : '', m_4o: s.model === '4o' ? 'sel' : '', m_opus: s.model === 'opus' ? 'sel' : '',
+      memOn: s.memory ? 'on' : '',
+      tool_crm: s.tools.crm ? 'on' : '', tool_email: s.tools.email ? 'on' : '', tool_api: s.tools.api ? 'on' : '',
+      tokenLabel: this.fmt(c.totalTokens), aiCostLabel: '$' + Math.round(c.aiLow) + '–$' + Math.round(c.aiHigh),
+      // hosting
+      h_vps: s.hosting === 'vps' ? 'sel' : '', h_cloud: s.hosting === 'cloud' ? 'sel' : '',
+      hostTier: hostTierLabel, hostCostLabel: '$' + Math.round(c.hLow) + '–$' + Math.round(c.hHigh),
+      // breakdown + tip
+      breakdown,
+      hasTip: true, tip: this.tipFor(c),
+    };
+  }
+}
+</script>
+</body>
+</html>

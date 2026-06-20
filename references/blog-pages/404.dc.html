@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/colors.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/typography.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/styles.css">
+<script src="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/_ds_bundle.js"></script>
+<style>
+  @keyframes nfPacket { 0% { offset-distance:0%; opacity:0; } 12% { opacity:1; } 44% { opacity:1; } 50% { offset-distance:46%; opacity:0; } 100% { offset-distance:46%; opacity:0; } }
+  @keyframes nfSpark { 0%,100% { opacity:.25; transform:scale(.85); } 50% { opacity:1; transform:scale(1.15); } }
+  @keyframes nfErr { 0%,100% { box-shadow:6px 6px 0 rgba(21,33,31,.14); border-color:#15211F; } 50% { box-shadow:0 0 0 7px rgba(193,42,42,.22), 6px 6px 0 rgba(21,33,31,.14); border-color:#C12A2A; } }
+  .nf-packet { offset-path: path('M0,0 H150'); animation: nfPacket 2.4s linear infinite; }
+  .nf-spark { animation: nfSpark 1.3s ease-in-out infinite; transform-origin:center; }
+  .nf-errnode { animation: nfErr 2.1s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { * { animation:none !important; } }
+  @media (max-width: 700px) {
+    .nav-links { display:none !important; }
+    .nf-404 { font-size:5.5rem !important; }
+    .nf-actions { flex-direction:column !important; }
+  }
+</style>
+</helmet>
+
+<div style="font-family:'Inter',system-ui,sans-serif;color:#15211F;background-color:#E9E8DF;background-image:repeating-linear-gradient(0deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),repeating-linear-gradient(90deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),url('assets/grain.svg');min-height:100vh;display:flex;flex-direction:column;line-height:1.55;-webkit-font-smoothing:antialiased;">
+
+  <!-- Header -->
+  <header style="border-bottom:1.5px solid #15211F;background:rgba(233,232,223,.82);backdrop-filter:blur(6px);">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="The Daily Log.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <svg width="28" height="28" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <span style="display:flex;flex-direction:column;line-height:1;">
+          <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.32rem;letter-spacing:-.03em;">Switchboard</b>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.58rem;letter-spacing:.22em;color:#54605C;margin-top:3px;">AI SYSTEMS</span>
+        </span>
+      </a>
+      <nav class="nav-links" style="display:flex;gap:22px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.85rem;">
+        <a href="Services.dc.html" style="color:inherit;text-decoration:none;">Services</a>
+        <a href="Process.dc.html" style="color:inherit;text-decoration:none;">Process</a>
+        <a href="Pricing.dc.html" style="color:inherit;text-decoration:none;">Pricing</a>
+        <a href="About.dc.html" style="color:inherit;text-decoration:none;">About</a>
+        <a href="Contact.dc.html" style="color:inherit;text-decoration:none;">Contact</a>
+      </nav>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="sm" href="Pricing.dc.html#book" hint-size="150px,40px">Book a call →</x-import>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main style="flex:1;display:flex;align-items:center;justify-content:center;padding:56px 24px;">
+    <div style="text-align:center;max-width:40em;">
+
+      <!-- broken-connection graphic -->
+      <div style="display:flex;align-items:center;justify-content:center;margin:0 auto 30px;width:330px;max-width:100%;">
+        <svg width="330" height="120" viewBox="0 0 330 120" fill="none" style="overflow:visible;max-width:100%;">
+          <!-- left node -->
+          <rect x="6" y="34" width="56" height="56" rx="14" fill="#fff" stroke="#15211F" stroke-width="2"></rect>
+          <path d="M27 62h14M34 55v14" stroke="#15211F" stroke-width="2" stroke-linecap="round"></path>
+          <circle cx="62" cy="62" r="4.5" fill="#15211F"></circle>
+          <!-- broken wire halves -->
+          <path d="M70 62 H140" stroke="#15211F" stroke-width="2" stroke-dasharray="7 7" stroke-linecap="round"></path>
+          <path d="M196 62 H262" stroke="#15211F" stroke-width="2" stroke-dasharray="7 7" stroke-linecap="round"></path>
+          <!-- frayed ends -->
+          <path d="M140 62 l8 -7 M140 62 l8 7" stroke="#C12A2A" stroke-width="2" stroke-linecap="round"></path>
+          <path d="M196 62 l-8 -7 M196 62 l-8 7" stroke="#C12A2A" stroke-width="2" stroke-linecap="round"></path>
+          <!-- moving packet that dies at the break -->
+          <g style="transform:translate(70px,62px);"><circle class="nf-packet" r="5" fill="#B45309"></circle></g>
+          <!-- spark at break -->
+          <g transform="translate(168 62)">
+            <g class="nf-spark">
+              <path d="M2 -14 L-4 0 L3 0 L-2 14 L9 -3 L2 -3 Z" fill="#FBBF24" stroke="#15211F" stroke-width="1.4" stroke-linejoin="round"></path>
+            </g>
+          </g>
+          <!-- right node (error) -->
+          <rect class="nf-errnode" x="268" y="34" width="56" height="56" rx="14" fill="#fff" stroke="#15211F" stroke-width="2"></rect>
+          <circle cx="268" cy="62" r="4.5" fill="#15211F"></circle>
+          <path d="M296 48 l11 19 h-22 z" fill="none" stroke="#C12A2A" stroke-width="2" stroke-linejoin="round"></path>
+          <path d="M296 56 v6" stroke="#C12A2A" stroke-width="2" stroke-linecap="round"></path>
+          <circle cx="296" cy="65.5" r=".9" fill="#C12A2A"></circle>
+        </svg>
+      </div>
+
+      <div class="nf-404" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:7rem;letter-spacing:-.04em;line-height:.9;color:#B45309;">404</div>
+
+      <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.6rem,3.4vw,2.3rem);letter-spacing:-.02em;line-height:1.1;margin:14px 0 0;">This node doesn't exist.</h1>
+      <p style="font-size:1.1rem;color:#232b29;line-height:1.6;margin:16px auto 0;max-width:30em;">The page you're after broke its connection — moved, renamed, or never wired up. Even my automations drop a packet now and then.</p>
+      <p style="font-family:'Caveat',cursive;font-size:1.35rem;color:#15211F;margin:14px 0 0;">↳ let's route you back to something that works.</p>
+
+      <div class="nf-actions" style="display:flex;align-items:center;justify-content:center;gap:14px;margin:30px 0 0;flex-wrap:wrap;">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="lg" href="The Daily Log.dc.html" arrow="true" hint-size="180px,54px" style="min-height:54px;">Back to home</x-import>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="ghost" size="lg" href="Contact.dc.html" hint-size="150px,54px" style="min-height:54px;">Get in touch</x-import>
+      </div>
+
+      <!-- popular links -->
+      <div style="margin:40px auto 0;max-width:30em;">
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.7rem;text-transform:uppercase;letter-spacing:.14em;color:#54605C;margin-bottom:12px;">Or jump to</div>
+        <div style="display:flex;flex-wrap:wrap;gap:9px;justify-content:center;">
+          <a href="Services.dc.html" style="border:1.5px solid #15211F;background:#fff;border-radius:20px;padding:7px 15px;font-size:.86rem;font-weight:600;text-decoration:none;color:#15211F;box-shadow:3px 3px 0 rgba(21,33,31,.08);">Services</a>
+          <a href="Process.dc.html" style="border:1.5px solid #15211F;background:#fff;border-radius:20px;padding:7px 15px;font-size:.86rem;font-weight:600;text-decoration:none;color:#15211F;box-shadow:3px 3px 0 rgba(21,33,31,.08);">Process</a>
+          <a href="Pricing.dc.html" style="border:1.5px solid #15211F;background:#fff;border-radius:20px;padding:7px 15px;font-size:.86rem;font-weight:600;text-decoration:none;color:#15211F;box-shadow:3px 3px 0 rgba(21,33,31,.08);">Pricing</a>
+          <a href="About.dc.html" style="border:1.5px solid #15211F;background:#fff;border-radius:20px;padding:7px 15px;font-size:.86rem;font-weight:600;text-decoration:none;color:#15211F;box-shadow:3px 3px 0 rgba(21,33,31,.08);">About</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background:#11201E;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:26px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.82rem;">
+      <span style="display:inline-flex;align-items:center;gap:9px;">
+        <svg width="22" height="22" viewBox="0 0 30 30" fill="none" stroke="#E9E8DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;">Switchboard AI Systems</b>
+      </span>
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#9aa49d;font-size:.72rem;">Built · Connected · Maintained — from Bucharest</span>
+      <span style="color:#9aa49d;">© 2026 — All rights reserved.</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>

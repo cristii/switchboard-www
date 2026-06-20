@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/colors.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/typography.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/_ds_bundle.js"></script>
+</helmet>
+
+<div style="font-family:'Inter',system-ui,sans-serif;color:#15211F;background-color:#E9E8DF;background-image:repeating-linear-gradient(0deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),repeating-linear-gradient(90deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),url('assets/grain.svg');min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased;">
+
+  <!-- Header -->
+  <header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(6px);background:rgba(233,232,223,.82);border-bottom:1.5px solid #15211F;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="uploads/switchboard.html#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <svg width="28" height="28" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <span style="display:flex;flex-direction:column;line-height:1;">
+          <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.32rem;letter-spacing:-.03em;">Switchboard</b>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.58rem;letter-spacing:.22em;color:#54605C;margin-top:3px;">AI SYSTEMS</span>
+        </span>
+      </a>
+      <nav style="display:flex;gap:26px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.85rem;">
+        <a href="uploads/switchboard.html#services" style="color:inherit;text-decoration:none;">Services</a>
+        <a href="uploads/switchboard.html#work" style="color:inherit;text-decoration:none;">Work</a>
+        <a href="uploads/switchboard.html#pricing" style="color:inherit;text-decoration:none;">Pricing</a>
+        <a href="#top" style="color:#B45309;text-decoration:none;border-bottom:2px solid #B45309;padding-bottom:2px;">Daily Log</a>
+      </nav>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="sm" href="uploads/switchboard.html#footcta" hint-size="150px,40px">Book a call →</x-import>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="top" style="max-width:1180px;margin:0 auto;padding:60px 24px 30px;">
+    <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:8px;">
+      <span style="width:18px;height:18px;background:#B45309;-webkit-mask:url('assets/icons/workflow.svg') center/contain no-repeat;mask:url('assets/icons/workflow.svg') center/contain no-repeat;display:inline-block;"></span>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="320px,18px">The Daily Log · a new blueprint every morning</x-import>
+    </div>
+    <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.4rem,5vw,3.9rem);line-height:1.04;letter-spacing:-.02em;margin:6px 0 0;max-width:15em;">
+      Production-ready workflow automation
+      <span style="color:#B45309;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.HandUnderline" hint-size="280px,1em">blueprints.</x-import></span>
+    </h1>
+    <p style="margin:22px 0 26px;font-size:1.08rem;max-width:38em;color:#232b29;line-height:1.55;">
+      Short, technical deep-dives on n8n, Trigger.dev and reliable AI infrastructure — the exact patterns I ship for clients. One lands in your inbox every morning; the whole archive lives here.
+    </p>
+
+    <!-- Subscribe card -->
+    <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,150px" style="max-width:620px;">
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.1rem;letter-spacing:-.01em;margin-bottom:4px;">Get the blueprint in your inbox</div>
+      <p style="font-size:.9rem;color:#54605C;margin:0 0 16px;">One workflow win a day. Under 250 words. No fluff.</p>
+      <form data-subscribe>
+        <div data-sub-fields style="display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;">
+          <input type="email" required placeholder="you@company.com" style="flex:1;min-width:220px;font-family:'Inter',sans-serif;font-size:.96rem;color:#15211F;background:#fff;border:1.5px solid #15211F;border-radius:9px;padding:12px 14px;outline:none;" />
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" type="submit" arrow="true" hint-size="180px,46px">Subscribe daily</x-import>
+        </div>
+        <div data-sub-done style="display:none;align-items:center;gap:10px;padding:6px 0;">
+          <span style="width:20px;height:20px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;flex:none;"></span>
+          <span style="font-size:.98rem;color:#15211F;">You're in. The first blueprint lands tomorrow at 7am.</span>
+        </div>
+      </form>
+      <p style="font-family:'Caveat',cursive;font-size:1.15rem;color:#15211F;margin:14px 0 0;">↳ unsubscribe in one click, no hard feelings</p>
+    </x-import>
+  </section>
+
+  <!-- Filter + archive -->
+  <section style="background:#E1E2D7;border-top:1.5px solid #15211F;border-bottom:1.5px solid #15211F;padding:48px 0 60px;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+
+      <!-- Filter -->
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:32px;">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="80px,18px">Filter</x-import>
+        <div style="display:flex;gap:9px;flex-wrap:wrap;">
+          <button data-filter="All" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;padding:7px 15px;border-radius:9px;border:1.5px solid #B45309;background:#B45309;color:#fff;">All</button>
+          <button data-filter="n8n" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;padding:7px 15px;border-radius:9px;border:1.5px solid #15211F;background:transparent;color:#15211F;">n8n</button>
+          <button data-filter="Trigger.dev" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;padding:7px 15px;border-radius:9px;border:1.5px solid #15211F;background:transparent;color:#15211F;">Trigger.dev</button>
+          <button data-filter="LangChain" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;padding:7px 15px;border-radius:9px;border:1.5px solid #15211F;background:transparent;color:#15211F;">LangChain</button>
+          <button data-filter="Node.js" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;padding:7px 15px;border-radius:9px;border:1.5px solid #15211F;background:transparent;color:#15211F;">Node.js</button>
+        </div>
+      </div>
+
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.5rem,2.4vw,2rem);letter-spacing:-.02em;margin:0 0 28px;">Latest system architectures</h2>
+
+      <!-- Post list -->
+      <div style="display:flex;flex-direction:column;gap:18px;max-width:880px;">
+
+        <!-- Post 1 -->
+        <div data-tags="Trigger.dev, Webhooks, Node.js">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,260px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:#B45309;">
+                <span style="width:15px;height:15px;background:#B45309;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;display:inline-block;"></span>Jun 19, 2026
+              </span>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="violet" hint-size="80px,24px">Trigger.dev</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="80px,24px">Webhooks</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="70px,24px">Node.js</x-import>
+              </div>
+            </div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.34rem;letter-spacing:-.01em;line-height:1.18;margin:13px 0 0;">Catching Trigger.dev webhook timeouts gracefully</h3>
+            <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;max-width:46em;">Wrap the outbound call in a bounded task so a slow upstream API retries instead of failing the whole run.</p>
+            <div style="margin-top:15px;border:1.5px solid #15211F;border-radius:10px;overflow:hidden;box-shadow:4px 4px 0 rgba(21,33,31,.1);">
+              <div style="background:#21252b;display:flex;align-items:center;gap:7px;padding:9px 13px;border-bottom:1px solid #14161b;">
+                <span style="width:11px;height:11px;border-radius:50%;background:#e06c75;display:inline-block;"></span>
+                <span style="width:11px;height:11px;border-radius:50%;background:#e5c07b;display:inline-block;"></span>
+                <span style="width:11px;height:11px;border-radius:50%;background:#98c379;display:inline-block;"></span>
+                <span style="margin-left:8px;font-family:'JetBrains Mono',monospace;color:#9da5b4;font-size:.72rem;">src/trigger/webhook.ts</span>
+              </div>
+              <pre style="margin:0;background:#282c34;color:#abb2bf;padding:15px 17px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;"><span style="color:#e06c75">client</span>.<span style="color:#61afef">defineJob</span>({
+  <span style="color:#e06c75">id</span>: <span style="color:#98c379">"webhook-timeout-handler"</span>,
+  <span style="color:#e06c75">run</span>: <span style="color:#c678dd">async</span> (payload, io) =&gt; {
+    <span style="color:#c678dd">await</span> io.<span style="color:#61afef">runTask</span>(<span style="color:#98c379">"fetch"</span>, { <span style="color:#e06c75">timeoutInMs</span>: <span style="color:#d19a66">8000</span> },
+      () =&gt; <span style="color:#61afef">fetch</span>(payload.url)); <span style="color:#7f848e;font-style:italic">// auto-retries</span>
+  },
+});</pre>
+            </div>
+            <a href="Blog Post.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.02em;color:#B45309;border-bottom:2px solid #B45309;padding-bottom:2px;text-decoration:none;margin-top:16px;">Read the blueprint →</a>
+          </x-import>
+        </div>
+
+        <!-- Post 2 -->
+        <div data-tags="n8n, JSON, Optimization">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,240px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:#B45309;">
+                <span style="width:15px;height:15px;background:#B45309;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;display:inline-block;"></span>Jun 18, 2026
+              </span>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="amber" hint-size="60px,24px">n8n</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="60px,24px">JSON</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="100px,24px">Optimization</x-import>
+              </div>
+            </div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.34rem;letter-spacing:-.01em;line-height:1.18;margin:13px 0 0;">How to loop JSON arrays in n8n without Code nodes</h3>
+            <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;max-width:46em;">Skip the JavaScript Code node — the Split Out node plus JSON-path keeps executions lightweight and fully visual for clients.</p>
+            <div style="margin-top:15px;border:1.5px solid #15211F;border-radius:10px;overflow:hidden;box-shadow:4px 4px 0 rgba(21,33,31,.1);">
+              <div style="background:#21252b;display:flex;align-items:center;gap:7px;padding:9px 13px;border-bottom:1px solid #14161b;">
+                <span style="width:11px;height:11px;border-radius:50%;background:#e06c75;display:inline-block;"></span>
+                <span style="width:11px;height:11px;border-radius:50%;background:#e5c07b;display:inline-block;"></span>
+                <span style="width:11px;height:11px;border-radius:50%;background:#98c379;display:inline-block;"></span>
+                <span style="margin-left:8px;font-family:'JetBrains Mono',monospace;color:#9da5b4;font-size:.72rem;">split-out.node</span>
+              </div>
+              <pre style="margin:0;background:#282c34;color:#abb2bf;padding:15px 17px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;"><span style="color:#7f848e;font-style:italic">// Item Lists → "Split Out" — no Code node</span><span style="color:#e06c75">
+fieldToSplitOut</span>: <span style="color:#98c379">"body.data"</span>,<span style="color:#e06c75">
+include</span>:         <span style="color:#98c379">"id, email, status"</span><span style="color:#7f848e;font-style:italic">
+
+// expression →</span> <span style="color:#56b6c2">{<span></span>{ $json.body.data[*].id }<span></span>}</span></pre>
+            </div>
+            <a href="Blog Post.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.02em;color:#B45309;border-bottom:2px solid #B45309;padding-bottom:2px;text-decoration:none;margin-top:16px;">Read the blueprint →</a>
+          </x-import>
+        </div>
+
+        <!-- Post 3 -->
+        <div data-tags="LangChain, AI, Pinecone">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,240px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:#B45309;">
+                <span style="width:15px;height:15px;background:#B45309;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;display:inline-block;"></span>Jun 17, 2026
+              </span>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="green" hint-size="90px,24px">LangChain</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="50px,24px">AI</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="80px,24px">Pinecone</x-import>
+              </div>
+            </div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.34rem;letter-spacing:-.01em;line-height:1.18;margin:13px 0 0;">Vector memory management in LangChain chatbots</h3>
+            <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;max-width:46em;">Retrieve only the nearest few turns from a vector store so long conversations never blow past the context window.</p>
+            <div style="margin-top:15px;border:1.5px solid #15211F;border-radius:10px;overflow:hidden;box-shadow:4px 4px 0 rgba(21,33,31,.1);">
+              <div style="background:#21252b;display:flex;align-items:center;gap:7px;padding:9px 13px;border-bottom:1px solid #14161b;">
+                <span style="width:11px;height:11px;border-radius:50%;background:#e06c75;display:inline-block;"></span>
+                <span style="width:11px;height:11px;border-radius:50%;background:#e5c07b;display:inline-block;"></span>
+                <span style="width:11px;height:11px;border-radius:50%;background:#98c379;display:inline-block;"></span>
+                <span style="margin-left:8px;font-family:'JetBrains Mono',monospace;color:#9da5b4;font-size:.72rem;">memory.ts</span>
+              </div>
+              <pre style="margin:0;background:#282c34;color:#abb2bf;padding:15px 17px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;"><span style="color:#c678dd">const</span> memory = <span style="color:#c678dd">new</span> <span style="color:#e5c07b">VectorStoreRetrieverMemory</span>({
+  <span style="color:#e06c75">vectorStoreRetriever</span>: pinecone.<span style="color:#61afef">asRetriever</span>(<span style="color:#d19a66">4</span>),
+  <span style="color:#e06c75">memoryKey</span>: <span style="color:#98c379">"history"</span>,
+});
+<span style="color:#7f848e;font-style:italic">// only the 4 nearest turns reach the prompt</span></pre>
+            </div>
+            <a href="Blog Post.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.02em;color:#B45309;border-bottom:2px solid #B45309;padding-bottom:2px;text-decoration:none;margin-top:16px;">Read the blueprint →</a>
+          </x-import>
+        </div>
+
+        <!-- Post 4 -->
+        <div data-tags="Trigger.dev, Node.js, Redis">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,230px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:#B45309;">
+                <span style="width:15px;height:15px;background:#B45309;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;display:inline-block;"></span>Jun 16, 2026
+              </span>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="violet" hint-size="80px,24px">Trigger.dev</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="70px,24px">Node.js</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="60px,24px">Redis</x-import>
+              </div>
+            </div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.34rem;letter-spacing:-.01em;line-height:1.18;margin:13px 0 0;">Idempotent webhook handlers that never double-fire</h3>
+            <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;max-width:46em;">A one-line Redis guard drops duplicate deliveries before they trigger a second run — the cheapest reliability win there is.</p>
+            <div style="margin-top:15px;border:1.5px solid #15211F;border-radius:10px;overflow:hidden;box-shadow:4px 4px 0 rgba(21,33,31,.1);">
+              <div style="background:#21252b;display:flex;align-items:center;gap:7px;padding:9px 13px;border-bottom:1px solid #14161b;">
+                <span style="width:11px;height:11px;border-radius:50%;background:#e06c75;display:inline-block;"></span>
+                <span style="width:11px;height:11px;border-radius:50%;background:#e5c07b;display:inline-block;"></span>
+                <span style="width:11px;height:11px;border-radius:50%;background:#98c379;display:inline-block;"></span>
+                <span style="margin-left:8px;font-family:'JetBrains Mono',monospace;color:#9da5b4;font-size:.72rem;">idempotency.ts</span>
+              </div>
+              <pre style="margin:0;background:#282c34;color:#abb2bf;padding:15px 17px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.82rem;line-height:1.7;overflow-x:auto;"><span style="color:#c678dd">const</span> key = <span style="color:#98c379">`evt:${event.id}`</span>;
+<span style="color:#c678dd">if</span> (<span style="color:#c678dd">await</span> redis.<span style="color:#61afef">set</span>(key, <span style="color:#d19a66">1</span>, <span style="color:#98c379">"NX"</span>, <span style="color:#98c379">"EX"</span>, <span style="color:#d19a66">86400</span>) === <span style="color:#d19a66">null</span>)
+  <span style="color:#c678dd">return</span> io.logger.<span style="color:#61afef">info</span>(<span style="color:#98c379">"duplicate — skipped"</span>);</pre>
+            </div>
+            <a href="Blog Post.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.02em;color:#B45309;border-bottom:2px solid #B45309;padding-bottom:2px;text-decoration:none;margin-top:16px;">Read the blueprint →</a>
+          </x-import>
+        </div>
+
+        <!-- Post 5 -->
+        <div data-tags="n8n, JSON, Webhooks">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,150px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:#B45309;">
+                <span style="width:15px;height:15px;background:#B45309;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;display:inline-block;"></span>Jun 15, 2026
+              </span>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="amber" hint-size="60px,24px">n8n</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="60px,24px">JSON</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="80px,24px">Webhooks</x-import>
+              </div>
+            </div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.34rem;letter-spacing:-.01em;line-height:1.18;margin:13px 0 0;">Mapping nested HubSpot payloads to a flat CRM record</h3>
+            <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;max-width:46em;">A reusable Set node that flattens HubSpot's nested webhook body into the columns your database actually expects.</p>
+            <a href="Blog Post.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.02em;color:#B45309;border-bottom:2px solid #B45309;padding-bottom:2px;text-decoration:none;margin-top:16px;">Read the blueprint →</a>
+          </x-import>
+        </div>
+
+        <!-- Post 6 -->
+        <div data-tags="LangChain, AI, Node.js">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,150px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:#B45309;">
+                <span style="width:15px;height:15px;background:#B45309;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;display:inline-block;"></span>Jun 14, 2026
+              </span>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="green" hint-size="90px,24px">LangChain</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="50px,24px">AI</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="70px,24px">Node.js</x-import>
+              </div>
+            </div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.34rem;letter-spacing:-.01em;line-height:1.18;margin:13px 0 0;">Streaming agent tokens to the browser over SSE</h3>
+            <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;max-width:46em;">Pipe a LangChain agent's callback stream straight to a server-sent-events endpoint so the chat feels instant.</p>
+            <a href="Blog Post.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.02em;color:#B45309;border-bottom:2px solid #B45309;padding-bottom:2px;text-decoration:none;margin-top:16px;">Read the blueprint →</a>
+          </x-import>
+        </div>
+
+        <!-- Post 7 -->
+        <div data-tags="n8n, Node.js, Optimization">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,150px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:#B45309;">
+                <span style="width:15px;height:15px;background:#B45309;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;display:inline-block;"></span>Jun 13, 2026
+              </span>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="amber" hint-size="60px,24px">n8n</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="70px,24px">Node.js</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="100px,24px">Optimization</x-import>
+              </div>
+            </div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.34rem;letter-spacing:-.01em;line-height:1.18;margin:13px 0 0;">Rate-limiting outbound calls in n8n with a wait queue</h3>
+            <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;max-width:46em;">Throttle a burst of items through a third-party API without tripping its rate limit — no external queue service required.</p>
+            <a href="Blog Post.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.02em;color:#B45309;border-bottom:2px solid #B45309;padding-bottom:2px;text-decoration:none;margin-top:16px;">Read the blueprint →</a>
+          </x-import>
+        </div>
+
+        <!-- Post 8 -->
+        <div data-tags="Trigger.dev, Webhooks, Node.js">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,150px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:#B45309;">
+                <span style="width:15px;height:15px;background:#B45309;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;display:inline-block;"></span>Jun 12, 2026
+              </span>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="violet" hint-size="80px,24px">Trigger.dev</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="80px,24px">Webhooks</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="70px,24px">Node.js</x-import>
+              </div>
+            </div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.34rem;letter-spacing:-.01em;line-height:1.18;margin:13px 0 0;">Validating webhook signatures before you trust a payload</h3>
+            <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;max-width:46em;">A constant-time HMAC check that rejects forged deliveries at the door — the one guard every public webhook needs.</p>
+            <a href="Blog Post.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.02em;color:#B45309;border-bottom:2px solid #B45309;padding-bottom:2px;text-decoration:none;margin-top:16px;">Read the blueprint →</a>
+          </x-import>
+        </div>
+
+        <!-- Post 9 -->
+        <div data-tags="LangChain, AI">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,150px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+              <span style="display:inline-flex;align-items:center;gap:7px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:#B45309;">
+                <span style="width:15px;height:15px;background:#B45309;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;display:inline-block;"></span>Jun 11, 2026
+              </span>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="green" hint-size="90px,24px">LangChain</x-import>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="50px,24px">AI</x-import>
+              </div>
+            </div>
+            <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.34rem;letter-spacing:-.01em;line-height:1.18;margin:13px 0 0;">Giving a LangChain agent tools without prompt bloat</h3>
+            <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;max-width:46em;">Bind tools as structured schemas instead of stuffing instructions into the system prompt — cheaper tokens, sharper calls.</p>
+            <a href="Blog Post.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.02em;color:#B45309;border-bottom:2px solid #B45309;padding-bottom:2px;text-decoration:none;margin-top:16px;">Read the blueprint →</a>
+          </x-import>
+        </div>
+
+      </div>
+
+      <div data-loadmore-wrap style="display:flex;justify-content:center;margin-top:30px;">
+        <button data-loadmore style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.86rem;text-transform:uppercase;letter-spacing:.02em;color:#15211F;background:#E9E8DF;border:2px solid #15211F;border-radius:10px;padding:.85em 1.6em;cursor:pointer;box-shadow:3px 3px 0 #15211F;transition:transform .12s ease,box-shadow .12s ease;">Load more blueprints</button>
+      </div>
+      <p data-archive-end style="display:none;text-align:center;font-family:'Caveat',cursive;font-size:1.3rem;color:#54605C;margin:24px 0 0;">↳ that's the whole archive — a new one lands every morning</p>
+
+      <p data-empty style="display:none;font-family:'Caveat',cursive;font-size:1.3rem;color:#54605C;margin:8px 0 0;">↳ no blueprints under that tag yet — check back tomorrow</p>
+    </div>
+  </section>
+
+  <!-- Hire-me anchor -->
+  <section style="background:#11201E;color:#E9E8DF;">
+    <div style="max-width:1180px;margin:0 auto;padding:60px 24px;">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center;">
+        <div>
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" tone="amber" hint-size="180px,18px">Loved this workflow?</x-import>
+          <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.7rem,3vw,2.5rem);letter-spacing:-.02em;line-height:1.06;margin:14px 0 0;color:#E9E8DF;max-width:13em;">Don't want to maintain it yourself?</h2>
+          <p style="font-size:1.05rem;line-height:1.6;color:#C8CEC6;margin:18px 0 26px;max-width:34em;">I build enterprise-grade automation infrastructure for teams so your engineers can focus on core product — production n8n pipelines, Trigger.dev jobs and custom AI chatbots, fully owned and documented.</p>
+          <div style="display:flex;gap:14px;flex-wrap:wrap;">
+            <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" href="uploads/switchboard.html#services" hint-size="240px,46px">Check out my freelance services</x-import>
+            <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="light" href="uploads/switchboard.html#footcta" arrow="true" hint-size="220px,46px">Schedule a discovery call</x-import>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.StickyNote" title="What you'd get" rotate="2.5" hint-size="240px,210px">
+            <ul style="list-style:none;margin:6px 0 0;padding:0;font-size:1.18rem;line-height:1.85;">
+              <li>→ production-ready pipelines</li>
+              <li>→ error handling baked in</li>
+              <li>→ docs your team can read</li>
+              <li>→ a 15-min sprint to scope it</li>
+            </ul>
+          </x-import>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#15211F;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:26px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.82rem;">
+      <span style="display:inline-flex;align-items:center;gap:9px;">
+        <svg width="22" height="22" viewBox="0 0 30 30" fill="none" stroke="#E9E8DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;">Switchboard AI Systems</b>
+      </span>
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#9aa49d;font-size:.72rem;">AI Chatbots · Automation · Results</span>
+      <span style="color:#9aa49d;">© 2026 — All rights reserved.</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const root = document;
+    const btns = Array.from(root.querySelectorAll('[data-filter]'));
+    const posts = Array.from(root.querySelectorAll('[data-tags]'));
+    const empty = root.querySelector('[data-empty]');
+    const moreWrap = root.querySelector('[data-loadmore-wrap]');
+    const moreBtn = root.querySelector('[data-loadmore]');
+    const endNote = root.querySelector('[data-archive-end]');
+    const PAGE = 4;
+    let filter = 'All';
+    let shown = PAGE;
+
+    const matches = (p) =>
+      filter === 'All' ||
+      (p.dataset.tags || '').split(',').map((s) => s.trim()).includes(filter);
+
+    const render = () => {
+      const visible = posts.filter(matches);
+      posts.forEach((p) => { p.style.display = 'none'; });
+      visible.slice(0, shown).forEach((p) => { p.style.display = ''; });
+      const total = visible.length;
+      const hasMore = shown < total;
+      if (empty) empty.style.display = total === 0 ? 'block' : 'none';
+      if (moreWrap) moreWrap.style.display = hasMore ? 'flex' : 'none';
+      if (endNote) endNote.style.display = (!hasMore && total > 0) ? 'block' : 'none';
+    };
+
+    btns.forEach((b) =>
+      b.addEventListener('click', () => {
+        filter = b.dataset.filter;
+        shown = PAGE;
+        btns.forEach((x) => {
+          const on = x === b;
+          x.style.background = on ? 'var(--orange)' : 'transparent';
+          x.style.color = on ? '#fff' : 'var(--ink)';
+          x.style.borderColor = on ? 'var(--orange)' : 'var(--ink)';
+        });
+        render();
+      })
+    );
+
+    if (moreBtn) {
+      moreBtn.addEventListener('click', () => { shown += PAGE; render(); });
+      moreBtn.addEventListener('mouseenter', () => {
+        moreBtn.style.transform = 'translateY(-2px)';
+        moreBtn.style.boxShadow = '5px 5px 0 #15211F';
+      });
+      moreBtn.addEventListener('mouseleave', () => {
+        moreBtn.style.transform = 'none';
+        moreBtn.style.boxShadow = '3px 3px 0 #15211F';
+      });
+    }
+
+    render();
+
+    const form = root.querySelector('[data-subscribe]');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const fields = form.querySelector('[data-sub-fields]');
+        const done = form.querySelector('[data-sub-done]');
+        if (fields) fields.style.display = 'none';
+        if (done) done.style.display = 'flex';
+      });
+    }
+  }
+}
+</script>
+</body>
+</html>

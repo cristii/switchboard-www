@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/colors.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/typography.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/styles.css">
+<script src="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/_ds_bundle.js"></script>
+</helmet>
+
+<div style="font-family:'Inter',system-ui,sans-serif;color:#15211F;background-color:#E9E8DF;background-image:repeating-linear-gradient(0deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),repeating-linear-gradient(90deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),url('assets/grain.svg');min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased;">
+
+  <!-- Header -->
+  <header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(6px);background:rgba(233,232,223,.82);border-bottom:1.5px solid #15211F;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="uploads/switchboard.html#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <svg width="28" height="28" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <span style="display:flex;flex-direction:column;line-height:1;">
+          <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.32rem;letter-spacing:-.03em;">Switchboard</b>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.58rem;letter-spacing:.22em;color:#54605C;margin-top:3px;">AI SYSTEMS</span>
+        </span>
+      </a>
+      <nav style="display:flex;gap:26px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.85rem;">
+        <a href="uploads/switchboard.html#services" style="color:inherit;text-decoration:none;">Services</a>
+        <a href="#top" style="color:#B45309;text-decoration:none;border-bottom:2px solid #B45309;padding-bottom:2px;">Work</a>
+        <a href="uploads/switchboard.html#pricing" style="color:inherit;text-decoration:none;">Pricing</a>
+        <a href="The Daily Log.dc.html" style="color:inherit;text-decoration:none;">Daily Log</a>
+      </nav>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="sm" href="uploads/switchboard.html#footcta" hint-size="150px,40px">Book a call →</x-import>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="top" style="max-width:1180px;margin:0 auto;padding:60px 24px 30px;">
+    <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="160px,18px">Selected work</x-import>
+    <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.4rem,5vw,3.9rem);line-height:1.04;letter-spacing:-.02em;margin:12px 0 0;max-width:15em;">
+      Automations that do the boring work —
+      <span style="color:#B45309;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.HandUnderline" hint-size="180px,1em">so you don't.</x-import></span>
+    </h1>
+    <p style="margin:22px 0 16px;font-size:1.1rem;max-width:40em;color:#232b29;line-height:1.6;">
+      Every project below is a system I've built and run for small businesses. They work quietly in the background — bringing in leads, answering people instantly, and cutting out the copy-paste. Find the one that sounds like your bottleneck.
+    </p>
+    <p style="font-family:'Caveat',cursive;font-size:1.3rem;color:#15211F;margin:0;">↳ not technical? just read the <b>bold line</b> on each card — that's what it does for your business.</p>
+  </section>
+
+  <!-- Proof band -->
+  <section style="background:#11201E;color:#E9E8DF;border-top:1.5px solid #15211F;border-bottom:1.5px solid #15211F;">
+    <div style="max-width:1180px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Stat" value="24/7" label="Your systems keep working long after you've logged off" onDark="true" hint-size="100%,80px"></x-import>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Stat" value="<1 min" label="From a new lead landing to their first personal reply" onDark="true" hint-size="100%,80px"></x-import>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Stat" value="0" label="Hours lost to manual copy-paste once it's set up" onDark="true" hint-size="100%,80px"></x-import>
+    </div>
+  </section>
+
+  <!-- Work groups -->
+  <section style="max-width:1180px;margin:0 auto;padding:58px 24px 20px;">
+
+    <!-- Group A -->
+    <div style="margin:0 0 24px;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="220px,18px">01 · Get found, get leads</x-import>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.6rem,2.6vw,2.1rem);letter-spacing:-.02em;margin:12px 0 6px;">More leads in the door</h2>
+      <p style="font-size:1rem;color:#54605C;margin:0;max-width:40em;">Fill the top of your funnel and answer everyone the moment they raise a hand.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-bottom:54px;">
+
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,300px" style="display:flex;flex-direction:column;">
+        <span style="width:46px;height:46px;border-radius:11px;border:1.5px solid #15211F;background:#FBE8CF;display:inline-flex;align-items:center;justify-content:center;flex:none;"><span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/send.svg') center/contain no-repeat;mask:url('assets/icons/send.svg') center/contain no-repeat;display:inline-block;"></span></span>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em;margin:15px 0 0;">Outreach System</h3>
+        <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">Finds businesses that fit your offer, writes a personal opening line for each, and sends a warm email sequence that lands in the inbox — not the spam folder.</p>
+        <div style="margin:14px 0 0;display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;flex:none;"></span><span style="font-weight:600;color:#15211F;font-size:.96rem;">A full pipeline of cold leads, contacted on autopilot.</span></div>
+        <div style="margin-top:auto;padding-top:16px;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#54605C;">Built with</span><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="amber" hint-size="56px,22px">n8n</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="56px,22px">Apify</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="64px,22px">OpenAI</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="52px,22px">SMTP</x-import></div></div>
+        <a href="Work Item.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.02em;color:#B45309;border-bottom:2px solid #B45309;padding-bottom:2px;text-decoration:none;margin-top:16px;align-self:flex-start;">Read the case study →</a>
+      </x-import>
+
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,300px" style="display:flex;flex-direction:column;">
+        <span style="width:46px;height:46px;border-radius:11px;border:1.5px solid #15211F;background:#FBE8CF;display:inline-flex;align-items:center;justify-content:center;flex:none;"><span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/target.svg') center/contain no-repeat;mask:url('assets/icons/target.svg') center/contain no-repeat;display:inline-block;"></span></span>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em;margin:15px 0 0;">Speed-to-Lead Responder</h3>
+        <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">The second someone fills in a form or replies to your Meta or Google ad, they get an instant, personal text and email — plus a link to book a time.</p>
+        <div style="margin:14px 0 0;display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;flex:none;"></span><span style="font-weight:600;color:#15211F;font-size:.96rem;">Every new lead answered in under a minute, day or night.</span></div>
+        <div style="margin-top:auto;padding-top:16px;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#54605C;">Built with</span><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="violet" hint-size="80px,22px">Trigger.dev</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="58px,22px">Twilio</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="76px,22px">Calendar API</x-import></div></div>
+      </x-import>
+
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,300px" style="display:flex;flex-direction:column;">
+        <span style="width:46px;height:46px;border-radius:11px;border:1.5px solid #15211F;background:#FBE8CF;display:inline-flex;align-items:center;justify-content:center;flex:none;"><span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/assistant.svg') center/contain no-repeat;mask:url('assets/icons/assistant.svg') center/contain no-repeat;display:inline-block;"></span></span>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em;margin:15px 0 0;">Homepage Chatbot</h3>
+        <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">A friendly assistant on your website that answers visitor questions, figures out what they need, and books a call — trained only on your real business, so it never makes things up.</p>
+        <div style="margin:14px 0 0;display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;flex:none;"></span><span style="font-weight:600;color:#15211F;font-size:.96rem;">Your website sells and books while you're busy elsewhere.</span></div>
+        <div style="margin-top:auto;padding-top:16px;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#54605C;">Built with</span><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="green" hint-size="80px,22px">LangChain</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="68px,22px">Pinecone</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="76px,22px">Web widget</x-import></div></div>
+      </x-import>
+
+    </div>
+
+    <!-- Group B -->
+    <div style="margin:0 0 24px;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="220px,18px">02 · Convert &amp; onboard</x-import>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.6rem,2.6vw,2.1rem);letter-spacing:-.02em;margin:12px 0 6px;">Win the client and keep them</h2>
+      <p style="font-size:1rem;color:#54605C;margin:0;max-width:40em;">Turn interest into booked, paid, well-looked-after customers — without the manual chase.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-bottom:54px;">
+
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,300px" style="display:flex;flex-direction:column;">
+        <span style="width:46px;height:46px;border-radius:11px;border:1.5px solid #15211F;background:#FBE8CF;display:inline-flex;align-items:center;justify-content:center;flex:none;"><span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;"></span></span>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em;margin:15px 0 0;">Client Onboarding Automation</h3>
+        <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">A new client says yes once — then the contract, invoice, intake form, shared folder and welcome emails all fire off in the right order, by themselves.</p>
+        <div style="margin:14px 0 0;display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;flex:none;"></span><span style="font-weight:600;color:#15211F;font-size:.96rem;">Day-one paperwork done in minutes, not an afternoon.</span></div>
+        <div style="margin-top:auto;padding-top:16px;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#54605C;">Built with</span><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="amber" hint-size="56px,22px">n8n</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="56px,22px">Stripe</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="72px,22px">DocuSign</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="58px,22px">Notion</x-import></div></div>
+      </x-import>
+
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,300px" style="display:flex;flex-direction:column;">
+        <span style="width:46px;height:46px;border-radius:11px;border:1.5px solid #15211F;background:#FBE8CF;display:inline-flex;align-items:center;justify-content:center;flex:none;"><span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;display:inline-block;"></span></span>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em;margin:15px 0 0;">Appointment Reminders &amp; No-Show Rescue</h3>
+        <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">Automatic reminders before every booking, and a gentle re-book nudge the moment someone doesn't turn up — so the slot doesn't go to waste.</p>
+        <div style="margin:14px 0 0;display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;flex:none;"></span><span style="font-weight:600;color:#15211F;font-size:.96rem;">Fewer empty slots and far fewer no-shows.</span></div>
+        <div style="margin-top:auto;padding-top:16px;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#54605C;">Built with</span><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="violet" hint-size="80px,22px">Trigger.dev</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="58px,22px">Twilio</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="76px,22px">Calendar API</x-import></div></div>
+      </x-import>
+
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,300px" style="display:flex;flex-direction:column;">
+        <span style="width:46px;height:46px;border-radius:11px;border:1.5px solid #15211F;background:#FBE8CF;display:inline-flex;align-items:center;justify-content:center;flex:none;"><span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/mail.svg') center/contain no-repeat;mask:url('assets/icons/mail.svg') center/contain no-repeat;display:inline-block;"></span></span>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em;margin:15px 0 0;">Missed-Call Text-Back</h3>
+        <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">When you can't pick up, the caller instantly gets a friendly text — "Sorry we missed you, how can we help?" — so a busy moment never turns into a lost customer.</p>
+        <div style="margin:14px 0 0;display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;flex:none;"></span><span style="font-weight:600;color:#15211F;font-size:.96rem;">No missed call ever turns into a lost lead again.</span></div>
+        <div style="margin-top:auto;padding-top:16px;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#54605C;">Built with</span><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="amber" hint-size="56px,22px">n8n</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="58px,22px">Twilio</x-import></div></div>
+      </x-import>
+
+    </div>
+
+    <!-- Group C -->
+    <div style="margin:0 0 24px;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="240px,18px">03 · Authority &amp; repeat business</x-import>
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.6rem,2.6vw,2.1rem);letter-spacing:-.02em;margin:12px 0 6px;">Stay top-of-mind and trusted</h2>
+      <p style="font-size:1rem;color:#54605C;margin:0;max-width:40em;">Show up every day and let happy customers sell the next one for you.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-bottom:20px;">
+
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,300px" style="display:flex;flex-direction:column;">
+        <span style="width:46px;height:46px;border-radius:11px;border:1.5px solid #15211F;background:#FBE8CF;display:inline-flex;align-items:center;justify-content:center;flex:none;"><span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/storefront.svg') center/contain no-repeat;mask:url('assets/icons/storefront.svg') center/contain no-repeat;display:inline-block;"></span></span>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em;margin:15px 0 0;">Review &amp; Reputation Engine</h3>
+        <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">After a happy job, the customer automatically gets a perfectly-timed nudge to leave a Google review — with a one-tap link that makes it effortless.</p>
+        <div style="margin:14px 0 0;display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;flex:none;"></span><span style="font-weight:600;color:#15211F;font-size:.96rem;">A steady stream of 5-star reviews that win the next customer.</span></div>
+        <div style="margin-top:auto;padding-top:16px;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#54605C;">Built with</span><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="amber" hint-size="56px,22px">n8n</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="92px,22px">Google API</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="58px,22px">Twilio</x-import></div></div>
+      </x-import>
+
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,300px" style="display:flex;flex-direction:column;">
+        <span style="width:46px;height:46px;border-radius:11px;border:1.5px solid #15211F;background:#FBE8CF;display:inline-flex;align-items:center;justify-content:center;flex:none;"><span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/lightbulb.svg') center/contain no-repeat;mask:url('assets/icons/lightbulb.svg') center/contain no-repeat;display:inline-block;"></span></span>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em;margin:15px 0 0;">Daily High-SNR Newsletter</h3>
+        <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">A short, genuinely useful email to your list every single day — drafted, formatted and scheduled from your notes and sources, ready for a quick review.</p>
+        <div style="margin:14px 0 0;display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;flex:none;"></span><span style="font-weight:600;color:#15211F;font-size:.96rem;">Stay top-of-mind daily without writing from scratch.</span></div>
+        <div style="margin-top:auto;padding-top:16px;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#54605C;">Built with</span><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="violet" hint-size="80px,22px">Trigger.dev</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="64px,22px">OpenAI</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="56px,22px">ESP API</x-import></div></div>
+      </x-import>
+
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Card" tone="white" hint-size="100%,300px" style="display:flex;flex-direction:column;">
+        <span style="width:46px;height:46px;border-radius:11px;border:1.5px solid #15211F;background:#FBE8CF;display:inline-flex;align-items:center;justify-content:center;flex:none;"><span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/refresh.svg') center/contain no-repeat;mask:url('assets/icons/refresh.svg') center/contain no-repeat;display:inline-block;"></span></span>
+        <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.22rem;letter-spacing:-.01em;margin:15px 0 0;">Newsletter Repurposing Engine</h3>
+        <p style="font-size:.95rem;color:#54605C;margin:8px 0 0;line-height:1.5;">Each newsletter is automatically reshaped into LinkedIn, X and Instagram posts — same idea, written natively for each platform and queued to publish.</p>
+        <div style="margin:14px 0 0;display:flex;gap:9px;align-items:flex-start;"><span style="width:18px;height:18px;margin-top:2px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;display:inline-block;flex:none;"></span><span style="font-weight:600;color:#15211F;font-size:.96rem;">One piece of writing becomes a week of social content.</span></div>
+        <div style="margin-top:auto;padding-top:16px;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:#54605C;">Built with</span><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="amber" hint-size="56px,22px">n8n</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="64px,22px">OpenAI</x-import><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="neutral" hint-size="56px,22px">Buffer</x-import></div></div>
+      </x-import>
+
+    </div>
+  </section>
+
+  <!-- Closing CTA -->
+  <section style="background:#15211F;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:58px 24px;display:flex;align-items:center;justify-content:space-between;gap:36px;flex-wrap:wrap;">
+      <div style="max-width:34em;">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" tone="amber" hint-size="220px,18px">Not sure which one you need?</x-import>
+        <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.7rem,3vw,2.5rem);letter-spacing:-.02em;line-height:1.06;margin:14px 0 0;color:#E9E8DF;">Tell me where you're losing time or leads.</h2>
+        <p style="font-size:1.05rem;line-height:1.6;color:#C8CEC6;margin:16px 0 0;">I'll build a working demo of the right automation — on your own site — for free, before you decide anything. No deck, no jargon, just the thing running.</p>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;">
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Pill" active="true" onDark="true" hint-size="120px,30px">Your bottleneck</x-import>
+          <span style="color:#B45309;">→</span>
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Pill" onDark="true" hint-size="120px,30px">A free demo</x-import>
+          <span style="color:#B45309;">→</span>
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Pill" onDark="true" hint-size="120px,30px">A system that runs</x-import>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" href="uploads/switchboard.html#footcta" hint-size="220px,46px">Start with a free demo →</x-import>
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="light" href="uploads/switchboard.html#footcta" hint-size="220px,46px">Book a 15-min call →</x-import>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#15211F;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:26px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.82rem;">
+      <span style="display:inline-flex;align-items:center;gap:9px;">
+        <svg width="22" height="22" viewBox="0 0 30 30" fill="none" stroke="#E9E8DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;">Switchboard AI Systems</b>
+      </span>
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#9aa49d;font-size:.72rem;">AI Chatbots · Automation · Results</span>
+      <span style="color:#9aa49d;">© 2026 — All rights reserved.</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>

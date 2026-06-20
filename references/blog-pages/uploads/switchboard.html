@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Switchboard AI Systems — Don't read about my service. Chat with it.</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='none' stroke='%23B45309' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'><circle cx='8' cy='8' r='3'/><circle cx='22' cy='22' r='3'/><path d='M11 8H19a3 3 0 0 1 3 3V19'/><path d='M19 22H11a3 3 0 0 1 -3 -3V11'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E9E8DF;
+    --paper-2:#E1E2D7;
+    --paper-3:#D7D9CB;
+    --ink:#15211F;
+    --ink-soft:#54605C;
+    --line:#B9C2B6;
+    --line-soft:#CBD2C5;
+    --orange:#B45309;
+    --orange-deep:#92400E;
+    --dark:#11201E;
+    --green:#3F7A4E;
+    --maxw:1180px;
+    --r:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Inter",system-ui,sans-serif;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),
+      repeating-linear-gradient(90deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{font-family:"Bricolage Grotesque",sans-serif;line-height:1.04;letter-spacing:-0.02em}
+  .hand{font-family:"Caveat",cursive}
+  .orange{color:var(--orange)}
+
+  /* hand-drawn underline */
+  .ul{position:relative;white-space:nowrap}
+  .ul svg{position:absolute;left:-2%;bottom:-0.32em;width:104%;height:0.45em;overflow:visible}
+  .ul path{fill:none;stroke:var(--orange);stroke-width:7;stroke-linecap:round}
+
+  .eyebrow{font-family:"Bricolage Grotesque";font-weight:700;letter-spacing:0.14em;
+    text-transform:uppercase;font-size:.72rem;color:var(--orange)}
+
+  /* buttons */
+  .btn{display:inline-flex;align-items:center;gap:.5em;font-family:"Bricolage Grotesque";
+    font-weight:700;font-size:.86rem;letter-spacing:.02em;padding:.85em 1.3em;border-radius:10px;
+    cursor:pointer;border:2px solid var(--ink);transition:transform .12s ease, box-shadow .12s ease;
+    text-transform:uppercase}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--orange);color:#fff;border-color:var(--orange-deep);
+    box-shadow:3px 3px 0 var(--ink)}
+  .btn-primary:hover{box-shadow:5px 5px 0 var(--ink)}
+  .btn-ghost{background:transparent;color:var(--ink);box-shadow:3px 3px 0 rgba(21,33,31,.18)}
+  .btn-ghost:hover{box-shadow:5px 5px 0 rgba(21,33,31,.22)}
+  .arrow{font-family:"Inter";font-weight:600}
+
+  /* header */
+  header{position:sticky;top:0;z-index:60;backdrop-filter:blur(6px);
+    background:rgba(241,234,221,.82);border-bottom:1.5px solid var(--ink)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .logo{display:flex;align-items:center;gap:10px}
+  .logo-mark{width:34px;height:34px;flex:none}
+  .logo-text{display:flex;flex-direction:column;line-height:1}
+  .logo b{font-family:"Bricolage Grotesque";font-weight:800;font-size:1.42rem;letter-spacing:-.03em}
+  .logo span{font-family:"Bricolage Grotesque";font-weight:600;font-size:.6rem;letter-spacing:.22em;
+    color:var(--ink-soft);margin-top:3px}
+  .navlinks{display:flex;gap:30px;font-family:"Bricolage Grotesque";font-weight:600;font-size:.85rem}
+  .navlinks a{position:relative}
+  .navlinks a:hover{color:var(--orange)}
+  .nav-cta{font-size:.78rem;padding:.7em 1.1em}
+  .cta-short{display:none}
+
+  section{position:relative}
+  .divline{border:0;border-top:1.5px solid var(--ink);margin:0}
+
+  /* HERO */
+  .hero{padding:54px 0 30px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero h1{font-weight:800;font-size:clamp(2.6rem,5.4vw,4.2rem)}
+  .hero h1 .l2{display:block}
+  .hero-sub{margin:22px 0 18px;font-size:1.06rem;max-width:30em;color:#232b29}
+  .ticks{display:flex;flex-wrap:wrap;gap:18px 26px;margin:18px 0 26px}
+  .tick{display:flex;align-items:center;gap:8px;font-weight:600;font-size:.92rem}
+  .tick svg{width:18px;height:18px;flex:none}
+  .hero-cta{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .cta-note{display:flex;align-items:center;gap:6px;color:var(--ink-soft);font-size:.9rem;margin-top:16px}
+  .cta-note .hand{font-size:1.2rem;color:var(--ink)}
+  .secondary-link{font-family:"Bricolage Grotesque";font-weight:700;font-size:.82rem;
+    text-transform:uppercase;letter-spacing:.02em;border-bottom:2px solid var(--orange);padding-bottom:2px}
+  .secondary-link:hover{color:var(--orange)}
+
+  /* chat widget */
+  .chat{background:#fff;border:2px solid var(--ink);border-radius:18px;
+    box-shadow:8px 8px 0 rgba(21,33,31,.16);overflow:hidden;display:flex;flex-direction:column;
+    max-height:560px}
+  .chat-head{background:var(--dark);color:var(--paper);padding:14px 16px;display:flex;
+    align-items:center;gap:11px}
+  .chat-ava{width:34px;height:34px;border-radius:9px;background:var(--orange);display:grid;
+    place-items:center;flex:none}
+  .chat-ava svg{width:20px;height:20px}
+  .chat-head .name{font-family:"Bricolage Grotesque";font-weight:700;font-size:.95rem;line-height:1.1}
+  .chat-head .status{font-size:.72rem;color:#b9c9b6;display:flex;align-items:center;gap:5px}
+  .dot{width:7px;height:7px;border-radius:50%;background:#5fcf7a;display:inline-block}
+  .chat-body{padding:16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:12px;
+    background:var(--paper);min-height:230px}
+  .msg{max-width:84%;padding:10px 13px;border-radius:13px;font-size:.9rem;line-height:1.45;
+    animation:pop .25s ease}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .msg.bot{background:#fff;border:1.5px solid var(--line);border-bottom-left-radius:4px;align-self:flex-start}
+  .msg.user{background:var(--orange);color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
+  .msg.bot .who{display:flex;align-items:center;gap:7px;font-size:.7rem;color:var(--ink-soft);
+    margin-bottom:5px;font-weight:600}
+  .msg.bot .who i{width:16px;height:16px;border-radius:5px;background:var(--orange);display:inline-block}
+  .typing{display:inline-flex;gap:4px;align-items:center}
+  .typing span{width:6px;height:6px;border-radius:50%;background:var(--ink-soft);animation:bl 1s infinite}
+  .typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
+  @keyframes bl{0%,60%,100%{opacity:.3}30%{opacity:1}}
+  .quick{display:flex;flex-wrap:wrap;gap:7px;padding:0 16px 8px;background:var(--paper)}
+  .quick button{background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:7px 13px;
+    font-size:.8rem;font-family:"Inter";cursor:pointer;color:var(--ink);transition:.12s}
+  .quick button:hover{border-color:var(--orange);color:var(--orange)}
+  .chat-input{display:flex;gap:8px;padding:12px 14px;border-top:1.5px solid var(--line);background:#fff}
+  .chat-input input{flex:1;border:1.5px solid var(--line);border-radius:9px;padding:10px 12px;
+    font-family:"Inter";font-size:.9rem;outline:none}
+  .chat-input input:focus{border-color:var(--orange)}
+  .chat-input button{background:var(--orange);border:none;border-radius:9px;width:42px;cursor:pointer;
+    display:grid;place-items:center}
+  .chat-input button svg{width:18px;height:18px}
+  .chat-foot{text-align:center;font-size:.68rem;color:var(--ink-soft);padding:7px;background:#fff;
+    border-top:1px solid var(--line-soft)}
+
+  /* generic section heading */
+  .sec{padding:62px 0}
+  .sec-label{display:inline-block}
+  .sec h2{font-weight:800;font-size:clamp(1.9rem,3.4vw,2.7rem);margin-top:14px}
+
+  /* proof band */
+  .proof{background:var(--dark);color:var(--paper)}
+  .proof .wrap{padding:44px 24px}
+  .proof-top{display:flex;flex-wrap:wrap;gap:14px 40px;align-items:flex-end;justify-content:space-between;
+    margin-bottom:30px}
+  .proof-top .eyebrow{color:#FBBF24}
+  .proof-top h2{color:var(--paper);font-weight:800;font-size:clamp(1.5rem,2.6vw,2.1rem);max-width:14em}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:34px}
+  .stat .n{font-family:"Bricolage Grotesque";font-weight:800;font-size:2.5rem;color:var(--orange);
+    line-height:1}
+  .stat .t{font-size:.86rem;color:#bcc4bd;margin-top:6px}
+  .quotes{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .quote{background:rgba(241,234,221,.06);border:1px solid rgba(241,234,221,.16);border-radius:12px;
+    padding:20px}
+  .quote p{font-size:.96rem;line-height:1.5}
+  .quote .by{margin-top:12px;font-size:.82rem;color:#bcc4bd;font-weight:500}
+  .quote .by b{color:var(--paper);font-weight:600;font-family:"Bricolage Grotesque"}
+
+  /* audiences */
+  .aud-intro{max-width:30em;color:var(--ink-soft);margin-top:8px;font-size:1rem}
+  .aud{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:36px}
+  .aud .card{border-top:2px solid var(--ink);padding-top:18px}
+  .aud .ico{width:40px;height:40px;margin-bottom:12px}
+  .aud h3{font-weight:700;font-size:1.12rem;margin-bottom:8px}
+  .aud p{font-size:.92rem;color:var(--ink-soft);margin-bottom:8px}
+  .aud .pull{font-family:"Caveat";font-size:1.18rem;color:var(--orange);font-weight:600;line-height:1.2}
+
+  /* services */
+  .services{background:var(--paper-2)}
+  .svc-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:start}
+  .svc-lead h2{font-weight:800;font-size:clamp(1.9rem,3vw,2.5rem)}
+  .svc-lead p{margin-top:16px;color:var(--ink-soft);max-width:24em}
+  .svc-cards{display:grid;gap:18px}
+  .svc-card{background:var(--paper);border:1.5px solid var(--ink);border-radius:var(--r);padding:22px 24px;
+    display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;
+    box-shadow:4px 4px 0 rgba(21,33,31,.1)}
+  .svc-num{font-family:"Bricolage Grotesque";font-weight:800;font-size:2rem;color:var(--orange);line-height:1}
+  .svc-card h3{font-weight:700;font-size:1.18rem;margin-bottom:7px}
+  .svc-card p{font-size:.92rem;color:var(--ink-soft)}
+  .svc-ico{width:34px;height:34px;margin-top:6px}
+
+  /* sample builds */
+  .builds-grid{display:grid;grid-template-columns:1fr;gap:36px;margin-top:34px}
+  .builds-lead{max-width:22em}
+  .builds-lead h2{font-weight:800;font-size:clamp(1.8rem,3vw,2.4rem)}
+  .builds-lead p{color:var(--ink-soft);margin-top:14px;font-size:.96rem}
+  .build-main{display:grid;grid-template-columns:1.6fr 1fr;gap:30px;align-items:start;margin-top:6px}
+  .video{position:relative;border:2px solid var(--ink);border-radius:var(--r);overflow:hidden;
+    aspect-ratio:16/10;background:linear-gradient(135deg,#1e2a28,#11201e);
+    display:grid;place-items:center;box-shadow:6px 6px 0 rgba(21,33,31,.14)}
+  .video .label{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;
+    padding:11px 14px;color:var(--paper);font-size:.82rem;font-weight:600;
+    background:linear-gradient(rgba(0,0,0,.55),transparent)}
+  .play{width:70px;height:70px;border-radius:50%;background:rgba(241,234,221,.92);display:grid;
+    place-items:center;cursor:pointer;transition:.15s;border:2px solid #fff}
+  .play:hover{transform:scale(1.08)}
+  .play svg{width:26px;height:26px;margin-left:4px}
+  .video .cap{position:absolute;bottom:0;left:0;right:0;padding:14px;color:var(--paper)}
+  .video .cap b{font-family:"Bricolage Grotesque";font-weight:700;font-size:1.3rem;display:block}
+  .video .cap span{font-size:.84rem;color:#c5cdc4}
+  .seeing{background:var(--paper-2);border:1.5px solid var(--line);border-radius:var(--r);padding:22px}
+  .seeing h3{font-weight:700;font-size:1.05rem;margin-bottom:14px}
+  .seeing li{display:flex;gap:9px;align-items:flex-start;font-size:.9rem;margin-bottom:10px;list-style:none}
+  .seeing li svg{width:16px;height:16px;flex:none;margin-top:3px}
+  .seeing .note{font-family:"Caveat";font-size:1.25rem;color:var(--orange);margin-top:10px;line-height:1.2}
+  .build-list{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .build-item{border:1.5px solid var(--line);border-radius:12px;padding:16px;background:var(--paper)}
+  .build-item .tag{display:inline-block;font-family:"Bricolage Grotesque";font-weight:700;font-size:.7rem;
+    text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:20px;margin-bottom:10px}
+  .t-beg{background:#e6efe4;color:var(--green)}
+  .t-int{background:#fbe8cf;color:var(--orange-deep)}
+  .t-adv{background:#e9e0f0;color:#6a4a8a}
+  .build-item h4{font-family:"Bricolage Grotesque";font-weight:700;font-size:1rem;margin-bottom:4px}
+  .build-item p{font-size:.85rem;color:var(--ink-soft)}
+
+  .banner{background:var(--ink);color:var(--paper);border-radius:var(--r);padding:20px 26px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:36px}
+  .banner .l{display:flex;align-items:center;gap:13px;font-size:1.05rem;font-weight:500}
+  .banner .l svg{width:24px;height:24px;flex:none}
+
+  /* process */
+  .process{background:var(--paper-2)}
+  .steps{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:38px;align-items:start}
+  .step{position:relative}
+  .step .ico{width:38px;height:38px;margin-bottom:12px}
+  .step .n{font-family:"Bricolage Grotesque";font-weight:800;font-size:.95rem;color:var(--orange)}
+  .step h4{font-family:"Bricolage Grotesque";font-weight:700;font-size:1rem;margin:4px 0 7px}
+  .step p{font-size:.82rem;color:var(--ink-soft)}
+  .step .arr{position:absolute;top:8px;right:-12px;color:var(--line);font-size:1.1rem}
+  .goal{margin-top:30px;display:flex;align-items:center;gap:16px;background:var(--paper);
+    border:1.5px solid var(--ink);border-radius:var(--r);padding:20px 24px;
+    box-shadow:4px 4px 0 rgba(21,33,31,.1)}
+  .goal svg{width:34px;height:34px;flex:none}
+  .goal b{font-family:"Bricolage Grotesque";font-weight:700;font-size:1.1rem}
+
+  /* pricing */
+  .price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:36px}
+  .plan{background:var(--paper);border:1.5px solid var(--ink);border-radius:var(--r);padding:22px;
+    display:flex;flex-direction:column;box-shadow:4px 4px 0 rgba(21,33,31,.1);position:relative}
+  .plan.feat{border-color:var(--orange);box-shadow:5px 5px 0 var(--orange)}
+  .plan .flag{position:absolute;top:-12px;right:16px;background:var(--orange);color:#fff;
+    font-family:"Bricolage Grotesque";font-weight:700;font-size:.66rem;text-transform:uppercase;
+    letter-spacing:.06em;padding:4px 10px;border-radius:20px}
+  .plan .pico{width:30px;height:30px;margin-bottom:12px}
+  .plan h3{font-family:"Bricolage Grotesque";font-weight:700;font-size:1.08rem}
+  .plan .desc{font-size:.82rem;color:var(--ink-soft);margin:5px 0 16px;min-height:2.5em}
+  .plan .price{font-family:"Bricolage Grotesque";font-weight:800;font-size:2rem;line-height:1}
+  .plan .price small{font-size:.8rem;font-weight:600;color:var(--ink-soft)}
+  .plan .from{font-size:.72rem;color:var(--ink-soft);font-weight:600;margin-bottom:2px}
+  .plan .terms{font-size:.74rem;color:var(--ink-soft);margin:4px 0 14px}
+  .plan ul{list-style:none;display:grid;gap:9px;flex:1;margin-bottom:16px}
+  .plan li{display:flex;gap:8px;font-size:.86rem;align-items:flex-start}
+  .plan li svg{width:15px;height:15px;flex:none;margin-top:3px}
+  .plan .best{text-align:center;font-family:"Bricolage Grotesque";font-weight:700;font-size:.74rem;
+    text-transform:uppercase;letter-spacing:.03em;padding:9px;border-radius:8px;background:var(--paper-3)}
+  .plan.feat .best{background:var(--orange);color:#fff}
+  .price-note{margin-top:20px;text-align:center;font-size:.92rem;color:var(--ink-soft)}
+  .price-note b{color:var(--ink)}
+
+  /* about */
+  .about{background:var(--paper-2)}
+  .about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:44px;align-items:start;margin-top:30px}
+  .portrait{border:2px solid var(--ink);border-radius:var(--r);overflow:hidden;aspect-ratio:4/4.4;
+    background:linear-gradient(160deg,#b9c2b6,#7e8c84);box-shadow:6px 6px 0 rgba(21,33,31,.14);
+    display:grid;place-items:center;color:#fff;position:relative}
+  .portrait .ph{font-family:"Caveat";font-size:1.4rem;opacity:.85;text-align:center;padding:20px}
+  .about-body h2{font-weight:800;font-size:clamp(1.6rem,2.6vw,2.2rem)}
+  .about-stat{display:inline-flex;align-items:baseline;gap:8px;background:var(--orange);color:#fff;
+    padding:5px 12px;border-radius:8px;margin:14px 0;font-family:"Bricolage Grotesque";font-weight:700}
+  .about-stat b{font-size:1.3rem}
+  .about-body p{color:#2c3331;margin-bottom:12px;max-width:34em}
+  .about-cols{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;margin-top:22px}
+  .bring li{display:flex;gap:11px;margin-bottom:14px;list-style:none;font-size:.9rem}
+  .bring svg{width:22px;height:22px;flex:none;margin-top:2px}
+  .stack{background:var(--paper);border:1.5px solid var(--ink);border-radius:10px;padding:18px 20px;
+    transform:rotate(-1.4deg);box-shadow:4px 4px 0 rgba(21,33,31,.1);position:relative}
+  .stack::before{content:"";position:absolute;top:-9px;left:50%;transform:translateX(-50%);
+    width:50px;height:16px;background:rgba(180,83,9,.5);border:1px solid var(--orange-deep);border-radius:3px}
+  .stack h4{font-family:"Caveat";font-size:1.5rem;margin-bottom:8px;font-weight:700}
+  .stack ul{list-style:none;font-family:"Caveat";font-size:1.18rem;line-height:1.55}
+  .stack li::before{content:"– "}
+
+  /* faq */
+  .faq-list{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+  .qa{border-bottom:1.5px solid var(--line);padding:16px 0}
+  .qa button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;
+    background:none;border:none;cursor:pointer;text-align:left;font-family:"Bricolage Grotesque";
+    font-weight:600;font-size:1rem;color:var(--ink)}
+  .qa .pm{font-size:1.4rem;color:var(--orange);flex:none;transition:transform .2s}
+  .qa.open .pm{transform:rotate(45deg)}
+  .qa .ans{max-height:0;overflow:hidden;transition:max-height .28s ease;color:var(--ink-soft);
+    font-size:.92rem}
+  .qa.open .ans{max-height:240px;padding-top:12px}
+
+  /* footer cta */
+  .footcta{background:var(--ink);color:var(--paper)}
+  .footcta .wrap{padding:40px 24px;display:flex;align-items:center;justify-content:space-between;
+    gap:30px;flex-wrap:wrap}
+  .footcta h2{font-weight:800;font-size:clamp(1.6rem,3vw,2.3rem);color:var(--paper)}
+  .footcta h2 .o{color:var(--orange)}
+  .footcta .mid{font-size:.92rem;color:#bcc4bd;max-width:18em}
+  .footcta .acts{display:flex;flex-direction:column;gap:10px}
+  .flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .flow .pill{border:1.5px solid #54605C;border-radius:20px;padding:6px 14px;font-family:"Bricolage Grotesque";
+    font-weight:600;font-size:.74rem;text-transform:uppercase;letter-spacing:.04em}
+  .flow .pill.on{border-color:var(--orange);color:var(--orange)}
+  .flow .ar{color:var(--orange)}
+  .footcta .hand{color:#bcc4bd;font-size:1.15rem;width:100%;text-align:left}
+
+  footer.end{background:var(--dark);color:#79857d;border-top:1px solid #20302d}
+  footer.end .wrap{padding:18px 24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-size:.78rem}
+  footer.end b{color:var(--paper);font-family:"Bricolage Grotesque";font-weight:700}
+  .end-mid{letter-spacing:.06em;font-weight:500}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* responsive */
+  @media(max-width:980px){
+    .hero-grid,.svc-grid,.about-grid,.build-main{grid-template-columns:1fr}
+    .stats{grid-template-columns:repeat(3,1fr)}
+    .quotes{grid-template-columns:1fr}
+    .aud{grid-template-columns:1fr;gap:22px}
+    .steps{grid-template-columns:repeat(2,1fr);gap:24px 18px}
+    .step .arr{display:none}
+    .price-grid{grid-template-columns:repeat(2,1fr)}
+    .faq-list{grid-template-columns:1fr}
+    .about-cols{grid-template-columns:1fr}
+    .navlinks{display:none}
+  }
+  @media(max-width:560px){
+    .wrap{padding:0 18px}
+    .stats{grid-template-columns:1fr;gap:18px}
+    .price-grid{grid-template-columns:1fr}
+    .build-list{grid-template-columns:1fr}
+    .hero-cta{width:100%}
+    .btn{width:100%;justify-content:center}
+    .secondary-link{width:100%;text-align:center}
+    .footcta .acts{width:100%}
+    .nav-cta{width:auto;padding:.6em .85em;font-size:.72rem;box-shadow:2px 2px 0 var(--ink)}
+    .logo-mark{width:28px;height:28px}
+    .cta-full{display:none}
+    .cta-short{display:inline}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto}
+    .reveal{opacity:1;transform:none}
+  }
+  :focus-visible{outline:3px solid var(--orange);outline-offset:2px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Switchboard AI Systems — home">
+      <svg class="logo-mark" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="8" cy="8" r="3"/><circle cx="22" cy="22" r="3"/>
+        <path d="M11 8H19a3 3 0 0 1 3 3V19"/><path d="M19 22H11a3 3 0 0 1 -3 -3V11"/>
+      </svg>
+      <div class="logo-text"><b>Switchboard</b><span>AI SYSTEMS</span></div>
+    </a>
+    <nav class="navlinks">
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#process">Process</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#about">About</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#footcta" class="btn btn-primary nav-cta"><span class="cta-full">Book a 15-min call</span><span class="cta-short">Book a call</span> <span class="arrow">→</span></a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">AI chatbots · automation · results</div>
+      <h1 style="margin-top:14px">Don't read<br>about my service.<br>
+        <span class="l2 orange ul">Chat with it.
+          <svg viewBox="0 0 300 20" preserveAspectRatio="none"><path d="M4 14 C 60 6, 120 18, 180 9 S 280 6, 296 12"/></svg>
+        </span>
+      </h1>
+      <p class="hero-sub">This is the exact assistant I build for small businesses. Ask it anything —
+        it answers instantly, works out whether you're a fit, and books a call on the spot.
+        No forms, no waiting.</p>
+
+      <div class="ticks">
+        <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg>Answers instantly</span>
+        <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg>Qualifies leads</span>
+        <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg>Books calls</span>
+      </div>
+
+      <div class="hero-cta">
+        <a href="#" class="btn btn-primary" id="heroChatBtn">Try the chatbot → ask it anything</a>
+        <a href="#footcta" class="secondary-link">Book a 15-min call</a>
+      </div>
+      <div class="cta-note">
+        <span class="hand">↳ it's live — type a real question</span>
+      </div>
+    </div>
+
+    <!-- WORKING CHAT WIDGET -->
+    <div class="chat" id="chat">
+      <div class="chat-head">
+        <span class="chat-ava">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="2.5"/><path d="M12 8V5M9 3.5h6"/><circle cx="9" cy="13" r="1.2" fill="#fff" stroke="none"/><circle cx="15" cy="13" r="1.2" fill="#fff" stroke="none"/></svg>
+        </span>
+        <div>
+          <div class="name">Switchboard Assistant</div>
+          <div class="status"><span class="dot"></span> Online</div>
+        </div>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <div class="msg bot">
+          <div class="who"><i></i> Assistant</div>
+          Hi — I'm a live demo assistant. I can answer questions about what Switchboard builds,
+          tell you what it costs, and help you book a call. What would you like to know?
+        </div>
+      </div>
+      <div class="quick" id="quick">
+        <button data-q="What can you build for my business?">What can you build?</button>
+        <button data-q="How much does it cost?">How much does it cost?</button>
+        <button data-q="Can I get a free demo for my own site?">Get a free demo</button>
+        <button data-q="I'd like to book a call.">Book a call</button>
+      </div>
+      <div class="chat-input">
+        <input id="chatInput" type="text" placeholder="Type your message…" aria-label="Message the assistant" autocomplete="off"/>
+        <button id="chatSend" aria-label="Send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        </button>
+      </div>
+      <div class="chat-foot">Built by <b style="color:var(--ink)">Switchboard AI Systems</b></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divline"/>
+
+<!-- ============ PROOF BAND (new) ============ -->
+<!-- REPLACE the stats and quotes below with your own real numbers and client testimonials. -->
+<section class="proof">
+  <div class="wrap">
+    <div class="proof-top">
+      <div>
+        <div class="eyebrow">Why "results" isn't just a word</div>
+        <h2>The assistant earns its keep in the first month.</h2>
+      </div>
+    </div>
+    <div class="stats reveal">
+      <div class="stat"><div class="n">&lt;5s</div><div class="t">Average time to answer a visitor — day or night</div></div>
+      <div class="stat"><div class="n">3×</div><div class="t">More qualified enquiries vs. a static contact form</div></div>
+      <div class="stat"><div class="n">10 min</div><div class="t">From your site to a working demo you can try</div></div>
+    </div>
+    <div class="quotes reveal">
+      <div class="quote">
+        <p>"Visitors used to bounce when no one replied. Now the assistant answers at 11pm and the booked
+          calls are already qualified by the time they reach me."</p>
+        <div class="by"><b>Sample testimonial</b> — swap in a real client quote here</div>
+      </div>
+      <div class="quote">
+        <p>"Setup was a single script tag. Within a week it was handling the questions my inbox used to
+          drown in, and routing the serious leads to my calendar."</p>
+        <div class="by"><b>Sample testimonial</b> — swap in a real client quote here</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AUDIENCES ============ -->
+<section class="sec" id="services-top">
+  <div class="wrap">
+    <div class="eyebrow ul">Built for businesses that want more leads
+      <svg viewBox="0 0 300 20" preserveAspectRatio="none"><path d="M4 14 C 80 8, 160 16, 296 11" stroke-width="5"/></svg>
+    </div>
+    <p class="aud-intro" style="margin-top:22px">Every unanswered question on your site is a lead
+      walking to a competitor. Here's who I build for.</p>
+    <div class="aud reveal">
+      <div class="card">
+        <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="#15211F" stroke-width="1.8" stroke-linejoin="round"><path d="M6 16l4-8h20l4 8M6 16v18h28V16M6 16h28M14 34V24h6v10"/><path d="M24 24h6v6h-6z"/></svg>
+        <h3>Local service businesses</h3>
+        <p>Missed calls and the same FAQs over and over cost you time and bookings.</p>
+        <div class="pull">It answers and books — so you don't.</div>
+      </div>
+      <div class="card">
+        <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="#15211F" stroke-width="1.8" stroke-linejoin="round"><circle cx="14" cy="13" r="5"/><circle cx="27" cy="15" r="4"/><path d="M5 33c0-6 4-9 9-9s9 3 9 9M22 33c0-4 3-7 6-7s6 2 6 6"/></svg>
+        <h3>Agencies</h3>
+        <p>Clients keep asking for AI features. You need a reliable partner who can actually deliver.</p>
+        <div class="pull">I build it. You scale it.</div>
+      </div>
+      <div class="card">
+        <svg class="ico" viewBox="0 0 40 40" fill="none" stroke="#15211F" stroke-width="1.8" stroke-linejoin="round"><path d="M6 8h4l3 18h18l3-12H11"/><circle cx="16" cy="32" r="2.2"/><circle cx="30" cy="32" r="2.2"/></svg>
+        <h3>Ecommerce &amp; service sites</h3>
+        <p>Shoppers research before they buy or contact you — and leave when they get stuck.</p>
+        <div class="pull">It guides them and captures more leads.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="sec services" id="services">
+  <div class="wrap svc-grid">
+    <div class="svc-lead">
+      <div class="eyebrow">My services</div>
+      <h2 style="margin-top:14px">AI systems that turn conversations into results.</h2>
+      <p>I design and build practical AI and automation that bring more leads, better replies,
+        and cleaner operations — and that you can actually run without me.</p>
+    </div>
+    <div class="svc-cards reveal">
+      <div class="svc-card">
+        <span class="svc-num">01</span>
+        <div>
+          <svg class="svc-ico" viewBox="0 0 34 34" fill="none" stroke="#B45309" stroke-width="1.8" stroke-linejoin="round"><rect x="6" y="10" width="22" height="15" rx="3"/><path d="M17 10V6M13 4.5h8"/><circle cx="12.5" cy="17" r="1.6" fill="#B45309" stroke="none"/><circle cx="21.5" cy="17" r="1.6" fill="#B45309" stroke="none"/><path d="M12 29l3-4M22 29l-3-4"/></svg>
+          <h3>AI Chatbot Architecture</h3>
+          <p>A website assistant trained on your services, FAQs, offers and rules — ready to answer
+            visitors and guide them to the next step.</p>
+        </div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-num">02</span>
+        <div>
+          <svg class="svc-ico" viewBox="0 0 34 34" fill="none" stroke="#B45309" stroke-width="1.8" stroke-linejoin="round"><path d="M5 7h24l-9 11v9l-6 3v-12z"/></svg>
+          <h3>Omnichannel Funnels</h3>
+          <p>Connect website, email, WhatsApp and social into one lead journey — so visitors don't get
+            lost between channels.</p>
+        </div>
+      </div>
+      <div class="svc-card">
+        <span class="svc-num">03</span>
+        <div>
+          <svg class="svc-ico" viewBox="0 0 34 34" fill="none" stroke="#B45309" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="13" width="9" height="8" rx="2"/><rect x="21" y="13" width="9" height="8" rx="2"/><path d="M13 17h8M9 13V9h16v4"/></svg>
+          <h3>Custom n8n Workflows</h3>
+          <p>Automations that move leads from chat to CRM, email, tasks, calendar and reports —
+            follow-up without the manual copy-paste.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SAMPLE BUILDS ============ -->
+<section class="sec" id="work">
+  <div class="wrap">
+    <div class="builds-lead">
+      <div class="eyebrow">See it in action</div>
+      <h2 style="margin-top:14px">Three sample builds. Three levels of complexity.</h2>
+      <p>These are demo builds I made to show the range — from a simple FAQ bot to a full automation
+        engine. Each walkthrough is short. Real client work is shared privately on a call.</p>
+    </div>
+
+    <div class="build-main" style="margin-top:30px">
+      <div class="video">
+        <div class="label"><span>Sample build · FAQ Chatbot</span><span>2:00 highlight</span></div>
+        <div class="play" id="playBtn" role="button" tabindex="0" aria-label="Play highlight reel">
+          <svg viewBox="0 0 24 24" fill="#15211F"><path d="M7 4v16l13-8z"/></svg>
+        </div>
+        <div class="cap"><b>90-second highlight</b><span>The fastest way to see what an assistant actually does</span></div>
+      </div>
+      <div class="seeing">
+        <h3>What you'll see</h3>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg> A realistic build brief</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg> Website + chatbot implementation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg> The lead-capture logic</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg> Calendar handoff</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13l5 5L20 6"/></svg> The owner dashboard</li>
+        </ul>
+        <div class="note">↳ Prefer the long version? Full 10-min builds below.</div>
+      </div>
+    </div>
+
+    <div class="build-list" style="margin-top:26px">
+      <div class="build-item">
+        <span class="tag t-beg">Beginner</span>
+        <h4>Dental Studio — FAQ bot</h4>
+        <p>A simple assistant that answers visitor questions and captures contact details.</p>
+      </div>
+      <div class="build-item">
+        <span class="tag t-int">Intermediate</span>
+        <h4>Home Renovations — booking</h4>
+        <p>Qualifies the lead, collects project details, and books a call automatically.</p>
+      </div>
+      <div class="build-item">
+        <span class="tag t-adv">Advanced</span>
+        <h4>Solar Solutions — automation</h4>
+        <p>CRM + n8n system that routes leads, follows up, and reports on results.</p>
+      </div>
+    </div>
+
+    <div class="banner">
+      <div class="l">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 1 6 6c0 3-2 4-2 7H8c0-3-2-4-2-7a6 6 0 0 1 6-6zM9 20h6M10 22h4"/></svg>
+        <span>Want one of these built for <b>your</b> website?</span>
+      </div>
+      <a href="#footcta" class="btn btn-primary">Start with a free demo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="sec process" id="process">
+  <div class="wrap">
+    <div class="eyebrow ul">How the implementation works
+      <svg viewBox="0 0 300 20" preserveAspectRatio="none"><path d="M4 14 C 80 8, 160 16, 296 11" stroke-width="5"/></svg>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <svg class="ico" viewBox="0 0 38 38" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linejoin="round"><rect x="5" y="9" width="28" height="20" rx="2"/><path d="M5 12l14 9 14-9"/></svg>
+        <div class="n">01</div><h4>You send your website</h4>
+        <p>I review your business, services and visitors.</p>
+        <span class="arr">→</span>
+      </div>
+      <div class="step">
+        <svg class="ico" viewBox="0 0 38 38" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linejoin="round"><circle cx="16" cy="16" r="9"/><path d="M22.5 22.5L31 31M12 16h8M16 12v8"/></svg>
+        <div class="n">02</div><h4>I map the opportunities</h4>
+        <p>We define what to answer, qualify and automate.</p>
+        <span class="arr">→</span>
+      </div>
+      <div class="step">
+        <svg class="ico" viewBox="0 0 38 38" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linejoin="round"><rect x="8" y="11" width="22" height="15" rx="3"/><path d="M19 11V7M15 5h8"/><circle cx="14" cy="18" r="1.6" fill="#15211F" stroke="none"/><circle cx="24" cy="18" r="1.6" fill="#15211F" stroke="none"/></svg>
+        <div class="n">03</div><h4>I build &amp; train it</h4>
+        <p>Knowledge, flows, rules and integrations.</p>
+        <span class="arr">→</span>
+      </div>
+      <div class="step">
+        <svg class="ico" viewBox="0 0 38 38" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linejoin="round"><rect x="6" y="8" width="26" height="17" rx="2"/><path d="M14 31h10M19 25v6"/></svg>
+        <div class="n">04</div><h4>I install it on your site</h4>
+        <p>One simple script tag. Go live quickly.</p>
+        <span class="arr">→</span>
+      </div>
+      <div class="step">
+        <svg class="ico" viewBox="0 0 38 38" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linejoin="round"><path d="M8 30V18M16 30V10M24 30V20M32 30V14"/><path d="M6 30h28"/></svg>
+        <div class="n">05</div><h4>We review &amp; improve</h4>
+        <p>I track conversations and make it better.</p>
+      </div>
+    </div>
+    <div class="goal reveal">
+      <svg viewBox="0 0 34 34" fill="none" stroke="#B45309" stroke-width="1.8"><circle cx="17" cy="17" r="13"/><circle cx="17" cy="17" r="7"/><circle cx="17" cy="17" r="1.5" fill="#B45309"/></svg>
+      <b>All focused on one goal: more qualified leads and booked calls.</b>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="sec" id="pricing">
+  <div class="wrap">
+    <div class="eyebrow">Engagement options</div>
+    <h2 style="font-weight:800;font-size:clamp(1.8rem,3vw,2.4rem);margin-top:12px">Clear pricing. Start small, scale when it works.</h2>
+    <div class="price-grid reveal">
+      <div class="plan">
+        <svg class="pico" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linejoin="round"><rect x="5" y="8" width="20" height="13" rx="3"/><path d="M15 8V5M12 3.5h6"/></svg>
+        <h3>Website Assistant</h3>
+        <div class="desc">FAQ answers + basic lead capture.</div>
+        <div class="from">from</div>
+        <div class="price">€399</div>
+        <div class="terms">one-time setup</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> FAQ answers</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> Lead capture</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> Human handoff</li>
+        </ul>
+        <div class="best">Best for getting started</div>
+      </div>
+
+      <div class="plan feat">
+        <span class="flag">Most popular</span>
+        <svg class="pico" viewBox="0 0 30 30" fill="none" stroke="#B45309" stroke-width="1.7" stroke-linejoin="round"><rect x="5" y="5" width="20" height="20" rx="3"/><path d="M10 12h10M10 16h7M9 21l3-2 3 2"/></svg>
+        <h3>Booking Assistant</h3>
+        <div class="desc">Qualification + calendar handoff.</div>
+        <div class="from">from</div>
+        <div class="price">€799</div>
+        <div class="terms">one-time setup</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> Lead qualification</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> Calendar integration</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> Booked calls</li>
+        </ul>
+        <div class="best">Best for service businesses</div>
+      </div>
+
+      <div class="plan">
+        <svg class="pico" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linejoin="round"><circle cx="9" cy="9" r="4"/><circle cx="21" cy="21" r="4"/><path d="M13 9h5a3 3 0 0 1 3 3v5M17 21h-5a3 3 0 0 1-3-3v-5"/></svg>
+        <h3>Automation System</h3>
+        <div class="desc">Chatbot + CRM + n8n + reports.</div>
+        <div class="from">from</div>
+        <div class="price">€1499<small> +</small></div>
+        <div class="terms">scales with integrations &amp; workflows</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> CRM integration</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> n8n workflows</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> Reporting &amp; follow-up</li>
+        </ul>
+        <div class="best">Best for growing teams</div>
+      </div>
+
+      <div class="plan">
+        <svg class="pico" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linejoin="round"><path d="M15 4a11 11 0 1 1-9 5"/><path d="M6 4v5h5"/><path d="M15 9v6l4 2"/></svg>
+        <h3>Care &amp; Improvement</h3>
+        <div class="desc">Optional. Keeps it accurate and improving.</div>
+        <div class="from">from</div>
+        <div class="price">€99<small> /mo</small></div>
+        <div class="terms">optional add-on to any build</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> Conversation review</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> FAQ updates</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="#3F7A4E" stroke-width="3" stroke-linecap="round"><path d="M4 13l5 5L20 6"/></svg> Performance reports</li>
+        </ul>
+        <div class="best">Ongoing optimization</div>
+      </div>
+    </div>
+    <p class="price-note"><b>Not sure which fits?</b> I'll build you a working demo on your own site —
+      free — before you decide anything. <a href="#footcta" class="secondary-link">Start with a free demo</a></p>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="sec about" id="about">
+  <div class="wrap">
+    <div class="eyebrow">About me</div>
+    <div class="about-grid">
+      <!-- REPLACE this placeholder with a real portrait photo (<img src="..." />) -->
+      <div class="portrait"><span class="ph">[ your photo here ]</span></div>
+      <div class="about-body">
+        <h2>I'm Cristi Șatcovschi.</h2>
+        <div class="about-stat"><b>40+</b> assistants &amp; automations shipped</div>
+        <p>I build practical AI systems that help businesses capture more leads and save time —
+          combining strategy, automation and clean implementation into something that's easy to run
+          and built to scale.</p>
+        <div class="about-cols">
+          <ul class="bring">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="1.8" stroke-linejoin="round"><path d="M3 12h7l2-4 3 8 2-4h4"/></svg> Clear lead-flow design before any building starts</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="1.8" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg> Chatbot setup connected to booking and follow-up</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="1.8" stroke-linejoin="round"><path d="M4 20V8M11 20V4M18 20v-8"/></svg> Monthly review to improve answers and capture more leads</li>
+          </ul>
+          <div class="stack">
+            <h4>Tech stack</h4>
+            <ul>
+              <li>n8n</li><li>OpenAI / GPT</li><li>Node.js / Nest</li>
+              <li>React / JS</li><li>MongoDB</li><li>Shopify</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec" id="faq" style="background:var(--paper-2)">
+  <div class="wrap">
+    <div class="eyebrow">FAQ</div>
+    <h2 style="font-weight:800;font-size:clamp(1.8rem,3vw,2.4rem);margin-top:12px">Questions, answered.</h2>
+    <div class="faq-list">
+      <div class="qa">
+        <button>Will the chatbot make things up? <span class="pm">+</span></button>
+        <div class="ans">No — it only answers from the knowledge I train it on (your services, FAQs and rules).
+          When it doesn't know something, it says so and hands off to you instead of guessing.</div>
+      </div>
+      <div class="qa">
+        <button>Can it book calls? <span class="pm">+</span></button>
+        <div class="ans">Yes. The Booking Assistant and Automation System qualify the visitor and book straight
+          into your calendar, so the calls you get are already warm.</div>
+      </div>
+      <div class="qa">
+        <button>Do I need to manage the AI myself? <span class="pm">+</span></button>
+        <div class="ans">Not unless you want to. Everything is set up for you, and the optional Care plan keeps
+          it accurate and improving so you can stay hands-off.</div>
+      </div>
+      <div class="qa">
+        <button>Can it work on my existing website? <span class="pm">+</span></button>
+        <div class="ans">Almost always. Installation is usually one script tag, so it works on most platforms
+          without rebuilding anything.</div>
+      </div>
+      <div class="qa">
+        <button>Can I review the conversations? <span class="pm">+</span></button>
+        <div class="ans">Yes — you get an owner dashboard showing what visitors asked, which leads were captured,
+          and what got booked.</div>
+      </div>
+      <div class="qa">
+        <button>How long does it take to set up? <span class="pm">+</span></button>
+        <div class="ans">A simple assistant can be live within days. A full automation system depends on the
+          integrations, and we'll agree a clear timeline up front.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER CTA ============ -->
+<section class="footcta" id="footcta">
+  <div class="wrap">
+    <div>
+      <h2>Don't read another section.<br><span class="o">Try the assistant.</span></h2>
+      <div class="flow">
+        <span class="pill on">Conversation</span><span class="ar">→</span>
+        <span class="pill">Qualified lead</span><span class="ar">→</span>
+        <span class="pill">Booked call</span>
+      </div>
+      <p class="hand" style="margin-top:10px">↳ that's the whole system.</p>
+    </div>
+    <p class="mid">Send me your website and I'll show you exactly what your chatbot could answer,
+      qualify and book.</p>
+    <div class="acts">
+      <a href="#top" class="btn btn-primary" id="footChatBtn">Try the chatbot →</a>
+      <a href="mailto:hello@switchboard.ai" class="btn btn-ghost" style="background:var(--paper);">Book a 15-min call →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="end">
+  <div class="wrap">
+    <span style="display:inline-flex;align-items:center;gap:8px"><svg width="22" height="22" viewBox="0 0 30 30" fill="none" stroke="#E9E8DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="22" cy="22" r="3"/><path d="M11 8H19a3 3 0 0 1 3 3V19"/><path d="M19 22H11a3 3 0 0 1 -3 -3V11"/></svg><b>Switchboard AI Systems</b></span>
+    <span class="end-mid">AI CHATBOTS · AUTOMATION · RESULTS</span>
+    <span>© 2026 — All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+/* ---------- FAQ accordion ---------- */
+document.querySelectorAll('.qa button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const qa=b.parentElement;
+    const open=qa.classList.contains('open');
+    document.querySelectorAll('.qa').forEach(x=>x.classList.remove('open'));
+    if(!open) qa.classList.add('open');
+  });
+});
+
+/* ---------- scroll reveal ---------- */
+const io=new IntersectionObserver((es)=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+},{threshold:.14});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- play button (demo) ---------- */
+document.getElementById('playBtn').addEventListener('click',()=>{
+  alert("Demo reel placeholder — drop in your video embed (YouTube/Vimeo/MP4) here.");
+});
+
+/* ---------- focus the chat from the hero/footer CTAs ---------- */
+function focusChat(){
+  const c=document.getElementById('chat');
+  c.scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(()=>document.getElementById('chatInput').focus(),500);
+}
+document.getElementById('heroChatBtn').addEventListener('click',e=>{e.preventDefault();focusChat();});
+document.getElementById('footChatBtn').addEventListener('click',e=>{e.preventDefault();focusChat();});
+
+/* ====================================================================
+   WORKING CHATBOT
+   Calls the Claude API (handled by the host environment — no key needed).
+   Falls back to scripted answers if the API is unavailable, so the demo
+   always works.
+   ==================================================================== */
+const chatBody=document.getElementById('chatBody');
+const input=document.getElementById('chatInput');
+const sendBtn=document.getElementById('chatSend');
+
+const SYSTEM=`You are the Switchboard Assistant, a friendly demo AI on the website of Switchboard AI Systems, run by Cristi Șatcovschi. Switchboard builds AI chatbots and automation for small businesses that answer visitor questions, qualify leads, and book calls.
+
+Offerings & pricing:
+- Website Assistant — from €399 one-time: FAQ answers + basic lead capture.
+- Booking Assistant — from €799 one-time: lead qualification + calendar handoff + booked calls.
+- Automation System — from €1499 (scales with integrations/workflows): chatbot + CRM + n8n workflows + reporting & follow-up.
+- Care & Improvement — €99/month, OPTIONAL add-on: conversation review, FAQ updates, performance reports.
+Tech stack: n8n, OpenAI/GPT, Node.js/Nest, React, MongoDB, Shopify.
+Cristi offers a FREE working demo built on the visitor's own site before they commit.
+
+Your job: answer concisely and warmly (1-3 short sentences, no markdown, no bullet symbols), figure out what the visitor needs, and when it makes sense suggest a free demo or a free 15-minute call. If asked something off-topic, gently steer back to how Switchboard can help. Never invent fake statistics or name specific past clients.`;
+
+const history=[];
+
+function addMsg(role,text){
+  const d=document.createElement('div');
+  d.className='msg '+(role==='user'?'user':'bot');
+  if(role==='user'){d.textContent=text;}
+  else{d.innerHTML='<div class="who"><i></i> Assistant</div>'+escapeHtml(text);}
+  chatBody.appendChild(d);
+  chatBody.scrollTop=chatBody.scrollHeight;
+  return d;
+}
+function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
+function typingIndicator(){
+  const d=document.createElement('div');
+  d.className='msg bot';
+  d.innerHTML='<div class="who"><i></i> Assistant</div><span class="typing"><span></span><span></span><span></span></span>';
+  chatBody.appendChild(d);chatBody.scrollTop=chatBody.scrollHeight;return d;
+}
+
+/* scripted fallback so the demo never dies */
+function fallback(q){
+  q=q.toLowerCase();
+  if(q.match(/price|cost|how much|€|euro|pricing/))
+    return "Builds start at €399 for a Website Assistant, €799 for a Booking Assistant, and from €1499 for a full Automation System. There's an optional €99/mo Care plan to keep it sharp. Want a free demo to see which fits?";
+  if(q.match(/demo|try|free|show/))
+    return "Happy to! I build a free working demo on your own site before you commit anything. Send your website and I'll show you what your assistant could answer and book.";
+  if(q.match(/book|call|talk|meeting|appointment/))
+    return "Let's set up a free 15-minute call — use the “Book a 15-min call” button up top, or send your website and I'll prep a demo first.";
+  if(q.match(/build|do|make|offer|service|what can/))
+    return "I build website assistants that answer questions, qualify leads and book calls — from a simple FAQ bot up to a full CRM + automation system. What does your business do?";
+  if(q.match(/work|website|install|existing|platform/))
+    return "It usually installs with a single script tag, so it works on most existing websites without a rebuild. What platform is your site on?";
+  if(q.match(/make.*up|hallucinat|wrong|accurate|true/))
+    return "It only answers from the knowledge I train it on, and says so (then hands off to a human) when it doesn't know — no guessing. Want to see that in a free demo?";
+  return "Good question! I can tell you what Switchboard builds, what it costs, or set up a free demo on your site. Which would help most?";
+}
+
+async function callClaude(userText){
+  history.push({role:'user',content:userText});
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:"claude-sonnet-4-6",
+        max_tokens:1000,
+        system:SYSTEM,
+        messages:history
+      })
+    });
+    if(!res.ok) throw new Error("bad status "+res.status);
+    const data=await res.json();
+    const text=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n").trim();
+    if(!text) throw new Error("empty");
+    history.push({role:'assistant',content:text});
+    return text;
+  }catch(err){
+    const fb=fallback(userText);
+    history.push({role:'assistant',content:fb});
+    return fb;
+  }
+}
+
+async function handleSend(text){
+  text=(text||'').trim();
+  if(!text) return;
+  addMsg('user',text);
+  input.value='';
+  const t=typingIndicator();
+  const reply=await callClaude(text);
+  t.remove();
+  addMsg('bot',reply);
+}
+
+sendBtn.addEventListener('click',()=>handleSend(input.value));
+input.addEventListener('keydown',e=>{if(e.key==='Enter')handleSend(input.value);});
+document.querySelectorAll('#quick button').forEach(b=>{
+  b.addEventListener('click',()=>handleSend(b.dataset.q));
+});
+</script>
+</body>
+</html>

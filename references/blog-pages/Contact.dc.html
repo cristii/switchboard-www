@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/colors.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/typography.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/styles.css">
+<script src="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/_ds_bundle.js"></script>
+<style>
+  @keyframes ctBlink { 0%,100% { opacity:.25; } 50% { opacity:1; } }
+  @keyframes ctPop { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+  @keyframes ctPulse { 0% { box-shadow:0 0 0 0 rgba(63,122,78,.5); } 70% { box-shadow:0 0 0 11px rgba(63,122,78,0); } 100% { box-shadow:0 0 0 0 rgba(63,122,78,0); } }
+  @keyframes ctCheck { 0% { transform:scale(0); } 60% { transform:scale(1.18); } 100% { transform:scale(1); } }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .ct-pulse { animation: ctPulse 2s ease-out infinite; }
+  .ct-step { animation: ctPop .4s ease both; }
+  .ct-input:focus { border-color:#B45309 !important; box-shadow:0 0 0 3px rgba(180,83,9,.14); }
+  @media (prefers-reduced-motion: reduce) { * { animation:none !important; } }
+  @media (max-width: 940px) {
+    .nav-links { display:none !important; }
+    .ct-cols { grid-template-columns:1fr !important; }
+    .ct-h1 { font-size:2.2rem !important; }
+  }
+</style>
+</helmet>
+
+<div style="font-family:'Inter',system-ui,sans-serif;color:#15211F;background-color:#E9E8DF;background-image:repeating-linear-gradient(0deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),repeating-linear-gradient(90deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),url('assets/grain.svg');min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased;">
+
+  <!-- Header -->
+  <header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(6px);background:rgba(233,232,223,.82);border-bottom:1.5px solid #15211F;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="The Daily Log.dc.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <svg width="28" height="28" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <span style="display:flex;flex-direction:column;line-height:1;">
+          <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.32rem;letter-spacing:-.03em;">Switchboard</b>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.58rem;letter-spacing:.22em;color:#54605C;margin-top:3px;">AI SYSTEMS</span>
+        </span>
+      </a>
+      <nav class="nav-links" style="display:flex;gap:22px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.85rem;">
+        <a href="Services.dc.html" style="color:inherit;text-decoration:none;">Services</a>
+        <a href="Process.dc.html" style="color:inherit;text-decoration:none;">Process</a>
+        <a href="Pricing.dc.html" style="color:inherit;text-decoration:none;">Pricing</a>
+        <a href="About.dc.html" style="color:inherit;text-decoration:none;">About</a>
+        <a href="#top" style="color:#B45309;text-decoration:none;border-bottom:2px solid #B45309;padding-bottom:2px;">Contact</a>
+      </nav>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="sm" href="Pricing.dc.html#book" hint-size="150px,40px">Book a call →</x-import>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="top" style="max-width:1180px;margin:0 auto;padding:64px 24px 26px;text-align:center;">
+    <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:14px;">
+      <span style="width:18px;height:18px;background:#B45309;-webkit-mask:url('assets/icons/send.svg') center/contain no-repeat;mask:url('assets/icons/send.svg') center/contain no-repeat;display:inline-block;"></span>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="160px,18px">Get in touch</x-import>
+    </div>
+    <h1 class="ct-h1" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.2rem,4.6vw,3.6rem);line-height:1.05;letter-spacing:-.02em;margin:0 auto;max-width:14em;">
+      Two ways to start.
+      <span style="color:#B45309;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.HandUnderline" hint-size="220px,1em">Both are automated.</x-import></span>
+    </h1>
+    <p style="margin:22px auto 0;font-size:1.12rem;max-width:34em;color:#232b29;line-height:1.55;">
+      Talk to my AI intake agent for an instant scope and ballpark price — or fill out the form the classic way. Either route, you'll hear back automatically within 60 seconds.
+    </p>
+  </section>
+
+  <!-- Two columns -->
+  <section style="max-width:1180px;margin:0 auto;padding:34px 24px 64px;">
+    <div class="ct-cols" style="display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start;">
+
+      <!-- ====== LEFT: AI agent ====== -->
+      <div>
+        <div style="margin-bottom:16px;">
+          <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:#B45309;margin-bottom:8px;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#B45309;"></span>The fast track
+          </div>
+          <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.34rem;letter-spacing:-.01em;margin:0;">Want an instant estimate? Talk to my AI agent.</h2>
+        </div>
+
+        <div style="background:#fff;border:2px solid #15211F;border-radius:18px;box-shadow:8px 8px 0 rgba(21,33,31,.12);overflow:hidden;display:flex;flex-direction:column;height:600px;">
+          <!-- chat head -->
+          <div style="background:#11201E;color:#E9E8DF;padding:14px 16px;display:flex;align-items:center;gap:11px;">
+            <span style="width:34px;height:34px;border-radius:9px;background:#B45309;display:grid;place-items:center;">
+              <span style="width:20px;height:20px;background:#fff;-webkit-mask:url('assets/icons/assistant.svg') center/contain no-repeat;mask:url('assets/icons/assistant.svg') center/contain no-repeat;"></span>
+            </span>
+            <div style="flex:1;">
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.95rem;line-height:1.1;">Switchboard Intake Agent</div>
+              <div style="font-size:.72rem;color:#b9c9b6;display:flex;align-items:center;gap:5px;"><span class="ct-pulse" style="width:7px;height:7px;border-radius:50%;background:#5fcf7a;"></span> Online · replies in seconds</div>
+            </div>
+          </div>
+          <!-- messages -->
+          <div ref="{{ chatBodyRef }}" style="padding:16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:12px;background:#E9E8DF;">
+            <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="1">
+              <div style="{{ m.bubbleStyle }}">
+                <sc-if value="{{ m.showLabel }}">
+                  <div style="display:flex;align-items:center;gap:7px;font-size:.7rem;color:#54605C;margin-bottom:5px;font-weight:600;">
+                    <i style="width:16px;height:16px;border-radius:5px;background:#B45309;display:inline-block;"></i>Assistant
+                  </div>
+                </sc-if>
+                {{ m.text }}
+              </div>
+            </sc-for>
+            <sc-if value="{{ typing }}">
+              <div style="{{ botBubbleStyle }}">
+                <span style="display:inline-flex;gap:4px;align-items:center;">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#54605C;animation:ctBlink 1s 0s infinite;"></span>
+                  <span style="width:6px;height:6px;border-radius:50%;background:#54605C;animation:ctBlink 1s .15s infinite;"></span>
+                  <span style="width:6px;height:6px;border-radius:50%;background:#54605C;animation:ctBlink 1s .3s infinite;"></span>
+                </span>
+              </div>
+            </sc-if>
+          </div>
+          <!-- quick replies -->
+          <div style="display:flex;flex-wrap:wrap;gap:7px;padding:10px 16px 6px;background:#E9E8DF;">
+            <sc-for list="{{ quickReplies }}" as="q" hint-placeholder-count="3">
+              <button onClick="{{ q.onClick }}" style="background:#fff;border:1.5px solid #15211F;border-radius:20px;padding:7px 13px;font-size:.8rem;font-family:'Inter',sans-serif;cursor:pointer;color:#15211F;">{{ q.label }}</button>
+            </sc-for>
+          </div>
+          <!-- input -->
+          <div style="display:flex;gap:8px;padding:12px 14px;border-top:1.5px solid #15211F;background:#fff;">
+            <input ref="{{ inputRef }}" onKeyDown="{{ onKey }}" placeholder="Describe what's eating your time…" aria-label="Message the agent" class="ct-input" style="flex:1;border:1.5px solid #15211F;border-radius:9px;padding:11px 12px;font-family:'Inter',sans-serif;font-size:.9rem;outline:none;transition:box-shadow .12s ease,border-color .12s ease;">
+            <button onClick="{{ onSend }}" aria-label="Send" style="background:#B45309;border:none;border-radius:9px;width:44px;cursor:pointer;display:grid;place-items:center;box-shadow:2px 2px 0 #15211F;">
+              <span style="width:18px;height:18px;background:#fff;-webkit-mask:url('assets/icons/send.svg') center/contain no-repeat;mask:url('assets/icons/send.svg') center/contain no-repeat;"></span>
+            </button>
+          </div>
+          <div style="text-align:center;font-size:.68rem;color:#54605C;padding:8px;background:#fff;border-top:1px solid rgba(21,33,31,.1);">
+            Live AI · scopes pushed to CRM via <b style="color:#15211F;">n8n</b> webhook
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== RIGHT: traditional form ====== -->
+      <div>
+        <div style="margin-bottom:16px;">
+          <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:#54605C;margin-bottom:8px;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#54605C;"></span>The classic way
+          </div>
+          <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.34rem;letter-spacing:-.01em;margin:0;">Prefer the classic way? Drop your project specs below.</h2>
+        </div>
+
+        <div style="background:#fff;border:2px solid #15211F;border-radius:18px;box-shadow:8px 8px 0 rgba(21,33,31,.12);min-height:600px;display:flex;flex-direction:column;">
+
+          <!-- FORM -->
+          <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:24px 24px 26px;">
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <label style="display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:6px;">Name</label>
+                <input ref="{{ nameRef }}" class="ct-input" placeholder="Your name" style="width:100%;box-sizing:border-box;border:1.5px solid #15211F;border-radius:9px;padding:11px 12px;font-family:'Inter',sans-serif;font-size:.92rem;outline:none;transition:box-shadow .12s,border-color .12s;">
+              </div>
+              <div>
+                <label style="display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:6px;">Email</label>
+                <input ref="{{ emailRef }}" type="email" class="ct-input" placeholder="you@company.com" style="width:100%;box-sizing:border-box;border:1.5px solid #15211F;border-radius:9px;padding:11px 12px;font-family:'Inter',sans-serif;font-size:.92rem;outline:none;transition:box-shadow .12s,border-color .12s;">
+              </div>
+            </div>
+
+            <!-- Current infrastructure -->
+            <div style="margin-top:20px;">
+              <label style="display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:9px;">What tools do you currently use?</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                <sc-for list="{{ infraOptions }}" as="opt" hint-placeholder-count="6">
+                  <button onClick="{{ opt.onToggle }}" style="{{ opt.style }}">{{ opt.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+
+            <!-- Bottleneck -->
+            <div style="margin-top:20px;">
+              <label style="display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:6px;">What manual process is costing you the most time?</label>
+              <textarea ref="{{ bottleneckRef }}" class="ct-input" rows="3" placeholder="e.g. We re-key every Stripe order into HubSpot by hand…" style="width:100%;box-sizing:border-box;border:1.5px solid #15211F;border-radius:9px;padding:11px 12px;font-family:'Inter',sans-serif;font-size:.92rem;outline:none;resize:vertical;transition:box-shadow .12s,border-color .12s;"></textarea>
+            </div>
+
+            <!-- Stack toggle -->
+            <div style="margin-top:20px;">
+              <label style="display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:9px;">Preferred ecosystem</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                <sc-for list="{{ stackOptions }}" as="opt" hint-placeholder-count="4">
+                  <button onClick="{{ opt.onSelect }}" style="{{ opt.style }}">{{ opt.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+
+            <!-- Budget -->
+            <div style="margin-top:20px;">
+              <label style="display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:#54605C;margin-bottom:6px;">Budget range</label>
+              <select value="{{ budget }}" onChange="{{ onBudget }}" class="ct-input" style="width:100%;box-sizing:border-box;border:1.5px solid #15211F;border-radius:9px;padding:11px 12px;font-family:'Inter',sans-serif;font-size:.92rem;outline:none;background:#fff;cursor:pointer;transition:box-shadow .12s,border-color .12s;">
+                <option value="">Select a range — builds start at $800</option>
+                <option value="$800 – $1,500">$800 – $1,500 · a focused build</option>
+                <option value="$1,500 – $4,000">$1,500 – $4,000 · multi-workflow system</option>
+                <option value="$4,000 – $10,000">$4,000 – $10,000 · custom infrastructure</option>
+                <option value="$10,000+">$10,000+ · ongoing platform work</option>
+              </select>
+            </div>
+
+            <sc-if value="{{ err }}">
+              <p style="margin:14px 0 0;font-size:.86rem;color:#C12A2A;font-weight:500;">{{ err }}</p>
+            </sc-if>
+
+            <button onClick="{{ onSubmit }}" style="margin-top:22px;width:100%;min-height:52px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:.02em;color:#fff;background:#B45309;border:2px solid #8a3f07;border-radius:10px;cursor:pointer;box-shadow:3px 3px 0 #15211F;display:flex;align-items:center;justify-content:center;gap:.5em;">Send project specs →</button>
+
+            <!-- Live infra badges -->
+            <div style="margin-top:20px;padding-top:18px;border-top:1.5px solid rgba(21,33,31,.12);">
+              <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:#54605C;margin-bottom:10px;text-align:center;">Built with</div>
+              <div style="display:flex;flex-wrap:wrap;gap:9px;justify-content:center;">
+                <span style="display:inline-flex;align-items:center;gap:7px;border:1.5px solid #15211F;background:#E9E8DF;border-radius:20px;padding:6px 13px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;"><span style="width:9px;height:9px;border-radius:50%;background:#EA4B71;"></span>n8n</span>
+                <span style="display:inline-flex;align-items:center;gap:7px;border:1.5px solid #15211F;background:#E9E8DF;border-radius:20px;padding:6px 13px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;"><span style="width:9px;height:9px;border-radius:50%;background:#7C66DC;"></span>Trigger.dev</span>
+                <span style="display:inline-flex;align-items:center;gap:7px;border:1.5px solid #15211F;background:#E9E8DF;border-radius:20px;padding:6px 13px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;"><span style="width:9px;height:9px;border-radius:50%;background:#3F7A4E;"></span>Node.js</span>
+                <span style="display:inline-flex;align-items:center;gap:7px;border:1.5px solid #15211F;background:#E9E8DF;border-radius:20px;padding:6px 13px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;"><span style="width:9px;height:9px;border-radius:50%;background:#B45309;"></span>Python</span>
+              </div>
+            </div>
+
+          </div>
+          </sc-if>
+
+          <!-- SUCCESS STATE -->
+          <sc-if value="{{ submitted }}">
+          <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:36px 30px;">
+            <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:30px;">
+              <span style="width:72px;height:72px;border-radius:50%;background:#3F7A4E;display:grid;place-items:center;animation:ctCheck .5s cubic-bezier(.2,.8,.2,1) both;box-shadow:5px 5px 0 rgba(21,33,31,.14);">
+                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+              </span>
+              <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.01em;margin:18px 0 6px;">Specs received — automation firing.</h3>
+              <p style="font-size:.96rem;color:#54605C;margin:0;max-width:24em;">No 48-hour wait. Watch the same workflow I'd build for you run live:</p>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:12px;max-width:30em;width:100%;margin:0 auto;">
+              <sc-if value="{{ s1 }}">
+                <div class="ct-step" style="display:flex;align-items:center;gap:13px;background:#E9E8DF;border:1.5px solid #15211F;border-radius:12px;padding:14px 16px;box-shadow:3px 3px 0 rgba(21,33,31,.1);">
+                  <span style="width:26px;height:26px;flex:none;border-radius:50%;background:#3F7A4E;display:grid;place-items:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span>
+                  <span style="font-size:.94rem;font-weight:500;">Project specs received &amp; logged</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ s2 }}">
+                <div class="ct-step" style="display:flex;align-items:center;gap:13px;background:#E9E8DF;border:1.5px solid #15211F;border-radius:12px;padding:14px 16px;box-shadow:3px 3px 0 rgba(21,33,31,.1);">
+                  <span style="width:26px;height:26px;flex:none;border-radius:50%;background:#3F7A4E;display:grid;place-items:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span>
+                  <span style="font-size:.94rem;font-weight:500;">Scope drafted &amp; pushed to CRM via n8n webhook</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ s3 }}">
+                <div class="ct-step" style="display:flex;align-items:center;gap:13px;background:#E9E8DF;border:1.5px solid #15211F;border-radius:12px;padding:14px 16px;box-shadow:3px 3px 0 rgba(21,33,31,.1);">
+                  <span style="width:26px;height:26px;flex:none;border-radius:50%;background:#3F7A4E;display:grid;place-items:center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span>
+                  <span style="font-size:.94rem;font-weight:500;">Calendar invite sent to your inbox</span>
+                </div>
+              </sc-if>
+              <sc-if value="{{ pending }}">
+                <div style="display:flex;align-items:center;gap:13px;background:#fff;border:1.5px dashed rgba(21,33,31,.4);border-radius:12px;padding:14px 16px;">
+                  <span style="width:26px;height:26px;flex:none;border-radius:50%;border:2.5px solid rgba(21,33,31,.25);border-top-color:#B45309;animation:spin .8s linear infinite;"></span>
+                  <span style="font-size:.94rem;font-weight:500;color:#54605C;">Running workflow…</span>
+                </div>
+              </sc-if>
+            </div>
+
+            <sc-if value="{{ allDone }}">
+              <div class="ct-step" style="text-align:center;margin-top:28px;">
+                <p style="font-family:'Caveat',cursive;font-size:1.4rem;color:#B45309;margin:0 0 18px;">↳ all of that in under 60 seconds — that's the system you're buying.</p>
+                <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="lg" href="Pricing.dc.html#book" arrow="true" hint-size="220px,54px" style="min-height:54px;">Lock in your call slot</x-import>
+              </div>
+            </sc-if>
+          </div>
+          </sc-if>
+
+        </div>
+      </div>
+
+    </div>
+
+    <p style="text-align:center;margin:40px auto 0;font-size:.96rem;color:#54605C;max-width:40em;">
+      Old-school is fine too — reach me directly at <a href="mailto:cristi.satcovschi@gmail.com" style="color:#B45309;font-weight:600;text-decoration:none;border-bottom:2px solid rgba(180,83,9,.35);">cristi.satcovschi@gmail.com</a> or on Telegram <a href="https://t.me/cristi_42" target="_blank" rel="noopener" style="color:#B45309;font-weight:600;text-decoration:none;border-bottom:2px solid rgba(180,83,9,.35);">@cristi_42</a>.
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#11201E;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:26px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.82rem;">
+      <span style="display:inline-flex;align-items:center;gap:9px;">
+        <svg width="22" height="22" viewBox="0 0 30 30" fill="none" stroke="#E9E8DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle>
+          <path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path>
+        </svg>
+        <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;">Switchboard AI Systems</b>
+      </span>
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#9aa49d;font-size:.72rem;">Built · Connected · Maintained — from Bucharest</span>
+      <span style="color:#9aa49d;">© 2026 — All rights reserved.</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.infraList = ['Airtable', 'HubSpot', 'Stripe', 'Notion', 'Shopify', 'Custom DB', 'Google Workspace', 'Other'];
+    this.stackList = ['Node.js / TypeScript', 'Python', 'No-Code / n8n', 'Unsure'];
+    this.state = {
+      msgs: [{ from: 'bot', text: "Hey — I'm Cristi's AI intake agent. Tell me what your business does and the manual task that's eating the most time, and I'll sketch a scope and ballpark price right here. What are you working with?", showLabel: true }],
+      typing: false,
+      infra: [],
+      stack: '',
+      budget: '',
+      submitted: false,
+      steps: 0,
+      err: '',
+    };
+  }
+
+  componentDidUpdate() {
+    if (this.chatBody) this.chatBody.scrollTop = this.chatBody.scrollHeight;
+  }
+
+  pushMsg(from, text) {
+    this.setState((s) => {
+      const prev = s.msgs[s.msgs.length - 1];
+      const showLabel = from === 'bot' && (!prev || prev.from !== 'bot');
+      return { msgs: [...s.msgs, { from, text, showLabel }] };
+    });
+  }
+
+  scripted(q) {
+    q = (q || '').toLowerCase();
+    if (/price|cost|how much|budget|\$|estimate/.test(q))
+      return "Ballpark: a focused single-workflow build starts at $800, a multi-step system runs $1,500, and custom infrastructure with AI agents is $4,000+. Tell me the process you'd automate and I'll point you to the right tier.";
+    if (/e-?commerce|store|shopify|orders|cart/.test(q))
+      return "Nice — for stores I usually wire order sync, abandoned-cart recovery and a support bot. Which one hurts most right now, and what does your stack look like?";
+    if (/follow.?up|leads?|crm|manual|copy.?past|re-?key/.test(q))
+      return "Classic bottleneck. I'd put a workflow between your lead source and CRM so follow-ups fire on their own. What tools are you copy-pasting between today?";
+    if (/book|call|meeting|talk/.test(q))
+      return "Let's do it — grab a slot on the Pricing page's booking button, or drop your specs in the form and I'll prep a scope before we talk.";
+    return "Got it. To scope this I need three things: what the manual process is, the tools it touches, and a rough budget. Want to start with the process that's costing you the most time?";
+  }
+
+  async send(text) {
+    text = (text || '').trim();
+    if (!text || this.state.typing) return;
+    const history = [...this.state.msgs, { from: 'user', text }];
+    this.pushMsg('user', text);
+    if (this.inputEl) this.inputEl.value = '';
+    this.setState({ typing: true });
+    let reply = null;
+    try {
+      if (window.claude && window.claude.complete) {
+        const sys = "You are the AI intake agent for Switchboard AI Systems — the automation & AI-chatbot studio of Cristi Satcovschi, based in Bucharest. Speak in first person as the studio, warm, plainspoken and direct, no emoji. Your job is to qualify a lead fast: find out (1) what their business does, (2) the manual process costing them the most time, (3) the tools they currently use, (4) preferred stack (Node.js/Python/n8n/unsure), (5) rough budget — builds start at $800. Ask ONE focused question at a time. Keep every reply to 2-3 short sentences. Once you have enough, draft a one-paragraph project scope and name a tier ($800 Foundation, $1,500 Growth Engine, or $4,000+ Custom Infrastructure), then invite them to book a call.";
+        const convo = history.map((m) => ({ role: m.from === 'bot' ? 'assistant' : 'user', content: m.text }));
+        const messages = [
+          { role: 'user', content: sys },
+          { role: 'assistant', content: "Understood — I'll qualify the lead with short, focused questions." },
+          ...convo,
+        ];
+        reply = await window.claude.complete({ messages });
+      }
+    } catch (e) {
+      reply = null;
+    }
+    if (!reply) reply = this.scripted(text);
+    this.setState({ typing: false });
+    this.pushMsg('bot', reply);
+  }
+
+  toggleInfra(label) {
+    this.setState((s) => ({
+      infra: s.infra.includes(label) ? s.infra.filter((x) => x !== label) : [...s.infra, label],
+    }));
+  }
+
+  submitForm() {
+    const name = this.nameEl && this.nameEl.value.trim();
+    const email = this.emailEl && this.emailEl.value.trim();
+    if (!name || !email) {
+      this.setState({ err: 'Please add your name and email so the automation has somewhere to reply.' });
+      return;
+    }
+    this.setState({ submitted: true, steps: 0, err: '' });
+    [1, 2, 3].forEach((n) => setTimeout(() => this.setState({ steps: n }), 750 * n));
+  }
+
+  bubbleStyle(from) {
+    const base = "max-width:84%;padding:10px 13px;border-radius:13px;font-size:.9rem;line-height:1.45;word-wrap:break-word;";
+    return from === 'bot'
+      ? base + "align-self:flex-start;background:#fff;color:#15211F;border:1.5px solid rgba(21,33,31,.18);border-bottom-left-radius:4px;"
+      : base + "align-self:flex-end;background:#B45309;color:#fff;border-bottom-right-radius:4px;";
+  }
+
+  chipStyle(selected) {
+    const base = "display:inline-flex;align-items:center;gap:7px;border-radius:9px;padding:8px 13px;font-size:.86rem;font-weight:600;cursor:pointer;border:1.5px solid #15211F;font-family:'Inter',sans-serif;transition:all .12s ease;";
+    return selected
+      ? base + "background:#B45309;color:#fff;border-color:#8a3f07;box-shadow:2px 2px 0 #15211F;"
+      : base + "background:#fff;color:#15211F;";
+  }
+
+  renderVals() {
+    const s = this.state;
+    return {
+      msgs: s.msgs.map((m) => ({ ...m, bubbleStyle: this.bubbleStyle(m.from) })),
+      botBubbleStyle: this.bubbleStyle('bot'),
+      typing: s.typing,
+      budget: s.budget,
+      err: s.err,
+      submitted: s.submitted,
+      notSubmitted: !s.submitted,
+      s1: s.steps >= 1,
+      s2: s.steps >= 2,
+      s3: s.steps >= 3,
+      pending: s.submitted && s.steps < 3,
+      allDone: s.steps >= 3,
+      chatBodyRef: (el) => { this.chatBody = el; },
+      inputRef: (el) => { this.inputEl = el; },
+      nameRef: (el) => { this.nameEl = el; },
+      emailRef: (el) => { this.emailEl = el; },
+      bottleneckRef: (el) => { this.bottleneckEl = el; },
+      onKey: (e) => { if (e.key === 'Enter') { e.preventDefault(); this.send(e.target.value); } },
+      onSend: () => this.send(this.inputEl ? this.inputEl.value : ''),
+      onSubmit: () => this.submitForm(),
+      onBudget: (e) => this.setState({ budget: e.target.value }),
+      quickReplies: ['I run an e-commerce store', 'Too many manual follow-ups', 'What would this cost?'].map((label) => ({
+        label, onClick: () => this.send(label),
+      })),
+      infraOptions: this.infraList.map((label) => ({
+        label, style: this.chipStyle(this.state.infra.includes(label)), onToggle: () => this.toggleInfra(label),
+      })),
+      stackOptions: this.stackList.map((label) => ({
+        label, style: this.chipStyle(this.state.stack === label), onSelect: () => this.setState({ stack: label }),
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

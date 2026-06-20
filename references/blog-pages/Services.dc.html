@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/colors.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/typography.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/styles.css">
+<script src="_ds/switchboard-design-system-2b7957c1-b1ac-40e5-8613-071920463716/_ds_bundle.js"></script>
+<style>
+  *{box-sizing:border-box;}
+  @keyframes svc-bob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-9px);} }
+  @keyframes svc-marquee { to { transform:translateX(-50%); } }
+  @keyframes svc-flow { 0%{left:-2%;opacity:0;} 12%{opacity:1;} 88%{opacity:1;} 100%{left:100%;opacity:0;} }
+  @keyframes svc-flowdown { 0%{top:-2%;opacity:0;} 14%{opacity:1;} 86%{opacity:1;} 100%{top:100%;opacity:0;} }
+  @keyframes svc-pulse { 0%,100%{box-shadow:5px 5px 0 rgba(21,33,31,.12);} 50%{box-shadow:0 0 0 5px rgba(180,83,9,.16),5px 5px 0 rgba(21,33,31,.12);} }
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .75s cubic-bezier(.2,.8,.2,1),transform .75s cubic-bezier(.2,.8,.2,1);}
+  .reveal.in{opacity:1;transform:none;}
+  .bob{animation:svc-bob 4s ease-in-out infinite;}
+  .rot{transition:opacity .3s ease,transform .3s ease;}
+  .rot.out{opacity:0;transform:translateY(-8px);}
+  .pillar:hover{transform:translateY(-4px);box-shadow:9px 9px 0 rgba(21,33,31,.13);}
+  .pillar{transition:transform .18s ease,box-shadow .18s ease;}
+  .flowpacket{animation:svc-flow 2.6s linear infinite;}
+  .procpulse{animation:svc-pulse 2.4s ease-in-out infinite;}
+  .marquee-track{display:inline-flex;white-space:nowrap;animation:svc-marquee 28s linear infinite;}
+  .ctabtn:hover{transform:translateY(-2px);}
+  .ctabtn{transition:transform .12s ease,box-shadow .12s ease;}
+  .faqbtn:hover{color:#B45309;}
+  @media (prefers-reduced-motion:reduce){ *{animation:none !important;} .reveal{opacity:1 !important;transform:none !important;} }
+  @media (max-width:900px){
+    .nav-links{display:none !important;}
+    .hero-grid{grid-template-columns:1fr !important;}
+    .pillar-grid{grid-template-columns:1fr !important;}
+    .pillar-flip{direction:ltr !important;}
+    .why-grid{grid-template-columns:1fr !important;}
+    .center-flow{flex-direction:column !important;}
+    .center-wire{width:2px !important;height:34px !important;}
+    .center-wire .flowpacket{animation:svc-flowdown 2.6s linear infinite !important;left:50% !important;transform:translateX(-50%) !important;}
+    .center-arrow{transform:rotate(90deg) !important;}
+    .bob{animation:none !important;}
+  }
+</style>
+</helmet>
+
+<div style="font-family:'Inter',system-ui,sans-serif;color:#15211F;background-color:#E9E8DF;background-image:repeating-linear-gradient(0deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),repeating-linear-gradient(90deg, rgba(21,33,31,0.022) 0 1px, transparent 1px 32px),url('assets/grain.svg');min-height:100vh;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;">
+
+  <!-- Header -->
+  <header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(6px);background:rgba(233,232,223,.82);border-bottom:1.5px solid #15211F;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="#top" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+        <svg width="28" height="28" viewBox="0 0 30 30" fill="none" stroke="#15211F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle><path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path></svg>
+        <span style="display:flex;flex-direction:column;line-height:1;">
+          <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.32rem;letter-spacing:-.03em;">Switchboard</b>
+          <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.58rem;letter-spacing:.22em;color:#54605C;margin-top:3px;">AI SYSTEMS</span>
+        </span>
+      </a>
+      <nav class="nav-links" style="display:flex;gap:26px;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:.85rem;">
+        <a href="#top" style="color:#B45309;text-decoration:none;border-bottom:2px solid #B45309;padding-bottom:2px;">Services</a>
+        <a href="Process.dc.html" style="color:inherit;text-decoration:none;">Process</a>
+        <a href="Pricing.dc.html" style="color:inherit;text-decoration:none;">Pricing</a>
+        <a href="The Daily Log.dc.html" style="color:inherit;text-decoration:none;">Daily Log</a>
+      </nav>
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Button" variant="primary" size="sm" href="Pricing.dc.html#book" hint-size="150px,40px">Book a call →</x-import>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="top" style="max-width:1180px;margin:0 auto;padding:72px 24px 40px;">
+    <div class="hero-grid" style="display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:9px;margin-bottom:14px;">
+          <span style="width:18px;height:18px;background:#B45309;-webkit-mask:url('assets/icons/workflow.svg') center/contain no-repeat;mask:url('assets/icons/workflow.svg') center/contain no-repeat;display:inline-block;"></span>
+          <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="240px,18px">What we do</x-import>
+        </div>
+        <h1 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2.5rem,5.2vw,4.1rem);line-height:1.03;letter-spacing:-.02em;margin:0 0 8px;max-width:13em;">
+          We don't sell software. We sell
+          <span style="color:#B45309;"><x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.HandUnderline" hint-size="220px,1em">work that's done.</x-import></span>
+        </h1>
+        <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.1rem,2vw,1.5rem);letter-spacing:-.01em;color:#54605C;margin:14px 0 6px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;">
+          <span>Picture your</span>
+          <span data-rotator class="rot" style="color:#B45309;display:inline-block;min-width:9em;">missed calls answered.</span>
+        </div>
+        <p style="margin:18px 0 28px;font-size:1.08rem;max-width:33em;color:#232b29;line-height:1.6;">
+          An automation agency for home services, e-commerce and SaaS teams. We build the automated sales workflows, AI assistants and back-office systems that recover the revenue and hours leaking out of your business — then hand them over, fully yours.
+        </p>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+          <a class="ctabtn" href="Pricing.dc.html#book" style="display:inline-flex;align-items:center;gap:.5em;min-height:52px;padding:0 1.6em;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:.02em;color:#fff;background:#B45309;border:2px solid #8a3f07;border-radius:10px;text-decoration:none;box-shadow:3px 3px 0 #15211F;">Book a Mapping Call →</a>
+          <a class="ctabtn" href="The Daily Log.dc.html" style="display:inline-flex;align-items:center;gap:.5em;min-height:52px;padding:0 1.5em;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1rem;text-transform:uppercase;letter-spacing:.02em;color:#15211F;background:#E9E8DF;border:2px solid #15211F;border-radius:10px;text-decoration:none;box-shadow:3px 3px 0 rgba(21,33,31,.18);">View Recent Work</a>
+        </div>
+      </div>
+
+      <!-- floating outcome chips -->
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-content:center;justify-content:center;">
+        <div class="bob" style="animation-delay:0s;display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #15211F;border-radius:12px;padding:13px 16px;box-shadow:5px 5px 0 rgba(21,33,31,.1);">
+          <span style="width:20px;height:20px;flex:none;background:#B45309;-webkit-mask:url('assets/icons/send.svg') center/contain no-repeat;mask:url('assets/icons/send.svg') center/contain no-repeat;"></span>
+          <div><b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.1rem;">&lt; 60s</b><div style="font-size:.78rem;color:#54605C;">to first reply</div></div>
+        </div>
+        <div class="bob" style="animation-delay:.8s;display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #15211F;border-radius:12px;padding:13px 16px;box-shadow:5px 5px 0 rgba(21,33,31,.1);margin-top:18px;">
+          <span style="width:20px;height:20px;flex:none;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>
+          <div><b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.1rem;">0 leads</b><div style="font-size:.78rem;color:#54605C;">dropped</div></div>
+        </div>
+        <div class="bob" style="animation-delay:1.6s;display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #15211F;border-radius:12px;padding:13px 16px;box-shadow:5px 5px 0 rgba(21,33,31,.1);">
+          <span style="width:20px;height:20px;flex:none;background:#7C5CC4;-webkit-mask:url('assets/icons/refresh.svg') center/contain no-repeat;mask:url('assets/icons/refresh.svg') center/contain no-repeat;"></span>
+          <div><b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.1rem;">5-min</b><div style="font-size:.78rem;color:#54605C;">invoicing, automated</div></div>
+        </div>
+        <div class="bob" style="animation-delay:2.4s;display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #15211F;border-radius:12px;padding:13px 16px;box-shadow:5px 5px 0 rgba(21,33,31,.1);margin-top:14px;">
+          <span style="width:20px;height:20px;flex:none;background:#B45309;-webkit-mask:url('assets/icons/assistant.svg') center/contain no-repeat;mask:url('assets/icons/assistant.svg') center/contain no-repeat;"></span>
+          <div><b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.1rem;">24/7</b><div style="font-size:.78rem;color:#54605C;">AI receptionist</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonial + industry marquee -->
+  <section style="background:#11201E;color:#E9E8DF;border-top:1.5px solid #000;border-bottom:1.5px solid #000;overflow:hidden;">
+    <div style="max-width:1180px;margin:0 auto;padding:44px 24px 30px;text-align:center;">
+      <span style="display:inline-block;width:30px;height:30px;background:#FBBF24;-webkit-mask:url('assets/icons/assistant.svg') center/contain no-repeat;mask:url('assets/icons/assistant.svg') center/contain no-repeat;margin-bottom:14px;"></span>
+      <p style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(1.4rem,2.8vw,2.1rem);letter-spacing:-.02em;line-height:1.2;margin:0 auto;max-width:20em;color:#E9E8DF;">“Switchboard turned our manual invoicing mess into a <span style="color:#FBBF24;">5-minute automated task.</span>”</p>
+      <p style="font-size:.92rem;color:#9aa49d;margin:16px 0 0;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;letter-spacing:.04em;text-transform:uppercase;">— Operations Lead · home-services company</p>
+      <p style="font-family:'Caveat',cursive;font-size:1.2rem;color:#FBBF24;margin:8px 0 0;">↳ sample testimonial — swap for your own</p>
+    </div>
+    <div style="border-top:1.5px solid rgba(233,232,223,.18);padding:16px 0;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.86rem;letter-spacing:.16em;text-transform:uppercase;color:#9aa49d;">
+      <div class="marquee-track">
+        <span>Home services&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;E-commerce&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;Trades&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;Media buyers&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;SaaS&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;Local business&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;</span>
+        <span>Home services&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;E-commerce&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;Trades&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;Media buyers&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;SaaS&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;Local business&nbsp;&nbsp;<span style="color:#B45309;">•</span>&nbsp;&nbsp;</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pillars intro -->
+  <section style="max-width:1180px;margin:0 auto;padding:64px 24px 8px;text-align:center;">
+    <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="180px,18px">Capabilities</x-import>
+    <h2 class="reveal" data-reveal style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.9rem,3.4vw,2.8rem);letter-spacing:-.02em;margin:12px auto 0;max-width:16em;">Four systems that quietly run your business.</h2>
+    <p class="reveal" data-reveal style="font-size:1.05rem;color:#54605C;max-width:34em;margin:14px auto 0;">Grouped by outcome, not by tool. Pick the bottleneck that's costing you the most — we'll build the system that closes it.</p>
+  </section>
+
+  <!-- PILLAR 1 -->
+  <section style="max-width:1180px;margin:0 auto;padding:34px 24px;">
+    <div class="pillar reveal" data-reveal style="position:relative;background:#fff;border:1.5px solid #15211F;border-radius:18px;box-shadow:5px 5px 0 rgba(21,33,31,.1);padding:40px 40px;overflow:hidden;">
+      <div style="position:absolute;top:6px;right:24px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:9rem;line-height:1;color:rgba(180,83,9,.07);pointer-events:none;">01</div>
+      <div class="pillar-grid" style="display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;position:relative;">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <span style="display:inline-flex;width:46px;height:46px;align-items:center;justify-content:center;border:1.5px solid #15211F;border-radius:12px;background:rgba(180,83,9,.1);"><span style="width:24px;height:24px;background:#B45309;-webkit-mask:url('assets/icons/send.svg') center/contain no-repeat;mask:url('assets/icons/send.svg') center/contain no-repeat;"></span></span>
+            <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="solid" hint-size="160px,22px">For trades · ad buyers</x-import>
+          </div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.7rem;letter-spacing:-.02em;margin:0 0 6px;">Intelligent Lead Routing &amp; Sales</h3>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:#B45309;margin-bottom:12px;">Focus · speed-to-lead</div>
+          <p style="font-size:1rem;color:#232b29;line-height:1.6;margin:0 0 20px;max-width:30em;">The moment an enquiry lands, the clock starts. We make sure you answer first — every lead routed, alerted and followed up before your competitor has even checked their phone.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:30em;">
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Instant SMS lead alerts</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Automated quote follow-ups</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>CRM lead synchronization</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#B45309;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Calendar scheduling &amp; reminders</div>
+          </div>
+        </div>
+        <div style="background:#E1E2D7;border:1.5px solid #15211F;border-radius:14px;padding:22px 20px;">
+          <div style="display:flex;flex-direction:column;gap:0;align-items:center;">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Input</div>
+            <div style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:1.5px solid #15211F;border-radius:10px;padding:11px 13px;box-shadow:3px 3px 0 rgba(21,33,31,.1);"><span style="width:20px;height:20px;flex:none;background:#15211F;-webkit-mask:url('assets/icons/mail.svg') center/contain no-repeat;mask:url('assets/icons/mail.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">New enquiry arrives</span></div>
+            <div style="color:#B45309;font-size:1.3rem;line-height:1;margin:6px 0;">↓</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Processing</div>
+            <div class="procpulse" style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:2px solid #B45309;border-radius:10px;padding:11px 13px;box-shadow:5px 5px 0 rgba(21,33,31,.12);"><span style="width:20px;height:20px;flex:none;background:#B45309;-webkit-mask:url('assets/icons/send.svg') center/contain no-repeat;mask:url('assets/icons/send.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">Alert sent &amp; lead routed</span></div>
+            <div style="color:#B45309;font-size:1.3rem;line-height:1;margin:6px 0;">↓</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Output</div>
+            <div style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:1.5px solid #15211F;border-radius:10px;padding:11px 13px;box-shadow:3px 3px 0 rgba(21,33,31,.1);"><span style="width:20px;height:20px;flex:none;background:#3F7A4E;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">Job booked on your calendar</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILLAR 2 -->
+  <section style="max-width:1180px;margin:0 auto;padding:34px 24px;">
+    <div class="pillar reveal" data-reveal style="position:relative;background:#fff;border:1.5px solid #15211F;border-radius:18px;box-shadow:5px 5px 0 rgba(21,33,31,.1);padding:40px 40px;overflow:hidden;">
+      <div style="position:absolute;top:6px;right:24px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:9rem;line-height:1;color:rgba(63,122,78,.08);pointer-events:none;">02</div>
+      <div class="pillar-grid pillar-flip" style="display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center;position:relative;direction:rtl;">
+        <div style="direction:ltr;background:#E1E2D7;border:1.5px solid #15211F;border-radius:14px;padding:22px 20px;">
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Input</div>
+            <div style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:1.5px solid #15211F;border-radius:10px;padding:11px 13px;box-shadow:3px 3px 0 rgba(21,33,31,.1);"><span style="width:20px;height:20px;flex:none;background:#15211F;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">Job marked complete</span></div>
+            <div style="color:#3F7A4E;font-size:1.3rem;line-height:1;margin:6px 0;">↓</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Processing</div>
+            <div class="procpulse" style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:2px solid #3F7A4E;border-radius:10px;padding:11px 13px;box-shadow:5px 5px 0 rgba(21,33,31,.12);"><span style="width:20px;height:20px;flex:none;background:#3F7A4E;-webkit-mask:url('assets/icons/refresh.svg') center/contain no-repeat;mask:url('assets/icons/refresh.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">Invoice + review request fire</span></div>
+            <div style="color:#3F7A4E;font-size:1.3rem;line-height:1;margin:6px 0;">↓</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Output</div>
+            <div style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:1.5px solid #15211F;border-radius:10px;padding:11px 13px;box-shadow:3px 3px 0 rgba(21,33,31,.1);"><span style="width:20px;height:20px;flex:none;background:#3F7A4E;-webkit-mask:url('assets/icons/chart.svg') center/contain no-repeat;mask:url('assets/icons/chart.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">Paid &amp; 5-star rated</span></div>
+          </div>
+        </div>
+        <div style="direction:ltr;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <span style="display:inline-flex;width:46px;height:46px;align-items:center;justify-content:center;border:1.5px solid #15211F;border-radius:12px;background:rgba(63,122,78,.12);"><span style="width:24px;height:24px;background:#3F7A4E;-webkit-mask:url('assets/icons/refresh.svg') center/contain no-repeat;mask:url('assets/icons/refresh.svg') center/contain no-repeat;"></span></span>
+            <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="green" hint-size="180px,22px">For small biz · trades</x-import>
+          </div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.7rem;letter-spacing:-.02em;margin:0 0 6px;">Back-Office &amp; Operations</h3>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:#3F7A4E;margin-bottom:12px;">Focus · time saved</div>
+          <p style="font-size:1rem;color:#232b29;line-height:1.6;margin:0 0 20px;max-width:30em;">The admin that eats your evenings — invoicing, renewals, chasing reviews — runs itself in the background. You stop being your own data-entry clerk and get your nights back.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:30em;">
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Automated invoicing (QuickBooks / Xero)</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Inventory &amp; stock sync</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Recurring contract renewals</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Automated review &amp; testimonial requests</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILLAR 3 -->
+  <section style="max-width:1180px;margin:0 auto;padding:34px 24px;">
+    <div class="pillar reveal" data-reveal style="position:relative;background:#fff;border:1.5px solid #15211F;border-radius:18px;box-shadow:5px 5px 0 rgba(21,33,31,.1);padding:40px 40px;overflow:hidden;">
+      <div style="position:absolute;top:6px;right:24px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:9rem;line-height:1;color:rgba(124,92,196,.09);pointer-events:none;">03</div>
+      <div class="pillar-grid" style="display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;position:relative;">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <span style="display:inline-flex;width:46px;height:46px;align-items:center;justify-content:center;border:1.5px solid #15211F;border-radius:12px;background:rgba(124,92,196,.13);"><span style="width:24px;height:24px;background:#7C5CC4;-webkit-mask:url('assets/icons/assistant.svg') center/contain no-repeat;mask:url('assets/icons/assistant.svg') center/contain no-repeat;"></span></span>
+            <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="violet" hint-size="130px,22px">For everyone</x-import>
+          </div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.7rem;letter-spacing:-.02em;margin:0 0 6px;">AI-Powered Customer Experience</h3>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:#7C5CC4;margin-bottom:12px;">Focus · scale without hiring</div>
+          <p style="font-size:1rem;color:#232b29;line-height:1.6;margin:0 0 20px;max-width:30em;">An assistant that never sleeps answers your customers, reads their documents, and raises a ticket before anything slips — so a small team feels like a big one, around the clock.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:30em;">
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#7C5CC4;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>AI receptionist for FAQs &amp; bookings</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#7C5CC4;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Automated document triage (reads PDFs &amp; invoices)</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#7C5CC4;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Proactive support ticketing</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#7C5CC4;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>24/7 first-response</div>
+          </div>
+        </div>
+        <div style="background:#E1E2D7;border:1.5px solid #15211F;border-radius:14px;padding:22px 20px;">
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Input</div>
+            <div style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:1.5px solid #15211F;border-radius:10px;padding:11px 13px;box-shadow:3px 3px 0 rgba(21,33,31,.1);"><span style="width:20px;height:20px;flex:none;background:#15211F;-webkit-mask:url('assets/icons/mail.svg') center/contain no-repeat;mask:url('assets/icons/mail.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">Customer message or document</span></div>
+            <div style="color:#7C5CC4;font-size:1.3rem;line-height:1;margin:6px 0;">↓</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Processing</div>
+            <div class="procpulse" style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:2px solid #7C5CC4;border-radius:10px;padding:11px 13px;box-shadow:5px 5px 0 rgba(21,33,31,.12);"><span style="width:20px;height:20px;flex:none;background:#7C5CC4;-webkit-mask:url('assets/icons/assistant.svg') center/contain no-repeat;mask:url('assets/icons/assistant.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">AI reads &amp; classifies it</span></div>
+            <div style="color:#7C5CC4;font-size:1.3rem;line-height:1;margin:6px 0;">↓</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Output</div>
+            <div style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:1.5px solid #15211F;border-radius:10px;padding:11px 13px;box-shadow:3px 3px 0 rgba(21,33,31,.1);"><span style="width:20px;height:20px;flex:none;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">Answered, or escalated with context</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILLAR 4 -->
+  <section style="max-width:1180px;margin:0 auto;padding:34px 24px;">
+    <div class="pillar reveal" data-reveal style="position:relative;background:#fff;border:1.5px solid #15211F;border-radius:18px;box-shadow:5px 5px 0 rgba(21,33,31,.1);padding:40px 40px;overflow:hidden;">
+      <div style="position:absolute;top:6px;right:24px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:9rem;line-height:1;color:rgba(251,191,36,.14);pointer-events:none;">04</div>
+      <div class="pillar-grid pillar-flip" style="display:grid;grid-template-columns:.9fr 1.1fr;gap:40px;align-items:center;position:relative;direction:rtl;">
+        <div style="direction:ltr;background:#E1E2D7;border:1.5px solid #15211F;border-radius:14px;padding:22px 20px;">
+          <div style="display:flex;flex-direction:column;align-items:center;">
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Input</div>
+            <div style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:1.5px solid #15211F;border-radius:10px;padding:11px 13px;box-shadow:3px 3px 0 rgba(21,33,31,.1);"><span style="width:20px;height:20px;flex:none;background:#15211F;-webkit-mask:url('assets/icons/chart.svg') center/contain no-repeat;mask:url('assets/icons/chart.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">Traffic surge hits</span></div>
+            <div style="color:#B45309;font-size:1.3rem;line-height:1;margin:6px 0;">↓</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Processing</div>
+            <div class="procpulse" style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:2px solid #B45309;border-radius:10px;padding:11px 13px;box-shadow:5px 5px 0 rgba(21,33,31,.12);"><span style="width:20px;height:20px;flex:none;background:#B45309;-webkit-mask:url('assets/icons/workflow.svg') center/contain no-repeat;mask:url('assets/icons/workflow.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">Queued, monitored, retried</span></div>
+            <div style="color:#B45309;font-size:1.3rem;line-height:1;margin:6px 0;">↓</div>
+            <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:8px;">Output</div>
+            <div style="width:100%;display:flex;align-items:center;gap:11px;background:#fff;border:1.5px solid #15211F;border-radius:10px;padding:11px 13px;box-shadow:3px 3px 0 rgba(21,33,31,.1);"><span style="width:20px;height:20px;flex:none;background:#3F7A4E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span><span style="font-size:.9rem;font-weight:600;">Processed — nothing dropped</span></div>
+          </div>
+        </div>
+        <div style="direction:ltr;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+            <span style="display:inline-flex;width:46px;height:46px;align-items:center;justify-content:center;border:1.5px solid #15211F;border-radius:12px;background:rgba(251,191,36,.2);"><span style="width:24px;height:24px;background:#a87a08;-webkit-mask:url('assets/icons/workflow.svg') center/contain no-repeat;mask:url('assets/icons/workflow.svg') center/contain no-repeat;"></span></span>
+            <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Badge" variant="amber" hint-size="200px,22px">For SaaS · high-volume</x-import>
+          </div>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.7rem;letter-spacing:-.02em;margin:0 0 6px;">Operations Assurance &amp; Infrastructure</h3>
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:#a87a08;margin-bottom:12px;">Focus · reliability at scale</div>
+          <p style="font-size:1rem;color:#232b29;line-height:1.6;margin:0 0 20px;max-width:30em;">When volume spikes, nothing drops. We build the monitoring, failover and dashboards that keep a busy system honest — so growth never turns into outages.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:30em;">
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#a87a08;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Dedicated uptime monitoring</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#a87a08;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>API failover &amp; retry logic</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#a87a08;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>High-volume queue management</div>
+            <div style="display:flex;gap:9px;font-size:.92rem;"><span style="width:18px;height:18px;flex:none;margin-top:1px;background:#a87a08;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span>Custom dashboards &amp; reporting</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Signature animated flow -->
+  <section style="background:#E1E2D7;border-top:1.5px solid #15211F;border-bottom:1.5px solid #15211F;padding:62px 0;">
+    <div style="max-width:1180px;margin:0 auto;padding:0 24px;text-align:center;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="200px,18px">The systematic approach</x-import>
+      <h2 class="reveal" data-reveal style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.8rem,3.2vw,2.6rem);letter-spacing:-.02em;margin:12px auto 8px;max-width:16em;">One system, lead to booked — automatically.</h2>
+      <p class="reveal" data-reveal style="font-size:1.02rem;color:#54605C;max-width:34em;margin:0 auto 42px;">Every build follows the same shape: a clear input, smart processing, a clean output. Here's what happens the instant a new lead arrives.</p>
+
+      <div class="center-flow reveal" data-reveal style="display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;max-width:920px;margin:0 auto;">
+        <!-- node 1 -->
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:10px;">Input</div>
+          <div style="background:#fff;border:1.5px solid #15211F;border-radius:14px;padding:20px 14px;box-shadow:5px 5px 0 rgba(21,33,31,.12);display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <span style="width:30px;height:30px;background:#B45309;-webkit-mask:url('assets/icons/mail.svg') center/contain no-repeat;mask:url('assets/icons/mail.svg') center/contain no-repeat;"></span>
+            <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.96rem;">New lead</span>
+          </div>
+        </div>
+        <!-- wire -->
+        <div class="center-wire" style="position:relative;width:64px;height:2px;flex:none;background:repeating-linear-gradient(90deg,rgba(21,33,31,.35) 0 7px,transparent 7px 14px);margin:22px 0 0;">
+          <span class="flowpacket" style="position:absolute;top:50%;left:0;width:10px;height:10px;border-radius:50%;background:#B45309;transform:translateY(-50%);box-shadow:0 0 9px rgba(180,83,9,.6);"></span>
+          <span class="center-arrow" style="position:absolute;right:-6px;top:50%;transform:translateY(-50%);color:#B45309;font-size:1.1rem;">▶</span>
+        </div>
+        <!-- node 2 -->
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:10px;">Processing</div>
+          <div class="procpulse" style="background:#fff;border:2px solid #B45309;border-radius:14px;padding:20px 14px;box-shadow:5px 5px 0 rgba(21,33,31,.12);display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <span style="width:30px;height:30px;background:#B45309;-webkit-mask:url('assets/icons/assistant.svg') center/contain no-repeat;mask:url('assets/icons/assistant.svg') center/contain no-repeat;"></span>
+            <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.96rem;">AI classification</span>
+          </div>
+        </div>
+        <!-- wire -->
+        <div class="center-wire" style="position:relative;width:64px;height:2px;flex:none;background:repeating-linear-gradient(90deg,rgba(21,33,31,.35) 0 7px,transparent 7px 14px);margin:22px 0 0;">
+          <span class="flowpacket" style="position:absolute;top:50%;left:0;width:10px;height:10px;border-radius:50%;background:#B45309;transform:translateY(-50%);box-shadow:0 0 9px rgba(180,83,9,.6);animation-delay:.6s;"></span>
+          <span class="center-arrow" style="position:absolute;right:-6px;top:50%;transform:translateY(-50%);color:#B45309;font-size:1.1rem;">▶</span>
+        </div>
+        <!-- node 3: dual output -->
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:#9aa49d;margin-bottom:10px;">Output</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="background:#fff;border:1.5px solid #15211F;border-radius:12px;padding:13px 12px;box-shadow:4px 4px 0 rgba(21,33,31,.1);display:flex;align-items:center;gap:9px;justify-content:center;"><span style="width:20px;height:20px;background:#3F7A4E;-webkit-mask:url('assets/icons/people.svg') center/contain no-repeat;mask:url('assets/icons/people.svg') center/contain no-repeat;"></span><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.88rem;">CRM</span></div>
+            <div style="background:#fff;border:1.5px solid #15211F;border-radius:12px;padding:13px 12px;box-shadow:4px 4px 0 rgba(21,33,31,.1);display:flex;align-items:center;gap:9px;justify-content:center;"><span style="width:20px;height:20px;background:#3F7A4E;-webkit-mask:url('assets/icons/calendar.svg') center/contain no-repeat;mask:url('assets/icons/calendar.svg') center/contain no-repeat;"></span><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:.88rem;">Calendar</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why us -->
+  <section style="background:#11201E;color:#E9E8DF;">
+    <div style="max-width:1180px;margin:0 auto;padding:62px 24px;">
+      <div style="text-align:center;margin-bottom:42px;">
+        <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" tone="amber" hint-size="160px,18px">Why Switchboard</x-import>
+        <h2 class="reveal" data-reveal style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.8rem,3.2vw,2.6rem);letter-spacing:-.02em;margin:12px auto 0;max-width:18em;color:#E9E8DF;">Hiring a freelancer feels risky. We built our whole model to remove that risk.</h2>
+      </div>
+      <div class="why-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+        <div class="reveal" data-reveal style="background:rgba(233,232,223,.05);border:1.5px solid rgba(233,232,223,.16);border-radius:14px;padding:26px 24px;">
+          <span style="display:inline-flex;width:46px;height:46px;align-items:center;justify-content:center;border:1.5px solid #3F7A4E;border-radius:12px;background:rgba(63,122,78,.18);margin-bottom:16px;"><span style="width:24px;height:24px;background:#7FBF8E;-webkit-mask:url('assets/icons/check.svg') center/contain no-repeat;mask:url('assets/icons/check.svg') center/contain no-repeat;"></span></span>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.2rem;margin:0 0 8px;color:#E9E8DF;">We build it, we test it, we hand it over.</h3>
+          <p style="font-size:.95rem;color:#C8CEC6;margin:0;line-height:1.6;">You're never locked to us. The finished system is yours — documented, tested, with the keys handed over. Keep us on for support only if you want to.</p>
+        </div>
+        <div class="reveal" data-reveal style="background:rgba(233,232,223,.05);border:1.5px solid rgba(233,232,223,.16);border-radius:14px;padding:26px 24px;">
+          <span style="display:inline-flex;width:46px;height:46px;align-items:center;justify-content:center;border:1.5px solid #FBBF24;border-radius:12px;background:rgba(251,191,36,.16);margin-bottom:16px;"><span style="width:24px;height:24px;background:#FBBF24;-webkit-mask:url('assets/icons/lightbulb.svg') center/contain no-repeat;mask:url('assets/icons/lightbulb.svg') center/contain no-repeat;"></span></span>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.2rem;margin:0 0 8px;color:#E9E8DF;">No black boxes.</h3>
+          <p style="font-size:.95rem;color:#C8CEC6;margin:0;line-height:1.6;">Everything we build is transparent and editable. No proprietary code you can't touch, no hostage situations — your team or your developer can read and extend all of it.</p>
+        </div>
+        <div class="reveal" data-reveal style="background:rgba(233,232,223,.05);border:1.5px solid rgba(233,232,223,.16);border-radius:14px;padding:26px 24px;">
+          <span style="display:inline-flex;width:46px;height:46px;align-items:center;justify-content:center;border:1.5px solid #B45309;border-radius:12px;background:rgba(180,83,9,.2);margin-bottom:16px;"><span style="width:24px;height:24px;background:#E08740;-webkit-mask:url('assets/icons/refresh.svg') center/contain no-repeat;mask:url('assets/icons/refresh.svg') center/contain no-repeat;"></span></span>
+          <h3 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.2rem;margin:0 0 8px;color:#E9E8DF;">Proactive monitoring.</h3>
+          <p style="font-size:.95rem;color:#C8CEC6;margin:0;line-height:1.6;">We watch for breaks before you feel them. When a third-party app changes, we fix the workflow — often before you've even noticed anything was off.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section style="max-width:820px;margin:0 auto;padding:64px 24px 56px;">
+    <div style="text-align:center;margin-bottom:34px;">
+      <x-import component-from-global-scope="SwitchboardDesignSystem_2b7957.Eyebrow" hint-size="120px,18px">Before you book</x-import>
+      <h2 class="reveal" data-reveal style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.8rem,3vw,2.4rem);letter-spacing:-.02em;margin:12px 0 0;">The questions researchers actually ask.</h2>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div data-faq-item style="border:1.5px solid #15211F;border-radius:14px;background:#fff;box-shadow:4px 4px 0 rgba(21,33,31,.1);overflow:hidden;">
+        <button class="faqbtn" data-faq-q style="width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px;background:transparent;border:none;cursor:pointer;padding:20px 22px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.06rem;color:#15211F;letter-spacing:-.01em;line-height:1.3;">
+          <span>Do I need to be tech-savvy to use your services?</span>
+          <span data-faq-icon style="flex:none;width:22px;height:22px;font-size:1.6rem;line-height:1;color:#B45309;transition:transform .2s ease;">+</span>
+        </button>
+        <div data-faq-a style="display:none;padding:0 22px 20px;font-size:.98rem;color:#54605C;line-height:1.6;">Not at all. Everything runs through the tools you already use — a text message, your inbox, your calendar. We hand over something you operate with a tap, not a manual. The technical complexity stays on our side.</div>
+      </div>
+      <div data-faq-item style="border:1.5px solid #15211F;border-radius:14px;background:#fff;box-shadow:4px 4px 0 rgba(21,33,31,.1);overflow:hidden;">
+        <button class="faqbtn" data-faq-q style="width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px;background:transparent;border:none;cursor:pointer;padding:20px 22px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.06rem;color:#15211F;letter-spacing:-.01em;line-height:1.3;">
+          <span>What software do I need to pay for?</span>
+          <span data-faq-icon style="flex:none;width:22px;height:22px;font-size:1.6rem;line-height:1;color:#B45309;transition:transform .2s ease;">+</span>
+        </button>
+        <div data-faq-a style="display:none;padding:0 22px 20px;font-size:.98rem;color:#54605C;line-height:1.6;">Only the raw tools your system runs on — usually a few dollars a month for things like AI usage or your existing CRM. Our build fee is one-time, with no markup and no middleman subscriptions on top.</div>
+      </div>
+      <div data-faq-item style="border:1.5px solid #15211F;border-radius:14px;background:#fff;box-shadow:4px 4px 0 rgba(21,33,31,.1);overflow:hidden;">
+        <button class="faqbtn" data-faq-q style="width:100%;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:16px;background:transparent;border:none;cursor:pointer;padding:20px 22px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.06rem;color:#15211F;letter-spacing:-.01em;line-height:1.3;">
+          <span>Can you work with my existing developer?</span>
+          <span data-faq-icon style="flex:none;width:22px;height:22px;font-size:1.6rem;line-height:1;color:#B45309;transition:transform .2s ease;">+</span>
+        </button>
+        <div data-faq-a style="display:none;padding:0 22px 20px;font-size:.98rem;color:#54605C;line-height:1.6;">Absolutely. We document everything and hand over clean, editable systems your developer can read and extend. No black boxes, no turf wars — we're happy to brief them directly.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section style="background:#15211F;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:62px 24px;text-align:center;">
+      <h2 style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.9rem,3.6vw,2.8rem);letter-spacing:-.02em;line-height:1.06;margin:0 auto;max-width:15em;color:#E9E8DF;">Still researching? <span style="color:#B45309;">Let's map it out together.</span></h2>
+      <p style="font-size:1.08rem;line-height:1.6;color:#C8CEC6;margin:18px auto 30px;max-width:32em;">No pitch, no pressure — just fifteen minutes to see exactly which system would move the needle for your business.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a class="ctabtn" href="Pricing.dc.html#book" style="display:inline-flex;align-items:center;gap:.5em;min-height:56px;padding:0 1.8em;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem;text-transform:uppercase;letter-spacing:.02em;color:#fff;background:#B45309;border:2px solid #8a3f07;border-radius:10px;text-decoration:none;box-shadow:3px 3px 0 #000;">Book a Mapping Call →</a>
+        <a class="ctabtn" href="The Daily Log.dc.html" style="display:inline-flex;align-items:center;gap:.5em;min-height:56px;padding:0 1.7em;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.05rem;text-transform:uppercase;letter-spacing:.02em;color:#E9E8DF;background:transparent;border:2px solid #E9E8DF;border-radius:10px;text-decoration:none;">View Recent Work</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#11201E;color:#E9E8DF;border-top:1.5px solid #000;">
+    <div style="max-width:1180px;margin:0 auto;padding:26px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:.82rem;">
+      <span style="display:inline-flex;align-items:center;gap:9px;">
+        <svg width="22" height="22" viewBox="0 0 30 30" fill="none" stroke="#E9E8DF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"></circle><circle cx="22" cy="22" r="3"></circle><path d="M11 8H19a3 3 0 0 1 3 3V19"></path><path d="M19 22H11a3 3 0 0 1 -3 -3V11"></path></svg>
+        <b style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;">Switchboard AI Systems</b>
+      </span>
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#9aa49d;font-size:.72rem;">Automation agency · done-for-you</span>
+      <span style="color:#9aa49d;">© 2026 — All rights reserved.</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount() {
+    const root = document;
+
+    // scroll reveal
+    const items = Array.from(root.querySelectorAll('[data-reveal]'));
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      items.forEach((el) => io.observe(el));
+    } else {
+      items.forEach((el) => el.classList.add('in'));
+    }
+
+    // hero outcome rotator
+    const rot = root.querySelector('[data-rotator]');
+    if (rot) {
+      const words = ['missed calls answered.', 'quotes followed up.', 'invoices sent on time.', 'tickets triaged by AI.', 'leads booked while you sleep.', 'reviews collected on autopilot.'];
+      let i = 0;
+      setInterval(() => {
+        rot.classList.add('out');
+        setTimeout(() => {
+          i = (i + 1) % words.length;
+          rot.textContent = words[i];
+          rot.classList.remove('out');
+        }, 300);
+      }, 2400);
+    }
+
+    // FAQ accordion
+    root.querySelectorAll('[data-faq-item]').forEach((item) => {
+      const btn = item.querySelector('[data-faq-q]');
+      const ans = item.querySelector('[data-faq-a]');
+      const icon = item.querySelector('[data-faq-icon]');
+      btn.addEventListener('click', () => {
+        const open = ans.style.display === 'block';
+        root.querySelectorAll('[data-faq-item]').forEach((it) => {
+          it.querySelector('[data-faq-a]').style.display = 'none';
+          const ic = it.querySelector('[data-faq-icon]');
+          ic.textContent = '+'; ic.style.transform = 'none';
+        });
+        if (!open) { ans.style.display = 'block'; icon.style.transform = 'rotate(45deg)'; }
+      });
+    });
+  }
+}
+</script>
+</body>
+</html>

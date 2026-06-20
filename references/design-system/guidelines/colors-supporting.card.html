@@ -1,0 +1,24 @@
+<!-- @dsCard group="Colors" viewport="700x170" name="Supporting hues & tag tints" subtitle="Green / violet + soft tag backgrounds" -->
+<!DOCTYPE html><html><head><meta charset="UTF-8"/><link rel="stylesheet" href="../styles.css"/>
+<style>
+  body{margin:0;font-family:var(--font-body);background:var(--paper);padding:22px;}
+  .row{display:flex;gap:14px;margin-bottom:14px;}
+  .sw{flex:1;}
+  .chip{height:50px;border-radius:10px;border:1.5px solid var(--ink);}
+  .n{font-family:var(--font-display);font-weight:700;font-size:.78rem;margin-top:6px;}
+  .v{font-size:.68rem;color:var(--ink-soft);}
+  .tag{display:inline-block;font-family:var(--font-display);font-weight:700;font-size:.7rem;
+    text-transform:uppercase;letter-spacing:.05em;padding:4px 11px;border-radius:20px;}
+</style></head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:#3F7A4E"></div><div class="n">green</div><div class="v">#3F7A4E · success / ticks</div></div>
+    <div class="sw"><div class="chip" style="background:#6A4A8A"></div><div class="n">violet</div><div class="v">#6A4A8A · "advanced" only</div></div>
+  </div>
+  <div class="row" style="align-items:center;gap:10px;margin-bottom:0;">
+    <span class="tag" style="background:#E6EFE4;color:#3F7A4E">Beginner</span>
+    <span class="tag" style="background:#FBE8CF;color:#92400E">Intermediate</span>
+    <span class="tag" style="background:#E9E0F0;color:#6A4A8A">Advanced</span>
+    <span class="v" style="margin-left:6px;">soft tints pair a 12%-ish background with the saturated fg</span>
+  </div>
+</body></html>

@@ -1,0 +1,25 @@
+<!-- @dsCard group="Brand" viewport="700x180" name="Iconography" subtitle="Hand-drawn line icons · 1.8 stroke · round joins" -->
+<!DOCTYPE html><html><head><meta charset="UTF-8"/><link rel="stylesheet" href="../styles.css"/>
+<style>
+  body{margin:0;font-family:var(--font-body);background:var(--paper);padding:26px;}
+  .grid{display:flex;flex-wrap:wrap;gap:22px;}
+  .i{display:flex;flex-direction:column;align-items:center;gap:7px;width:74px;}
+  .g{width:30px;height:30px;background:var(--ink);
+    -webkit-mask:var(--src) center/contain no-repeat; mask:var(--src) center/contain no-repeat;}
+  .i span{font-size:.62rem;color:var(--ink-soft);}
+  .cap{font-size:.72rem;color:var(--ink-soft);margin-top:18px;font-family:var(--font-display);
+    font-weight:600;letter-spacing:.06em;text-transform:uppercase;}
+</style></head>
+<body>
+  <div class="grid">
+    <div class="i"><div class="g" style="--src:url(../assets/icons/assistant.svg)"></div><span>assistant</span></div>
+    <div class="i"><div class="g" style="--src:url(../assets/icons/funnel.svg)"></div><span>funnel</span></div>
+    <div class="i"><div class="g" style="--src:url(../assets/icons/workflow.svg)"></div><span>workflow</span></div>
+    <div class="i"><div class="g" style="--src:url(../assets/icons/target.svg)"></div><span>target</span></div>
+    <div class="i"><div class="g" style="--src:url(../assets/icons/calendar.svg)"></div><span>calendar</span></div>
+    <div class="i"><div class="g" style="--src:url(../assets/icons/chart.svg)"></div><span>chart</span></div>
+    <div class="i"><div class="g" style="--src:url(../assets/icons/lightbulb.svg)"></div><span>lightbulb</span></div>
+    <div class="i"><div class="g" style="--src:url(../assets/icons/send.svg);background:var(--orange)"></div><span>send</span></div>
+  </div>
+  <div class="cap">currentColor stroke · ink by default, orange for emphasis</div>
+</body></html>
