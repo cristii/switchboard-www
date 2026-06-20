@@ -77,7 +77,15 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   `404.dc.html` (broken-connection illustration). Added `on-dark` tint tokens
   (`colors.css` + Tailwind) for the footer. Green: `next build`, `typecheck`,
   `build-storybook`.
-- ⬜ 2.2 Landing `/` — sections + scripted `ChatWidget` + Cal.com CTAs.
+- ✅ **2.2 Landing `/`** — all sections ported verbatim from `landing-page.html`
+  (hero, proof, audiences, services, sample builds, process, pricing, about, FAQ,
+  footer CTA) via DS components + Tailwind. New library pieces (Tailwind-free, each
+  with a story): `Section`, `Tick`, `ServiceCard`, `ProcessStep`, `PricingPlan`,
+  `FaqItem`, `VideoPlaceholder`, `Portrait`. Scripted `ChatWidget` (client) +
+  `src/lib/chat.ts` (the `fallback()` set, greeting, quick replies). `BookCall`
+  CTA (Cal.com via `NEXT_PUBLIC_CALCOM_LINK`, falls back to `/contact`); header CTA
+  now uses it. Smooth-scroll + anchor offset in `globals.css`. Green: `next build`,
+  `typecheck`, `build-storybook`.
 - ⬜ 2.3 `/services` · ⬜ 2.4 `/pricing` · ⬜ 2.5 `/process` · ⬜ 2.6 `/about`
 - ⬜ 2.7 `/contact` (n8n) · ⬜ 2.8 `/work` + `/work/[slug]` · ⬜ 2.9 `/calculator`
 - ⬜ 2.10 `/knowledge-base` · ⬜ 2.11 `/blog` + `/blog/[slug]` (MDX) · ⬜ 2.12 `/privacy` + `/terms`

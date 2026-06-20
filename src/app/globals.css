@@ -19,6 +19,14 @@
    over a fractal-noise grain. Mirrors src/styles/global.css (the Storybook
    backdrop); kept here in @layer base so Tailwind utilities can override it. */
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  /* Offset in-page anchor targets for the sticky header. */
+  :target,
+  section[id] {
+    scroll-margin-top: 86px;
+  }
   body {
     margin: 0;
     font-family: var(--font-body);
@@ -44,6 +52,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   ::before,
   ::after {

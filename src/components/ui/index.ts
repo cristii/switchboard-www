@@ -30,3 +30,29 @@ export type { StatProps } from "./Stat";
 
 export { ChatBubble } from "./ChatBubble";
 export type { ChatBubbleProps } from "./ChatBubble";
+
+// --- Layout & page primitives (added in Phase 2.2) ---
+
+export { Section } from "./Section";
+export type { SectionProps } from "./Section";
+
+export { Tick } from "./Tick";
+export type { TickProps } from "./Tick";
+
+export { ServiceCard } from "./ServiceCard";
+export type { ServiceCardProps } from "./ServiceCard";
+
+export { ProcessStep } from "./ProcessStep";
+export type { ProcessStepProps } from "./ProcessStep";
+
+export { PricingPlan } from "./PricingPlan";
+export type { PricingPlanProps } from "./PricingPlan";
+
+export { FaqItem } from "./FaqItem";
+export type { FaqItemProps } from "./FaqItem";
+
+export { VideoPlaceholder } from "./VideoPlaceholder";
+export type { VideoPlaceholderProps } from "./VideoPlaceholder";
+
+export { Portrait } from "./Portrait";
+export type { PortraitProps } from "./Portrait";

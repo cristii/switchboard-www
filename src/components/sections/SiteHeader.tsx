@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Button, Logo } from "@/components/ui";
-import { bookingHref, primaryNav } from "@/lib/nav";
+import { Logo } from "@/components/ui";
+import { primaryNav } from "@/lib/nav";
+import { BookCall } from "./BookCall";
 
 /**
  * Sticky site header: translucent paper bar with a hard ink underline, the
@@ -31,10 +32,10 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <Button href={bookingHref} size="sm" arrow>
+        <BookCall size="sm" arrow>
           <span className="hidden sm:inline">Book a 15-min call</span>
           <span className="sm:hidden">Book a call</span>
-        </Button>
+        </BookCall>
       </div>
     </header>
   );

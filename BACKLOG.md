@@ -30,6 +30,16 @@ menu — a hamburger toggling a sheet/drawer with the `primaryNav` links (and li
 sections) — as a client component. Respect `prefers-reduced-motion`; trap focus; close on route
 change.
 
+## Cal.com — inline modal embed
+**Deferred.** `BookCall` (`src/components/sections/BookCall.tsx`) currently opens the Cal.com
+booking page in a new tab via `NEXT_PUBLIC_CALCOM_LINK` (falling back to `/contact` when unset).
+Upgrade to the inline modal embed with `@calcom/embed-react` (`getCalApi` + `data-cal-link`) for
+an on-page popup, keeping the new-tab/`/contact` path as the no-JS / no-env fallback.
+
+## Sample-build video embeds
+**Deferred.** `VideoPlaceholder` is a static poster. When real footage exists, wire the play
+disc to a real embed (YouTube/Vimeo/MP4 lightbox), and use it for `/work` walkthroughs too.
+
 ## Copy rewrite — site-wide
 **Deferred (do not rewrite copy now).** For Phase 2, port the existing copy from each source file
 verbatim. Later, rewrite the marketing copy around AI chatbots + workflow automation on
