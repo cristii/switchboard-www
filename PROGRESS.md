@@ -96,7 +96,14 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   respects `prefers-reduced-motion`). Reused `Section` / `Eyebrow` / `HandUnderline`
   / `Badge` / `FaqItem` / `Button` + `BookCall`. Green: `next build`, `typecheck`,
   `build-storybook`.
-- ⬜ 2.4 `/pricing` · ⬜ 2.5 `/process` · ⬜ 2.6 `/about`
+- ✅ **2.4 `/pricing`** — ported verbatim from `Pricing.dc.html`: centered hero,
+  audience pivot (3 `Card`s), the three-tier pricing table (`Card` `tone="sunken"`
+  + the featured `Card` with the "Most Popular" `Badge`, lifted on desktop), a
+  3-step "how it works" row, the dark risk-reversal guarantee, FAQ (`FaqItem`),
+  and the final CTA. All booking CTAs go through `BookCall`; checks use `Icon`
+  (green / orange). No new library pieces. Green: `next build`, `typecheck`,
+  `build-storybook`.
+- ⬜ 2.5 `/process` · ⬜ 2.6 `/about`
 - ⬜ 2.7 `/contact` (n8n) · ⬜ 2.8 `/work` + `/work/[slug]` · ⬜ 2.9 `/calculator`
 - ⬜ 2.10 `/knowledge-base` · ⬜ 2.11 `/blog` + `/blog/[slug]` (MDX) · ⬜ 2.12 `/privacy` + `/terms`
 
