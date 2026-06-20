@@ -42,19 +42,36 @@ Design language: warm "paper & ink" (see `references/design-system/readme.md`).
 ### Phase 0 ✅ — Docs & sources
 ### Phase 1 ✅ — Design system + Storybook (live on GitHub Pages)
 ### Phase 2 — Next.js app (Vercel)
-- **2.0 Scaffold:** Next 14 + Tailwind (theme→CSS vars), `globals.css`, root layout (+ Vercel
-  Analytics), `@/*` alias. Verify `next build` + `build-storybook` + `typecheck` green.
-- **2.1 Shell & SEO:** `SiteHeader`, `SiteFooter` (from `Site Footer.dc.html`), metadata,
-  brand-mark favicon, `not-found` (404). Add shared pieces to the library with stories.
-- **2.2 Landing (`/`):** rebuild from components + Tailwind; **rewrite copy** (AI chatbots +
-  n8n/Trigger.dev); scripted `ChatWidget` (client) ported from the landing `fallback()`;
-  Cal.com booking CTAs.
-- **2.3 Marketing:** `/services` `/pricing` `/process` `/about` `/contact` (contact form →
-  `/api/lead` → n8n).
-- **2.4 Utility:** `/calculator` (client compute), `/knowledge-base`, `/work` + `/work/[slug]`,
-  `/privacy`, `/terms`.
-- **2.5 Blog:** `/blog` + `/blog/[slug]` from `content/blog` MDX; Daily Log newsletter signup.
-- Done when: `next build` passes with no env vars; deployed to Vercel.
+**Workflow: build ONE unit at a time. After each builds green (`next build` + `typecheck`),
+commit and push before starting the next, and tick it off in `PROGRESS.md`.** Rebuild each page
+from its `references/` source using `src/components/ui` + Tailwind; rewrite stale copy; add any
+new reusable component to the **library with a story** first. Icons: reuse the bespoke set
+(`src/assets/icons`) + the inline SVGs already in the source pages — broader coverage (Lucide) is
+backlogged, see `BACKLOG.md`.
+
+- **2.0 Scaffold** — Next 14 + Tailwind (theme → CSS vars), `globals.css`, root `layout.tsx`
+  (+ `<Analytics/>`), `@/*` alias, minimal placeholder home. Verify `next build` +
+  `build-storybook` + `typecheck`. → **push**
+- **2.1 Shell & SEO** — `SiteHeader`, `SiteFooter` (`Site Footer.dc.html`), `metadata`,
+  brand-mark favicon, `not-found` (`404.dc.html`). New library pieces get stories. → **push**
+- **2.2 Landing `/`** (`landing-page.html`) — all sections via DS components + Tailwind;
+  **rewrite copy** (AI chatbots + n8n/Trigger.dev); scripted `ChatWidget` (client) ported from the
+  landing `fallback()`; Cal.com CTAs. Add `Section`, `Tick`, `ServiceCard`, `ProcessStep`,
+  `PricingPlan`, `FaqItem`, `VideoPlaceholder`, `Portrait` to the library as needed. → **push**
+- **2.3 `/services`** (`Services.dc.html`). → **push**
+- **2.4 `/pricing`** (`Pricing.dc.html`) — reuse `Card`(featured)/`Badge`. → **push**
+- **2.5 `/process`** (`Process.dc.html`). → **push**
+- **2.6 `/about`** (`About.dc.html`) — reuse `StickyNote`/`Stat`; refresh tech stack. → **push**
+- **2.7 `/contact`** (`Contact.dc.html`) — form → `src/app/api/lead/route.ts` → `N8N_WEBHOOK_URL`
+  (lazy, graceful). → **push**
+- **2.8 `/work` + `/work/[slug]`** (`Work.dc.html`, `Work Item.dc.html`). → **push**
+- **2.9 `/calculator`** (`Calculator.dc.html`) — client-side compute. → **push**
+- **2.10 `/knowledge-base`** (`Knowledge Base.dc.html`) — client filter/search. → **push**
+- **2.11 `/blog` + `/blog/[slug]`** (`The Daily Log.dc.html`, `Blog Post.dc.html`) — MDX from
+  `content/blog` (`gray-matter` + `next-mdx-remote/rsc`); Daily Log newsletter signup UI (wired in
+  Phase 3). → **push**
+- **2.12 `/privacy` + `/terms`** (`Privacy Policy.dc.html`, `Terms of Service.dc.html`). → **push**
+- Done when: every route builds; `next build` passes with no env; deployed to Vercel.
 
 ### Phase 3 — Supabase newsletter
 - `api/newsletter` → `subscribers` (service-role, lazy); `supabase/schema.sql`; wire the Daily
@@ -81,3 +98,4 @@ Design language: warm "paper & ink" (see `references/design-system/readme.md`).
 - Final copy (Cristi). Real env values: Cal.com link, n8n webhook URL, Supabase creds.
 - Optional later: upgrade chatbot to Claude; `@tailwindcss/typography` for blog prose;
   Next 15 / React 19 bump.
+- **Backlog:** see `BACKLOG.md` (e.g., Lucide icon library — deferred).
