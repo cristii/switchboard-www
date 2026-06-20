@@ -35,6 +35,14 @@
   --tint-amber-bg:  #FBE8CF; --tint-amber-fg:  #92400E;
   --tint-violet-bg: #E9E0F0; --tint-violet-fg: #6A4A8A;
 
+  /* ---- On dark surfaces (footer, dark bands) ---- */
+  --on-dark:        #E9E8DF; /* primary text on dark */
+  --on-dark-strong: #C8CEC6; /* secondary text */
+  --on-dark-muted:  #9AA49D; /* tertiary / captions */
+  --on-dark-faint:  #7D877F; /* eyebrows / column labels */
+  --on-dark-line:   rgba(233, 232, 223, 0.14); /* hairline divider */
+  --on-dark-line-2: rgba(233, 232, 223, 0.28); /* control outline */
+
   /* ============ Semantic aliases ============ */
   --bg-page:        var(--paper);
   --bg-alt:         var(--paper-2);

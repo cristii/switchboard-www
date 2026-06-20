@@ -4,6 +4,9 @@
 export { Button } from "./Button";
 export type { ButtonProps } from "./Button";
 
+export { Logo } from "./Logo";
+export type { LogoProps } from "./Logo";
+
 export { Eyebrow } from "./Eyebrow";
 export type { EyebrowProps } from "./Eyebrow";
 

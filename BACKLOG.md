@@ -23,6 +23,13 @@ If/when adopted:
   via the wrapper; keep the bespoke SVGs for their spots; no emoji.
 - Verify `build-storybook` + `typecheck`; push.
 
+## Mobile nav menu (hamburger)
+**Deferred.** `SiteHeader` hides the primary nav below `md` (matching the reference exports,
+which do the same), leaving only the logo + booking CTA on small screens. Add a proper mobile
+menu — a hamburger toggling a sheet/drawer with the `primaryNav` links (and likely the footer
+sections) — as a client component. Respect `prefers-reduced-motion`; trap focus; close on route
+change.
+
 ## Copy rewrite — site-wide
 **Deferred (do not rewrite copy now).** For Phase 2, port the existing copy from each source file
 verbatim. Later, rewrite the marketing copy around AI chatbots + workflow automation on

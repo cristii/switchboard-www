@@ -52,6 +52,14 @@ const config: Config = {
       "tint-amber-fg": "var(--tint-amber-fg)",
       "tint-violet-bg": "var(--tint-violet-bg)",
       "tint-violet-fg": "var(--tint-violet-fg)",
+
+      // On dark surfaces (footer, dark bands)
+      "on-dark": "var(--on-dark)",
+      "on-dark-strong": "var(--on-dark-strong)",
+      "on-dark-muted": "var(--on-dark-muted)",
+      "on-dark-faint": "var(--on-dark-faint)",
+      "on-dark-line": "var(--on-dark-line)",
+      "on-dark-line-2": "var(--on-dark-line-2)",
     },
     extend: {
       fontFamily: {

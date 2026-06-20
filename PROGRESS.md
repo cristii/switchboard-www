@@ -69,7 +69,14 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   (token imports → `@tailwind` layers → paper canvas); root `layout.tsx` with
   `<Analytics/>` + base metadata; minimal placeholder home using DS + Tailwind.
   Verified green: `next build`, `typecheck` (`tsc --noEmit`), `build-storybook`.
-- ⬜ 2.1 Shell & SEO — `SiteHeader`, `SiteFooter`, metadata, favicon, `not-found`.
+- ✅ **2.1 Shell & SEO** — `SiteHeader` + `SiteFooter` (`src/components/sections`,
+  ported from the landing header + `Site Footer.dc.html`); shared nav map
+  (`src/lib/nav.ts`); new library piece **`Logo`** (Tailwind-free, inherits colour,
+  with a story); root metadata (Open Graph / Twitter / robots, env-driven
+  `metadataBase`); brand-mark favicon (`src/app/icon.svg`); `not-found` from
+  `404.dc.html` (broken-connection illustration). Added `on-dark` tint tokens
+  (`colors.css` + Tailwind) for the footer. Green: `next build`, `typecheck`,
+  `build-storybook`.
 - ⬜ 2.2 Landing `/` — sections + scripted `ChatWidget` + Cal.com CTAs.
 - ⬜ 2.3 `/services` · ⬜ 2.4 `/pricing` · ⬜ 2.5 `/process` · ⬜ 2.6 `/about`
 - ⬜ 2.7 `/contact` (n8n) · ⬜ 2.8 `/work` + `/work/[slug]` · ⬜ 2.9 `/calculator`
