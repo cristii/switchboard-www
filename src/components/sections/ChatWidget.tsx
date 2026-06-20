@@ -2,7 +2,15 @@
 
 import * as React from "react";
 import { ChatBubble } from "@/components/ui";
-import { chatGreeting, quickReplies, scriptedReply } from "@/lib/chat";
+import {
+  chatGreeting,
+  quickReplies,
+  scriptedReply,
+  intakeGreeting,
+  intakeQuickReplies,
+  intakeReply,
+  type QuickReply,
+} from "@/lib/chat";
 
 interface Message {
   id: number;
@@ -10,14 +18,56 @@ interface Message {
   text: string;
 }
 
+export interface ChatWidgetProps {
+  /**
+   * Which scripted persona to use. `demo` is the hero assistant; `intake` is the
+   * contact-page scope agent. Selects the greeting, quick replies and reply
+   * function internally (a function can't cross the server→client boundary).
+   * @default "demo"
+   */
+  variant?: "demo" | "intake";
+  /** Opening bot message. @default the variant's greeting */
+  greeting?: string;
+  /** Quick-reply chips. @default the variant's set */
+  quickReplies?: QuickReply[];
+  /** Header title. @default "Switchboard Assistant" */
+  title?: string;
+  /** Header status line (after the green dot). @default "Online" */
+  status?: React.ReactNode;
+  /** Footer note. @default "Built by Switchboard AI Systems" */
+  foot?: React.ReactNode;
+  /** Input placeholder. @default "Type your message…" */
+  placeholder?: string;
+  /** Tailwind class controlling the widget height. @default "max-h-[560px]" */
+  heightClass?: string;
+  /** Element id (for in-page anchors). @default "chat" */
+  id?: string;
+}
+
 /**
- * The hero demo assistant. Scripted only (AGENTS.md) — keyword-matched replies
- * from src/lib/chat.ts with a short typing delay, so the demo always works with
- * no AI backend. The DS <ChatBubble> renders each message.
+ * The scripted demo assistant. Scripted only (AGENTS.md) — keyword-matched
+ * replies from src/lib/chat.ts with a short typing delay, so the demo always
+ * works with no AI backend. The DS <ChatBubble> renders each message. Props
+ * default to the hero demo; the contact page passes the intake-agent script.
  */
-export function ChatWidget() {
+export function ChatWidget({
+  variant = "demo",
+  greeting: greetingProp,
+  quickReplies: quickRepliesProp,
+  title = "Switchboard Assistant",
+  status = "Online",
+  foot,
+  placeholder = "Type your message…",
+  heightClass = "max-h-[560px]",
+  id = "chat",
+}: ChatWidgetProps = {}) {
+  const isIntake = variant === "intake";
+  const greeting = greetingProp ?? (isIntake ? intakeGreeting : chatGreeting);
+  const quickReplyChips = quickRepliesProp ?? (isIntake ? intakeQuickReplies : quickReplies);
+  const reply = isIntake ? intakeReply : scriptedReply;
+
   const [messages, setMessages] = React.useState<Message[]>([
-    { id: 0, role: "bot", text: chatGreeting },
+    { id: 0, role: "bot", text: greeting },
   ]);
   const [input, setInput] = React.useState("");
   const [typing, setTyping] = React.useState(false);
@@ -36,16 +86,16 @@ export function ChatWidget() {
     setInput("");
     setTyping(true);
     window.setTimeout(() => {
-      const reply = scriptedReply(trimmed);
-      setMessages((m) => [...m, { id: nextId.current++, role: "bot", text: reply }]);
+      const replyText = reply(trimmed);
+      setMessages((m) => [...m, { id: nextId.current++, role: "bot", text: replyText }]);
       setTyping(false);
     }, 600);
   };
 
   return (
     <div
-      id="chat"
-      className="flex max-h-[560px] flex-col overflow-hidden rounded-lg border-strong border-ink bg-white shadow-pop"
+      id={id}
+      className={`flex ${heightClass} flex-col overflow-hidden rounded-lg border-strong border-ink bg-white shadow-pop`}
     >
       {/* head */}
       <div className="flex items-center gap-[11px] bg-dark px-4 py-[14px] text-paper">
@@ -66,11 +116,9 @@ export function ChatWidget() {
           </svg>
         </span>
         <div>
-          <div className="font-display text-[.95rem] font-bold leading-tight">
-            Switchboard Assistant
-          </div>
+          <div className="font-display text-[.95rem] font-bold leading-tight">{title}</div>
           <div className="flex items-center gap-[5px] text-[.72rem] text-on-dark-strong">
-            <span className="inline-block h-[7px] w-[7px] rounded-full bg-[#5fcf7a]" /> Online
+            <span className="inline-block h-[7px] w-[7px] rounded-full bg-[#5fcf7a]" /> {status}
           </div>
         </div>
       </div>
@@ -98,7 +146,7 @@ export function ChatWidget() {
 
       {/* quick replies */}
       <div className="flex flex-wrap gap-[7px] bg-paper px-4 pb-2">
-        {quickReplies.map((q) => (
+        {quickReplyChips.map((q) => (
           <button
             key={q.query}
             type="button"
@@ -122,7 +170,7 @@ export function ChatWidget() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           type="text"
-          placeholder="Type your message…"
+          placeholder={placeholder}
           aria-label="Message the assistant"
           autoComplete="off"
           className="min-w-0 flex-1 rounded-sm border border-line bg-white px-3 py-[10px] text-[.9rem] text-ink outline-none focus:border-orange"
@@ -148,7 +196,11 @@ export function ChatWidget() {
 
       {/* foot */}
       <div className="border-t border-line-soft bg-white py-[7px] text-center text-[.68rem] text-ink-soft">
-        Built by <b className="text-ink">Switchboard AI Systems</b>
+        {foot ?? (
+          <>
+            Built by <b className="text-ink">Switchboard AI Systems</b>
+          </>
+        )}
       </div>
     </div>
   );

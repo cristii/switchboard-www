@@ -39,3 +39,28 @@ export function scriptedReply(input: string): string {
     return "It only answers from the knowledge I train it on, and says so (then hands off to a human) when it doesn't know — no guessing. Want to see that in a free demo?";
   return "Good question! I can tell you what Switchboard builds, what it costs, or set up a free demo on your site. Which would help most?";
 }
+
+// --- Contact-page intake agent (scripted; ported from Contact.dc.html) ---
+
+export const intakeGreeting =
+  "Hey — I'm Cristi's AI intake agent. Tell me what your business does and the manual task that's eating the most time, and I'll sketch a scope and ballpark price right here. What are you working with?";
+
+export const intakeQuickReplies: QuickReply[] = [
+  { label: "I run an e-commerce store", query: "I run an e-commerce store" },
+  { label: "Too many manual follow-ups", query: "Too many manual follow-ups" },
+  { label: "What would this cost?", query: "What would this cost?" },
+];
+
+/** Keyword-matched intake reply (the contact page's scripted scope agent). */
+export function intakeReply(input: string): string {
+  const q = input.toLowerCase();
+  if (/price|cost|how much|budget|\$|estimate/.test(q))
+    return "Ballpark: a focused single-workflow build starts at $800, a multi-step system runs $1,500, and custom infrastructure with AI agents is $4,000+. Tell me the process you'd automate and I'll point you to the right tier.";
+  if (/e-?commerce|store|shopify|orders|cart/.test(q))
+    return "Nice — for stores I usually wire order sync, abandoned-cart recovery and a support bot. Which one hurts most right now, and what does your stack look like?";
+  if (/follow.?up|leads?|crm|manual|copy.?past|re-?key/.test(q))
+    return "Classic bottleneck. I'd put a workflow between your lead source and CRM so follow-ups fire on their own. What tools are you copy-pasting between today?";
+  if (/book|call|meeting|talk/.test(q))
+    return "Let's do it — grab a slot on the Pricing page's booking button, or drop your specs in the form and I'll prep a scope before we talk.";
+  return "Got it. To scope this I need three things: what the manual process is, the tools it touches, and a rough budget. Want to start with the process that's costing you the most time?";
+}

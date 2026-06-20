@@ -121,7 +121,18 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   / `Eyebrow` / `HandUnderline` / `Icon` + `BookCall`. The operations-tone variant
   and scroll reveals were dropped. No new library pieces. Green: `next build`,
   `typecheck`, `build-storybook`.
-- ⬜ 2.7 `/contact` (n8n) · ⬜ 2.8 `/work` + `/work/[slug]` · ⬜ 2.9 `/calculator`
+- ✅ **2.7 `/contact`** — ported from `Contact.dc.html`: hero + two columns — the
+  scripted **AI intake agent** (reused `ChatWidget`, now prop-driven via a
+  `variant="intake"` persona in `src/lib/chat.ts`) and the **project-spec form**
+  (`ContactForm`, client). The form validates name + email and POSTs to the new
+  **`src/app/api/lead/route.ts`**, which forwards to `N8N_WEBHOOK_URL`
+  (server-only, read at request time → builds with no env; degrades gracefully /
+  502 on upstream error), then plays the "automation firing" success sequence.
+  A server→client function prop isn't allowed, so `ChatWidget` selects its reply
+  fn internally from `variant`. "Live AI" footer reworded to "scripted demo"
+  (honest — AGENTS). `/api/lead` is the only dynamic route. Green: `next build`,
+  `typecheck`, `build-storybook`.
+- ⬜ 2.8 `/work` + `/work/[slug]` · ⬜ 2.9 `/calculator`
 - ⬜ 2.10 `/knowledge-base` · ⬜ 2.11 `/blog` + `/blog/[slug]` (MDX) · ⬜ 2.12 `/privacy` + `/terms`
 
 ## Phase 2 notes / decisions
