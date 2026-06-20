@@ -10,6 +10,9 @@ export type { LogoProps } from "./Logo";
 export { Eyebrow } from "./Eyebrow";
 export type { EyebrowProps } from "./Eyebrow";
 
+export { Icon } from "./Icon";
+export type { IconProps, IconSource } from "./Icon";
+
 export { HandUnderline } from "./HandUnderline";
 export type { HandUnderlineProps } from "./HandUnderline";
 

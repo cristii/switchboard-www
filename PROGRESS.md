@@ -86,7 +86,17 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   CTA (Cal.com via `NEXT_PUBLIC_CALCOM_LINK`, falls back to `/contact`); header CTA
   now uses it. Smooth-scroll + anchor offset in `globals.css`. Green: `next build`,
   `typecheck`, `build-storybook`.
-- ⬜ 2.3 `/services` · ⬜ 2.4 `/pricing` · ⬜ 2.5 `/process` · ⬜ 2.6 `/about`
+- ✅ **2.3 `/services`** — all sections ported verbatim from `Services.dc.html`
+  (hero with rotating outcome line + floating outcome chips, dark testimonial +
+  industries band, four capability **pillars** each with an input→processing→output
+  flow diagram, the signature lead→booked flow, "why Switchboard", FAQ, final CTA).
+  New library piece **`Icon`** (Tailwind-free, mask-tinted from `src/assets/icons`,
+  `src` accepts a Vite URL string *or* a Next static import — works in both
+  bundlers; with a story). New app-level client `RotatingText` (hero rotator,
+  respects `prefers-reduced-motion`). Reused `Section` / `Eyebrow` / `HandUnderline`
+  / `Badge` / `FaqItem` / `Button` + `BookCall`. Green: `next build`, `typecheck`,
+  `build-storybook`.
+- ⬜ 2.4 `/pricing` · ⬜ 2.5 `/process` · ⬜ 2.6 `/about`
 - ⬜ 2.7 `/contact` (n8n) · ⬜ 2.8 `/work` + `/work/[slug]` · ⬜ 2.9 `/calculator`
 - ⬜ 2.10 `/knowledge-base` · ⬜ 2.11 `/blog` + `/blog/[slug]` (MDX) · ⬜ 2.12 `/privacy` + `/terms`
 
@@ -96,6 +106,10 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
 - Tailwind scans only `src/app` + `src/components/sections` + `content` — never
   `src/components/ui`, which stays Tailwind-free (Storybook-safe).
 - `next build` succeeds with **no env** (no secrets touched yet).
+- `Icon` (DS) mask-tints an SVG from `src/assets/icons`; its `src` accepts both a
+  Vite URL string (Storybook glob, `?url`) and a Next static-import object, so the
+  one component works in both bundlers. Pages import the icon files directly and
+  pass them in (e.g. `import sendIcon from "@/assets/icons/send.svg"`).
 
 ## Next (later phases)
 - Phase 3: Supabase newsletter (`api/newsletter` → `subscribers`, wire Daily Log form).
