@@ -103,7 +103,16 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   and the final CTA. All booking CTAs go through `BookCall`; checks use `Icon`
   (green / orange). No new library pieces. Green: `next build`, `typecheck`,
   `build-storybook`.
-- ⬜ 2.5 `/process` · ⬜ 2.6 `/about`
+- ✅ **2.5 `/process`** — ported from `Process.dc.html`: the five "built like a
+  workflow" steps (Discover/Build/Test/Handoff/Maintain) as an alternating
+  two-column layout — bespoke n8n-style **node** visuals (inline SVG glyphs:
+  webhook, switch, error trigger, set+push with lock badge, schedule) beside the
+  step copy + "what happens / the output" rows; step 5 carries the two retainer
+  `Card`s (Tier 2 featured). Reused `Card` / `Eyebrow` / `HandUnderline` / `Icon`
+  + `BookCall`. The heavy scroll-spy/packet animations were dropped (static port,
+  per the 2.2/2.3 precedent); the one hover-dependent aside was reworded. No new
+  library pieces. Green: `next build`, `typecheck`, `build-storybook`.
+- ⬜ 2.6 `/about`
 - ⬜ 2.7 `/contact` (n8n) · ⬜ 2.8 `/work` + `/work/[slug]` · ⬜ 2.9 `/calculator`
 - ⬜ 2.10 `/knowledge-base` · ⬜ 2.11 `/blog` + `/blog/[slug]` (MDX) · ⬜ 2.12 `/privacy` + `/terms`
 
