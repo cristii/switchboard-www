@@ -1,0 +1,53 @@
+/* ============================================================
+   Switchboard — Next.js app global stylesheet
+   Pulls in the brand tokens (the single source of truth in
+   src/styles/, shared with Storybook), then the Tailwind layers.
+   Tailwind's theme maps onto these same CSS variables — see
+   tailwind.config.ts — so nothing is duplicated.
+   @import must precede the @tailwind directives.
+   ============================================================ */
+@import "../styles/fonts.css";
+@import "../styles/colors.css";
+@import "../styles/typography.css";
+@import "../styles/spacing.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* The brand "paper & ink" canvas: recycled paper with a faint 32px ink grid
+   over a fractal-noise grain. Mirrors src/styles/global.css (the Storybook
+   backdrop); kept here in @layer base so Tailwind utilities can override it. */
+@layer base {
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--ink);
+    line-height: var(--lh-body);
+    background-color: var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(21, 33, 31, 0.022) 0 1px, transparent 1px 32px),
+      repeating-linear-gradient(90deg, rgba(21, 33, 31, 0.022) 0 1px, transparent 1px 32px),
+      url("../assets/grain.svg");
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: var(--orange);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

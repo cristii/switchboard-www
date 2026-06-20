@@ -26,3 +26,19 @@ Every push builds Storybook and publishes it to the **`gh-pages`** branch. To ma
 preview live, enable it once: **Settings → Pages → Build and deployment → Source:
 "Deploy from a branch" → Branch: `gh-pages` `/(root)`**. It then serves at
 **https://cristii.github.io/switchboard-www/**.
+
+## Marketing site (Next.js)
+
+The Next.js 14 App Router site lives in `src/app`, consuming the design system from
+`src/components/ui`. Tailwind handles app layout/sections, with its theme mapped to the
+brand CSS-var tokens in `src/styles` (the single source of truth — never raw hex).
+
+```bash
+npm install
+npm run dev        # dev at http://localhost:3000
+npm run build      # production build (next build) — runs on Vercel
+npm run typecheck  # tsc --noEmit
+```
+
+`next build` works with no environment variables set; integrations (Supabase, n8n,
+Cal.com) degrade gracefully when unconfigured. See `.env.example` for the full list.

@@ -2,13 +2,18 @@
   "name": "switchboard-www",
   "version": "0.1.0",
   "private": true,
-  "description": "Switchboard AI Systems — design-system component library (Storybook) and marketing site.",
+  "description": "Switchboard AI Systems — design-system component library (Storybook) and Next.js marketing site.",
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "typecheck": "tsc --noEmit"
+    "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.4.1",
+    "next": "^14.2.18",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
@@ -19,10 +24,14 @@
     "@storybook/blocks": "^8.4.7",
     "@storybook/react": "^8.4.7",
     "@storybook/react-vite": "^8.4.7",
+    "@types/node": "^20.17.6",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
     "storybook": "^8.4.7",
+    "tailwindcss": "^3.4.15",
     "typescript": "^5.6.3",
     "vite": "^5.4.11"
   }
