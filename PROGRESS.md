@@ -142,7 +142,14 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   automations", CTA. Reused `Card`/`Badge`/`Stat`/`Pill`/`Icon`/`Eyebrow`/`HandUnderline`
   + `BookCall`; code block uses the default `font-mono` (no CDN). Green: `next build`,
   `typecheck`, `build-storybook`.
-- ⬜ 2.9 `/calculator`
+- ✅ **2.9 `/calculator`** — ported from `Calculator.dc.html`. New client component
+  `src/components/sections/Calculator.tsx` ports the full compute model (executions
+  log-slider, integration costs, AI usage — model/length/memory/tools, hosting
+  tiers, complexity meter, live workflow nodes, breakdown + smart tip, presets,
+  and a client-side text download). Thin server page with hero. Built from `Icon`
+  + Tailwind; ranges use `accent-color`, code/cost figures use `font-mono` (no CDN);
+  AI accent uses `var(--violet)`. Count-up animation dropped (values update
+  directly). Green: `next build`, `typecheck`, `build-storybook`.
 - ⬜ 2.10 `/knowledge-base` · ⬜ 2.11 `/blog` + `/blog/[slug]` (MDX) · ⬜ 2.12 `/privacy` + `/terms`
 
 ## Phase 2 notes / decisions
