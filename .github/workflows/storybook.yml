@@ -1,0 +1,47 @@
+name: Deploy Storybook to GitHub Pages
+
+# Builds the design-system Storybook and publishes the static site to the
+# `gh-pages` branch. One-time setup by the repo owner:
+#   Settings → Pages → Build and deployment → Source: "Deploy from a branch"
+#   → Branch: gh-pages / (root)
+# The site then serves at https://<owner>.github.io/switchboard-www/
+
+on:
+  push:
+    branches:
+      - main
+      - claude/sweet-curie-wwuj0l # preview from the current working branch
+  workflow_dispatch:
+
+permissions:
+  contents: write # peaceiris/actions-gh-pages pushes to the gh-pages branch
+
+concurrency:
+  group: storybook-pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static
+          force_orphan: true

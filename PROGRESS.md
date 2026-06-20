@@ -42,10 +42,11 @@ Ported from `references/design-system/components/`. Each gets a `.tsx` + `.stori
 - ✅ Production build verified to use relative asset paths (gh-pages subpath safe)
 
 ## Deploy
-- ⬜ `.github/workflows/storybook.yml` — build + publish to `gh-pages` branch
+- ✅ `.github/workflows/storybook.yml` — build + publish to `gh-pages` branch
+  (peaceiris/actions-gh-pages; runs on push to main + the working branch)
 - ⬜ **Manual one-time step (repo owner):** GitHub → Settings → Pages →
   Build and deployment → Source: **Deploy from a branch** → Branch: **gh-pages** `/(root)`
-- ⬜ Confirm the Action run is green and the site renders at
+- 🚧 Confirm the Action run is green and the site renders at
   `https://cristii.github.io/switchboard-www/`
 
 ## Notes / decisions
