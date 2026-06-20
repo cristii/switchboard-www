@@ -150,7 +150,16 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   + Tailwind; ranges use `accent-color`, code/cost figures use `font-mono` (no CDN);
   AI accent uses `var(--violet)`. Count-up animation dropped (values update
   directly). Green: `next build`, `typecheck`, `build-storybook`.
-- ⬜ 2.10 `/knowledge-base` · ⬜ 2.11 `/blog` + `/blog/[slug]` (MDX) · ⬜ 2.12 `/privacy` + `/terms`
+- ✅ **2.10 `/knowledge-base`** — ported from `Knowledge Base.dc.html` as a docs app.
+  New `src/lib/kb.ts` models the content as typed blocks (5 rich "marquee" articles
+  + 14 generated Overview/Key-points/Example) rendered with React — no raw HTML.
+  New client `KnowledgeBase` section: grouped sidebar nav, the docs home (category
+  cards + popular blueprints), article view (breadcrumb, `Badge` tier, lead, blocks,
+  code cards, callouts, a tab switcher, artifact download, prev/next), and a working
+  **⌘K search overlay** filtering the index. Built from `Badge` + `Icon` + Tailwind;
+  code uses `font-mono`. The right-hand TOC + scrollspy and the mobile drawer were
+  dropped (sidebar stacks on mobile). Green: `next build`, `typecheck`, `build-storybook`.
+- ⬜ 2.11 `/blog` + `/blog/[slug]` (MDX) · ⬜ 2.12 `/privacy` + `/terms`
 
 ## Phase 2 notes / decisions
 - `jsx` switched to `preserve` and `@/*` paths added for Next; `vite/client` types
