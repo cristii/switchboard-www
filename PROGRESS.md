@@ -112,7 +112,15 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   + `BookCall`. The heavy scroll-spy/packet animations were dropped (static port,
   per the 2.2/2.3 precedent); the one hover-dependent aside was reworded. No new
   library pieces. Green: `next build`, `typecheck`, `build-storybook`.
-- ⬜ 2.6 `/about`
+- ✅ **2.6 `/about`** — ported from `About.dc.html` (default "conversational"
+  variant): hero with `Portrait` + "that's me" tag + fact chips, "off the clock"
+  with a `StickyNote`, the four-step "how I work" `Card`s, the 3-card tech-stack
+  matrix, the dark "inside Switchboard" builds grid, the GitHub side-projects grid
+  (all → `socialLinks.github`), and the dark contact band (email / Telegram /
+  LinkedIn / location from `src/lib/nav`). Reused `Card` / `StickyNote` / `Portrait`
+  / `Eyebrow` / `HandUnderline` / `Icon` + `BookCall`. The operations-tone variant
+  and scroll reveals were dropped. No new library pieces. Green: `next build`,
+  `typecheck`, `build-storybook`.
 - ⬜ 2.7 `/contact` (n8n) · ⬜ 2.8 `/work` + `/work/[slug]` · ⬜ 2.9 `/calculator`
 - ⬜ 2.10 `/knowledge-base` · ⬜ 2.11 `/blog` + `/blog/[slug]` (MDX) · ⬜ 2.12 `/privacy` + `/terms`
 
