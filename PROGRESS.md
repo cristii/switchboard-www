@@ -132,7 +132,17 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   fn internally from `variant`. "Live AI" footer reworded to "scripted demo"
   (honest — AGENTS). `/api/lead` is the only dynamic route. Green: `next build`,
   `typecheck`, `build-storybook`.
-- ⬜ 2.8 `/work` + `/work/[slug]` · ⬜ 2.9 `/calculator`
+- ✅ **2.8 `/work` + `/work/[slug]`** — ported from `Work.dc.html` + `Work Item.dc.html`.
+  New data module `src/lib/work.ts` (9 automations in 3 groups; the full "Outreach
+  System" case study — problem, 5 steps, sample email, outcome stats, "how it's
+  wired" + code; the other 8 carry their list copy, no invented facts). `/work`:
+  hero, dark proof `Stat` band, the three grouped card grids, closing CTA. `/work/[slug]`:
+  `generateStaticParams` (all 9 prerendered) + `generateMetadata`, shared hero +
+  "what it does" `Card`, the rich case-study sections when present, "more
+  automations", CTA. Reused `Card`/`Badge`/`Stat`/`Pill`/`Icon`/`Eyebrow`/`HandUnderline`
+  + `BookCall`; code block uses the default `font-mono` (no CDN). Green: `next build`,
+  `typecheck`, `build-storybook`.
+- ⬜ 2.9 `/calculator`
 - ⬜ 2.10 `/knowledge-base` · ⬜ 2.11 `/blog` + `/blog/[slug]` (MDX) · ⬜ 2.12 `/privacy` + `/terms`
 
 ## Phase 2 notes / decisions
