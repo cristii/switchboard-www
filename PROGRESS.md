@@ -32,13 +32,14 @@ Ported from `references/design-system/components/`. Each gets a `.tsx` + `.stori
 - ✅ ChatBubble (Chat)
 - ✅ `index.ts` barrel export (all 9 components + prop types)
 
-## Foundation stories (`src/stories/foundations/`)
-- ⬜ Colors (paper / ink / accent / supporting / tag tints)
-- ⬜ Typography (display / body / hand + scale)
-- ⬜ Spacing & Layout (8px scale, radii, borders)
-- ⬜ Shadows (hard offset blocks)
-- ⬜ Icons (the bespoke line-icon set)
-- ⬜ Introduction (brand overview)
+## Foundation stories (`src/stories/`)
+- ✅ Colors (paper / ink / accent / supporting / tag tints)
+- ✅ Typography (display / body / hand + scale)
+- ✅ Spacing & Layout (8px scale, radii, borders)
+- ✅ Shadows (hard offset blocks)
+- ✅ Icons (the bespoke line-icon set, glob-imported + mask-tinted)
+- ✅ Introduction (brand overview, MDX docs page)
+- ✅ Production build verified to use relative asset paths (gh-pages subpath safe)
 
 ## Deploy
 - ⬜ `.github/workflows/storybook.yml` — build + publish to `gh-pages` branch

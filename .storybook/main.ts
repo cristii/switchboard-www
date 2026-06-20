@@ -18,6 +18,16 @@ const config: StorybookConfig = {
     if (configType === "PRODUCTION") {
       config.base = "./";
     }
+    // Keep the `"use client"` directives (meaningful when Next.js consumes the
+    // library in Phase 2) without the noisy Rollup bundling warning here.
+    config.build = config.build ?? {};
+    config.build.rollupOptions = config.build.rollupOptions ?? {};
+    const prev = config.build.rollupOptions.onwarn;
+    config.build.rollupOptions.onwarn = (warning, defaultHandler) => {
+      if (warning.code === "MODULE_LEVEL_DIRECTIVE") return;
+      if (typeof prev === "function") prev(warning, defaultHandler);
+      else defaultHandler(warning);
+    };
     return config;
   },
 };
