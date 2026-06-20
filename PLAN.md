@@ -12,7 +12,7 @@ Design language: warm "paper & ink" (see `references/design-system/readme.md`).
 
 ## Source inputs (`references/`)
 - `design-system/` — tokens, fonts, icons, the primitives, brand guidelines, `SKILL.md`.
-- `landing-page.html` — current landing page (copy out of date → rewrite).
+- `landing-page.html` — current landing page (copy out of date; port as-is — rewrite backlogged).
 - `blog-pages/` — Daily Log + all other page exports (the build sources for every route).
 
 ## Stack & architecture (decided)
@@ -44,7 +44,7 @@ Design language: warm "paper & ink" (see `references/design-system/readme.md`).
 ### Phase 2 — Next.js app (Vercel)
 **Workflow: build ONE unit at a time. After each builds green (`next build` + `typecheck`),
 commit and push before starting the next, and tick it off in `PROGRESS.md`.** Rebuild each page
-from its `references/` source using `src/components/ui` + Tailwind; rewrite stale copy; add any
+from its `references/` source using `src/components/ui` + Tailwind; **port the existing copy verbatim — do NOT rewrite copy now (backlogged, see `BACKLOG.md`)**; add any
 new reusable component to the **library with a story** first. Icons: reuse the bespoke set
 (`src/assets/icons`) + the inline SVGs already in the source pages — broader coverage (Lucide) is
 backlogged, see `BACKLOG.md`.
@@ -55,13 +55,13 @@ backlogged, see `BACKLOG.md`.
 - **2.1 Shell & SEO** — `SiteHeader`, `SiteFooter` (`Site Footer.dc.html`), `metadata`,
   brand-mark favicon, `not-found` (`404.dc.html`). New library pieces get stories. → **push**
 - **2.2 Landing `/`** (`landing-page.html`) — all sections via DS components + Tailwind;
-  **rewrite copy** (AI chatbots + n8n/Trigger.dev); scripted `ChatWidget` (client) ported from the
+  **keep the existing copy as-is**; scripted `ChatWidget` (client) ported from the
   landing `fallback()`; Cal.com CTAs. Add `Section`, `Tick`, `ServiceCard`, `ProcessStep`,
   `PricingPlan`, `FaqItem`, `VideoPlaceholder`, `Portrait` to the library as needed. → **push**
 - **2.3 `/services`** (`Services.dc.html`). → **push**
 - **2.4 `/pricing`** (`Pricing.dc.html`) — reuse `Card`(featured)/`Badge`. → **push**
 - **2.5 `/process`** (`Process.dc.html`). → **push**
-- **2.6 `/about`** (`About.dc.html`) — reuse `StickyNote`/`Stat`; refresh tech stack. → **push**
+- **2.6 `/about`** (`About.dc.html`) — reuse `StickyNote`/`Stat`. → **push**
 - **2.7 `/contact`** (`Contact.dc.html`) — form → `src/app/api/lead/route.ts` → `N8N_WEBHOOK_URL`
   (lazy, graceful). → **push**
 - **2.8 `/work` + `/work/[slug]`** (`Work.dc.html`, `Work Item.dc.html`). → **push**
@@ -98,4 +98,4 @@ backlogged, see `BACKLOG.md`.
 - Final copy (Cristi). Real env values: Cal.com link, n8n webhook URL, Supabase creds.
 - Optional later: upgrade chatbot to Claude; `@tailwindcss/typography` for blog prose;
   Next 15 / React 19 bump.
-- **Backlog:** see `BACKLOG.md` (e.g., Lucide icon library — deferred).
+- **Backlog:** see `BACKLOG.md` (Lucide icon library; copy rewrite — both deferred).

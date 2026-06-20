@@ -51,7 +51,7 @@ Roadmap: `PLAN.md`. Live status: `PROGRESS.md`. Design sources: `references/`.
 - **Analytics — Vercel Analytics.** `<Analytics/>` from `@vercel/analytics/react` in the root
   layout.
 
-## Pages to build (all) — rebuild from `references/` with DS components + Tailwind; rewrite stale copy
+## Pages to build (all) — rebuild from `references/` with DS components + Tailwind; port copy as-is
 | Route | Source (`references/…`) |
 |---|---|
 | `/` | `landing-page.html` |
@@ -84,10 +84,9 @@ Warm **"paper & ink"** aesthetic (full detail in `references/design-system/readm
 ## Voice & copy
 First-person singular, direct, anti-fluff, warm. Sentence case for body/headings; UPPERCASE
 only for eyebrows/buttons/tags. Sell outcomes (leads, booked calls). Honest numbers only —
-never invent stats or name clients. **The landing copy in `references/landing-page.html` is
-out of date — rewrite it around AI chatbots + workflow automation on n8n/Trigger.dev**, and
-refresh the About "tech stack" (drop stale items; lead with n8n, Trigger.dev + the build
-stack: Next.js, Supabase, Claude/OpenAI).
+never invent stats or name clients. **Do NOT rewrite copy for now — port the existing copy from
+each source file verbatim.** A copy rewrite (around AI chatbots + n8n/Trigger.dev, and refreshing
+the About "tech stack") is **backlogged — see `BACKLOG.md`.**
 
 ## Env vars (server-only unless NEXT_PUBLIC_)
 | var | used by | notes |

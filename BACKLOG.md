@@ -22,3 +22,10 @@ If/when adopted:
 - Amend the `AGENTS.md` "Icons" rule (currently "No third-party icon library") to allow Lucide
   via the wrapper; keep the bespoke SVGs for their spots; no emoji.
 - Verify `build-storybook` + `typecheck`; push.
+
+## Copy rewrite — site-wide
+**Deferred (do not rewrite copy now).** For Phase 2, port the existing copy from each source file
+verbatim. Later, rewrite the marketing copy around AI chatbots + workflow automation on
+n8n/Trigger.dev (the Daily Log blog already reflects this), and refresh the About "tech stack"
+(drop stale items; lead with n8n, Trigger.dev + the build stack). Keep the brand voice
+(first-person, anti-fluff, no emoji); honest numbers only. Cristi finalizes wording.
