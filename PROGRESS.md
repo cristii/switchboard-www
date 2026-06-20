@@ -44,9 +44,11 @@ Ported from `references/design-system/components/`. Each gets a `.tsx` + `.stori
 ## Deploy
 - ✅ `.github/workflows/storybook.yml` — build + publish to `gh-pages` branch
   (peaceiris/actions-gh-pages; runs on push to main + the working branch)
+- ✅ First Action run green; `gh-pages` branch published (index.html / iframe.html
+  verified HTTP 200 via raw.githubusercontent.com)
 - ⬜ **Manual one-time step (repo owner):** GitHub → Settings → Pages →
   Build and deployment → Source: **Deploy from a branch** → Branch: **gh-pages** `/(root)`
-- 🚧 Confirm the Action run is green and the site renders at
+- ⬜ Once Pages is enabled, the site is live at
   `https://cristii.github.io/switchboard-www/`
 
 ## Notes / decisions
