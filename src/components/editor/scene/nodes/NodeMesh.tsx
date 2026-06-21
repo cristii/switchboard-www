@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { type ThreeEvent, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { SHAPES } from "./shapes";
+import { GroupContainer } from "./shapes/GroupContainer";
 import { getNodeCatalogEntry } from "../../catalog/nodeCatalog";
 import { useWorkflowStore } from "../../state/useWorkflowStore";
 import type { SceneTheme } from "../../theme/sceneTheme";
@@ -47,10 +48,31 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
   const addEdge = useWorkflowStore((s) => s.addEdge);
   const startConnect = useWorkflowStore((s) => s.startConnect);
   const endConnect = useWorkflowStore((s) => s.endConnect);
+  const setParent = useWorkflowStore((s) => s.setParent);
   const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), []);
 
   const entry = getNodeCatalogEntry(node.kind);
+  const isGroup = node.kind === "group";
   const Shape = SHAPES[entry.shape];
+
+  // On drop, assign/clear this node's group membership by footprint containment.
+  const assignMembership = () => {
+    const st = useWorkflowStore.getState();
+    const moved = st.nodes.find((n) => n.id === node.id);
+    if (!moved) return;
+    let parent: string | null = null;
+    for (const g of st.nodes) {
+      if (g.kind !== "group") continue;
+      const ge = getNodeCatalogEntry("group");
+      const hw = (g.width ?? ge.defaultSize.width) / 2;
+      const hd = (g.depth ?? ge.defaultSize.depth) / 2;
+      if (moved.x >= g.x - hw && moved.x <= g.x + hw && moved.y >= g.y - hd && moved.y <= g.y + hd) {
+        parent = g.id;
+        break;
+      }
+    }
+    if ((moved.parentId ?? null) !== parent) setParent(node.id, parent);
+  };
   const width = node.width ?? entry.defaultSize.width;
   const depth = node.depth ?? entry.defaultSize.depth;
   const height = node.height ?? entry.defaultSize.height;
@@ -90,6 +112,7 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
       gl.domElement.style.cursor = "default";
+      if (!isGroup) assignMembership();
     };
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
@@ -131,14 +154,18 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
 
-      <Shape
-        width={width}
-        depth={depth}
-        height={height}
-        color={baseColor}
-        emissive={emissive}
-        emissiveIntensity={emissiveIntensity}
-      />
+      {isGroup ? (
+        <GroupContainer node={node} theme={theme} selected={selected} />
+      ) : (
+        <Shape
+          width={width}
+          depth={depth}
+          height={height}
+          color={baseColor}
+          emissive={emissive}
+          emissiveIntensity={emissiveIntensity}
+        />
+      )}
 
       {hasIn ? (
         <mesh position={[-(width / 2 + 0.16), height * 0.5, 0]}>
@@ -158,7 +185,7 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
         </mesh>
       ) : null}
 
-      {selected ? (
+      {selected && !isGroup ? (
         <SelectionRing radius={Math.max(width, depth) * 0.62} color={theme.selection} />
       ) : null}
     </group>

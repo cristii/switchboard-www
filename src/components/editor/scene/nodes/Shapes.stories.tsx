@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { IsometricWorkflowEditor } from "../../IsometricWorkflowEditor";
-import { allKindsDiagram } from "../../sampleDiagram";
+import { allKindsDiagram, groupedSampleDiagram } from "../../sampleDiagram";
 
 // Gallery of every catalog kind's isometric shape, laid out in a grid. Palette
 // hidden to keep the focus on the shapes; flip the editorTheme toolbar or use
@@ -25,4 +25,9 @@ export const Light: Story = {};
 
 export const Dark: Story = {
   args: { defaultTheme: "dark" },
+};
+
+/** A group container holding children — drag the group to move them together. */
+export const Grouped: Story = {
+  args: { initialDiagram: groupedSampleDiagram, hidePalette: false },
 };

@@ -114,15 +114,20 @@ Goal: typed, routed edges with labels, styles, branching & merging.
 
 ---
 
-## Phase P5 — Group / container nodes
+## Phase P5 — Group / container nodes ✅
 Goal: tiered "layer" boxes for advanced architecture diagrams.
 
-- [ ] P5.1 `scene/nodes/shapes/GroupContainer.tsx` — translucent raised slab + label tab; sizes to
-      children or explicit `width/depth`.
-- [ ] P5.2 Membership — `parentId`; moving a group moves its children; children render above the slab.
-- [ ] P5.3 Inspector support for groups (rename, resize, color).
-- [ ] P5.4 Story: a grouped multi-tier sample (mini Scouts/Leads slice).
-- [ ] **Green + commit + push.**
+- [x] P5.1 `scene/nodes/shapes/GroupContainer.tsx` — low translucent slab (depthWrite off so children
+      read over it), sized to explicit `width/depth`; selected → brighter + emissive. (Label uses the
+      standard overlay; auto-grow-to-children + a dedicated label tab are refinements.)
+- [x] P5.2 Membership — `parentId`; `moveNode` cascades a group's delta to its children; auto-assign
+      on drop (footprint containment) via `setParent` (no extra history step). `NodeMesh` branches
+      `kind==="group"` → `GroupContainer`.
+- [x] P5.3 Group editing (rename/resize/colour) is delivered in the **P6 inspector** (the Inspector
+      doesn't exist until P6). P5 ships the group mechanics + shape.
+- [x] P5.4 `sampleDiagram.groupedSampleDiagram` + `Editor/Nodes/Shapes › Grouped` story
+      ("AI Processing Layer" over three children, trigger in, database out).
+- [x] **Green** — `typecheck` + `build-storybook` + `next build` pass; `/isometric-editor` 1.87 kB.
 
 ---
 

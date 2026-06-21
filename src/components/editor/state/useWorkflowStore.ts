@@ -46,8 +46,11 @@ export interface WorkflowState {
   // --- nodes ---
   addNode: (kind: NodeKind, partial?: Partial<WorkflowNode>) => string;
   updateNode: (id: string, patch: Partial<WorkflowNode>) => void;
-  /** Position update during a drag — intentionally does NOT push history. */
+  /** Position update during a drag — intentionally does NOT push history.
+   *  Moving a group cascades the delta to its child nodes. */
   moveNode: (id: string, x: number, y: number) => void;
+  /** Set/clear group membership (used by auto-membership on drag end). No history. */
+  setParent: (id: string, parentId: string | null) => void;
   deleteNode: (id: string) => void;
 
   // --- edges ---
@@ -162,7 +165,28 @@ export const useWorkflowStore = create<WorkflowState>()((set, get) => {
     },
 
     moveNode: (id, x, y) => {
-      set((s) => ({ nodes: s.nodes.map((n) => (n.id === id ? { ...n, x, y } : n)) }));
+      set((s) => {
+        const node = s.nodes.find((n) => n.id === id);
+        if (!node) return {};
+        const dx = x - node.x;
+        const dy = y - node.y;
+        const cascade = node.kind === "group";
+        return {
+          nodes: s.nodes.map((n) => {
+            if (n.id === id) return { ...n, x, y };
+            if (cascade && n.parentId === id) return { ...n, x: n.x + dx, y: n.y + dy };
+            return n;
+          }),
+        };
+      });
+    },
+
+    setParent: (id, parentId) => {
+      set((s) => ({
+        nodes: s.nodes.map((n) =>
+          n.id === id ? { ...n, parentId: parentId ?? undefined } : n,
+        ),
+      }));
     },
 
     deleteNode: (id) => {

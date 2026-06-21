@@ -53,6 +53,28 @@ export const branchingSampleDiagram: Diagram = {
   ],
 };
 
+/** A group/container ("AI Processing Layer") holding three children, with a
+ *  trigger feeding in and a database below — proves grouping + cascade-move. */
+export const groupedSampleDiagram: Diagram = {
+  version: 1,
+  nodes: [
+    { id: "t1", kind: "trigger", label: "New Lead", x: 0, y: -4 },
+    { id: "g1", kind: "group", label: "AI Processing Layer", x: 0, y: 0, width: 6.4, depth: 2.6 },
+    { id: "a1", kind: "ai", label: "Scam Detection", x: -2, y: 0, parentId: "g1" },
+    { id: "a2", kind: "ai", label: "Lead Scoring", x: 0, y: 0, parentId: "g1" },
+    { id: "a3", kind: "action", label: "Structuring", x: 2, y: 0, parentId: "g1" },
+    { id: "d1", kind: "database", label: "Supabase", x: 0, y: 4.5 },
+  ],
+  edges: [
+    { id: "g-x1", source: "t1", target: "a1" },
+    { id: "g-x2", source: "t1", target: "a2" },
+    { id: "g-x3", source: "t1", target: "a3" },
+    { id: "g-x4", source: "a1", target: "d1" },
+    { id: "g-x5", source: "a2", target: "d1" },
+    { id: "g-x6", source: "a3", target: "d1" },
+  ],
+};
+
 /** One node of every catalog kind, laid out in a grid — a shape gallery. */
 export const allKindsDiagram: Diagram = {
   version: 1,
