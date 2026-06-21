@@ -483,7 +483,7 @@ export default function HomePage() {
       <Section tone="alt" id="about">
         <Eyebrow>About me</Eyebrow>
         <div className="mt-[30px] grid items-start gap-11 lg:grid-cols-[.8fr_1.2fr]">
-          <Portrait />
+          <Portrait src="/cristi-satcovschi.jpg" alt="Cristi Șatcovschi" />
           <div>
             <h2 className={`${heading} text-[clamp(1.6rem,2.6vw,2.2rem)]`}>
               I&apos;m Cristi Șatcovschi.

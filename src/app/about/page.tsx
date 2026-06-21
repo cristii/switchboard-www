@@ -265,7 +265,7 @@ export default function AboutPage() {
             >
               ↳ that&apos;s me
             </div>
-            <Portrait placeholder="Drop your headshot here" ratio="4 / 4.7" />
+            <Portrait src="/cristi-satcovschi.jpg" alt="Cristi Șatcovschi" ratio="4 / 4.7" />
           </div>
         </div>
       </Section>
