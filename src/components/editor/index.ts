@@ -9,6 +9,8 @@ export { NodePalette } from "./panels/NodePalette";
 export type { NodePaletteProps } from "./panels/NodePalette";
 export { Toolbar } from "./panels/Toolbar";
 export { Inspector } from "./panels/Inspector";
+export { ThemeToggle } from "./panels/ThemeToggle";
+export { useEditorTheme } from "./theme/useEditorTheme";
 export { NodeGlyph } from "./icons/NodeGlyph";
 export type { GlyphName } from "./icons/NodeGlyph";
 

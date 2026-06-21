@@ -14,6 +14,7 @@ import type { CameraApi } from "./scene/CameraControls";
 import { NodePalette } from "./panels/NodePalette";
 import { Toolbar } from "./panels/Toolbar";
 import { Inspector } from "./panels/Inspector";
+import { useEditorTheme } from "./theme/useEditorTheme";
 import { useWorkflowStore } from "./state/useWorkflowStore";
 import { mvpSampleDiagram } from "./sampleDiagram";
 import type { Diagram, EditorTheme } from "./state/types";
@@ -21,7 +22,8 @@ import type { Diagram, EditorTheme } from "./state/types";
 export interface IsometricWorkflowEditorProps {
   /** Seed document loaded on mount. @default mvpSampleDiagram */
   initialDiagram?: Diagram;
-  /** Initial theme; persistence + system default land in P7. @default "light" */
+  /** Force an initial theme (deterministic). When omitted, the editor uses the
+   *  stored preference, then the OS preference. */
   defaultTheme?: EditorTheme;
   /** Render the toolbar + palette + inspector. @default true */
   chrome?: boolean;
@@ -39,12 +41,12 @@ const NOOP_API: CameraApi = {
 
 export function IsometricWorkflowEditor({
   initialDiagram = mvpSampleDiagram,
-  defaultTheme = "light",
+  defaultTheme,
   chrome = true,
   className,
   style,
 }: IsometricWorkflowEditorProps) {
-  const [theme, setTheme] = React.useState<EditorTheme>(defaultTheme);
+  const { theme, toggle: toggleTheme } = useEditorTheme(defaultTheme);
   const [ready, setReady] = React.useState(false);
   const labelsRef = React.useRef<LabelsRegistry>(new Map());
   const edgeLabelsRef = React.useRef<EdgeLabelsRegistry>(new Map());
@@ -77,8 +79,6 @@ export function IsometricWorkflowEditor({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
-
-  const toggleTheme = () => setTheme((t) => (t === "light" ? "dark" : "light"));
 
   const rootStyle: React.CSSProperties = {
     position: "relative",

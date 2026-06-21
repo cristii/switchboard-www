@@ -151,17 +151,21 @@ Goal: the 2D editor frame, built from editor primitives (and `src/components/ui`
 
 ---
 
-## Phase P7 — Theming (editor-scoped dark/light)
+## Phase P7 — Theming (editor-scoped dark/light) ✅
 Goal: a real, scoped toggle that drives both DOM chrome and the 3D scene.
 
-- [ ] P7.1 `theme/useEditorTheme.ts` — context/hook; localStorage `sb-editor-theme` +
-      `prefers-color-scheme` default; sets `data-editor-theme` on the editor root.
-- [ ] P7.2 `theme/sceneTheme.ts` — read resolved `--editor-*` / `--node-*` vars; recompute on theme
-      change; expose a scene theme object (bg, grid, materials, lights, selection emissive).
-- [ ] P7.3 `panels/ThemeToggle.tsx` — bespoke sun/moon line icons (no emoji); wired to the hook.
-- [ ] P7.4 Verify chrome + scene flip correctly; the rest of the site is unaffected.
-- [ ] P7.5 Story: `Editor/Theming` (side-by-side light/dark).
-- [ ] **Green + commit + push.**
+- [x] P7.1 `theme/useEditorTheme.ts` — persists to `localStorage` (`sb-editor-theme`), defaults to
+      `prefers-color-scheme`; an explicit `defaultTheme` wins (deterministic stories). The editor
+      writes the result to `data-editor-theme` on its root.
+- [x] P7.2 `theme/sceneTheme.ts` already exposes matched light/dark palettes (bg, grid, lights,
+      materials, selection). Kept as constants synced to `editor-tokens.css` rather than reading
+      computed vars — reliable and WebGL needs concrete hex anyway. The toggle now drives it.
+- [x] P7.3 `panels/ThemeToggle.tsx` — sun/moon IconButton (bespoke glyphs, no emoji); used by the
+      Toolbar.
+- [x] P7.4 Toggle flips chrome (`data-editor-theme`) + scene (`getSceneTheme`) together; route top
+      bar + the rest of the site stay on the light brand surface (unaffected).
+- [x] P7.5 Story `Editor/Theming` (side-by-side light/dark).
+- [x] **Green** — `typecheck` + `build-storybook` + `next build` pass; `/isometric-editor` 1.87 kB.
 
 ---
 

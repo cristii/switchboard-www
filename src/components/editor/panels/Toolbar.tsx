@@ -7,6 +7,7 @@
 
 import * as React from "react";
 import { IconButton } from "../primitives/IconButton";
+import { ThemeToggle } from "./ThemeToggle";
 import { useWorkflowStore } from "../state/useWorkflowStore";
 import { useExportJson } from "../hooks/useExportJson";
 import { useExportPng } from "../hooks/useExportPng";
@@ -61,11 +62,7 @@ export function Toolbar({ apiRef, theme, onToggleTheme }: ToolbarProps) {
       <IconButton label="Export JSON" glyph="download" onClick={exportJson} />
       <IconButton label="Export PNG" glyph="image" onClick={exportPng} />
       <div style={{ flex: 1 }} />
-      <IconButton
-        label={theme === "dark" ? "Switch to light" : "Switch to dark"}
-        glyph={theme === "dark" ? "sun" : "moon"}
-        onClick={onToggleTheme}
-      />
+      <ThemeToggle theme={theme} onToggle={onToggleTheme} />
     </div>
   );
 }
