@@ -1,0 +1,57 @@
+/* ============================================================
+   Isometric Workflow Editor — scoped design tokens
+   Light derives from the brand "paper & ink" tokens
+   (src/styles/colors.css + spacing.css); dark is an editor-only
+   surface set. Everything is scoped to [data-editor-theme] so the
+   rest of the site is never affected. Chrome uses var(--editor-*) /
+   var(--node-*) only — never raw hex. See description.md §9.
+   ============================================================ */
+
+[data-editor-theme="light"] {
+  --editor-bg: var(--paper);
+  --editor-surface: var(--white);
+  --editor-surface-2: var(--paper-2);
+  --editor-surface-sunken: var(--paper-3);
+  --editor-border: var(--ink);
+  --editor-border-soft: var(--line);
+  --editor-text: var(--ink);
+  --editor-text-muted: var(--ink-soft);
+  --editor-grid: var(--line);
+  --editor-grid-strong: var(--line-soft);
+  --editor-accent: var(--orange);
+  --editor-accent-deep: var(--orange-deep);
+  --editor-selection: var(--amber);
+  --editor-shadow: var(--shadow-card); /* HARD offset, no blur */
+  --editor-shadow-pop: var(--shadow-pop);
+
+  /* Node colour roles → brand tokens. */
+  --node-orange: var(--orange);
+  --node-green: var(--green);
+  --node-violet: var(--violet);
+  --node-amber: var(--amber);
+  --node-ink: var(--ink);
+}
+
+[data-editor-theme="dark"] {
+  --editor-bg: #0e1a18; /* deep ink-black, derived from --dark */
+  --editor-surface: #15211f; /* = --ink used as a surface */
+  --editor-surface-2: #1c2a27;
+  --editor-surface-sunken: #0b1413;
+  --editor-border: #2c3a37;
+  --editor-border-soft: #243330;
+  --editor-text: var(--on-dark);
+  --editor-text-muted: var(--on-dark-muted);
+  --editor-grid: #243330;
+  --editor-grid-strong: #2e403c;
+  --editor-accent: #d9772b; /* brightened orange for contrast on dark */
+  --editor-accent-deep: var(--orange);
+  --editor-selection: var(--amber);
+  --editor-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45); /* still hard, no blur */
+  --editor-shadow-pop: 8px 8px 0 rgba(0, 0, 0, 0.5);
+
+  --node-orange: #e08742;
+  --node-green: #5ba06b;
+  --node-violet: #9a78c0;
+  --node-amber: var(--amber);
+  --node-ink: #c8cec6;
+}

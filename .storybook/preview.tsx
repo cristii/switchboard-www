@@ -6,9 +6,27 @@ import "../src/styles/fonts.css";
 import "../src/styles/colors.css";
 import "../src/styles/typography.css";
 import "../src/styles/spacing.css";
+// Editor-scoped tokens (light + dark), scoped to [data-editor-theme]. Imported
+// after the brand tokens it derives from. See src/components/editor/theme.
+import "../src/components/editor/theme/editor-tokens.css";
 import "../src/styles/global.css";
 
 const preview: Preview = {
+  globalTypes: {
+    editorTheme: {
+      description: "Editor-scoped light/dark theme (data-editor-theme)",
+      defaultValue: "light",
+      toolbar: {
+        title: "Editor theme",
+        icon: "contrast",
+        items: [
+          { value: "light", title: "Editor: Light" },
+          { value: "dark", title: "Editor: Dark" },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
   parameters: {
     controls: {
       matchers: { color: /(background|color)$/i, date: /Date$/i },
@@ -33,16 +51,20 @@ const preview: Preview = {
           "Surfaces",
           "Data",
           "Chat",
+          "Editor",
         ],
       },
     },
   },
   decorators: [
-    (Story) => (
-      <div style={{ padding: "28px" }}>
-        <Story />
-      </div>
-    ),
+    (Story, context) => {
+      const editorTheme = (context.globals.editorTheme as string) ?? "light";
+      return (
+        <div data-editor-theme={editorTheme} style={{ padding: "28px" }}>
+          <Story />
+        </div>
+      );
+    },
   ],
 };
 
