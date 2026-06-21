@@ -12,53 +12,57 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done.
 
 ---
 
-## Phase P0 — Setup & scaffolding
+## Phase P0 — Setup & scaffolding ✅
 Goal: dependencies, theme tokens, folder skeleton, Storybook wiring. No features yet.
 
-- [ ] P0.1 Add deps at React-18-compatible versions (spec §4): `three@^0.17x`,
-      `@react-three/fiber@^8`, `@react-three/drei@^9`, `@react-spring/three@^9`,
-      `@react-spring/web@^9`, `zustand@^5`. Do **not** bump React.
-- [ ] P0.2 Create the `src/components/editor/**` folder skeleton (empty files per spec §5 tree) and
-      `src/components/editor/index.ts` barrel.
-- [ ] P0.3 Add `theme/editor-tokens.css` with light + dark `--editor-*` sets (spec §9).
-- [ ] P0.4 Import the editor token CSS in `.storybook/preview.tsx` (alongside existing tokens) and
-      add a `data-editor-theme` Storybook toolbar/decorator for light/dark.
-- [ ] P0.5 Add a placeholder `Editor/Introduction` MDX/story so the `Editor/*` namespace appears.
-- [ ] **Green + commit + push.** (`build-storybook` must still pass; no app route yet.)
+- [x] P0.1 Added deps (React-18 compatible, spec §4): `three@0.169.0`,
+      `@react-three/fiber@8.17.10`, `@react-three/drei@9.114.3`, `@react-spring/three@9.7.5`,
+      `@react-spring/web@9.7.5`, `zustand@5.0.3` (+ dev `@types/three@0.169.0`). React not bumped.
+- [x] P0.2 Editor module tree under `src/components/editor/**` + `index.ts` barrel. (Files are
+      created as each phase implements them — real modules, not empty stubs.)
+- [x] P0.3 `theme/editor-tokens.css` — light (brand-derived) + dark `--editor-*` sets (spec §9).
+- [x] P0.4 Editor tokens imported in `.storybook/preview.tsx`; added an `editorTheme`
+      (`data-editor-theme`) toolbar + decorator for light/dark; `Editor` added to the story sort.
+- [x] P0.5 `Editor/Introduction` story (TSX) — the `Editor/*` namespace landing page.
+- [x] **Green** — `typecheck`, `build-storybook`, `next build` all pass (route lands in P11).
 
 ---
 
-## Phase P1 — Data core (renderer-agnostic)
+## Phase P1 — Data core (renderer-agnostic) ✅
 Goal: types, store, history, schema — the foundation everything else builds on.
 
-- [ ] P1.1 `state/types.ts` — `NodeKind`, `Port`, `WorkflowNode`, `WorkflowEdge`, `Viewport`,
-      `Diagram` (spec §6).
-- [ ] P1.2 `state/useWorkflowStore.ts` (zustand) — nodes, edges, selection, viewport; actions:
-      add/update/delete node, move node, add/delete edge, set/clear selection, set viewport.
-      Port the prototype's logic.
-- [ ] P1.3 `state/history.ts` — snapshot-based undo/redo (extract `_takeSnapshot`/`undo`/`redo`);
-      wire into the store.
-- [ ] P1.4 `state/schema.ts` — `serialize`/`deserialize`/`validate`/`migrate(version)`.
-- [ ] P1.5 Stories/sandbox demonstrating store mutations + serialize round-trip (text-only, no 3D).
-- [ ] **Green + commit + push.**
+- [x] P1.1 `state/types.ts` — `NodeKind`, `NodeColorRole`, `Port`, `WorkflowNode`, `WorkflowEdge`,
+      `Selection`, `Viewport`, `Diagram` (spec §6).
+- [x] P1.2 `state/useWorkflowStore.ts` (zustand v5) — nodes, edges, selection, viewport; actions:
+      add/update/move/delete node, add/update/delete edge, select/clear, setViewport,
+      load/export/import diagram, clear.
+- [x] P1.3 `state/history.ts` — snapshot helpers (`cloneSnapshot`/`pushPast`/`MAX_HISTORY`);
+      `beginInteraction`/`undo`/`redo` wired into the store (a drag snapshots once, at gesture start).
+- [x] P1.4 `state/schema.ts` — `serialize`/`toJSON`/`validate`/`migrate`/`deserialize` (coerces +
+      prunes dangling edges; versioned). Seed: `sampleDiagram.ts` (full presets → P10).
+- [x] P1.5 `Editor/State Sandbox` story — add/delete, undo/redo, serialize → deserialize round-trip.
+- [x] **Green** — `typecheck` + `build-storybook` pass.
 
 ---
 
-## Phase P2 — Scene MVP
+## Phase P2 — Scene MVP ✅
 Goal: a draggable node on an isometric grid with a label. Proves the R3F port.
 
-- [ ] P2.1 `scene/DiagramCanvas.tsx` — orthographic `<Canvas>` (port settings) with
-      `gl.preserveDrawingBuffer = true` (needed for PNG export later), lights, ground plane,
-      `ContactShadows` (restrained, spec §3).
-- [ ] P2.2 `scene/Grid.tsx` — brand-tinted ground grid (theme-aware colors).
-- [ ] P2.3 `scene/nodes/NodeMesh.tsx` + one shape (`shapes/BoxNode.tsx`) — render + select + drag on
-      ground plane (port drag math + pointer capture).
-- [ ] P2.4 `scene/LabelsLayer.tsx` — DOM overlay labels via screen projection; on-brand styling
-      (hard shadow, ink outline, **no blur**).
-- [ ] P2.5 `scene/CameraControls.tsx` — pan (ctrl/middle-drag) + wheel zoom (clamped) + fit/reset.
-- [ ] P2.6 Minimal `IsometricWorkflowEditor.tsx` mounting the canvas with a couple of seed nodes;
-      `Editor/Scene MVP` story.
-- [ ] **Green + commit + push.**
+- [x] P2.1 `scene/DiagramCanvas.tsx` — orthographic `<Canvas>` (`preserveDrawingBuffer` on for PNG
+      export later), ambient + key/fill lights, invisible ground (click = clear, dbl-click = reset),
+      restrained drei `ContactShadows`. Scene colours from `theme/sceneTheme.ts` (light + dark
+      palettes ready; the live toggle wires up in P7).
+- [x] P2.2 `scene/Grid.tsx` — theme-tinted ground grid (per-vertex section colouring).
+- [x] P2.3 `scene/nodes/NodeMesh.tsx` + `shapes/BoxNode.tsx` (drei RoundedBox) — select + drag on
+      the y=0 plane (window-listener drag, robust off-mesh) + selection ring. Catalog dispatch → P3.
+- [x] P2.4 `scene/LabelsLayer.tsx` + `scene/LabelProjector.tsx` — DOM overlay positioned each frame
+      by direct ref writes (no per-frame React renders); hard shadow, ink outline, no blur.
+- [x] P2.5 `scene/CameraControls.tsx` — raycast-based pan (ctrl/middle/right-drag), wheel zoom
+      (clamped), `reset`/`fit` exposed via an api ref (toolbar wiring → P6).
+- [x] P2.6 `IsometricWorkflowEditor.tsx` (theme root + store seed + canvas/overlay stack);
+      `Editor/Scene MVP` story (Default / Dark / Empty).
+- [x] **Green** — `typecheck` + `build-storybook` + `next build` pass; three.js stays out of all
+      route bundles (isolated Storybook chunk).
 
 ---
 
