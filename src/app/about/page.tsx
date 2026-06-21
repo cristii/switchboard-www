@@ -13,6 +13,7 @@ import {
 } from "@/components/ui";
 import { BookCall } from "@/components/sections/BookCall";
 import { BucharestBand } from "@/components/sections/BucharestBand";
+import { SnowboardBand } from "@/components/sections/SnowboardBand";
 import { socialLinks } from "@/lib/nav";
 
 import assistantIcon from "@/assets/icons/assistant.svg";
@@ -461,6 +462,9 @@ export default function AboutPage() {
           </a>
         </p>
       </Section>
+
+      {/* ============ SNOWBOARDING / OFF THE CLOCK ============ */}
+      <SnowboardBand />
 
       {/* ============ BUCHAREST / LOCAL ============ */}
       <BucharestBand />

@@ -62,3 +62,22 @@
     transition: none !important;
   }
 }
+
+/* Gentle drifting snow for the About page snowboarding band. Purely
+   decorative; the reduced-motion block above turns it off entirely. */
+@keyframes sb-snow-fall {
+  0% {
+    transform: translateY(-24px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.2;
+  }
+  88% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(720px) translateX(22px) rotate(150deg);
+    opacity: 0;
+  }
+}
