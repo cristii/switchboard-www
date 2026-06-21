@@ -2,11 +2,12 @@ import Link from "next/link";
 import { Logo } from "@/components/ui";
 import { primaryNav } from "@/lib/nav";
 import { BookCall } from "./BookCall";
+import { MobileNav } from "./MobileNav";
 
 /**
  * Sticky site header: translucent paper bar with a hard ink underline, the
- * brand logo, primary nav (hidden on small screens, matching the references),
- * and the booking CTA. Ported from the landing-page header.
+ * brand logo, primary nav (inline at md+, a hamburger dropdown below), and the
+ * booking CTA. Ported from the landing-page header.
  */
 export function SiteHeader() {
   return (
@@ -32,10 +33,13 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <BookCall size="sm" arrow>
-          <span className="hidden sm:inline">Book a 15-min call</span>
-          <span className="sm:hidden">Book a call</span>
-        </BookCall>
+        <div className="flex items-center gap-3">
+          <BookCall size="sm" arrow>
+            <span className="hidden sm:inline">Book a 15-min call</span>
+            <span className="sm:hidden">Book a call</span>
+          </BookCall>
+          <MobileNav />
+        </div>
       </div>
     </header>
   );

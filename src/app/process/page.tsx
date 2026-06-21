@@ -251,6 +251,15 @@ const retainerTiers = [
   },
 ];
 
+/** Compact, clickable map of the steps shown in the hero. */
+const overview: { n: string; label: string }[] = [
+  { n: "01", label: "Discovery" },
+  { n: "02", label: "Build & feedback" },
+  { n: "03", label: "QA & testing" },
+  { n: "04", label: "Handoff" },
+  { n: "05", label: "Retainer" },
+];
+
 /* ---------- Sub-components ---------- */
 
 function NodeCard({
@@ -323,7 +332,30 @@ export default function ProcessPage() {
           connected steps, each handing clean results to the next. Follow the path from first call to
           a system you own.
         </p>
-        <p className="m-0 inline-flex flex-col items-center font-hand text-[1.3rem] text-ink-soft">
+
+        <div className="mx-auto flex max-w-[20rem] flex-col gap-2 lg:max-w-none lg:flex-row lg:items-stretch lg:justify-center">
+          {overview.map((o, i) => (
+            <React.Fragment key={o.n}>
+              <a
+                href={`#step-${o.n}`}
+                className="flex items-center gap-[10px] rounded-[12px] border border-ink bg-white px-[14px] py-[10px] text-ink no-underline shadow-card transition-transform hover:-translate-y-[2px]"
+              >
+                <span className={`${display} text-[1.05rem] font-extrabold text-orange`}>{o.n}</span>
+                <span className={`${display} whitespace-nowrap text-[.9rem] font-bold`}>{o.label}</span>
+              </a>
+              {i < overview.length - 1 && (
+                <span
+                  aria-hidden="true"
+                  className="hidden shrink-0 self-center px-1 text-[1.1rem] text-orange lg:inline"
+                >
+                  →
+                </span>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+
+        <p className="m-0 mt-7 inline-flex flex-col items-center font-hand text-[1.3rem] text-ink-soft">
           ↓ follow the wires
         </p>
       </Section>
@@ -334,6 +366,7 @@ export default function ProcessPage() {
         return (
           <Section
             key={s.n}
+            id={`step-${s.n}`}
             tone={s.tone}
             style={{ borderTop: `1.5px solid ${onDark ? "#000" : "var(--ink)"}` }}
           >
@@ -372,7 +405,7 @@ export default function ProcessPage() {
       })}
 
       {/* ============ STEP 5, Retainer ============ */}
-      <Section style={{ borderTop: "1.5px solid var(--ink)" }}>
+      <Section id="step-05" style={{ borderTop: "1.5px solid var(--ink)" }}>
         <div className="grid items-center gap-12 lg:grid-cols-[40%_60%]">
           <div className="flex justify-center">
             <NodeCard glyph={scheduleGlyph} label="Schedule" dots="top" />
