@@ -184,16 +184,20 @@ Goal: subtle, premium motion; fully disabled under reduced motion.
 
 ---
 
-## Phase P9 — Responsive / mobile
+## Phase P9 — Responsive / mobile ✅
 Goal: usable on touch devices; panels collapse into drawers.
 
-- [ ] P9.1 `hooks/useResponsiveLayout.ts` — width → layout mode.
-- [ ] P9.2 `panels/MobileDrawer.tsx` — bottom-sheet (react-spring) for palette + inspector;
-      segmented "Add"/"Inspect" toggle; condensed toolbar + overflow.
-- [ ] P9.3 Touch gestures — 1-finger drag node / pan empty space; 2-finger pan; pinch zoom; guard
-      against accidental selection during pan.
-- [ ] P9.4 Hit areas ≥ 40px; verify at mobile/tablet/desktop widths.
-- [ ] **Green + commit + push.**
+- [x] P9.1 `hooks/useResponsiveLayout.ts` — measures the editor root via ResizeObserver →
+      "mobile" (< 720px) / "desktop".
+- [x] P9.2 `panels/MobileDrawer.tsx` — react-spring bottom sheet (immediate under reduced motion);
+      mobile layout = full-bleed stage + an Add / Inspect segmented bar opening palette / inspector
+      drawers; toolbar `compact` (packs + horizontal scroll).
+- [x] P9.3 Touch — `touch-action: none` on the canvas; single-finger = node drag / select (R3F
+      pointer events); two-finger = pinch-zoom + pan in `CameraControls`. (Best-effort; the
+      1-finger-empty-pan variant is dropped in favour of 2-finger nav — needs a browser to tune.)
+- [x] P9.4 Segmented bar 50px, drawer close 36px; `Editor/Scene MVP › Mobile` story (380px → mobile
+      layout). (Finer hit-area/touch polish noted for a real-device pass.)
+- [x] **Green** — `typecheck` + `build-storybook` + `next build` pass; `/isometric-editor` 1.87 kB.
 
 ---
 

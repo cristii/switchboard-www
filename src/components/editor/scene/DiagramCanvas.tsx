@@ -49,7 +49,7 @@ export function DiagramCanvas({ theme, labelsRef, edgeLabelsRef, apiRef, onReady
         powerPreference: "high-performance",
       }}
       camera={{ position: [24, 24, 24], zoom: 38, near: 0.1, far: 200 }}
-      style={{ width: "100%", height: "100%", display: "block" }}
+      style={{ width: "100%", height: "100%", display: "block", touchAction: "none" }}
       onCreated={({ gl }) => {
         apiRef.current.capturePng = () => gl.domElement.toDataURL("image/png");
         onReady?.();

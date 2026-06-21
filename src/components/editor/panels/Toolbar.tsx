@@ -18,6 +18,8 @@ export interface ToolbarProps {
   apiRef: React.MutableRefObject<CameraApi>;
   theme: EditorTheme;
   onToggleTheme: () => void;
+  /** Pack buttons + allow horizontal scroll (narrow screens). @default false */
+  compact?: boolean;
 }
 
 function Divider() {
@@ -29,7 +31,7 @@ function Divider() {
   );
 }
 
-export function Toolbar({ apiRef, theme, onToggleTheme }: ToolbarProps) {
+export function Toolbar({ apiRef, theme, onToggleTheme, compact = false }: ToolbarProps) {
   const undo = useWorkflowStore((s) => s.undo);
   const redo = useWorkflowStore((s) => s.redo);
   const pastLen = useWorkflowStore((s) => s.past.length);
@@ -49,6 +51,7 @@ export function Toolbar({ apiRef, theme, onToggleTheme }: ToolbarProps) {
         background: "var(--editor-surface)",
         borderBottom: "1.5px solid var(--editor-border-soft)",
         color: "var(--editor-text)",
+        overflowX: compact ? "auto" : "visible",
       }}
     >
       <IconButton label="Undo" glyph="undo" onClick={undo} disabled={pastLen === 0} />
@@ -61,7 +64,7 @@ export function Toolbar({ apiRef, theme, onToggleTheme }: ToolbarProps) {
       <Divider />
       <IconButton label="Export JSON" glyph="download" onClick={exportJson} />
       <IconButton label="Export PNG" glyph="image" onClick={exportPng} />
-      <div style={{ flex: 1 }} />
+      {compact ? <Divider /> : <div style={{ flex: 1 }} />}
       <ThemeToggle theme={theme} onToggle={onToggleTheme} />
     </div>
   );

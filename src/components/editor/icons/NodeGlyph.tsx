@@ -30,7 +30,8 @@ export type GlyphName =
   | "sun"
   | "moon"
   | "trash"
-  | "plus";
+  | "plus"
+  | "close";
 
 const PATHS: Record<GlyphName, React.ReactNode> = {
   zap: <path d="M13 2 L4 14 h7 l-1 8 L20 9 h-7 z" />,
@@ -99,6 +100,7 @@ const PATHS: Record<GlyphName, React.ReactNode> = {
   moon: <path d="M20 13 a8 8 0 1 1 -9 -10 a6 6 0 0 0 9 10 z" />,
   trash: <path d="M5 7 h14 M9 7 V5 h6 v2 M7 7 l1 13 h8 l1 -13" />,
   plus: <path d="M12 6 v12 M6 12 h12" />,
+  close: <path d="M6 6 l12 12 M18 6 l-12 12" />,
 };
 
 export interface NodeGlyphProps {

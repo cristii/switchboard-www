@@ -167,6 +167,45 @@ export function CameraControls({ api }: CameraControlsProps) {
     };
     const onContextMenu = (e: MouseEvent) => e.preventDefault();
 
+    // Two-finger pinch-zoom + pan (touch). Single-finger is left to node
+    // drag / selection via R3F pointer events. Best-effort; tune in a browser.
+    type Pinch = { dist: number; cx: number; cy: number };
+    let pinch: Pinch | null = null;
+    const pinchInfo = (touches: TouchList): Pinch => {
+      const a = touches[0];
+      const b = touches[1];
+      return {
+        dist: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY),
+        cx: (a.clientX + b.clientX) / 2,
+        cy: (a.clientY + b.clientY) / 2,
+      };
+    };
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        pinch = pinchInfo(e.touches);
+        tweening.current = false;
+      }
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2 && pinch) {
+        e.preventDefault();
+        const info = pinchInfo(e.touches);
+        const before = groundAt(pinch.cx, pinch.cy);
+        const after = groundAt(info.cx, info.cy);
+        if (before && after) {
+          target.current.add(before.sub(after));
+          desiredTarget.current.copy(target.current);
+        }
+        ortho().zoom = clampZoom(ortho().zoom * (info.dist / pinch.dist));
+        desiredZoom.current = ortho().zoom;
+        applyCamera();
+        pinch = info;
+      }
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) pinch = null;
+    };
+
     const canvas = gl.domElement;
     canvas.addEventListener("pointerdown", onPointerDown);
     canvas.addEventListener("pointermove", onPointerMove);
@@ -174,6 +213,10 @@ export function CameraControls({ api }: CameraControlsProps) {
     canvas.addEventListener("pointerleave", onPointerUp);
     canvas.addEventListener("wheel", onWheel, { passive: false });
     canvas.addEventListener("contextmenu", onContextMenu);
+    canvas.addEventListener("touchstart", onTouchStart, { passive: false });
+    canvas.addEventListener("touchmove", onTouchMove, { passive: false });
+    canvas.addEventListener("touchend", onTouchEnd);
+    canvas.addEventListener("touchcancel", onTouchEnd);
     return () => {
       canvas.removeEventListener("pointerdown", onPointerDown);
       canvas.removeEventListener("pointermove", onPointerMove);
@@ -181,6 +224,10 @@ export function CameraControls({ api }: CameraControlsProps) {
       canvas.removeEventListener("pointerleave", onPointerUp);
       canvas.removeEventListener("wheel", onWheel);
       canvas.removeEventListener("contextmenu", onContextMenu);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchmove", onTouchMove);
+      canvas.removeEventListener("touchend", onTouchEnd);
+      canvas.removeEventListener("touchcancel", onTouchEnd);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [camera, gl, raycaster, size.width, size.height, reduced]);

@@ -10,7 +10,10 @@ export type { NodePaletteProps } from "./panels/NodePalette";
 export { Toolbar } from "./panels/Toolbar";
 export { Inspector } from "./panels/Inspector";
 export { ThemeToggle } from "./panels/ThemeToggle";
+export { MobileDrawer } from "./panels/MobileDrawer";
 export { useEditorTheme } from "./theme/useEditorTheme";
+export { useResponsiveLayout } from "./hooks/useResponsiveLayout";
+export { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion";
 export { NodeGlyph } from "./icons/NodeGlyph";
 export type { GlyphName } from "./icons/NodeGlyph";
 

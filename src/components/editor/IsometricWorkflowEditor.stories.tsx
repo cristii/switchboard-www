@@ -29,3 +29,10 @@ export const Dark: Story = {
 export const Empty: Story = {
   args: { initialDiagram: { version: 1, nodes: [], edges: [] } },
 };
+
+/** Narrow container (< 720px) → mobile layout: full-bleed stage, condensed
+ *  toolbar, and an Add / Inspect bar opening bottom-sheet drawers. */
+export const Mobile: Story = {
+  parameters: { layout: "centered" },
+  args: { style: { width: 380, height: 640 } },
+};
