@@ -5,11 +5,26 @@
 export { IsometricWorkflowEditor } from "./IsometricWorkflowEditor";
 export type { IsometricWorkflowEditorProps } from "./IsometricWorkflowEditor";
 
+export { NodePalette } from "./panels/NodePalette";
+export type { NodePaletteProps } from "./panels/NodePalette";
+export { NodeGlyph } from "./icons/NodeGlyph";
+export type { GlyphName } from "./icons/NodeGlyph";
+
+export {
+  NODE_CATALOG,
+  CATALOG_LIST,
+  CATEGORIES,
+  getNodeCatalogEntry,
+  catalogByCategory,
+} from "./catalog/nodeCatalog";
+export type { NodeCatalogEntry, NodeCategory } from "./catalog/nodeCatalog";
+export type { ShapeId } from "./scene/nodes/shapes/types";
+
 export { useWorkflowStore } from "./state/useWorkflowStore";
 export type { WorkflowState } from "./state/useWorkflowStore";
 
 export { serialize, deserialize, toJSON, validate, SCHEMA_VERSION } from "./state/schema";
-export { mvpSampleDiagram } from "./sampleDiagram";
+export { mvpSampleDiagram, allKindsDiagram } from "./sampleDiagram";
 
 export type {
   Diagram,

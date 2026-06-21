@@ -3,7 +3,7 @@
 // theme value through; the palettes themselves already cover light + dark.
 // See description.md §9 (theming) and §3 (3D-vs-brand reconciliation).
 
-import type { EditorTheme, NodeColorRole, NodeKind } from "../state/types";
+import type { EditorTheme, NodeColorRole } from "../state/types";
 
 export interface SceneTheme {
   background: string;
@@ -19,6 +19,8 @@ export interface SceneTheme {
   contactShadowOpacity: number;
   selection: string;
   edge: string;
+  /** Tile colour for `note` nodes (paper tone). */
+  paper: string;
   nodeColors: Record<NodeColorRole, string>;
   nodeEmissiveIntensity: number;
   selectionEmissiveIntensity: number;
@@ -38,6 +40,7 @@ const LIGHT: SceneTheme = {
   contactShadowOpacity: 0.22,
   selection: "#fbbf24", // --amber
   edge: "#54605c", // --ink-soft
+  paper: "#f5f4ec",
   nodeColors: {
     orange: "#b45309",
     green: "#3f7a4e",
@@ -63,6 +66,7 @@ const DARK: SceneTheme = {
   contactShadowOpacity: 0.5,
   selection: "#fbbf24",
   edge: "#9aa49d", // --on-dark-muted
+  paper: "#26332f",
   nodeColors: {
     orange: "#e08742",
     green: "#5ba06b",
@@ -76,29 +80,4 @@ const DARK: SceneTheme = {
 
 export function getSceneTheme(theme: EditorTheme): SceneTheme {
   return theme === "dark" ? DARK : LIGHT;
-}
-
-/** Temporary kind → colour-role map for the MVP. The node catalog (P3) becomes
- *  the authoritative source; until then this keeps the scene on-brand. */
-export function nodeRoleForKind(kind: NodeKind): NodeColorRole {
-  switch (kind) {
-    case "trigger":
-    case "integration":
-    case "output":
-      return "orange";
-    case "database":
-    case "queue":
-      return "green";
-    case "ai":
-      return "violet";
-    case "logic":
-    case "merge":
-      return "amber";
-    case "service":
-    case "action":
-    case "group":
-    case "note":
-    default:
-      return "ink";
-  }
 }

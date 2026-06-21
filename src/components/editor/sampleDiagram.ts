@@ -2,6 +2,7 @@
 // (n8n + the Scouts/Leads architecture) arrives in P10; this is just enough to
 // exercise the scene with a few node kinds and edges.
 
+import { CATALOG_LIST } from "./catalog/nodeCatalog";
 import type { Diagram } from "./state/types";
 
 export const mvpSampleDiagram: Diagram = {
@@ -17,4 +18,21 @@ export const mvpSampleDiagram: Diagram = {
     { id: "e2", source: "n2", target: "n3", routing: "orthogonal" },
     { id: "e3", source: "n2", target: "n4", routing: "orthogonal" },
   ],
+};
+
+/** One node of every catalog kind, laid out in a grid — a shape gallery. */
+export const allKindsDiagram: Diagram = {
+  version: 1,
+  nodes: CATALOG_LIST.map((entry, i) => {
+    const col = i % 4;
+    const row = Math.floor(i / 4);
+    return {
+      id: `k${i}`,
+      kind: entry.kind,
+      label: entry.label,
+      x: (col - 1.5) * 3.4,
+      y: (row - 1) * 3.4,
+    };
+  }),
+  edges: [],
 };

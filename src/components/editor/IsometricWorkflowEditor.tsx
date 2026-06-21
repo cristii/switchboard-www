@@ -1,13 +1,14 @@
 "use client";
 
 // Top-level, composed editor. Owns the data-editor-theme root (so the scoped
-// tokens apply), seeds the store from `initialDiagram`, and stacks the 3D canvas
-// under the DOM label overlay. Chrome (toolbar/palette/inspector) and the real
-// light/dark toggle arrive in P6/P7; this is the P2 Scene MVP shell.
+// tokens apply), seeds the store from `initialDiagram`, and lays out the node
+// palette beside the 3D stage (canvas + DOM label overlay). Toolbar/inspector
+// and the real light/dark toggle arrive in P6/P7.
 
 import * as React from "react";
 import { DiagramCanvas } from "./scene/DiagramCanvas";
 import { LabelsLayer, type LabelsRegistry } from "./scene/LabelsLayer";
+import { NodePalette } from "./panels/NodePalette";
 import { useWorkflowStore } from "./state/useWorkflowStore";
 import { mvpSampleDiagram } from "./sampleDiagram";
 import type { Diagram, EditorTheme } from "./state/types";
@@ -17,6 +18,8 @@ export interface IsometricWorkflowEditorProps {
   initialDiagram?: Diagram;
   /** Initial theme; an interactive toggle lands in P7. @default "light" */
   defaultTheme?: EditorTheme;
+  /** Hide the node palette (e.g. read-only embeds). @default false */
+  hidePalette?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -24,6 +27,7 @@ export interface IsometricWorkflowEditorProps {
 export function IsometricWorkflowEditor({
   initialDiagram = mvpSampleDiagram,
   defaultTheme = "light",
+  hidePalette = false,
   className,
   style,
 }: IsometricWorkflowEditorProps) {
@@ -41,6 +45,7 @@ export function IsometricWorkflowEditor({
 
   const rootStyle: React.CSSProperties = {
     position: "relative",
+    display: "flex",
     width: "100%",
     height: "70vh",
     minHeight: 420,
@@ -54,30 +59,41 @@ export function IsometricWorkflowEditor({
 
   return (
     <div data-editor-theme={theme} className={className} style={rootStyle}>
-      <div style={{ position: "absolute", inset: 0 }}>
+      {!hidePalette ? (
+        <NodePalette
+          style={{
+            flex: "none",
+            width: 212,
+            height: "100%",
+            borderRight: "1.5px solid var(--editor-border-soft)",
+          }}
+        />
+      ) : null}
+
+      <div style={{ position: "relative", flex: 1, minWidth: 0, height: "100%" }}>
         <DiagramCanvas theme={theme} labelsRef={labelsRef} onReady={() => setReady(true)} />
         <LabelsLayer nodes={nodes} selection={selection} labelsRef={labelsRef} />
-      </div>
 
-      {!ready ? (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "grid",
-            placeItems: "center",
-            background: "var(--editor-bg)",
-            color: "var(--editor-text-muted)",
-            fontFamily: "var(--font-display, sans-serif)",
-            fontSize: "0.8rem",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-            pointerEvents: "none",
-          }}
-        >
-          Initialising scene…
-        </div>
-      ) : null}
+        {!ready ? (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "grid",
+              placeItems: "center",
+              background: "var(--editor-bg)",
+              color: "var(--editor-text-muted)",
+              fontFamily: "var(--font-display, sans-serif)",
+              fontSize: "0.8rem",
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              pointerEvents: "none",
+            }}
+          >
+            Initialising scene…
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

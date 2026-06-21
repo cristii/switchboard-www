@@ -1,14 +1,15 @@
-// Interactive wrapper around a node's visible shape: selection + drag-on-ground.
-// P2 renders every kind as a BoxNode; P3 swaps in catalog-driven shape dispatch.
-// Dragging uses window listeners (robust when the pointer leaves the mesh) and
-// raycasts onto the y=0 plane, mirroring the prototype's math.
+// Interactive wrapper around a node's visible shape: catalog-driven shape +
+// colour, selection, and drag-on-ground. The shape and colour role come from
+// the node catalog (catalog/nodeCatalog.ts); dragging uses window listeners
+// (robust when the pointer leaves the mesh) and raycasts onto the y=0 plane.
 
 import { useMemo } from "react";
 import { type ThreeEvent, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { BoxNode } from "./shapes/BoxNode";
+import { SHAPES } from "./shapes";
+import { getNodeCatalogEntry } from "../../catalog/nodeCatalog";
 import { useWorkflowStore } from "../../state/useWorkflowStore";
-import { nodeRoleForKind, type SceneTheme } from "../../theme/sceneTheme";
+import type { SceneTheme } from "../../theme/sceneTheme";
 import type { WorkflowNode } from "../../state/types";
 
 export interface NodeMeshProps {
@@ -33,16 +34,20 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
   const beginInteraction = useWorkflowStore((s) => s.beginInteraction);
   const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), []);
 
-  const width = node.width ?? 1.3;
-  const depth = node.depth ?? 1.3;
-  const height = node.height ?? 0.7;
+  const entry = getNodeCatalogEntry(node.kind);
+  const Shape = SHAPES[entry.shape];
+  const width = node.width ?? entry.defaultSize.width;
+  const depth = node.depth ?? entry.defaultSize.depth;
+  const height = node.height ?? entry.defaultSize.height;
 
-  const role = nodeRoleForKind(node.kind);
-  const color = node.color ?? theme.nodeColors[role];
-  const emissive = selected ? theme.selection : color;
+  const isNote = entry.shape === "paperTile";
+  const baseColor = node.color ?? (isNote ? theme.paper : theme.nodeColors[entry.colorRole]);
+  const emissive = selected ? theme.selection : baseColor;
   const emissiveIntensity = selected
     ? theme.selectionEmissiveIntensity
-    : theme.nodeEmissiveIntensity;
+    : isNote
+      ? 0
+      : theme.nodeEmissiveIntensity;
 
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
     // Left-button only; ctrl/middle/right are reserved for camera panning.
@@ -88,11 +93,11 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
 
-      <BoxNode
+      <Shape
         width={width}
         depth={depth}
         height={height}
-        color={color}
+        color={baseColor}
         emissive={emissive}
         emissiveIntensity={emissiveIntensity}
       />

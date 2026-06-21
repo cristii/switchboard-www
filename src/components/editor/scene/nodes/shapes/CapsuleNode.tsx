@@ -1,17 +1,16 @@
-// A soft rounded box (a "card" extruded off the ground) — the default shape for
-// action / service / integration nodes. Matte brand-coloured material with a
-// restrained emissive lift — see description.md §3.
+// Capsule / pill — the trigger and output shape. A rounded box with a corner
+// radius near half its smaller dimension reads as a stadium-shaped pill.
 
 import { RoundedBox } from "@react-three/drei";
 import type { ShapeProps } from "./types";
 
-export function BoxNode({ width, depth, height, color, emissive, emissiveIntensity }: ShapeProps) {
-  const radius = Math.min(0.1, height / 2 - 0.001);
+export function CapsuleNode({ width, depth, height, color, emissive, emissiveIntensity }: ShapeProps) {
+  const radius = (Math.min(depth, height) / 2) * 0.98;
   return (
     <RoundedBox
       args={[width, height, depth]}
       radius={radius}
-      smoothness={4}
+      smoothness={6}
       position={[0, height / 2, 0]}
     >
       <meshStandardMaterial
