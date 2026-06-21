@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { primaryNav } from "@/lib/nav";
+import { BookCall } from "./BookCall";
 
 /**
  * Mobile-only hamburger navigation. Toggles a paper dropdown of the primary nav
@@ -60,6 +61,11 @@ export function MobileNav() {
                 {item.label}
               </Link>
             ))}
+            <div className="py-4">
+              <BookCall size="md" arrow onClick={() => setOpen(false)} style={{ width: "100%" }}>
+                Book a 15-min call
+              </BookCall>
+            </div>
           </nav>
         </div>
       )}

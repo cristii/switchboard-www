@@ -34,10 +34,11 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <BookCall size="sm" arrow>
-            <span className="hidden sm:inline">Book a 15-min call</span>
-            <span className="sm:hidden">Book a call</span>
-          </BookCall>
+          <div className="hidden md:block">
+            <BookCall size="sm" arrow>
+              Book a 15-min call
+            </BookCall>
+          </div>
           <MobileNav />
         </div>
       </div>
