@@ -179,19 +179,26 @@ Goal: prove both target use cases; one-click templates.
 
 ---
 
-## Phase P11 — Route & footer integration
+## Phase P11 — Route & footer integration ✅ (brought forward for live preview)
 Goal: the editor is reachable, full-screen, and linked from the footer.
 
-- [ ] P11.1 `src/app/isometric-editor/layout.tsx` — chromeless (returns `{children}`; no
-      header/footer).
-- [ ] P11.2 `src/app/isometric-editor/page.tsx` — `metadata`
-      (`title: "Isometric Workflow Editor (WIP)"`) + `next/dynamic` import (`ssr:false`) with a
-      loading skeleton.
-- [ ] P11.3 Editor top bar gets a small "← Switchboard" link home.
-- [ ] P11.4 `src/lib/nav.ts` — add `{ label: "Isometric Workflow Editor (WIP)", href:
-      "/isometric-editor" }` to a footer column; add `routeNames["/isometric-editor"]`.
-- [ ] P11.5 Verify three/drei are **not** in other route bundles (`next build` output / analyze).
-- [ ] **Green + commit + push.**
+- [x] P11.1 Chromeless full-screen via `components/sections/SiteChrome.tsx`: a nested layout can't
+      strip the root layout's header/footer in the App Router, so the root layout now delegates to
+      a client `SiteChrome` that drops the chrome on `/isometric-editor` and keeps it everywhere
+      else (other routes render byte-identically).
+- [x] P11.2 `src/app/isometric-editor/page.tsx` — `metadata` (title "Isometric Workflow Editor
+      (WIP)", `robots: noindex`) + imports the editor tokens; `EditorMount` does the
+      `next/dynamic` import (`ssr:false`) with a "Loading editor…" fallback.
+- [x] P11.3 `EditorMount.tsx` top bar: "← Switchboard" home link + title + WIP badge, editor fills
+      the rest (`100dvh` flex column).
+- [x] P11.4 `src/lib/nav.ts` — footer link under Resources + `routeNames["/isometric-editor"]`.
+- [x] P11.5 Verified via `next build`: `/isometric-editor` is 1.87 kB / 97.9 kB First Load JS —
+      three.js is in a lazy client chunk, not in this or any other route bundle.
+- [x] **Green** — `typecheck` + `next build` pass (36/36 pages); footer link + chromeless page
+      confirmed in the prerendered HTML.
+
+> Note: P11 done ahead of P3–P10 so the editor can be previewed live on the site. The page renders
+> the current P2 Scene MVP; later phases enhance it in place.
 
 ---
 

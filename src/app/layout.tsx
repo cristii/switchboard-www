@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
 
-import { SiteHeader } from "@/components/sections/SiteHeader";
-import { SiteFooter } from "@/components/sections/SiteFooter";
+import { SiteChrome } from "@/components/sections/SiteChrome";
 
 import "./globals.css";
 
@@ -49,11 +48,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <div className="flex min-h-screen flex-col">
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </div>
+        <SiteChrome>{children}</SiteChrome>
         <Analytics />
       </body>
     </html>
