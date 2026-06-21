@@ -3,8 +3,8 @@
 Living checklist so work can resume in a fresh session. Update + commit often.
 See `PLAN.md` for the overall roadmap and `AGENTS.md` for conventions.
 
-**Phase 1 (design system + Storybook): ✅ done. Phase 2 (Next.js app): ✅ done** — all
-2.0–2.12 routes built (see below). Phase 3 (Supabase newsletter) is next.
+**Phase 1: ✅ done. Phase 2 (Next.js app): ✅ done. Phase 3 (Supabase newsletter): ✅ done.**
+See the sections below.
 
 ## Goal
 Implement the Switchboard design system from `references/design-system/` as a typed
@@ -181,8 +181,22 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   dropped). Green: `next build`, `typecheck`, `build-storybook`.
 
 **Phase 2 complete** — all routes build; `next build` passes with no env (34 static
-pages + `/api/lead`). Next: Phase 3 (Supabase newsletter) wires the Daily Log /
-contact forms to real backends.
+pages + `/api/lead` + `/api/newsletter`).
+
+## Phase 3 — Supabase newsletter ✅
+- ✅ `supabase/schema.sql` — `subscribers` table (id / email / source / created_at),
+  a `lower(email)` unique index, and RLS **on with no policies** (the table is
+  reachable only through the server-side service-role key).
+- ✅ `src/lib/supabase.ts` — lazy, cached, **server-only** admin client (service-role,
+  bypasses RLS); returns `null` when env is unset so `next build` and local dev work
+  with no Supabase configured.
+- ✅ `src/app/api/newsletter/route.ts` — validates + lowercases the email, inserts via
+  the admin client. Handles **success / duplicate (`23505` → ok) / error (502) /
+  no-env (accepted, not stored)**. `runtime = "nodejs"`, `force-dynamic`.
+- ✅ `NewsletterSignup` wired to POST `/api/newsletter` with loading / success /
+  already-subscribed / error states (was optimistic); a `source` prop attributes
+  signups (`daily-log` vs `blog-post`). Installed `@supabase/supabase-js`;
+  `.env.example` documented. Green: `next build`, `typecheck`, `build-storybook`.
 
 ## Phase 2 notes / decisions
 - `jsx` switched to `preserve` and `@/*` paths added for Next; `vite/client` types
@@ -196,4 +210,7 @@ contact forms to real backends.
   pass them in (e.g. `import sendIcon from "@/assets/icons/send.svg"`).
 
 ## Next (later phases)
-- Phase 3: Supabase newsletter (`api/newsletter` → `subscribers`, wire Daily Log form).
+- **One-time setup to make signups persist:** apply `supabase/schema.sql` in the
+  Supabase project and set `NEXT_PUBLIC_SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`
+  on Vercel. The form already works without them (it just isn't stored).
+- Backlog (`BACKLOG.md`): Lucide icon set; copy rewrite; optional Claude-backed chat.

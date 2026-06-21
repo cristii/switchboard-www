@@ -131,6 +131,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         <div className="mt-10">
           <NewsletterSignup
             tone="paper"
+            source="blog-post"
             heading="Get one of these every morning"
             sub="One production-ready automation pattern in your inbox daily. Under 250 words, no fluff."
           />
