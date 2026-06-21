@@ -6,11 +6,13 @@
 
 import { useMemo } from "react";
 import { type ThreeEvent, useThree } from "@react-three/fiber";
+import { animated, useSpring } from "@react-spring/three";
 import * as THREE from "three";
 import { SHAPES } from "./shapes";
 import { GroupContainer } from "./shapes/GroupContainer";
 import { getNodeCatalogEntry } from "../../catalog/nodeCatalog";
 import { useWorkflowStore } from "../../state/useWorkflowStore";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import type { SceneTheme } from "../../theme/sceneTheme";
 import type { WorkflowNode } from "../../state/types";
 
@@ -51,9 +53,18 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
   const setParent = useWorkflowStore((s) => s.setParent);
   const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), []);
 
+  const reduced = usePrefersReducedMotion();
   const entry = getNodeCatalogEntry(node.kind);
   const isGroup = node.kind === "group";
   const Shape = SHAPES[entry.shape];
+
+  // Scale-in on mount, a gentle pop when selected. Disabled under reduced motion.
+  const { scale } = useSpring({
+    from: { scale: 0.85 },
+    to: { scale: selected ? 1.06 : 1 },
+    immediate: reduced,
+    config: { tension: 320, friction: 22 },
+  });
 
   // On drop, assign/clear this node's group membership by footprint containment.
   const assignMembership = () => {
@@ -154,40 +165,42 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
 
-      {isGroup ? (
-        <GroupContainer node={node} theme={theme} selected={selected} />
-      ) : (
-        <Shape
-          width={width}
-          depth={depth}
-          height={height}
-          color={baseColor}
-          emissive={emissive}
-          emissiveIntensity={emissiveIntensity}
-        />
-      )}
-
-      {hasIn ? (
-        <mesh position={[-(width / 2 + 0.16), height * 0.5, 0]}>
-          <sphereGeometry args={[0.1, 16, 16]} />
-          <meshStandardMaterial color={theme.edge} roughness={0.6} />
-        </mesh>
-      ) : null}
-      {hasOut ? (
-        <mesh position={[width / 2 + 0.16, height * 0.5, 0]} onPointerDown={handleOutPointerDown}>
-          <sphereGeometry args={[0.12, 16, 16]} />
-          <meshStandardMaterial
-            color={theme.nodeColors.orange}
-            emissive={theme.nodeColors.orange}
-            emissiveIntensity={0.45}
-            roughness={0.5}
+      <animated.group scale={scale}>
+        {isGroup ? (
+          <GroupContainer node={node} theme={theme} selected={selected} />
+        ) : (
+          <Shape
+            width={width}
+            depth={depth}
+            height={height}
+            color={baseColor}
+            emissive={emissive}
+            emissiveIntensity={emissiveIntensity}
           />
-        </mesh>
-      ) : null}
+        )}
 
-      {selected && !isGroup ? (
-        <SelectionRing radius={Math.max(width, depth) * 0.62} color={theme.selection} />
-      ) : null}
+        {hasIn ? (
+          <mesh position={[-(width / 2 + 0.16), height * 0.5, 0]}>
+            <sphereGeometry args={[0.1, 16, 16]} />
+            <meshStandardMaterial color={theme.edge} roughness={0.6} />
+          </mesh>
+        ) : null}
+        {hasOut ? (
+          <mesh position={[width / 2 + 0.16, height * 0.5, 0]} onPointerDown={handleOutPointerDown}>
+            <sphereGeometry args={[0.12, 16, 16]} />
+            <meshStandardMaterial
+              color={theme.nodeColors.orange}
+              emissive={theme.nodeColors.orange}
+              emissiveIntensity={0.45}
+              roughness={0.5}
+            />
+          </mesh>
+        ) : null}
+
+        {selected && !isGroup ? (
+          <SelectionRing radius={Math.max(width, depth) * 0.62} color={theme.selection} />
+        ) : null}
+      </animated.group>
     </group>
   );
 };

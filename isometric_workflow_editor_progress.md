@@ -169,15 +169,18 @@ Goal: a real, scoped toggle that drives both DOM chrome and the 3D scene.
 
 ---
 
-## Phase P8 — Animation (react-spring)
+## Phase P8 — Animation (react-spring) ✅
 Goal: subtle, premium motion; fully disabled under reduced motion.
 
-- [ ] P8.1 3D springs — node add (scale-in), select (gentle lift), drag-release (settle) via
-      `@react-spring/three`.
-- [ ] P8.2 Camera tweens — fit / reset / zoom-to-node.
-- [ ] P8.3 DOM springs — inspector slide-in, palette expand/collapse (`@react-spring/web`).
-- [ ] P8.4 `prefers-reduced-motion` → `immediate: true` everywhere (no motion).
-- [ ] **Green + commit + push.**
+- [x] P8.1 3D springs — `NodeMesh` wraps its visible content in `animated.group` (`@react-spring/three`):
+      scale-in on mount + a gentle pop when selected. (Hit volume stays unscaled.)
+- [x] P8.2 Camera tweens — `CameraControls` lerps to a desired target+zoom each frame for
+      reset / fit / zoom buttons + double-click; pan & wheel stay instant.
+- [x] P8.3 DOM springs — `Inspector` content fades/slides in on selection change (`@react-spring/web`,
+      imperative `api.start`). (Palette collapse animation arrives with the P9 mobile drawer.)
+- [x] P8.4 `hooks/usePrefersReducedMotion.ts` gates everything — springs become `immediate`, camera
+      tweens jump.
+- [x] **Green** — `typecheck` + `build-storybook` + `next build` pass; `/isometric-editor` 1.87 kB.
 
 ---
 

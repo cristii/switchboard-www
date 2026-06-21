@@ -6,12 +6,14 @@
 // Editor-token styled, Tailwind-free. Mirrors the prototype inspector, on-brand.
 
 import * as React from "react";
+import { animated, useSpring } from "@react-spring/web";
 import { Field } from "../primitives/Field";
 import { Select } from "../primitives/Select";
 import { IconButton } from "../primitives/IconButton";
 import { NodeGlyph } from "../icons/NodeGlyph";
 import { getNodeCatalogEntry } from "../catalog/nodeCatalog";
 import { useWorkflowStore } from "../state/useWorkflowStore";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import type { NodeColorRole } from "../state/types";
 
 const SWATCHES: { role: NodeColorRole; hex: string }[] = [
@@ -90,6 +92,21 @@ export function Inspector({ className, style }: InspectorProps) {
   const node = selection?.type === "node" ? nodes.find((n) => n.id === selection.id) : undefined;
   const edge = selection?.type === "edge" ? edges.find((e) => e.id === selection.id) : undefined;
 
+  const reduced = usePrefersReducedMotion();
+  const selKey = selection ? `${selection.type}:${selection.id}` : "none";
+  const [styles, api] = useSpring(() => ({ opacity: 1, transform: "translateX(0px)" }));
+  React.useEffect(() => {
+    if (reduced) {
+      api.set({ opacity: 1, transform: "translateX(0px)" });
+      return;
+    }
+    api.start({
+      from: { opacity: 0, transform: "translateX(10px)" },
+      to: { opacity: 1, transform: "translateX(0px)" },
+      config: { tension: 300, friction: 28 },
+    });
+  }, [selKey, reduced, api]);
+
   const container: React.CSSProperties = {
     background: "var(--editor-surface)",
     color: "var(--editor-text)",
@@ -104,6 +121,7 @@ export function Inspector({ className, style }: InspectorProps) {
     <div className={className} style={container}>
       <div style={heading}>Inspector</div>
 
+      <animated.div style={styles}>
       {node ? (
         <>
           <Row>
@@ -260,6 +278,7 @@ export function Inspector({ className, style }: InspectorProps) {
           Select a node or connection to inspect it. Drag from a node&apos;s orange handle to connect.
         </p>
       )}
+      </animated.div>
     </div>
   );
 }
