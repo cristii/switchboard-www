@@ -41,9 +41,9 @@ export default function HomePage() {
               </span>
             </h1>
             <p className="mt-[22px] max-w-[30em] text-lead text-ink-body">
-              This is the exact assistant I build for small businesses. Ask it anything —
-              it answers instantly, works out whether you&apos;re a fit, and books a call on
-              the spot. No forms, no waiting.
+              This is the exact assistant I build for small businesses. Ask it anything: it
+              answers instantly, works out whether you&apos;re a fit, and books a call on the spot.
+              No forms, no waiting.
             </p>
 
             <div className="mt-[18px] flex flex-wrap gap-x-[26px] gap-y-[18px] text-[.92rem] font-semibold">
@@ -59,7 +59,7 @@ export default function HomePage() {
               </a>
             </div>
             <p className="mt-4 font-hand text-[1.2rem] text-ink">
-              ↳ it&apos;s live — type a real question
+              ↳ it&apos;s live, type a real question
             </p>
           </div>
 
@@ -80,7 +80,7 @@ export default function HomePage() {
           </div>
         </div>
         <div className="mb-[34px] grid gap-[22px] sm:grid-cols-3">
-          <Stat onDark value={"<5s"} label="Average time to answer a visitor — day or night" />
+          <Stat onDark value={"<5s"} label="Average time to answer a visitor, day or night" />
           <Stat onDark value="3×" label="More qualified enquiries vs. a static contact form" />
           <Stat onDark value="10 min" label="From your site to a working demo you can try" />
         </div>
@@ -101,7 +101,7 @@ export default function HomePage() {
             >
               <p className="text-base leading-[1.5]">&quot;{q.quote}&quot;</p>
               <div className="mt-3 text-[.82rem] text-on-dark-muted">
-                <b className="font-display font-semibold text-paper">Sample testimonial</b> — swap
+                <b className="font-display font-semibold text-paper">Sample testimonial</b>, swap
                 in a real client quote here
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function HomePage() {
               ),
               title: "Local service businesses",
               body: "Missed calls and the same FAQs over and over cost you time and bookings.",
-              pull: "It answers and books — so you don't.",
+              pull: "It answers and books, so you don't.",
             },
             {
               icon: (
@@ -147,7 +147,7 @@ export default function HomePage() {
                 </>
               ),
               title: "Ecommerce & service sites",
-              body: "Shoppers research before they buy or contact you — and leave when they get stuck.",
+              body: "Shoppers research before they buy or contact you, and leave when they get stuck.",
               pull: "It guides them and captures more leads.",
             },
           ].map((a) => (
@@ -178,12 +178,16 @@ export default function HomePage() {
           <div>
             <Eyebrow>My services</Eyebrow>
             <h2 className={`${heading} mt-[14px] text-[clamp(1.9rem,3vw,2.5rem)]`}>
-              AI systems that turn conversations into results.
+              Systems that quietly run your business.
             </h2>
             <p className="mt-4 max-w-[24em] text-ink-soft">
-              I design and build practical AI and automation that bring more leads, better
-              replies, and cleaner operations — and that you can actually run without me.
+              Grouped by outcome, not by tool: the automated sales workflows, AI assistants and
+              back-office systems that recover the revenue and hours leaking out of your business,
+              then hand them over, fully yours.
             </p>
+            <a href="/services" className={`${secondaryLink} mt-5 inline-block`}>
+              See all services →
+            </a>
           </div>
           <div className="grid gap-[18px]">
             <ServiceCard
@@ -197,10 +201,10 @@ export default function HomePage() {
                   <path d="M12 29l3-4M22 29l-3-4" />
                 </svg>
               }
-              title="AI Chatbot Architecture"
+              title="Intelligent Lead Routing & Sales"
             >
-              A website assistant trained on your services, FAQs, offers and rules — ready to
-              answer visitors and guide them to the next step.
+              The moment an enquiry lands, it&apos;s routed, you&apos;re alerted, and follow-ups
+              fire before your competitor has checked their phone.
             </ServiceCard>
             <ServiceCard
               number="02"
@@ -209,10 +213,10 @@ export default function HomePage() {
                   <path d="M5 7h24l-9 11v9l-6 3v-12z" />
                 </svg>
               }
-              title="Omnichannel Funnels"
+              title="Back-Office & Operations"
             >
-              Connect website, email, WhatsApp and social into one lead journey — so visitors
-              don&apos;t get lost between channels.
+              Invoicing, renewals and review requests run themselves in the background, so you stop
+              being your own data-entry clerk and get your evenings back.
             </ServiceCard>
             <ServiceCard
               number="03"
@@ -223,10 +227,10 @@ export default function HomePage() {
                   <path d="M13 17h8M9 13V9h16v4" />
                 </svg>
               }
-              title="Custom n8n Workflows"
+              title="AI-Powered Customer Experience"
             >
-              Automations that move leads from chat to CRM, email, tasks, calendar and reports —
-              follow-up without the manual copy-paste.
+              An assistant that never sleeps answers your customers, reads their documents, and
+              raises a ticket before anything slips.
             </ServiceCard>
           </div>
         </div>
@@ -240,7 +244,7 @@ export default function HomePage() {
             Three sample builds. Three levels of complexity.
           </h2>
           <p className="mt-[14px] text-ink-soft">
-            These are demo builds I made to show the range — from a simple FAQ bot to a full
+            These are demo builds I made to show the range, from a simple FAQ bot to a full
             automation engine. Each walkthrough is short. Real client work is shared privately
             on a call.
           </p>
@@ -281,19 +285,19 @@ export default function HomePage() {
             {
               variant: "green" as const,
               tag: "Beginner",
-              title: "Dental Studio — FAQ bot",
+              title: "Dental Studio: FAQ bot",
               body: "A simple assistant that answers visitor questions and captures contact details.",
             },
             {
               variant: "amber" as const,
               tag: "Intermediate",
-              title: "Home Renovations — booking",
+              title: "Home Renovations: booking",
               body: "Qualifies the lead, collects project details, and books a call automatically.",
             },
             {
               variant: "violet" as const,
               tag: "Advanced",
-              title: "Solar Solutions — automation",
+              title: "Solar Solutions: automation",
               body: "CRM + n8n system that routes leads, follows up, and reports on results.",
             },
           ].map((b) => (
@@ -335,8 +339,8 @@ export default function HomePage() {
                   <path d="M5 12l14 9 14-9" />
                 </>
               ),
-              title: "You send your website",
-              body: "I review your business, services and visitors.",
+              title: "Discovery",
+              body: "I map your tools and find where time, leads and money are leaking.",
             },
             {
               n: "02",
@@ -346,8 +350,8 @@ export default function HomePage() {
                   <path d="M22.5 22.5L31 31M12 16h8M16 12v8" />
                 </>
               ),
-              title: "I map the opportunities",
-              body: "We define what to answer, qualify and automate.",
+              title: "Build & feedback",
+              body: "I build layer by layer, then branch on your feedback as we go.",
             },
             {
               n: "03",
@@ -359,8 +363,8 @@ export default function HomePage() {
                   <circle cx="24" cy="18" r="1.6" fill="#15211F" stroke="none" />
                 </>
               ),
-              title: "I build & train it",
-              body: "Knowledge, flows, rules and integrations.",
+              title: "QA & testing",
+              body: "I feed it bad data and dropped connections on purpose, so the live version holds.",
             },
             {
               n: "04",
@@ -370,8 +374,8 @@ export default function HomePage() {
                   <path d="M14 31h10M19 25v6" />
                 </>
               ),
-              title: "I install it on your site",
-              body: "One simple script tag. Go live quickly.",
+              title: "Handoff",
+              body: "I deploy to your environment, lock it in, and hand you the keys with docs.",
             },
             {
               n: "05",
@@ -381,8 +385,8 @@ export default function HomePage() {
                   <path d="M6 30h28" />
                 </>
               ),
-              title: "We review & improve",
-              body: "I track conversations and make it better.",
+              title: "Maintenance",
+              body: "Optional retainers keep it tuned as your tools and volume change.",
             },
           ].map((s, i, arr) => (
             <ProcessStep
@@ -407,7 +411,8 @@ export default function HomePage() {
             <circle cx="17" cy="17" r="1.5" fill="#B45309" />
           </svg>
           <b className="font-display text-[1.1rem] font-bold">
-            All focused on one goal: more qualified leads and booked calls.
+            Every engagement runs like one of the automations I build: discover, build, test, hand
+            off, maintain.
           </b>
         </div>
       </Section>
@@ -416,9 +421,9 @@ export default function HomePage() {
       <Section id="pricing">
         <Eyebrow>Engagement options</Eyebrow>
         <h2 className={`${heading} mt-3 text-[clamp(1.8rem,3vw,2.4rem)]`}>
-          Clear pricing. Start small, scale when it works.
+          Transparent pricing. Start small, scale when it works.
         </h2>
-        <div className="mt-9 grid gap-[18px] sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-9 grid gap-[18px] sm:grid-cols-2 lg:grid-cols-3">
           <PricingPlan
             icon={
               <svg viewBox="0 0 30 30" fill="none" stroke="#15211F" strokeWidth={1.7} strokeLinejoin="round" className="h-[30px] w-[30px]">
@@ -426,11 +431,11 @@ export default function HomePage() {
                 <path d="M15 8V5M12 3.5h6" />
               </svg>
             }
-            name="Website Assistant"
-            desc="FAQ answers + basic lead capture."
-            price="€399"
-            terms="one-time setup"
-            features={["FAQ answers", "Lead capture", "Human handoff"]}
+            name="The Foundation"
+            desc="Quick lead capture and an end to manual data entry."
+            price="$800"
+            terms="one-time · 1–3 core workflows"
+            features={["Instant lead alerts", "CRM & ad-platform sync", "Basic AI auto-responder"]}
             best="Best for getting started"
           />
           <PricingPlan
@@ -441,12 +446,12 @@ export default function HomePage() {
                 <path d="M10 12h10M10 16h7M9 21l3-2 3 2" />
               </svg>
             }
-            name="Booking Assistant"
-            desc="Qualification + calendar handoff."
-            price="€799"
-            terms="one-time setup"
-            features={["Lead qualification", "Calendar integration", "Booked calls"]}
-            best="Best for service businesses"
+            name="The Growth Engine"
+            desc="Automated follow-ups and a back-office that runs itself."
+            price="$1,500"
+            terms="one-time · 4–7 workflows"
+            features={["Multi-step follow-ups", "Standard AI chatbot", "Auto-invoicing & reviews"]}
+            best="Most popular"
           />
           <PricingPlan
             icon={
@@ -456,36 +461,20 @@ export default function HomePage() {
                 <path d="M13 9h5a3 3 0 0 1 3 3v5M17 21h-5a3 3 0 0 1-3-3v-5" />
               </svg>
             }
-            name="Automation System"
-            desc="Chatbot + CRM + n8n + reports."
-            price="€1499"
+            name="Custom Infrastructure"
+            desc="High-volume routing and advanced autonomous agents."
+            price="$4,000"
             priceSuffix="+"
-            terms="scales with integrations & workflows"
-            features={["CRM integration", "n8n workflows", "Reporting & follow-up"]}
-            best="Best for growing teams"
-          />
-          <PricingPlan
-            icon={
-              <svg viewBox="0 0 30 30" fill="none" stroke="#15211F" strokeWidth={1.7} strokeLinejoin="round" className="h-[30px] w-[30px]">
-                <path d="M15 4a11 11 0 1 1-9 5" />
-                <path d="M6 4v5h5" />
-                <path d="M15 9v6l4 2" />
-              </svg>
-            }
-            name="Care & Improvement"
-            desc="Optional. Keeps it accurate and improving."
-            price="€99"
-            priceSuffix="/mo"
-            terms="optional add-on to any build"
-            features={["Conversation review", "FAQ updates", "Performance reports"]}
-            best="Ongoing optimization"
+            terms="custom scope · 8+ workflows"
+            features={["High-volume queueing", "Custom dashboards", "Custom RAG AI agents"]}
+            best="Best for scaling teams"
           />
         </div>
         <p className="mt-5 text-center text-[.92rem] text-ink-soft">
           <b className="text-ink">Not sure which fits?</b> I&apos;ll build you a working demo on
-          your own site — free — before you decide anything.{" "}
-          <a href="#footcta" className={secondaryLink}>
-            Start with a free demo
+          your own site, free, before you decide anything.{" "}
+          <a href="/pricing" className={secondaryLink}>
+            See full pricing →
           </a>
         </p>
       </Section>
@@ -500,19 +489,22 @@ export default function HomePage() {
               I&apos;m Cristi Șatcovschi.
             </h2>
             <span className="my-[14px] inline-flex items-baseline gap-2 rounded-[8px] bg-orange px-3 py-[5px] font-display font-bold text-white">
-              <b className="text-[1.3rem]">40+</b> assistants & automations shipped
+              <b className="text-[1.3rem]">40+</b> systems shipped
             </span>
             <p className="mb-3 max-w-[34em] text-ink-body">
-              I build practical AI systems that help businesses capture more leads and save time
-              — combining strategy, automation and clean implementation into something that&apos;s
-              easy to run and built to scale.
+              I&apos;m an automation engineer and workflow architect. I help startups and agencies
+              kill the manual grunt work by wiring their favourite tools into seamless, AI-powered
+              systems you can actually run without me.
             </p>
+            <a href="/about" className={`${secondaryLink} inline-block`}>
+              More about me →
+            </a>
             <div className="mt-[22px] grid gap-6 sm:grid-cols-[1.3fr_1fr]">
               <ul className="grid gap-[14px]">
                 {[
-                  { icon: <path d="M3 12h7l2-4 3 8 2-4h4" />, text: "Clear lead-flow design before any building starts" },
-                  { icon: <path d="M4 5h16v11H8l-4 4z" />, text: "Chatbot setup connected to booking and follow-up" },
-                  { icon: <path d="M4 20V8M11 20V4M18 20v-8" />, text: "Monthly review to improve answers and capture more leads" },
+                  { icon: <path d="M3 12h7l2-4 3 8 2-4h4" />, text: "A workflow audit to find where time and leads leak" },
+                  { icon: <path d="M4 5h16v11H8l-4 4z" />, text: "Architecture and build, with error handling baked in" },
+                  { icon: <path d="M4 20V8M11 20V4M18 20v-8" />, text: "Handoff with clear docs, then optional monitoring" },
                 ].map((b, i) => (
                   <li key={i} className="flex gap-[11px] text-[.9rem]">
                     <svg viewBox="0 0 24 24" fill="none" stroke="#B45309" strokeWidth={1.8} strokeLinejoin="round" className="mt-[2px] h-[22px] w-[22px] flex-none">
@@ -533,7 +525,7 @@ export default function HomePage() {
                     lineHeight: 1.55,
                   }}
                 >
-                  {["n8n", "OpenAI / GPT", "Node.js / Nest", "React / JS", "MongoDB", "Shopify"].map(
+                  {["n8n", "Trigger.dev", "Python", "Node.js / TS", "OpenAI", "LangChain"].map(
                     (t) => (
                       <li key={t}>– {t}</li>
                     ),
@@ -553,7 +545,7 @@ export default function HomePage() {
           {[
             {
               q: "Will the chatbot make things up?",
-              a: "No — it only answers from the knowledge I train it on (your services, FAQs and rules). When it doesn't know something, it says so and hands off to you instead of guessing.",
+              a: "No. It only answers from the knowledge I train it on (your services, FAQs and rules). When it doesn't know something, it says so and hands off to you instead of guessing.",
             },
             {
               q: "Can it book calls?",
@@ -569,7 +561,7 @@ export default function HomePage() {
             },
             {
               q: "Can I review the conversations?",
-              a: "Yes — you get an owner dashboard showing what visitors asked, which leads were captured, and what got booked.",
+              a: "Yes. You get an owner dashboard showing what visitors asked, which leads were captured, and what got booked.",
             },
             {
               q: "How long does it take to set up?",
@@ -581,6 +573,9 @@ export default function HomePage() {
             </FaqItem>
           ))}
         </div>
+        <a href="/faq" className={`${secondaryLink} mt-8 inline-block`}>
+          See all FAQs →
+        </a>
       </Section>
 
       {/* ============ FOOTER CTA ============ */}

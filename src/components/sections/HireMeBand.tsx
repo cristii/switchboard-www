@@ -18,7 +18,7 @@ export function HireMeBand() {
           </h2>
           <p className="mb-[26px] mt-[18px] max-w-[34em] text-lead leading-[1.6] text-on-dark-strong">
             I build enterprise-grade automation infrastructure for teams so your engineers can focus
-            on core product — production n8n pipelines, Trigger.dev jobs and custom AI chatbots, fully
+            on core product, production n8n pipelines, Trigger.dev jobs and custom AI chatbots, fully
             owned and documented.
           </p>
           <div className="flex flex-wrap gap-[14px]">

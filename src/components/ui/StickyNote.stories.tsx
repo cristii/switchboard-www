@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "A slightly rotated, taped paper note set in the Caveat hand. Use sparingly for asides — tech-stack lists, marginalia. One per view, max.",
+          "A slightly rotated, taped paper note set in the Caveat hand. Use sparingly for asides, tech-stack lists, marginalia. One per view, max.",
       },
     },
   },

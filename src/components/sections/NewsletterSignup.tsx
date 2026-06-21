@@ -19,7 +19,7 @@ export interface NewsletterSignupProps {
 
 /**
  * The Daily Log subscribe card. POSTs to /api/newsletter (Supabase) and shows
- * loading / success / already-subscribed / error states. Degrades gracefully —
+ * loading / success / already-subscribed / error states. Degrades gracefully,
  * with no Supabase env the API still returns ok, so the UI confirms.
  */
 export function NewsletterSignup({
@@ -62,7 +62,7 @@ export function NewsletterSignup({
           <Icon src={checkIcon} color="var(--green)" size={20} />
           <span className="text-[.98rem] text-ink">
             {status === "duplicate"
-              ? "You're already on the list — the next blueprint lands tomorrow at 7am."
+              ? "You're already on the list, the next blueprint lands tomorrow at 7am."
               : "You're in. The first blueprint lands tomorrow at 7am."}
           </span>
         </div>
@@ -85,7 +85,7 @@ export function NewsletterSignup({
           </div>
           {status === "error" && (
             <p className="mt-[10px] text-[.86rem] font-medium text-[#C12A2A]">
-              Something went wrong — please try again, or email me directly.
+              Something went wrong, please try again, or email me directly.
             </p>
           )}
         </form>

@@ -31,7 +31,7 @@ export const HardOffset: Story = {
         Shadows
       </h1>
       <p style={{ color: "var(--ink-soft)", maxWidth: "44em", margin: "0 0 8px" }}>
-        <b>Hard, zero-blur offset shadows</b> — solid ink or orange blocks, never
+        <b>Hard, zero-blur offset shadows</b>, solid ink or orange blocks, never
         soft glows. This is the most important and most easily-broken rule of the
         brand: <b>never add blur.</b>
       </p>

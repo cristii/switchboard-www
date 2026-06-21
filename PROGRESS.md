@@ -209,6 +209,23 @@ pages + `/api/lead` + `/api/newsletter`).
   one component works in both bundlers. Pages import the icon files directly and
   pass them in (e.g. `import sendIcon from "@/assets/icons/send.svg"`).
 
+## Post-launch copy & UX pass
+- **No em dashes:** swept every em dash out of `src` + `content` (copy and
+  comments), replaced with commas/colons; voice and meaning unchanged.
+- **Landing:** pricing section now matches the Pricing page tiers ($800 / $1,500 /
+  $4,000+) and links to `/pricing`; Services and About copy aligned to those pages
+  (structure unchanged) with links; Process steps re-titled to the Process page
+  (Discovery → Maintenance). FAQ section links to the new `/faq`. Chat demo prices
+  updated to the USD tiers.
+- **New `/faq` page** — grouped (the assistant / pricing / working together) from the
+  landing, pricing and services FAQs; header nav FAQ now points to `/faq`.
+- **About:** new `BucharestBand` local-collaboration section — Romanian folk
+  cross-stitch motif border, a line-art Arcul de Triumf, a tricolor flag tag, and an
+  email CTA. Playful but on-brand.
+- **Calculator:** the "Your workflow" card is sticky on desktop (the cost panel can
+  get tall); footer "ROI Calculator" renamed to "Cost estimator".
+- Green: `next build`, `typecheck`, `build-storybook`.
+
 ## Next (later phases)
 - **One-time setup to make signups persist:** apply `supabase/schema.sql` in the
   Supabase project and set `NEXT_PUBLIC_SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`

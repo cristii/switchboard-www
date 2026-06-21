@@ -124,7 +124,7 @@ const homeCards: { id: string; icon: typeof lightbulbIcon; color: string; tint: 
     color: "var(--orange)",
     tint: "color-mix(in srgb, var(--orange) 10%, transparent)",
     title: "Learn",
-    body: "Concepts and quickstarts — why event-driven, and how to ship your first workflow.",
+    body: "Concepts and quickstarts, why event-driven, and how to ship your first workflow.",
     links: [
       { id: "core-concepts", label: "Core concepts" },
       { id: "quickstart-n8n", label: "Your first n8n webhook" },
@@ -150,7 +150,7 @@ const homeCards: { id: string; icon: typeof lightbulbIcon; color: string; tint: 
     color: "var(--violet)",
     tint: "color-mix(in srgb, var(--violet) 13%, transparent)",
     title: "Guides",
-    body: "End-to-end recipes organized by business outcome — billing, CRM, support.",
+    body: "End-to-end recipes organized by business outcome, billing, CRM, support.",
     links: [
       { id: "guide-billing", label: "Payments & billing" },
       { id: "guide-crm", label: "Operational CRM" },
@@ -310,7 +310,7 @@ export function KnowledgeBase() {
               ))}
               {q && results.length === 0 && (
                 <div className="px-3 py-[22px] font-hand text-[1.3rem] text-ink-soft">
-                  ↳ nothing under that term — try “webhook” or “retry”
+                  ↳ nothing under that term, try “webhook” or “retry”
                 </div>
               )}
             </div>
@@ -345,7 +345,7 @@ function Home({
       </h1>
       <p className="mb-[26px] max-w-[36em] text-lead text-ink-body">
         Production patterns, engine references and copy-paste blueprints for n8n, Trigger.dev and AI
-        workflows — written by the team that ships them for clients.
+        workflows, written by the team that ships them for clients.
       </p>
       <div className="mb-12">{searchButton(true)}</div>
 
@@ -392,7 +392,7 @@ function Home({
 }
 
 function downloadArtifact(name: string, type: string) {
-  const text = `Switchboard — ${name}\n${"=".repeat(40)}\n\nThis is a demo ${type} artifact placeholder.\nBook a call for the production workflow → Switchboard AI Systems\n`;
+  const text = `Switchboard, ${name}\n${"=".repeat(40)}\n\nThis is a demo ${type} artifact placeholder.\nBook a call for the production workflow → Switchboard AI Systems\n`;
   const blob = new Blob([text], { type: "text/plain" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);

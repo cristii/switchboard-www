@@ -210,7 +210,7 @@ export default function WorkItemPage({ params }: { params: { slug: string } }) {
               Tell me who your best customer is.
             </h2>
             <p className="mt-4 text-lead leading-[1.6] text-on-dark-strong">
-              I&apos;ll build a working slice of this — real businesses, real results — and show it
+              I&apos;ll build a working slice of this, real businesses, real results, and show it
               to you before you commit to anything. Free.
             </p>
           </div>

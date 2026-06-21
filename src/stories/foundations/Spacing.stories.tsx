@@ -88,7 +88,7 @@ export const ScaleAndRadii: Story = {
         ))}
       </div>
 
-      <h2 style={heading}>Borders — the ink outline</h2>
+      <h2 style={heading}>Borders, the ink outline</h2>
       <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
         {[
           { name: "--bw-hair", px: 1 },

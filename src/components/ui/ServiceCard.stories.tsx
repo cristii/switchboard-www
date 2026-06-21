@@ -34,7 +34,7 @@ const meta = {
     icon,
     title: "AI Chatbot Architecture",
     children:
-      "A website assistant trained on your services, FAQs, offers and rules — ready to answer visitors and guide them to the next step.",
+      "A website assistant trained on your services, FAQs, offers and rules, ready to answer visitors and guide them to the next step.",
   },
   decorators: [
     (Story) => (

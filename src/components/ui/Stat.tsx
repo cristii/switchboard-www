@@ -11,7 +11,7 @@ export interface StatProps {
 }
 
 /**
- * A large orange Bricolage figure with a muted caption — for proof/impact
+ * A large orange Bricolage figure with a muted caption, for proof/impact
  * numbers. Keep figures honest (the brand never invents fake stats).
  */
 export function Stat({ value, label, onDark = false, style = {} }: StatProps) {

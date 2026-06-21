@@ -1,10 +1,10 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 /**
- * Server-only Supabase admin client (service-role key — bypasses RLS), created
+ * Server-only Supabase admin client (service-role key, bypasses RLS), created
  * lazily and cached. Returns `null` when the env isn't set, so `next build` and
  * local dev work with no Supabase configured and the newsletter API degrades
- * gracefully. Never import this from a client component — the service-role key
+ * gracefully. Never import this from a client component, the service-role key
  * must stay server-side.
  */
 let cached: SupabaseClient | null = null;

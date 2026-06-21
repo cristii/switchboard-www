@@ -45,7 +45,7 @@ export interface ChatWidgetProps {
 }
 
 /**
- * The scripted demo assistant. Scripted only (AGENTS.md) — keyword-matched
+ * The scripted demo assistant. Scripted only (AGENTS.md), keyword-matched
  * replies from src/lib/chat.ts with a short typing delay, so the demo always
  * works with no AI backend. The DS <ChatBubble> renders each message. Props
  * default to the hero demo; the contact page passes the intake-agent script.

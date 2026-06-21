@@ -17,7 +17,7 @@ const colors: Record<NonNullable<TickProps["tone"]>, string> = {
 };
 
 /**
- * A checkmark + label row — the brand's affirmation device. Green by default
+ * A checkmark + label row, the brand's affirmation device. Green by default
  * (feature lists, "what you'll see"); orange for the hero proof ticks. Text
  * styling (size/weight) is inherited from the surrounding context.
  */

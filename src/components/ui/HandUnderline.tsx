@@ -10,7 +10,7 @@ export interface HandUnderlineProps {
 }
 
 /**
- * Wraps inline text with the brand's wobbly hand-drawn underline stroke — the
+ * Wraps inline text with the brand's wobbly hand-drawn underline stroke, the
  * signature emphasis device. Use on a single emphasized phrase inside a heading
  * or eyebrow, never a whole sentence.
  */

@@ -38,7 +38,7 @@ const groups: { title: string; note: string; tokens: Token[] }[] = [
     ],
   },
   {
-    title: "Brand accent — burnt orange",
+    title: "Brand accent, burnt orange",
     note: "The single accent: CTAs, links, numbers, the hand-drawn underline.",
     tokens: [
       { name: "--orange", value: "#B45309", dark: true },
@@ -112,7 +112,7 @@ export const Palette: Story = {
         Colors
       </h1>
       <p style={{ color: "var(--ink-soft)", maxWidth: "40em", margin: "0 0 32px" }}>
-        A flat printed palette — no gradients as identity. Recycled paper, pine
+        A flat printed palette, no gradients as identity. Recycled paper, pine
         ink, one burnt-orange accent, and quiet supporting hues.
       </p>
       {groups.map((g) => (

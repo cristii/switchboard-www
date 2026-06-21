@@ -13,7 +13,7 @@ export interface IconProps {
    * bundler. It is mask-tinted, so the file's own colours are ignored.
    */
   src: IconSource;
-  /** Tint colour — any CSS colour or token. @default "currentColor" */
+  /** Tint colour, any CSS colour or token. @default "currentColor" */
   color?: string;
   /** Square size: a px number or any CSS length. @default 24 */
   size?: number | string;
@@ -33,7 +33,7 @@ function toUrl(src: IconSource): string {
  * brand colour (`currentColor` is not inherited by `<img>`, hence the mask).
  * Defaults to `currentColor`, so an Icon picks up the text colour of its
  * context unless a `color` is given. Import an SVG from `src/assets/icons` and
- * pass it as `src`. No icon font, no third-party library — see AGENTS.md.
+ * pass it as `src`. No icon font, no third-party library, see AGENTS.md.
  */
 export function Icon({
   src,

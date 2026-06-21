@@ -28,7 +28,7 @@ import workflowIcon from "@/assets/icons/workflow.svg";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "An automation agency for home services, e-commerce and SaaS — automated sales workflows, AI assistants and back-office systems, built and handed over fully yours.",
+    "An automation agency for home services, e-commerce and SaaS, automated sales workflows, AI assistants and back-office systems, built and handed over fully yours.",
 };
 
 const heading = "font-display font-extrabold tracking-tight";
@@ -84,7 +84,7 @@ const pillars: Pillar[] = [
     badge: { variant: "solid", text: "For trades · ad buyers" },
     title: "Intelligent Lead Routing & Sales",
     focus: "Focus · speed-to-lead",
-    body: "The moment an enquiry lands, the clock starts. We make sure you answer first — every lead routed, alerted and followed up before your competitor has even checked their phone.",
+    body: "The moment an enquiry lands, the clock starts. We make sure you answer first, every lead routed, alerted and followed up before your competitor has even checked their phone.",
     features: [
       "Instant SMS lead alerts",
       "Automated quote follow-ups",
@@ -104,7 +104,7 @@ const pillars: Pillar[] = [
     badge: { variant: "green", text: "For small biz · trades" },
     title: "Back-Office & Operations",
     focus: "Focus · time saved",
-    body: "The admin that eats your evenings — invoicing, renewals, chasing reviews — runs itself in the background. You stop being your own data-entry clerk and get your nights back.",
+    body: "The admin that eats your evenings, invoicing, renewals, chasing reviews, runs itself in the background. You stop being your own data-entry clerk and get your nights back.",
     features: [
       "Automated invoicing (QuickBooks / Xero)",
       "Inventory & stock sync",
@@ -125,7 +125,7 @@ const pillars: Pillar[] = [
     badge: { variant: "violet", text: "For everyone" },
     title: "AI-Powered Customer Experience",
     focus: "Focus · scale without hiring",
-    body: "An assistant that never sleeps answers your customers, reads their documents, and raises a ticket before anything slips — so a small team feels like a big one, around the clock.",
+    body: "An assistant that never sleeps answers your customers, reads their documents, and raises a ticket before anything slips, so a small team feels like a big one, around the clock.",
     features: [
       "AI receptionist for FAQs & bookings",
       "Automated document triage (reads PDFs & invoices)",
@@ -145,7 +145,7 @@ const pillars: Pillar[] = [
     badge: { variant: "amber", text: "For SaaS · high-volume" },
     title: "Operations Assurance & Infrastructure",
     focus: "Focus · reliability at scale",
-    body: "When volume spikes, nothing drops. We build the monitoring, failover and dashboards that keep a busy system honest — so growth never turns into outages.",
+    body: "When volume spikes, nothing drops. We build the monitoring, failover and dashboards that keep a busy system honest, so growth never turns into outages.",
     features: [
       "Dedicated uptime monitoring",
       "API failover & retry logic",
@@ -155,7 +155,7 @@ const pillars: Pillar[] = [
     flow: {
       input: { icon: chartIcon, iconColor: "var(--ink)", text: "Traffic surge hits" },
       processing: { icon: workflowIcon, iconColor: "var(--tint-amber-fg)", text: "Queued, monitored, retried" },
-      output: { icon: checkIcon, iconColor: "var(--green)", text: "Processed — nothing dropped" },
+      output: { icon: checkIcon, iconColor: "var(--green)", text: "Processed, nothing dropped" },
     },
     flip: true,
   },
@@ -167,36 +167,36 @@ const whyCards: { accent: string; iconColor: string; icon: IconSource; title: st
     iconColor: "color-mix(in srgb, var(--green) 55%, var(--paper))",
     icon: checkIcon,
     title: "We build it, we test it, we hand it over.",
-    body: "You're never locked to us. The finished system is yours — documented, tested, with the keys handed over. Keep us on for support only if you want to.",
+    body: "You're never locked to us. The finished system is yours, documented, tested, with the keys handed over. Keep us on for support only if you want to.",
   },
   {
     accent: "var(--amber)",
     iconColor: "var(--amber)",
     icon: lightbulbIcon,
     title: "No black boxes.",
-    body: "Everything we build is transparent and editable. No proprietary code you can't touch, no hostage situations — your team or your developer can read and extend all of it.",
+    body: "Everything we build is transparent and editable. No proprietary code you can't touch, no hostage situations, your team or your developer can read and extend all of it.",
   },
   {
     accent: "var(--orange)",
     iconColor: "color-mix(in srgb, var(--orange) 65%, var(--paper))",
     icon: refreshIcon,
     title: "Proactive monitoring.",
-    body: "We watch for breaks before you feel them. When a third-party app changes, we fix the workflow — often before you've even noticed anything was off.",
+    body: "We watch for breaks before you feel them. When a third-party app changes, we fix the workflow, often before you've even noticed anything was off.",
   },
 ];
 
 const faqs = [
   {
     q: "Do I need to be tech-savvy to use your services?",
-    a: "Not at all. Everything runs through the tools you already use — a text message, your inbox, your calendar. We hand over something you operate with a tap, not a manual. The technical complexity stays on our side.",
+    a: "Not at all. Everything runs through the tools you already use, a text message, your inbox, your calendar. We hand over something you operate with a tap, not a manual. The technical complexity stays on our side.",
   },
   {
     q: "What software do I need to pay for?",
-    a: "Only the raw tools your system runs on — usually a few dollars a month for things like AI usage or your existing CRM. Our build fee is one-time, with no markup and no middleman subscriptions on top.",
+    a: "Only the raw tools your system runs on, usually a few dollars a month for things like AI usage or your existing CRM. Our build fee is one-time, with no markup and no middleman subscriptions on top.",
   },
   {
     q: "Can you work with my existing developer?",
-    a: "Absolutely. We document everything and hand over clean, editable systems your developer can read and extend. No black boxes, no turf wars — we're happy to brief them directly.",
+    a: "Absolutely. We document everything and hand over clean, editable systems your developer can read and extend. No black boxes, no turf wars, we're happy to brief them directly.",
   },
 ];
 
@@ -282,7 +282,7 @@ export default function ServicesPage() {
             <p className="mb-7 mt-[18px] max-w-[33em] text-lead text-ink-body">
               An automation agency for home services, e-commerce and SaaS teams. We build the
               automated sales workflows, AI assistants and back-office systems that recover the
-              revenue and hours leaking out of your business — then hand them over, fully yours.
+              revenue and hours leaking out of your business, then hand them over, fully yours.
             </p>
             <div className="flex flex-wrap items-center gap-[14px]">
               <BookCall arrow>Book a Mapping Call</BookCall>
@@ -330,10 +330,10 @@ export default function ServicesPage() {
           <p
             className={`${display} mt-4 text-[.92rem] font-semibold uppercase tracking-[.04em] text-on-dark-muted`}
           >
-            — Operations Lead · home-services company
+            Operations Lead · home-services company
           </p>
           <p className="mt-2 font-hand text-[1.2rem] text-amber">
-            ↳ sample testimonial — swap for your own
+            ↳ sample testimonial, swap for your own
           </p>
         </div>
         <div className="border-t border-on-dark-line py-4">
@@ -358,7 +358,7 @@ export default function ServicesPage() {
             Four systems that quietly run your business.
           </h2>
           <p className="mx-auto mt-[14px] max-w-[34em] text-lead text-ink-soft">
-            Grouped by outcome, not by tool. Pick the bottleneck that&apos;s costing you the most —
+            Grouped by outcome, not by tool. Pick the bottleneck that&apos;s costing you the most,
             we&apos;ll build the system that closes it.
           </p>
         </div>
@@ -423,7 +423,7 @@ export default function ServicesPage() {
         <div className="text-center">
           <Eyebrow>The systematic approach</Eyebrow>
           <h2 className={`${heading} mx-auto mb-2 mt-3 max-w-[16em] text-[clamp(1.8rem,3.2vw,2.6rem)]`}>
-            One system, lead to booked — automatically.
+            One system, lead to booked, automatically.
           </h2>
           <p className="mx-auto mb-10 max-w-[34em] text-lead text-ink-soft">
             Every build follows the same shape: a clear input, smart processing, a clean output.
@@ -523,7 +523,7 @@ export default function ServicesPage() {
           Still researching? <span className="text-orange">Let&apos;s map it out together.</span>
         </h2>
         <p className="mx-auto mb-[30px] mt-[18px] max-w-[32em] text-lead leading-[1.6] text-on-dark-strong">
-          No pitch, no pressure — just fifteen minutes to see exactly which system would move the
+          No pitch, no pressure, just fifteen minutes to see exactly which system would move the
           needle for your business.
         </p>
         <div className="flex flex-wrap justify-center gap-[14px]">

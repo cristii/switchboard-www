@@ -15,7 +15,7 @@ export interface VideoPlaceholderProps {
 /**
  * A 16:10 video poster placeholder in the brand frame: dark gradient panel,
  * paper play disc, gradient-masked labels top and a caption bottom. Purely
- * presentational — swap for a real embed when footage exists.
+ * presentational, swap for a real embed when footage exists.
  */
 export function VideoPlaceholder({
   label,

@@ -47,7 +47,7 @@ const Check = ({ size = 15 }: { size?: number }) => (
 /**
  * The contact "classic way" project-spec form. Validates name + email, POSTs to
  * /api/lead (which forwards to the n8n webhook, degrading gracefully with no
- * env), then plays the "automation firing" success sequence — a live preview of
+ * env), then plays the "automation firing" success sequence, a live preview of
  * the workflow a client is buying.
  */
 export function ContactForm() {
@@ -91,7 +91,7 @@ export function ContactForm() {
             <Check size={38} />
           </span>
           <h3 className="mb-[6px] mt-[18px] font-display text-[1.5rem] font-extrabold tracking-tight">
-            Specs received — automation firing.
+            Specs received, automation firing.
           </h3>
           <p className="m-0 max-w-[24em] text-[.96rem] text-ink-soft">
             No 48-hour wait. Watch the same workflow I&apos;d build for you run live:
@@ -123,7 +123,7 @@ export function ContactForm() {
         {steps >= 3 && (
           <div className="mt-7 text-center">
             <p className="mb-[18px] font-hand text-[1.4rem] text-orange">
-              ↳ all of that in under 60 seconds — that&apos;s the system you&apos;re buying.
+              ↳ all of that in under 60 seconds, that&apos;s the system you&apos;re buying.
             </p>
             <BookCall size="lg" arrow>
               Lock in your call slot
@@ -214,7 +214,7 @@ export function ContactForm() {
           onChange={(e) => setBudget(e.target.value)}
           className={`${field} cursor-pointer bg-white`}
         >
-          <option value="">Select a range — builds start at $800</option>
+          <option value="">Select a range, builds start at $800</option>
           {BUDGETS.map((b) => (
             <option key={b} value={b}>
               {b}

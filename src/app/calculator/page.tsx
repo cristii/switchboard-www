@@ -8,7 +8,7 @@ import chartIcon from "@/assets/icons/chart.svg";
 export const metadata: Metadata = {
   title: "Cost calculator",
   description:
-    "Estimate your automation cost in 60 seconds. Build your workflow, watch the price update — transparent infrastructure and AI costs, no hidden API bills.",
+    "Estimate your automation cost in 60 seconds. Build your workflow, watch the price update, transparent infrastructure and AI costs, no hidden API bills.",
 };
 
 const heading = "font-display font-extrabold tracking-tight";
@@ -30,7 +30,7 @@ export default function CalculatorPage() {
         </h1>
         <p className="mx-auto my-[18px] max-w-[32em] text-lead text-ink-body">
           Build your workflow on the left, watch the price update on the right. Transparent
-          infrastructure &amp; AI costs — no hidden API bills, no surprises.
+          infrastructure &amp; AI costs, no hidden API bills, no surprises.
         </p>
         <div className="inline-flex flex-wrap items-center justify-center gap-[14px] text-[.86rem] text-ink-soft">
           <span className="inline-flex items-center gap-[7px]">

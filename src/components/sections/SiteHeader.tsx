@@ -14,7 +14,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-[70px] max-w-content items-center justify-between gap-5 px-gutter">
         <Link
           href="/"
-          aria-label="Switchboard AI Systems — home"
+          aria-label="Switchboard AI Systems, home"
           className="text-ink no-underline"
         >
           <Logo />

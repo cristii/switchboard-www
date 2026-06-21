@@ -2,7 +2,7 @@
 title: "Idempotent webhook handlers that never double-fire"
 date: "2026-06-16"
 tags: ["Trigger.dev", "Node.js", "Redis"]
-excerpt: "A one-line Redis guard drops duplicate deliveries before they trigger a second run — the cheapest reliability win there is."
+excerpt: "A one-line Redis guard drops duplicate deliveries before they trigger a second run, the cheapest reliability win there is."
 read: "3 min read"
 ---
 
@@ -14,7 +14,7 @@ Webhook delivery is *at-least-once*: providers retry, networks hiccup, and the s
 // idempotency.ts
 const key = `evt:${event.id}`;
 if (await redis.set(key, 1, "NX", "EX", 86400) === null)
-  return io.logger.info("duplicate — skipped");
+  return io.logger.info("duplicate, skipped");
 ```
 
 `SET … NX` only succeeds the first time it sees an event id. Every retry after that returns `null`, so the handler bails before doing any work.
@@ -22,7 +22,7 @@ if (await redis.set(key, 1, "NX", "EX", 86400) === null)
 ## Getting it right
 
 - Set the key **before** the side effect, not after.
-- Make the TTL at least as long as the provider's retry window — 24h is a safe default.
+- Make the TTL at least as long as the provider's retry window, 24h is a safe default.
 - Use the provider's event id when there is one; otherwise hash the stable fields of the payload, never the timestamp.
 
 It's the cheapest reliability win in the whole stack, and every public webhook deserves it.

@@ -11,7 +11,7 @@ export interface StickyNoteProps {
 
 /**
  * A slightly rotated, taped paper note set in the Caveat hand. Use sparingly
- * for asides — tech-stack lists, marginalia. One per view, max.
+ * for asides, tech-stack lists, marginalia. One per view, max.
  */
 export function StickyNote({
   title,

@@ -60,7 +60,7 @@ export const TypeScale: Story = {
       </p>
 
       <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.1rem", margin: "20px 0 4px" }}>
-        Display — Bricolage Grotesque
+        Display, Bricolage Grotesque
       </h2>
       <Row label="--fs-hero / 800">
         <div
@@ -82,17 +82,17 @@ export const TypeScale: Story = {
       </Row>
 
       <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.1rem", margin: "28px 0 4px" }}>
-        Body — Inter
+        Body, Inter
       </h2>
       <Row label="--fs-lead / 400">
         <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--fs-lead)", margin: 0, maxWidth: "34em" }}>
           This is the exact assistant I build for small businesses. Ask it
-          anything — it answers instantly and books a call on the spot.
+          anything, it answers instantly and books a call on the spot.
         </p>
       </Row>
       <Row label="--fs-body / 400">
         <p style={{ fontFamily: "var(--font-body)", fontSize: "var(--fs-body)", margin: 0, maxWidth: "34em" }}>
-          Automations that move leads from chat to CRM, email, tasks and reports —
+          Automations that move leads from chat to CRM, email, tasks and reports,
           follow-up without the manual copy-paste.
         </p>
       </Row>
@@ -107,7 +107,7 @@ export const TypeScale: Story = {
       </h2>
       <Row label="--font-hand">
         <div style={{ fontFamily: "var(--font-hand)", fontSize: "1.5rem", color: "var(--ink)" }}>
-          ↳ it&apos;s live — type a real question
+          ↳ it&apos;s live, type a real question
         </div>
       </Row>
       <Row label="eyebrow">

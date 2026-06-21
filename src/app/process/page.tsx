@@ -21,7 +21,7 @@ import workflowIcon from "@/assets/icons/workflow.svg";
 export const metadata: Metadata = {
   title: "Process",
   description:
-    "How we work together — every engagement runs like one of the automations we build: Discover, Build, Test, Handoff, Maintain. A clear sequence from first call to a system you own.",
+    "How we work together, every engagement runs like one of the automations we build: Discover, Build, Test, Handoff, Maintain. A clear sequence from first call to a system you own.",
 };
 
 const heading = "font-display font-extrabold tracking-tight";
@@ -136,7 +136,7 @@ const steps: Step[] = [
         kind: "The output",
         icon: checkIcon,
         color: "var(--green)",
-        text: "A clear blueprint of the system we're about to build — no surprises.",
+        text: "A clear blueprint of the system we're about to build, no surprises.",
       },
     ],
   },
@@ -144,8 +144,8 @@ const steps: Step[] = [
     n: "02",
     numColor: "var(--orange)",
     eyebrow: "Build & feedback · the switch",
-    title: "We build it — and adjust as we go.",
-    body: "A switch node sends work down whichever path fits the moment. Our build phase works the same way: we develop layer by layer, then branch based on your feedback. Business needs shift — regular check-ins let us route around them instead of grinding to a halt.",
+    title: "We build it, and adjust as we go.",
+    body: "A switch node sends work down whichever path fits the moment. Our build phase works the same way: we develop layer by layer, then branch based on your feedback. Business needs shift, regular check-ins let us route around them instead of grinding to a halt.",
     tone: "alt",
     node: <NodeCard glyph={switchGlyph} label="Switch" />,
     rows: [
@@ -168,12 +168,12 @@ const steps: Step[] = [
     numColor: "var(--amber)",
     eyebrow: "QA & testing · the error trigger",
     eyebrowTone: "amber",
-    title: "We try to break it — on purpose.",
+    title: "We try to break it, on purpose.",
     body: (
       <>
         An error trigger is the safety net that catches a workflow the moment something goes wrong.
         Before going live, we deliberately feed your system bad data, dropped connections, and odd
-        user behaviour — so when the real world throws a curveball, it&apos;s already handled.{" "}
+        user behaviour, so when the real world throws a curveball, it&apos;s already handled.{" "}
         <span className="font-hand text-[1.18rem] text-amber">
           (the error trigger is us catching it first)
         </span>
@@ -237,7 +237,7 @@ const retainerTiers = [
     tier: "Tier 1",
     tierColor: "var(--ink-soft)",
     name: "Basic Support & Monitoring",
-    desc: "Best for smaller setups — simple lead capture or email automation.",
+    desc: "Best for smaller setups, simple lead capture or email automation.",
     features: ["Uptime monitoring", "Minor bug fixes", "General health checks"],
     featured: false,
   },
@@ -319,7 +319,7 @@ export default function ProcessPage() {
           </span>
         </h1>
         <p className="mx-auto mb-[26px] mt-6 max-w-[34em] text-lead text-ink-body">
-          Every engagement runs like one of the automations we build for you — a clear sequence of
+          Every engagement runs like one of the automations we build for you, a clear sequence of
           connected steps, each handing clean results to the next. Follow the path from first call to
           a system you own.
         </p>
@@ -371,7 +371,7 @@ export default function ProcessPage() {
         );
       })}
 
-      {/* ============ STEP 5 — Retainer ============ */}
+      {/* ============ STEP 5, Retainer ============ */}
       <Section style={{ borderTop: "1.5px solid var(--ink)" }}>
         <div className="grid items-center gap-12 lg:grid-cols-[40%_60%]">
           <div className="flex justify-center">
@@ -387,7 +387,7 @@ export default function ProcessPage() {
             </h2>
             <p className="mb-[26px] max-w-[32em] text-[1.06rem] leading-[1.6] text-ink-body">
               A schedule trigger wakes up at set intervals and does its job without being asked. An
-              automated system is a living thing — rules change, the apps you connect to update, your
+              automated system is a living thing, rules change, the apps you connect to update, your
               volume grows. Optional retainers keep everything tuned and humming in the background.
             </p>
             <div className="grid max-w-[38em] gap-4 sm:grid-cols-2">
@@ -428,7 +428,7 @@ export default function ProcessPage() {
           <span className="text-orange">Yours starts with one call.</span>
         </h2>
         <p className="mx-auto mb-7 mt-[18px] max-w-[32em] text-lead leading-[1.6] text-on-dark-strong">
-          Fifteen minutes to map where your time is leaking — then we trigger step one.
+          Fifteen minutes to map where your time is leaking, then we trigger step one.
         </p>
         <BookCall size="lg" arrow>
           Book a discovery call

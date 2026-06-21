@@ -1,4 +1,4 @@
-// Blog data — reads MDX posts from content/blog with gray-matter. Server-only
+// Blog data, reads MDX posts from content/blog with gray-matter. Server-only
 // (uses node fs); imported by the /blog pages and generateStaticParams.
 
 import fs from "node:fs";

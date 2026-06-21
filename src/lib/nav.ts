@@ -15,7 +15,7 @@ export const primaryNav: NavLink[] = [
   { label: "Process", href: "/process" },
   { label: "Pricing", href: "/pricing" },
   { label: "About", href: "/about" },
-  { label: "FAQ", href: "/#faq" },
+  { label: "FAQ", href: "/faq" },
 ];
 
 /** Footer link columns (from Site Footer.dc.html). */
@@ -34,7 +34,7 @@ export const footerColumns: { heading: string; links: NavLink[] }[] = [
     links: [
       { label: "Daily Log", href: "/blog" },
       { label: "Knowledge Base", href: "/knowledge-base" },
-      { label: "ROI Calculator", href: "/calculator" },
+      { label: "Cost estimator", href: "/calculator" },
     ],
   },
   {

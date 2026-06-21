@@ -76,7 +76,7 @@ export const LineSet: Story = {
         Icons
       </h1>
       <p style={{ color: "var(--ink-soft)", maxWidth: "44em", margin: "0 0 28px" }}>
-        A bespoke, hand-drawn-feel line set — ~1.8 stroke, round caps and joins,
+        A bespoke, hand-drawn-feel line set, ~1.8 stroke, round caps and joins,
         no fills. There is no icon font and no third-party library. Tint via CSS{" "}
         <code>mask</code>: ink by default, orange for emphasis.
       </p>

@@ -29,7 +29,7 @@ export function SiteFooter() {
           <div className="max-w-[24em]">
             <Link
               href="/"
-              aria-label="Switchboard AI Systems — home"
+              aria-label="Switchboard AI Systems, home"
               className="inline-flex text-on-dark no-underline"
             >
               <Logo />
@@ -40,7 +40,7 @@ export function SiteFooter() {
               <span className="text-orange">You scale it.</span>
             </p>
             <p className="mb-[22px] mt-4 text-base leading-[1.6] text-on-dark-strong">
-              Custom automation and AI chatbots that handle the grunt work — built,
+              Custom automation and AI chatbots that handle the grunt work, built,
               connected and maintained from Bucharest.
             </p>
             <div className="flex gap-[10px]">
@@ -123,9 +123,9 @@ export function SiteFooter() {
       {/* bottom bar */}
       <div className="border-t border-on-dark-line">
         <div className="mx-auto flex max-w-content flex-wrap items-center justify-between gap-[14px] px-gutter py-5 text-sm text-on-dark-muted">
-          <span>© 2026 Switchboard AI Systems — All rights reserved.</span>
+          <span>© 2026 Switchboard AI Systems, All rights reserved.</span>
           <span className="font-display text-[.7rem] font-semibold uppercase tracking-[.18em]">
-            Built · Connected · Maintained — from Bucharest
+            Built · Connected · Maintained, from Bucharest
           </span>
         </div>
       </div>

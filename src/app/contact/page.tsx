@@ -10,7 +10,7 @@ import sendIcon from "@/assets/icons/send.svg";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Two ways to start — both automated. Talk to the AI intake agent for an instant scope and ballpark price, or send your project specs the classic way. You'll hear back fast.",
+    "Two ways to start, both automated. Talk to the AI intake agent for an instant scope and ballpark price, or send your project specs the classic way. You'll hear back fast.",
 };
 
 const heading = "font-display font-extrabold tracking-tight";
@@ -45,7 +45,7 @@ export default function ContactPage() {
           </span>
         </h1>
         <p className="mx-auto mt-[22px] max-w-[34em] text-lead text-ink-body">
-          Talk to my AI intake agent for an instant scope and ballpark price — or fill out the form
+          Talk to my AI intake agent for an instant scope and ballpark price, or fill out the form
           the classic way. Either route, you&apos;ll hear back automatically within 60 seconds.
         </p>
       </Section>
@@ -90,7 +90,7 @@ export default function ContactPage() {
         </div>
 
         <p className="mx-auto mt-10 max-w-[40em] text-center text-[.96rem] text-ink-soft">
-          Old-school is fine too — reach me directly at{" "}
+          Old-school is fine too, reach me directly at{" "}
           <a
             href={socialLinks.email}
             className="border-b-2 border-[color-mix(in_srgb,var(--orange)_35%,transparent)] font-semibold text-orange no-underline"

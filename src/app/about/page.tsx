@@ -12,6 +12,7 @@ import {
   type IconSource,
 } from "@/components/ui";
 import { BookCall } from "@/components/sections/BookCall";
+import { BucharestBand } from "@/components/sections/BucharestBand";
 import { socialLinks } from "@/lib/nav";
 
 import assistantIcon from "@/assets/icons/assistant.svg";
@@ -28,7 +29,7 @@ import workflowIcon from "@/assets/icons/workflow.svg";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Cristi Șatcovschi — automation engineer and workflow architect in Bucharest. I wire your tools into seamless, AI-powered systems with n8n, Trigger.dev, Python and Node.js.",
+    "Cristi Șatcovschi, automation engineer and workflow architect in Bucharest. I wire your tools into seamless, AI-powered systems with n8n, Trigger.dev, Python and Node.js.",
 };
 
 const heading = "font-display font-extrabold tracking-tight";
@@ -81,13 +82,13 @@ const howIWork: { n: string; icon: IconSource; title: string; body: string }[] =
     n: "02",
     icon: lightbulbIcon,
     title: "Architecture & design",
-    body: "I design the pipeline before writing a line — nodes, fallbacks and integrations, mapped end to end.",
+    body: "I design the pipeline before writing a line, nodes, fallbacks and integrations, mapped end to end.",
   },
   {
     n: "03",
     icon: refreshIcon,
     title: "Build & test",
-    body: "I build layer by layer, then feed it bad data and dropped connections on purpose — so the live version doesn't flinch.",
+    body: "I build layer by layer, then feed it bad data and dropped connections on purpose, so the live version doesn't flinch.",
   },
   {
     n: "04",
@@ -103,13 +104,13 @@ const stack: StackCard[] = [
     icon: <Icon src={workflowIcon} color="var(--orange)" size={22} />,
     title: "Orchestration",
     tags: ["n8n", "Trigger.dev", "Zapier / Make"],
-    body: "The backbone — long-running, fault-tolerant workflows that route and retry on their own.",
+    body: "The backbone, long-running, fault-tolerant workflows that route and retry on their own.",
   },
   {
     icon: codeGlyph,
     title: "Languages",
     tags: ["Python", "Node.js", "TypeScript"],
-    body: "Custom scripts for the logic no off-the-shelf node covers — error handling included.",
+    body: "Custom scripts for the logic no off-the-shelf node covers, error handling included.",
   },
   {
     icon: <Icon src={assistantIcon} color="var(--orange)" size={22} />,
@@ -140,8 +141,8 @@ const builds: BuildCard[] = [
     title: "Freelancer Billing System",
     body: (
       <>
-        Generates invoices across three service tiers — <b className="text-amber">$800</b>,{" "}
-        <b className="text-amber">$1,500</b> and <b className="text-amber">$4,000</b> — applying the
+        Generates invoices across three service tiers, <b className="text-amber">$800</b>,{" "}
+        <b className="text-amber">$1,500</b> and <b className="text-amber">$4,000</b>, applying the
         right rules for each: upfront percentages, milestone billing and optional retainers. Tracks
         payments, outstanding balances and hourly support time automatically.
       </>
@@ -157,12 +158,12 @@ const builds: BuildCard[] = [
     n: "04",
     icon: funnelIcon,
     title: "Transcript → Project Builder",
-    body: "Turns raw meeting transcripts into structured project data — extracting tasks, requirements and deliverables, then generating the matching Drive folders, task lists and documentation. Client calls become project plans with zero manual planning.",
+    body: "Turns raw meeting transcripts into structured project data, extracting tasks, requirements and deliverables, then generating the matching Drive folders, task lists and documentation. Client calls become project plans with zero manual planning.",
   },
   {
     n: "05",
     icon: targetIcon,
-    title: "Referral Chatbot — Scout + Lead",
+    title: "Referral Chatbot, Scout + Lead",
     body: "Manages referral-based lead gen: users submit potential clients after first contact, each referral moves through a tracked pipeline, and scouts get live updates on lead progress and conversions.",
   },
 ];
@@ -172,7 +173,7 @@ const repos = [
   { name: "AutoMagic", lang: "TypeScript", body: "Open-source virtual-assistant ops platform: client work, tasks, billing, support and AI agents across web, mobile and desktop." },
   { name: "Dis", lang: "Rust", body: "An operating system built from a tiny no_std x86_64 kernel up toward 2D screens and eventually spatial workspaces." },
   { name: "kino", lang: "Rust", body: "A Bevy + Rust physics fighting / simulation game inspired by Toribash." },
-  { name: "Cytoshift", lang: "Rust", body: "A 3D game about piloting medical nanobots inside living cells — repair membranes, fight bacteria, protect the nucleus." },
+  { name: "Cytoshift", lang: "Rust", body: "A 3D game about piloting medical nanobots inside living cells, repair membranes, fight bacteria, protect the nucleus." },
   { name: "Sketchy", lang: "Kotlin", body: "An Android whiteboard for fast technical diagrams, architecture maps and low-fi UI wireframes." },
   { name: "Nuromorfx", lang: "Rust", body: "An interactive memristor sandbox for learning-by-doing with neuromorphic circuits and solver diagnostics." },
   { name: "codie", lang: "Python", body: "A local-first terminal app for developers: coding practice, AI-style interviews and spaced-repetition flashcards." },
@@ -219,15 +220,15 @@ export default function AboutPage() {
               </span>
             </h1>
             <p className="mt-[22px] max-w-[36em] text-[1.1rem] leading-[1.6] text-ink-body">
-              Hi — I&apos;m <b>Cristi Șatcovschi</b>, an automation engineer and workflow architect.
+              Hi, I&apos;m <b>Cristi Șatcovschi</b>, an automation engineer and workflow architect.
               I help fast-growing startups and agencies kill the manual grunt work by wiring their
               favourite tools into seamless, AI-powered systems. If your team is stuck copy-pasting
-              data, answering the same questions on repeat, or fighting broken software connections —
+              data, answering the same questions on repeat, or fighting broken software connections,
               I&apos;m the person you call.
             </p>
             <p className="mt-4 max-w-[36em] text-[1.1rem] leading-[1.6] text-ink-body">
               Using <b>n8n</b> and <b>Trigger.dev</b> alongside custom Python and Node.js, I build
-              reliable backend infrastructure that handles the heavy lifting — so you can focus on
+              reliable backend infrastructure that handles the heavy lifting, so you can focus on
               strategy, closing deals, and scaling revenue.
             </p>
 
@@ -251,7 +252,7 @@ export default function AboutPage() {
                 Book a discovery call
               </BookCall>
               <span className="font-hand text-[1.28rem] text-ink">
-                ↳ I think in workflows — and lose too many chess games online.
+                ↳ I think in workflows, and lose too many chess games online.
               </span>
             </div>
           </div>
@@ -283,13 +284,13 @@ export default function AboutPage() {
             </h2>
             <p className="mb-[14px] max-w-[34em] text-[1.06rem] leading-[1.6] text-ink-body">
               I&apos;m based in <b>Bucharest, Romania</b>, and I&apos;m wired to make systems run
-              smoother — at work and at the chessboard. Chess is where I unwind; it&apos;s also where
+              smoother, at work and at the chessboard. Chess is where I unwind; it&apos;s also where
               I&apos;m reminded that the best moves are usually the quiet, structural ones, not the
               flashy sacrifices.
             </p>
             <p className="max-w-[34em] text-[1.06rem] leading-[1.6] text-ink-body">
               When I&apos;m not automating someone&apos;s back-office, I&apos;m prototyping games, dev
-              tools and even operating systems for the fun of it. It keeps the engineering sharp — and
+              tools and even operating systems for the fun of it. It keeps the engineering sharp, and
               it means whatever weird stack your business runs on, I&apos;ve probably already broken
               something similar on purpose.
             </p>
@@ -315,7 +316,7 @@ export default function AboutPage() {
             I don&apos;t build a script and disappear.
           </h2>
           <p className="mx-auto mt-[14px] max-w-[42em] text-lead text-ink-soft">
-            Every engagement runs through the same four steps — so you always know what&apos;s
+            Every engagement runs through the same four steps, so you always know what&apos;s
             happening and where your system is headed.
           </p>
         </div>
@@ -383,7 +384,7 @@ export default function AboutPage() {
             A peek at the systems I build.
           </h2>
           <p className="m-0 text-[1.06rem] leading-[1.6] text-on-dark-strong">
-            Not theory — these are the real, reusable automations running behind Switchboard projects
+            Not theory, these are the real, reusable automations running behind Switchboard projects
             right now.
           </p>
         </div>
@@ -425,7 +426,7 @@ export default function AboutPage() {
             I can&apos;t stop building things.
           </h2>
           <p className="mx-auto mt-[14px] max-w-[42em] text-lead text-ink-soft">
-            Nights and weekends I prototype games, dev tools and operating systems — mostly in Rust
+            Nights and weekends I prototype games, dev tools and operating systems, mostly in Rust
             and TypeScript. A small sample:
           </p>
         </div>
@@ -461,6 +462,9 @@ export default function AboutPage() {
         </p>
       </Section>
 
+      {/* ============ BUCHAREST / LOCAL ============ */}
+      <BucharestBand />
+
       {/* ============ CONTACT / CTA ============ */}
       <Section tone="ink" id="contact" py="70px" style={{ borderTop: "1.5px solid #000" }}>
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_.9fr]">
@@ -471,7 +475,7 @@ export default function AboutPage() {
             </h2>
             <p className="mb-7 max-w-[32em] text-lead leading-[1.6] text-on-dark-strong">
               Book a free 15-minute mapping call and I&apos;ll show you exactly what we can automate
-              next — no pushy sales pitch.
+              next, no pushy sales pitch.
             </p>
             <BookCall size="lg" arrow>
               Book a discovery call

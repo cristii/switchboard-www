@@ -11,7 +11,7 @@ export interface LogoProps {
 /**
  * The Switchboard brand lockup: the line-drawn "connector" mark plus the
  * Bricolage wordmark. Colour is inherited (`currentColor`) so it sits on light
- * or dark surfaces — the header passes ink, the footer passes paper. The
+ * or dark surfaces, the header passes ink, the footer passes paper. The
  * "AI SYSTEMS" line is the same colour at reduced opacity, so it adapts too.
  * Presentational only: wrap it in a link to make it navigate.
  */

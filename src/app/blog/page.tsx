@@ -11,7 +11,7 @@ import workflowIcon from "@/assets/icons/workflow.svg";
 export const metadata: Metadata = {
   title: "The Daily Log",
   description:
-    "Short, technical deep-dives on n8n, Trigger.dev and reliable AI infrastructure — the exact patterns I ship for clients. A new blueprint every morning.",
+    "Short, technical deep-dives on n8n, Trigger.dev and reliable AI infrastructure, the exact patterns I ship for clients. A new blueprint every morning.",
 };
 
 const heading = "font-display font-extrabold tracking-tight";
@@ -34,7 +34,7 @@ export default function BlogPage() {
           </span>
         </h1>
         <p className="mb-[26px] mt-[22px] max-w-[38em] text-lead text-ink-body">
-          Short, technical deep-dives on n8n, Trigger.dev and reliable AI infrastructure — the exact
+          Short, technical deep-dives on n8n, Trigger.dev and reliable AI infrastructure, the exact
           patterns I ship for clients. One lands in your inbox every morning; the whole archive lives
           here.
         </p>

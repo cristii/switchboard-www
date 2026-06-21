@@ -16,7 +16,7 @@ const meta = {
   args: {
     question: "Will the chatbot make things up?",
     children:
-      "No — it only answers from the knowledge I train it on (your services, FAQs and rules). When it doesn't know something, it says so and hands off to you instead of guessing.",
+      "No, it only answers from the knowledge I train it on (your services, FAQs and rules). When it doesn't know something, it says so and hands off to you instead of guessing.",
     defaultOpen: false,
   },
   decorators: [

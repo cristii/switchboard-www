@@ -10,7 +10,7 @@ import chartIcon from "@/assets/icons/chart.svg";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "How Switchboard AI Systems collects, uses and protects your information — in plain language. GDPR data controller details, your rights, and contact.",
+    "How Switchboard AI Systems collects, uses and protects your information, in plain language. GDPR data controller details, your rights, and contact.",
 };
 
 const email = <LegalLink href={socialLinks.email}>cristi.satcovschi@gmail.com</LegalLink>;
@@ -19,7 +19,7 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      lead="How Switchboard AI Systems collects, uses and protects your information — in plain language, the same way I build everything else."
+      lead="How Switchboard AI Systems collects, uses and protects your information, in plain language, the same way I build everything else."
       summary={
         <>
           <b className="text-ink">Plain-English summary:</b> I collect only what I need to reply to
@@ -56,7 +56,7 @@ export default function PrivacyPage() {
                     color: "var(--orange)",
                     children: (
                       <>
-                        <b className="text-ink">Contact details</b> — your name, email and anything
+                        <b className="text-ink">Contact details</b>, your name, email and anything
                         you write in the contact form or chat agent.
                       </>
                     ),
@@ -66,7 +66,7 @@ export default function PrivacyPage() {
                     color: "var(--orange)",
                     children: (
                       <>
-                        <b className="text-ink">Project information</b> — the tools, processes and
+                        <b className="text-ink">Project information</b>, the tools, processes and
                         access details you provide so I can build and connect your automations.
                       </>
                     ),
@@ -76,7 +76,7 @@ export default function PrivacyPage() {
                     color: "var(--orange)",
                     children: (
                       <>
-                        <b className="text-ink">Basic usage data</b> — anonymous analytics about how
+                        <b className="text-ink">Basic usage data</b>, anonymous analytics about how
                         this site is used, to keep it fast and working.
                       </>
                     ),
@@ -98,7 +98,7 @@ export default function PrivacyPage() {
               </p>
               <p className={legalP}>
                 When you talk to the AI intake agent, your messages are processed to draft a project
-                scope and help me reply faster — nothing more.
+                scope and help me reply faster, nothing more.
               </p>
             </>
           ),
@@ -162,7 +162,7 @@ export default function PrivacyPage() {
           body: (
             <p className={legalP}>
               Under GDPR you can ask to access, correct, export or delete your personal data, restrict
-              or object to processing, and withdraw consent. To exercise any of these, just email me —
+              or object to processing, and withdraw consent. To exercise any of these, just email me,
               no forms, no friction. You also have the right to complain to your local data protection
               authority.
             </p>

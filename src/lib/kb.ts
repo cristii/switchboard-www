@@ -1,4 +1,4 @@
-// Knowledge-base content — the single source for /knowledge-base.
+// Knowledge-base content, the single source for /knowledge-base.
 // Ported from "Knowledge Base.dc.html": five rich "marquee" articles plus the
 // generated set (Overview / Key points / Example) built from intro + points +
 // code. Bodies are modelled as typed blocks and rendered with React (no raw
@@ -102,8 +102,8 @@ const CODE = {
 }`,
   redis: `const key = "evt:" + event.id;
 if (await redis.set(key, 1, "NX", "EX", 86400) === null)
-  return io.logger.info("duplicate — skipped");`,
-  split: `// Item Lists → "Split Out" — no Code node needed
+  return io.logger.info("duplicate, skipped");`,
+  split: `// Item Lists → "Split Out", no Code node needed
 fieldToSplitOut: "body.data",
 include:         "id, email, status"`,
   trigger: `client.defineJob({
@@ -130,14 +130,14 @@ const marquee: Article[] = [
     lead: "How this knowledge base is organized, and the fastest path from a question to working code.",
     blocks: [
       { t: "h", id: "overview", text: "Overview" },
-      { t: "p", text: "This is the engineering reference behind every system we ship. It covers n8n, Trigger.dev, and the AI workflows that sit on top of them — written for technical people who want the exact pattern, not a sales pitch." },
+      { t: "p", text: "This is the engineering reference behind every system we ship. It covers n8n, Trigger.dev, and the AI workflows that sit on top of them, written for technical people who want the exact pattern, not a sales pitch." },
       { t: "callout", kind: "tip", label: "Start here", text: "New to event-driven automation? Read Core concepts, then build your first n8n webhook." },
       { t: "h", id: "three-tiers", text: "The three tiers" },
       { t: "p", text: "Everything is grouped so you can move from understanding to copy-paste in seconds:" },
       { t: "ul", items: [
-        "Learn — concepts and quickstarts. Why a pattern exists.",
-        "Reference — strictly factual, skimmable node and API docs, plus the blueprint library.",
-        "Guides — end-to-end recipes organized by business outcome.",
+        "Learn, concepts and quickstarts. Why a pattern exists.",
+        "Reference, strictly factual, skimmable node and API docs, plus the blueprint library.",
+        "Guides, end-to-end recipes organized by business outcome.",
       ] },
       { t: "h", id: "conventions", text: "Conventions" },
       { t: "p", text: "Code blocks are copy-ready. Where an engine offers two approaches, we show them as tabs (for example a JavaScript Node vs a raw JSON / HTTP Request). Blueprints always ship with a downloadable artifact and a documented schema." },
@@ -149,13 +149,13 @@ const marquee: Article[] = [
     group: "Learn",
     read: "6 min read",
     title: "Core concepts: event-driven architecture",
-    lead: "Why reliable automation is built on events and queues — not cron jobs and hope.",
+    lead: "Why reliable automation is built on events and queues, not cron jobs and hope.",
     blocks: [
       { t: "h", id: "overview", text: "Overview" },
-      { t: "p", text: "An event-driven system reacts the instant something happens — a form submit, a payment, a new row — instead of asking “anything new yet?” on a timer. That single shift removes most of the latency and waste in a workflow." },
+      { t: "p", text: "An event-driven system reacts the instant something happens, a form submit, a payment, a new row, instead of asking “anything new yet?” on a timer. That single shift removes most of the latency and waste in a workflow." },
       { t: "h", id: "events", text: "Events vs. polling" },
       { t: "p", text: "Polling burns API quota and adds delay equal to your interval. A webhook delivers the payload the moment the event occurs." },
-      { t: "callout", kind: "warn", label: "Watch out", text: "Webhooks can be delivered more than once, out of order, or replayed by an attacker. Plan for it — see Idempotency." },
+      { t: "callout", kind: "warn", label: "Watch out", text: "Webhooks can be delivered more than once, out of order, or replayed by an attacker. Plan for it, see Idempotency." },
       { t: "h", id: "queues", text: "Queues & retries" },
       { t: "p", text: "Wrap any outbound call in a task so a slow or failing third party retries on its own instead of taking down the whole run." },
       { t: "code", file: "worker.ts", code: CODE.trigger },
@@ -170,8 +170,8 @@ const marquee: Article[] = [
     group: "Learn",
     read: "8 min read",
     title: "Your first production-grade n8n webhook",
-    lead: "Stand up a webhook that captures leads, validates the payload, and survives bad input — in about ten minutes.",
-    artifact: { name: "lead-intake.n8n.json", type: "JSON", desc: "Importable n8n workflow — webhook + validation + CRM sync." },
+    lead: "Stand up a webhook that captures leads, validates the payload, and survives bad input, in about ten minutes.",
+    artifact: { name: "lead-intake.n8n.json", type: "JSON", desc: "Importable n8n workflow, webhook + validation + CRM sync." },
     blocks: [
       { t: "h", id: "overview", text: "Overview" },
       { t: "p", text: "A “hello world” webhook is easy. A production one acknowledges fast, validates input, and never double-processes. We will build all three." },
@@ -202,18 +202,18 @@ const marquee: Article[] = [
     lead: "A one-line guard that stops duplicate webhook deliveries from firing a second run.",
     blocks: [
       { t: "h", id: "overview", text: "Overview" },
-      { t: "p", text: "Idempotent means “running it twice has the same effect as running it once.” Since webhook delivery is at-least-once, this is not optional — it is the difference between one invoice and three." },
+      { t: "p", text: "Idempotent means “running it twice has the same effect as running it once.” Since webhook delivery is at-least-once, this is not optional, it is the difference between one invoice and three." },
       { t: "h", id: "guard", text: "The guard" },
       { t: "p", text: "Record each event id the first time you see it. If the key already exists, skip." },
       { t: "code", file: "idempotency.ts", code: CODE.redis },
       { t: "h", id: "key", text: "Choosing a key" },
-      { t: "p", text: "Use the provider’s event id when one exists. If not, hash the stable fields of the payload — never the timestamp." },
+      { t: "p", text: "Use the provider’s event id when one exists. If not, hash the stable fields of the payload, never the timestamp." },
       { t: "callout", kind: "warn", label: "Common mistake", text: "A TTL that is shorter than the provider’s retry window lets a late retry slip through. Match or exceed it (24h is a safe default)." },
       { t: "h", id: "pitfalls", text: "Pitfalls" },
       { t: "ul", items: [
         "Setting the key after the side effect instead of before.",
         "Using a per-instance in-memory set that resets on deploy.",
-        "Forgetting that two different events can share a payload — include the type in the key.",
+        "Forgetting that two different events can share a payload, include the type in the key.",
       ] },
     ],
   },
@@ -223,29 +223,29 @@ const marquee: Article[] = [
     group: "Blueprints",
     read: "Blueprint",
     title: "Blueprint: Slack → Notion → LLM",
-    lead: "Summarize a Slack thread with an LLM and file the result in Notion — fully automated, with graceful failure.",
+    lead: "Summarize a Slack thread with an LLM and file the result in Notion, fully automated, with graceful failure.",
     artifact: { name: "slack-notion-llm.json", type: "JSON", desc: "Importable workflow with the LLM + Notion nodes pre-wired." },
     blocks: [
       { t: "h", id: "overview", text: "What it does" },
-      { t: "p", text: "When a thread is tagged in Slack, this blueprint pulls the messages, asks an LLM for a structured summary, and creates a Notion page in the right database — no human in the loop." },
+      { t: "p", text: "When a thread is tagged in Slack, this blueprint pulls the messages, asks an LLM for a structured summary, and creates a Notion page in the right database, no human in the loop." },
       { t: "h", id: "arch", text: "Architecture" },
       { t: "ul", items: [
-        "Trigger — Slack event for the reaction/tag.",
-        "Transform — flatten the thread into clean text.",
-        "LLM — summarize with a fixed schema prompt.",
-        "Output — create the Notion page; on failure, post back to Slack.",
+        "Trigger, Slack event for the reaction/tag.",
+        "Transform, flatten the thread into clean text.",
+        "LLM, summarize with a fixed schema prompt.",
+        "Output, create the Notion page; on failure, post back to Slack.",
       ] },
       { t: "code", file: "transform.node", code: CODE.split },
       { t: "h", id: "schema", text: "Schema" },
       { t: "p", text: "Documented inputs and outputs so you can swap pieces safely." },
       { t: "ul", items: [
-        "input.channel — Slack channel id (required)",
-        "input.thread_ts — thread timestamp (required)",
-        "output.notion_page_id — created page id",
-        "output.summary — string, ≤ 280 chars",
+        "input.channel, Slack channel id (required)",
+        "input.thread_ts, thread timestamp (required)",
+        "output.notion_page_id, created page id",
+        "output.summary, string, ≤ 280 chars",
       ] },
       { t: "h", id: "edge", text: "Edge cases" },
-      { t: "callout", kind: "warn", label: "Fails gracefully", text: "If the LLM returns malformed JSON or Notion is down, the run posts the raw summary back into the Slack thread instead of dropping it — nothing is ever lost." },
+      { t: "callout", kind: "warn", label: "Fails gracefully", text: "If the LLM returns malformed JSON or Notion is down, the run posts the raw summary back into the Slack thread instead of dropping it, nothing is ever lost." },
       { t: "ul", items: ["Empty thread → skips, logs a notice.", "Rate-limited by Notion → retries with backoff."] },
     ],
   },
@@ -266,11 +266,11 @@ interface Gen {
 }
 
 const generated: Gen[] = [
-  { id: "installation", tier: "Learn", group: "Learn", read: "4 min read", title: "Installation & environment", lead: "Get an n8n and Trigger.dev environment running locally before you ship anything.", intro: ["Run both engines locally so you can test workflows against real payloads before touching production.", "Keep secrets in environment variables — never inside a node — so the same workflow JSON moves cleanly between staging and live."], points: ["Use Docker for a reproducible n8n instance.", "Separate staging and production credentials.", "Store webhook signing secrets as environment variables."], code: { file: "worker.ts", code: CODE.trigger } },
-  { id: "quickstart-trigger", tier: "Learn", group: "Learn", read: "7 min read", title: "Scaling AI agents with Trigger.dev", lead: "Run many AI agents in parallel without melting your rate limits or your bill.", intro: ["Trigger.dev gives long-running AI tasks durable execution and built-in concurrency control — the two things a raw API loop lacks.", "Cap concurrency so a burst of work queues instead of hammering the model provider all at once."], points: ["Set a concurrencyLimit to bound parallel agents.", "Wrap each model call in a task for automatic retries.", "Stream tokens back to the client over SSE for instant feel."], code: { file: "agent.ts", code: CODE.trigger } },
-  { id: "rate-limits", tier: "Learn", group: "Learn", read: "5 min read", title: "Handling rate limits in third-party APIs", lead: "Throttle a burst of items through an API without tripping its limit — no external queue required.", intro: ["Most third-party limits are per-second or per-minute. Spacing your calls keeps you under the ceiling without dropping work.", "When you do get a 429, respect the Retry-After header instead of retrying blindly."], points: ["Add a wait between items to stay under the per-second cap.", "Read and honor Retry-After on 429 responses.", "Back off exponentially, then give up after a sane ceiling."], code: { file: "guard.ts", code: CODE.redis } },
-  { id: "n8n-standard", tier: "Reference", group: "n8n", read: "Reference", title: "n8n Nodes (standard)", lead: "Best-practice notes for the standard nodes you will reach for in almost every workflow.", intro: ["These are the nodes shipped with n8n. The notes below cover the gotchas that bite people in production.", "Prefer visual nodes over the Code node wherever possible — they are easier to hand off to a client."], points: ["Split Out — loop arrays without a Code node.", "Set — shape and rename fields explicitly.", "IF / Switch — branch on conditions; keep paths labelled.", "HTTP Request — your escape hatch for any REST API."], code: { file: "split-out.node", code: CODE.split } },
-  { id: "n8n-custom", tier: "Reference", group: "n8n", read: "Reference", title: "n8n Nodes (custom)", lead: "When the standard set is not enough, a small custom node keeps logic out of brittle Code nodes.", intro: ["Custom nodes package reusable logic with a clean UI so non-technical operators can configure it safely.", "Keep them small and single-purpose — one node, one job."], points: ["Declare typed inputs so misuse fails loudly.", "Version your node package alongside the workflow.", "Document outputs the same way you would an API."], code: { file: "node.ts", code: CODE.webhookTs } },
+  { id: "installation", tier: "Learn", group: "Learn", read: "4 min read", title: "Installation & environment", lead: "Get an n8n and Trigger.dev environment running locally before you ship anything.", intro: ["Run both engines locally so you can test workflows against real payloads before touching production.", "Keep secrets in environment variables, never inside a node, so the same workflow JSON moves cleanly between staging and live."], points: ["Use Docker for a reproducible n8n instance.", "Separate staging and production credentials.", "Store webhook signing secrets as environment variables."], code: { file: "worker.ts", code: CODE.trigger } },
+  { id: "quickstart-trigger", tier: "Learn", group: "Learn", read: "7 min read", title: "Scaling AI agents with Trigger.dev", lead: "Run many AI agents in parallel without melting your rate limits or your bill.", intro: ["Trigger.dev gives long-running AI tasks durable execution and built-in concurrency control, the two things a raw API loop lacks.", "Cap concurrency so a burst of work queues instead of hammering the model provider all at once."], points: ["Set a concurrencyLimit to bound parallel agents.", "Wrap each model call in a task for automatic retries.", "Stream tokens back to the client over SSE for instant feel."], code: { file: "agent.ts", code: CODE.trigger } },
+  { id: "rate-limits", tier: "Learn", group: "Learn", read: "5 min read", title: "Handling rate limits in third-party APIs", lead: "Throttle a burst of items through an API without tripping its limit, no external queue required.", intro: ["Most third-party limits are per-second or per-minute. Spacing your calls keeps you under the ceiling without dropping work.", "When you do get a 429, respect the Retry-After header instead of retrying blindly."], points: ["Add a wait between items to stay under the per-second cap.", "Read and honor Retry-After on 429 responses.", "Back off exponentially, then give up after a sane ceiling."], code: { file: "guard.ts", code: CODE.redis } },
+  { id: "n8n-standard", tier: "Reference", group: "n8n", read: "Reference", title: "n8n Nodes (standard)", lead: "Best-practice notes for the standard nodes you will reach for in almost every workflow.", intro: ["These are the nodes shipped with n8n. The notes below cover the gotchas that bite people in production.", "Prefer visual nodes over the Code node wherever possible, they are easier to hand off to a client."], points: ["Split Out, loop arrays without a Code node.", "Set, shape and rename fields explicitly.", "IF / Switch, branch on conditions; keep paths labelled.", "HTTP Request, your escape hatch for any REST API."], code: { file: "split-out.node", code: CODE.split } },
+  { id: "n8n-custom", tier: "Reference", group: "n8n", read: "Reference", title: "n8n Nodes (custom)", lead: "When the standard set is not enough, a small custom node keeps logic out of brittle Code nodes.", intro: ["Custom nodes package reusable logic with a clean UI so non-technical operators can configure it safely.", "Keep them small and single-purpose, one node, one job."], points: ["Declare typed inputs so misuse fails loudly.", "Version your node package alongside the workflow.", "Document outputs the same way you would an API."], code: { file: "node.ts", code: CODE.webhookTs } },
   { id: "n8n-expressions", tier: "Reference", group: "n8n", read: "Reference", title: "Expressions & JSON transforms", lead: "The expression syntax and JSON-path patterns that handle 90% of data reshaping.", intro: ["n8n expressions let you reference any upstream field inline. Combined with Split Out and Set, they replace most Code nodes.", "Reach for JSON-path to pluck nested values without writing JavaScript."], points: ["Reference upstream data with the json accessor.", "Use Split Out for arrays, Set for renames.", "Validate shape early so bad data fails fast."], code: { file: "expression.txt", code: CODE.split } },
   { id: "trigger-workflows", tier: "Reference", group: "Trigger.dev", read: "Reference", title: "Trigger.dev workflows & tasks", lead: "Task management, concurrency, and TypeScript patterns for durable jobs.", intro: ["A Trigger.dev job is durable: if it crashes mid-run it resumes, not restarts. Model each external call as its own task to get that guarantee per step.", "TypeScript types on your payload catch mistakes before they ever run."], points: ["One runTask per external side effect.", "Set concurrencyLimit to protect downstreams.", "Type the payload to catch errors at build time."], code: { file: "job.ts", code: CODE.trigger } },
   { id: "bp-api", tier: "Reference", group: "Blueprints", read: "Blueprint", title: "Blueprint: Resilient API sync", lead: "Two-way sync between any REST API and your database, with retries and idempotency built in.", artifact: { name: "api-sync.json", type: "JSON", desc: "Importable workflow with retry + idempotency wiring." }, intro: ["This blueprint keeps a remote API and your database in sync in both directions without dropping or duplicating records.", "Every write is idempotent and every fetch retries on transient failure."], points: ["Signature verification on inbound webhooks.", "Idempotency key on every write.", "Exponential backoff on 429 / 5xx."], code: { file: "verify.ts", code: CODE.hmac } },

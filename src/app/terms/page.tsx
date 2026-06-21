@@ -8,7 +8,7 @@ import checkIcon from "@/assets/icons/check.svg";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "The straightforward terms that govern working with Switchboard AI Systems and using this website — scope, payment, IP, warranties and liability.",
+    "The straightforward terms that govern working with Switchboard AI Systems and using this website, scope, payment, IP, warranties and liability.",
 };
 
 const email = <LegalLink href={socialLinks.email}>cristi.satcovschi@gmail.com</LegalLink>;
@@ -62,7 +62,7 @@ export default function TermsPage() {
               <LegalBullets
                 items={[
                   { icon: checkIcon, children: "A deposit is due before work starts; the balance is due on go-live or per the milestones in your scope." },
-                  { icon: checkIcon, children: "Work outside the agreed scope is quoted separately before it begins — no surprise invoices." },
+                  { icon: checkIcon, children: "Work outside the agreed scope is quoted separately before it begins, no surprise invoices." },
                   { icon: checkIcon, children: "Third-party software, API and hosting costs are billed to and owned by you directly." },
                 ]}
               />
@@ -98,7 +98,7 @@ export default function TermsPage() {
           heading: "6 · Warranties & disclaimers",
           body: (
             <p className={legalP}>
-              I build with care and stand behind my work — Growth and Custom builds include a defined
+              I build with care and stand behind my work, Growth and Custom builds include a defined
               monitoring window during which I fix workflow breakages caused by my build at no charge.
               Beyond that, the service is provided &ldquo;as is.&rdquo; Automations depend on
               third-party platforms I don&apos;t control; if a provider changes its API, pricing or

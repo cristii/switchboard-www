@@ -20,7 +20,7 @@ const illustrationCss = `
   .nf-spark { animation: nfSpark 1.3s ease-in-out infinite; transform-origin:center; }
 `;
 
-/** 404 page — ported from 404.dc.html; the header/footer come from the layout. */
+/** 404 page, ported from 404.dc.html; the header/footer come from the layout. */
 export default function NotFound() {
   return (
     <section className="flex min-h-[60vh] items-center justify-center px-gutter py-14 text-center">
@@ -72,7 +72,7 @@ export default function NotFound() {
           This node doesn&apos;t exist.
         </h1>
         <p className="mx-auto mt-4 max-w-[30em] text-[1.1rem] leading-[1.6] text-ink-body">
-          The page you&apos;re after broke its connection — moved, renamed, or never wired
+          The page you&apos;re after broke its connection, moved, renamed, or never wired
           up. Even my automations drop a packet now and then.
         </p>
         <p className="mt-[14px] font-hand text-[1.35rem] text-ink">

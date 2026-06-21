@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "A 16:10 video poster placeholder in the brand frame — dark gradient panel, paper play disc, gradient-masked labels. Swap for a real embed when footage exists.",
+          "A 16:10 video poster placeholder in the brand frame, dark gradient panel, paper play disc, gradient-masked labels. Swap for a real embed when footage exists.",
       },
     },
   },

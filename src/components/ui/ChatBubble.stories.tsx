@@ -17,7 +17,7 @@ const meta = {
     from: "bot",
     showLabel: true,
     children:
-      "Hi — I'm a live demo assistant. I can tell you what Switchboard builds, what it costs, and help you book a call. What would you like to know?",
+      "Hi, I'm a live demo assistant. I can tell you what Switchboard builds, what it costs, and help you book a call. What would you like to know?",
   },
   argTypes: {
     from: { control: "inline-radio", options: ["bot", "user"] },
@@ -56,11 +56,11 @@ export const Conversation: Story = {
   render: () => (
     <>
       <ChatBubble from="bot">
-        Hi — I&apos;m a live demo assistant. What would you like to know?
+        Hi, I&apos;m a live demo assistant. What would you like to know?
       </ChatBubble>
       <ChatBubble from="user">Can you book calls?</ChatBubble>
       <ChatBubble from="bot" showLabel={false}>
-        Yes — I qualify the visitor and book straight into your calendar, so the
+        Yes, I qualify the visitor and book straight into your calendar, so the
         calls you get are already warm.
       </ChatBubble>
     </>

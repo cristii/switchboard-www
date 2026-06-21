@@ -9,7 +9,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Wraps inline text with the brand's wobbly hand-drawn underline. Use on a single emphasized phrase inside a heading or eyebrow — never a whole sentence.",
+          "Wraps inline text with the brand's wobbly hand-drawn underline. Use on a single emphasized phrase inside a heading or eyebrow, never a whole sentence.",
       },
     },
   },

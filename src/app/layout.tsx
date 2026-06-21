@@ -9,12 +9,12 @@ import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const description =
-  "AI chatbots and workflow automation (n8n, Trigger.dev) for small teams — built, connected and maintained from Bucharest by Cristi Șatcovschi.";
+  "AI chatbots and workflow automation (n8n, Trigger.dev) for small teams, built, connected and maintained from Bucharest by Cristi Șatcovschi.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Switchboard AI Systems — AI chatbots & workflow automation",
+    default: "Switchboard AI Systems, AI chatbots & workflow automation",
     template: "%s · Switchboard AI Systems",
   },
   description,
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "Switchboard AI Systems",
-    title: "Switchboard AI Systems — AI chatbots & workflow automation",
+    title: "Switchboard AI Systems, AI chatbots & workflow automation",
     description,
     locale: "en",
     url: "/",

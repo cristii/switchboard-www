@@ -1,9 +1,9 @@
 /* ============================================================
-   Switchboard — Next.js app global stylesheet
+   Switchboard, Next.js app global stylesheet
    Pulls in the brand tokens (the single source of truth in
    src/styles/, shared with Storybook), then the Tailwind layers.
-   Tailwind's theme maps onto these same CSS variables — see
-   tailwind.config.ts — so nothing is duplicated.
+   Tailwind's theme maps onto these same CSS variables (see
+   tailwind.config.ts) so nothing is duplicated.
    @import must precede the @tailwind directives.
    ============================================================ */
 @import "../styles/fonts.css";

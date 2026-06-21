@@ -9,13 +9,13 @@ const meta = {
     docs: {
       description: {
         component:
-          "A large orange Bricolage figure with a muted caption — for proof/impact numbers. Keep figures honest (the brand never invents fake stats).",
+          "A large orange Bricolage figure with a muted caption, for proof/impact numbers. Keep figures honest (the brand never invents fake stats).",
       },
     },
   },
   args: {
     value: "<5s",
-    label: "Average time to answer a visitor — day or night",
+    label: "Average time to answer a visitor, day or night",
     onDark: false,
   },
   argTypes: { onDark: { control: "boolean" } },
@@ -49,7 +49,7 @@ export const Row: Story = {
   ],
   render: () => (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 22 }}>
-      <Stat onDark value="<5s" label="Average time to answer a visitor — day or night" />
+      <Stat onDark value="<5s" label="Average time to answer a visitor, day or night" />
       <Stat onDark value="3×" label="More qualified enquiries vs. a static contact form" />
       <Stat onDark value="10 min" label="From your site to a working demo you can try" />
     </div>

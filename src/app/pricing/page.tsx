@@ -22,7 +22,7 @@ import workflowIcon from "@/assets/icons/workflow.svg";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
-    "Transparent, one-time pricing for done-for-you automation and AI chatbots. The Foundation, The Growth Engine and Custom Infrastructure — we build it, test it, and hand you the keys.",
+    "Transparent, one-time pricing for done-for-you automation and AI chatbots. The Foundation, The Growth Engine and Custom Infrastructure, we build it, test it, and hand you the keys.",
 };
 
 const heading = "font-display font-extrabold tracking-tight";
@@ -71,7 +71,7 @@ const tiers: Tier[] = [
       { text: "Instant SMS & Slack lead alerts" },
       { text: "Direct CRM & ad-platform syncing" },
       { text: "Automated “received” replies" },
-      { text: "Basic AI auto-responder — instant smart replies to web forms" },
+      { text: "Basic AI auto-responder, instant smart replies to web forms" },
     ],
     upfront: "25% upfront to schedule.",
     cta: "Map My Automation",
@@ -86,7 +86,7 @@ const tiers: Tier[] = [
       { text: "Everything in The Foundation, plus:", accent: true },
       { text: "Multi-step follow-up sequences" },
       { text: "Smart lead routing & conditional logic" },
-      { text: "Standard AI chatbot — answers FAQs & books appointments" },
+      { text: "Standard AI chatbot, answers FAQs & books appointments" },
       { text: "Auto-invoicing & review generation" },
     ],
     upfront: "50% upfront, 50% on go-live. Includes 30 days of active monitoring.",
@@ -103,7 +103,7 @@ const tiers: Tier[] = [
       { text: "High-volume request routing & queueing" },
       { text: "Advanced data transformations & clean-up" },
       { text: "Custom dashboards & client portals" },
-      { text: "Custom RAG AI agents — trained on your business data & catalogs" },
+      { text: "Custom RAG AI agents, trained on your business data & catalogs" },
     ],
     upfront: "Paid discovery phase required. Includes 30 days of active monitoring.",
     cta: "Request an Audit",
@@ -130,16 +130,16 @@ const steps = [
 
 const faqs = [
   {
-    q: "I'm a local tradesman — I don't know anything about tech. Will this work for me?",
-    a: "Yes. You won't have to log into any complex software. We build systems that work through the tools you already use — like a simple text message when a new lead comes in, or an AI answering your website chat while you're driving.",
+    q: "I'm a local tradesman, I don't know anything about tech. Will this work for me?",
+    a: "Yes. You won't have to log into any complex software. We build systems that work through the tools you already use, like a simple text message when a new lead comes in, or an AI answering your website chat while you're driving.",
   },
   {
     q: "What's the difference between the AI chatbot in Tier 2 and Tier 3?",
-    a: "The Tier 2 bot is a standard AI trained on a fixed set of FAQs — your pricing, hours and core services — designed to capture leads and book calls. The Tier 3 bot is a far more advanced agent that can read thousands of your past support tickets or scan a massive product catalog to troubleshoot complex customer issues on its own.",
+    a: "The Tier 2 bot is a standard AI trained on a fixed set of FAQs, your pricing, hours and core services, designed to capture leads and book calls. The Tier 3 bot is a far more advanced agent that can read thousands of your past support tickets or scan a massive product catalog to troubleshoot complex customer issues on its own.",
   },
   {
     q: "Are there ongoing monthly fees?",
-    a: "No. Our build fees are one-time. You're only responsible for the raw software costs of the tools you use — for example, a few dollars a month for your AI usage, or your existing CRM subscription.",
+    a: "No. Our build fees are one-time. You're only responsible for the raw software costs of the tools you use, for example, a few dollars a month for your AI usage, or your existing CRM subscription.",
   },
   {
     q: "How long does a build take?",
@@ -168,7 +168,7 @@ export default function PricingPage() {
         </h1>
         <p className="mx-auto mb-[30px] mt-6 max-w-[36em] text-lead text-ink-body">
           Custom automation and AI chatbots that plug leaky sales funnels, handle your back-office,
-          and never take a day off. We build it, we connect it, and we maintain it — you just answer
+          and never take a day off. We build it, we connect it, and we maintain it, you just answer
           the phone when it rings.
         </p>
         <div className="flex flex-col items-center gap-3">
@@ -176,7 +176,7 @@ export default function PricingPage() {
             Book a Quick Walkthrough
           </BookCall>
           <p className="m-0 font-hand text-[1.28rem] text-ink">
-            ↳ free 15-minute discovery call — no pushy sales pitch
+            ↳ free 15-minute discovery call, no pushy sales pitch
           </p>
         </div>
       </Section>
@@ -393,7 +393,7 @@ export default function PricingPage() {
           Book My Free Walkthrough
         </BookCall>
         <p className="mt-[22px] font-hand text-[1.3rem] text-amber">
-          ↳ no pushy sales pitch — just a map of what&apos;s possible
+          ↳ no pushy sales pitch, just a map of what&apos;s possible
         </p>
       </Section>
     </>

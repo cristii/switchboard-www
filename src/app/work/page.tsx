@@ -10,7 +10,7 @@ import checkIcon from "@/assets/icons/check.svg";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Selected automations I've built and run for small businesses — lead capture, instant replies, onboarding, reviews and content, working quietly in the background.",
+    "Selected automations I've built and run for small businesses, lead capture, instant replies, onboarding, reviews and content, working quietly in the background.",
 };
 
 const heading = "font-display font-extrabold tracking-tight";
@@ -59,18 +59,18 @@ export default function WorkPage() {
       <Section id="top" py="48px">
         <Eyebrow>Selected work</Eyebrow>
         <h1 className={`${heading} mt-3 max-w-[15em] text-hero text-ink`}>
-          Automations that do the boring work —{" "}
+          Automations that do the boring work, {" "}
           <span className="text-orange">
             <HandUnderline>so you don&apos;t.</HandUnderline>
           </span>
         </h1>
         <p className="mb-4 mt-[22px] max-w-[40em] text-lead text-ink-body">
           Every project below is a system I&apos;ve built and run for small businesses. They work
-          quietly in the background — bringing in leads, answering people instantly, and cutting out
+          quietly in the background, bringing in leads, answering people instantly, and cutting out
           the copy-paste. Find the one that sounds like your bottleneck.
         </p>
         <p className="m-0 font-hand text-[1.3rem] text-ink">
-          ↳ not technical? just read the <b>bold line</b> on each card — that&apos;s what it does for
+          ↳ not technical? just read the <b>bold line</b> on each card, that&apos;s what it does for
           your business.
         </p>
       </Section>
@@ -115,7 +115,7 @@ export default function WorkPage() {
               Tell me where you&apos;re losing time or leads.
             </h2>
             <p className="mt-4 text-lead leading-[1.6] text-on-dark-strong">
-              I&apos;ll build a working demo of the right automation — on your own site — for free,
+              I&apos;ll build a working demo of the right automation, on your own site, for free,
               before you decide anything. No deck, no jargon, just the thing running.
             </p>
             <div className="mt-[18px] flex flex-wrap items-center gap-[10px]">

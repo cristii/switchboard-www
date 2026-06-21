@@ -10,6 +10,6 @@ A chatbot that waits for the full response before showing anything feels broken,
 
 ## Pipe the callback stream to SSE
 
-Wire the agent's streaming callback handler to a response that sets `Content-Type: text/event-stream`, then write each token as it arrives. The browser's `EventSource` appends them in real time — no polling, no websockets to manage.
+Wire the agent's streaming callback handler to a response that sets `Content-Type: text/event-stream`, then write each token as it arrives. The browser's `EventSource` appends them in real time, no polling, no websockets to manage.
 
 The whole win is perceived latency: the same response, but the user sees it start immediately instead of staring at a spinner. For anything conversational, it's the difference between "slow" and "instant."

@@ -162,11 +162,11 @@ function buildNodes(s: CalcState, c: ReturnType<typeof compute>): FlowNode[] {
 }
 
 function tipFor(s: CalcState, c: ReturnType<typeof compute>) {
-  if (s.apps.openai && s.model === "opus") return "Most clients start with GPT-4o mini and upgrade later — that alone saves about 70% on AI cost.";
-  if (execTier(s.executions) === 2) return "Batch your executions where you can — grouping runs can cut billable executions by ~30% for the same work.";
-  if (s.apps.openai && s.memory && s.messages >= 5000) return "A high message volume with full memory gets pricey — trimming the memory window keeps quality with a smaller bill.";
-  if (c.high < 35) return "This is a lean setup — exactly where most clients start before layering on AI and follow-ups.";
-  return "Every number here is the raw infrastructure cost. Our build fee is one-time — no recurring agency markup on top.";
+  if (s.apps.openai && s.model === "opus") return "Most clients start with GPT-4o mini and upgrade later, that alone saves about 70% on AI cost.";
+  if (execTier(s.executions) === 2) return "Batch your executions where you can, grouping runs can cut billable executions by ~30% for the same work.";
+  if (s.apps.openai && s.memory && s.messages >= 5000) return "A high message volume with full memory gets pricey, trimming the memory window keeps quality with a smaller bill.";
+  if (c.high < 35) return "This is a lean setup, exactly where most clients start before layering on AI and follow-ups.";
+  return "Every number here is the raw infrastructure cost. Our build fee is one-time, no recurring agency markup on top.";
 }
 
 const PRESETS: Record<string, Partial<CalcState>> = {
@@ -245,7 +245,7 @@ export function Calculator() {
   const download = () => {
     const apps = (Object.keys(s.apps) as AppKey[]).filter((k) => s.apps[k]).map((k) => APP_META[k].name).join(", ") || "none";
     const lines = [
-      "SWITCHBOARD — AUTOMATION COST ESTIMATE",
+      "SWITCHBOARD, AUTOMATION COST ESTIMATE",
       "======================================",
       "",
       "Executions / month: " + fmt(s.executions),
@@ -299,8 +299,9 @@ export function Calculator() {
       </div>
 
       <div className="grid items-start gap-6 lg:grid-cols-[1fr_420px]">
-        {/* LEFT: workflow builder */}
-        <div className="min-h-[560px] rounded-[18px] border border-ink bg-white p-6 shadow-card">
+        {/* LEFT: workflow builder, sticky on desktop so it stays in view while
+            the (sometimes tall) cost panel on the right scrolls. */}
+        <div className="rounded-[18px] border border-ink bg-white p-6 shadow-card lg:sticky lg:top-[88px] lg:self-start">
           <div className="mb-[18px] flex flex-wrap items-center justify-between gap-3">
             <div>
               <div className={`${display} text-[1.15rem] font-extrabold tracking-[-.01em]`}>Your workflow</div>
@@ -367,8 +368,9 @@ export function Calculator() {
           </div>
         </div>
 
-        {/* RIGHT: cost panel */}
-        <div className="overflow-hidden rounded-[18px] border border-ink bg-white shadow-raised lg:sticky lg:top-[86px]">
+        {/* RIGHT: cost panel, flows naturally (it can get tall); the workflow
+            card on the left is the sticky one. */}
+        <div className="overflow-hidden rounded-[18px] border border-ink bg-white shadow-raised">
           {/* Usage */}
           <div className="border-b border-[color-mix(in_srgb,var(--ink)_12%,transparent)] px-[22px] py-5">
             <div className={`${sectionLabel} mb-[14px]`}>Usage</div>

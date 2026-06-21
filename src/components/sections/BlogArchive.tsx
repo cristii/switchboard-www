@@ -9,7 +9,7 @@ import calendarIcon from "@/assets/icons/calendar.svg";
 const display = "font-display";
 const PAGE = 4;
 
-// Inlined (client-safe) — must not import the fs-backed blog lib value side.
+// Inlined (client-safe), must not import the fs-backed blog lib value side.
 const blogFilters = ["All", "n8n", "Trigger.dev", "LangChain", "Node.js"];
 
 function tagVariant(tag: string): BadgeProps["variant"] {
@@ -102,12 +102,12 @@ export function BlogArchive({ posts }: { posts: PostMeta[] }) {
       )}
       {!hasMore && visible.length > 0 && (
         <p className="mt-6 text-center font-hand text-[1.3rem] text-ink-soft">
-          ↳ that&apos;s the whole archive — a new one lands every morning
+          ↳ that&apos;s the whole archive, a new one lands every morning
         </p>
       )}
       {visible.length === 0 && (
         <p className="mt-2 font-hand text-[1.3rem] text-ink-soft">
-          ↳ no blueprints under that tag yet — check back tomorrow
+          ↳ no blueprints under that tag yet, check back tomorrow
         </p>
       )}
     </>

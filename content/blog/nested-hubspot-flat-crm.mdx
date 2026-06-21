@@ -6,10 +6,10 @@ excerpt: "A reusable Set node that flattens HubSpot's nested webhook body into t
 read: "3 min read"
 ---
 
-HubSpot's webhook bodies arrive deeply nested — properties inside objects inside arrays. Your database wants flat columns. A single reusable **Set** node bridges the gap so every downstream step reads clean fields.
+HubSpot's webhook bodies arrive deeply nested, properties inside objects inside arrays. Your database wants flat columns. A single reusable **Set** node bridges the gap so every downstream step reads clean fields.
 
 ## Map nested paths to flat columns
 
 Add a Set node and assign each column from its JSON-path: `email` from `properties.email.value`, `stage` from `properties.dealstage.value`, and so on. Where the body contains an array, run **Split Out** first so each record becomes its own item.
 
-Keep the mapping in one node and document the resulting schema in a comment. When HubSpot adds a field, you change it in exactly one place — and nothing downstream has to know the payload was ever nested.
+Keep the mapping in one node and document the resulting schema in a comment. When HubSpot adds a field, you change it in exactly one place, and nothing downstream has to know the payload was ever nested.

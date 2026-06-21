@@ -6,15 +6,15 @@ excerpt: "Wrap the outbound call in a bounded task so a slow upstream API retrie
 read: "4 min read"
 ---
 
-Every webhook handler eventually calls something slow — a CRM, a payments API, a model endpoint. When that call hangs, Trigger.dev doesn't wait politely: the whole run sits open, burns execution time, and eventually fails the delivery. The fix isn't a bigger timeout. It's *bounding* the call so a slow dependency degrades gracefully instead of taking the run down with it.
+Every webhook handler eventually calls something slow, a CRM, a payments API, a model endpoint. When that call hangs, Trigger.dev doesn't wait politely: the whole run sits open, burns execution time, and eventually fails the delivery. The fix isn't a bigger timeout. It's *bounding* the call so a slow dependency degrades gracefully instead of taking the run down with it.
 
 ## The failure mode
 
-A naive handler awaits the API call directly. If HubSpot takes thirty seconds to respond, your run takes thirty seconds too — and if it never responds, the run hangs until the platform kills it. You get a failed delivery, no retry, and a payload you now have to replay by hand.
+A naive handler awaits the API call directly. If HubSpot takes thirty seconds to respond, your run takes thirty seconds too, and if it never responds, the run hangs until the platform kills it. You get a failed delivery, no retry, and a payload you now have to replay by hand.
 
 ## Wrap the call in a bounded task
 
-`runTask` is the unit of reliability in Trigger.dev. Give it a `timeoutInMs` and the call is cancelled the moment it overruns — the task fails cleanly, the run doesn't.
+`runTask` is the unit of reliability in Trigger.dev. Give it a `timeoutInMs` and the call is cancelled the moment it overruns, the task fails cleanly, the run doesn't.
 
 ```ts
 // src/trigger/hubspot-sync.ts
@@ -37,7 +37,7 @@ Because the fetch lives inside its own task, Trigger.dev checkpoints the work ar
 
 ## Let it retry itself
 
-A timeout usually means the upstream is briefly overloaded, not broken. Add a retry policy and the task backs off and tries again before it gives up — no plumbing of your own.
+A timeout usually means the upstream is briefly overloaded, not broken. Add a retry policy and the task backs off and tries again before it gives up, no plumbing of your own.
 
 ```ts
 // retry-policy.ts
@@ -51,12 +51,12 @@ await io.runTask(
 );
 ```
 
-Four attempts with exponential backoff cover almost every transient blip — the kind that would otherwise page you at 2am.
+Four attempts with exponential backoff cover almost every transient blip, the kind that would otherwise page you at 2am.
 
 ## Why this matters
 
 - A slow dependency degrades one task, not the entire workflow.
-- Transient failures self-heal — no manual payload replays.
+- Transient failures self-heal, no manual payload replays.
 - Execution time stays bounded, so your bill stays predictable.
 
 That's the whole pattern: bound the call, let it retry, move on. Ship it once and every webhook you wire up afterwards inherits the same safety net.
