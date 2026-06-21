@@ -168,6 +168,7 @@ const blueprints: { id: string; badges: { label: string; variant: "violet" | "am
 export function KnowledgeBase() {
   const [id, setId] = React.useState<string | null>(null);
   const [searchOpen, setSearchOpen] = React.useState(false);
+  const [navOpen, setNavOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -175,6 +176,7 @@ export function KnowledgeBase() {
   const go = (next: string | null) => {
     setId(next);
     setSearchOpen(false);
+    setNavOpen(false);
     if (typeof window !== "undefined") window.scrollTo(0, 0);
   };
 
@@ -186,6 +188,7 @@ export function KnowledgeBase() {
         setQuery("");
       } else if (e.key === "Escape") {
         setSearchOpen(false);
+        setNavOpen(false);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -224,49 +227,118 @@ export function KnowledgeBase() {
     </button>
   );
 
+  const navContent = (
+    <nav>
+      {navGroups.map((g) => (
+        <div key={g.title} className="mb-3">
+          <div className={`${display} px-3 py-[7px] text-[.72rem] font-bold uppercase tracking-[.1em] text-ink`}>
+            {g.title}
+          </div>
+          {g.items.map((it, i) =>
+            it.subhead ? (
+              <div key={`sh-${i}`} className={`${display} px-3 pb-[3px] pt-[10px] text-[.68rem] font-semibold uppercase tracking-[.06em] text-ink-soft`}>
+                {it.subhead}
+              </div>
+            ) : (
+              <button
+                key={it.id}
+                type="button"
+                onClick={() => go(it.id!)}
+                className={`my-[1px] block w-full rounded-[8px] border-l-2 px-3 py-[6px] text-left text-[.875rem] leading-[1.35] transition-colors ${
+                  id === it.id
+                    ? "border-orange bg-[color-mix(in_srgb,var(--orange)_9%,transparent)] font-semibold text-orange"
+                    : "border-transparent text-ink-body hover:bg-[color-mix(in_srgb,var(--ink)_5%,transparent)] hover:text-ink"
+                }`}
+              >
+                {it.label}
+              </button>
+            ),
+          )}
+        </div>
+      ))}
+    </nav>
+  );
+
   return (
     <div className="mx-auto grid max-w-content items-start gap-0 px-gutter lg:grid-cols-[260px_1fr]">
-      {/* Sidebar */}
-      <aside className="border-b border-ink py-5 lg:sticky lg:top-[78px] lg:h-[calc(100vh-90px)] lg:overflow-y-auto lg:border-b-0 lg:border-r lg:pr-4">
-        <nav>
-          {navGroups.map((g) => (
-            <div key={g.title} className="mb-3">
-              <div className={`${display} px-3 py-[7px] text-[.72rem] font-bold uppercase tracking-[.1em] text-ink`}>
-                {g.title}
-              </div>
-              {g.items.map((it, i) =>
-                it.subhead ? (
-                  <div key={`sh-${i}`} className={`${display} px-3 pb-[3px] pt-[10px] text-[.68rem] font-semibold uppercase tracking-[.06em] text-ink-soft`}>
-                    {it.subhead}
-                  </div>
-                ) : (
-                  <button
-                    key={it.id}
-                    type="button"
-                    onClick={() => go(it.id!)}
-                    className={`my-[1px] block w-full rounded-[8px] border-l-2 px-3 py-[6px] text-left text-[.875rem] leading-[1.35] transition-colors ${
-                      id === it.id
-                        ? "border-orange bg-[color-mix(in_srgb,var(--orange)_9%,transparent)] font-semibold text-orange"
-                        : "border-transparent text-ink-body hover:bg-[color-mix(in_srgb,var(--ink)_5%,transparent)] hover:text-ink"
-                    }`}
-                  >
-                    {it.label}
-                  </button>
-                ),
-              )}
-            </div>
-          ))}
-        </nav>
+      {/* Sidebar (desktop) */}
+      <aside className="hidden py-5 lg:sticky lg:top-[78px] lg:block lg:h-[calc(100vh-90px)] lg:overflow-y-auto lg:border-r lg:pr-4">
+        {navContent}
       </aside>
 
       {/* Main */}
-      <main className="min-w-0 py-10 lg:pl-[clamp(20px,4vw,56px)]">
+      <main className="min-w-0 py-8 lg:py-10 lg:pl-[clamp(20px,4vw,56px)]">
+        {/* Docs toolbar (mobile) */}
+        <div className="mb-6 flex items-center gap-2 lg:hidden">
+          <button
+            type="button"
+            onClick={() => setNavOpen(true)}
+            aria-label="Browse docs"
+            aria-expanded={navOpen}
+            aria-controls="kb-mobile-nav"
+            className={`${display} inline-flex items-center gap-2 rounded-[10px] border border-ink bg-white px-[14px] py-[9px] text-[.85rem] font-bold text-ink shadow-card`}
+          >
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="4" y1="6" x2="20" y2="6" />
+              <line x1="4" y1="12" x2="20" y2="12" />
+              <line x1="4" y1="18" x2="20" y2="18" />
+            </svg>
+            Browse docs
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setSearchOpen(true);
+              setQuery("");
+            }}
+            aria-label="Search the docs"
+            className="grid h-[40px] w-[40px] place-items-center rounded-[10px] border border-ink bg-white text-ink-soft shadow-card"
+          >
+            <SearchGlyph size={17} />
+          </button>
+        </div>
+
         {!article ? (
           <Home cards={homeCards} blueprints={blueprints} go={go} searchButton={searchButton} />
         ) : (
           <ArticleView article={article} go={go} prev={prev} next={next} />
         )}
       </main>
+
+      {/* Nav drawer (mobile) */}
+      {navOpen && (
+        <div className="fixed inset-0 z-[88] lg:hidden">
+          <div
+            className="absolute inset-0 bg-[rgba(17,32,30,.45)] backdrop-blur-[3px]"
+            onClick={() => setNavOpen(false)}
+            aria-hidden="true"
+          />
+          <div
+            id="kb-mobile-nav"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Documentation navigation"
+            className="absolute inset-y-0 left-0 flex w-[84%] max-w-[330px] flex-col border-r border-ink bg-paper shadow-pop"
+          >
+            <div className="flex items-center justify-between border-b border-ink px-4 py-3">
+              <span className={`${display} text-[.78rem] font-bold uppercase tracking-[.1em] text-ink`}>
+                Browse docs
+              </span>
+              <button
+                type="button"
+                aria-label="Close navigation"
+                onClick={() => setNavOpen(false)}
+                className="grid h-9 w-9 place-items-center rounded-[9px] border border-ink bg-white text-ink"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto px-2 py-3">{navContent}</div>
+          </div>
+        </div>
+      )}
 
       {/* Search overlay */}
       {searchOpen && (
