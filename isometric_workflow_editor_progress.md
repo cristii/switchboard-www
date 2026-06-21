@@ -92,19 +92,25 @@ Goal: data-driven kinds; all isometric shapes; palette generated from the catalo
 
 ---
 
-## Phase P4 — Edge system
+## Phase P4 — Edge system ✅
 Goal: typed, routed edges with labels, styles, branching & merging.
 
-- [ ] P4.1 `scene/edges/edgeRouting.ts` — extract A* router; add lane offset so parallel edges don't
-      overlap; treat nodes as blocked cells.
-- [ ] P4.2 `scene/edges/OrthogonalEdge.tsx` — render routed path + arrowhead; support
-      `routing` (orthogonal/smooth/direct) and `style` (solid/dashed).
-- [ ] P4.3 Edge labels — on-brand DOM chip at path midpoint.
-- [ ] P4.4 Branching (1→many) and merging (many→1) verified on a stress sample.
-- [ ] P4.5 Connect UX — explicit connect mode / port-drag with live preview + validation; keep
-      consecutive-select as a convenience.
-- [ ] P4.6 Stories: `Editor/Edges/*` (routing, styles, branch/merge).
-- [ ] **Green + commit + push.**
+- [x] P4.1 `scene/edges/edgeRouting.ts` — ported + generalised A* router (blocked cells use each
+      node's real footprint; source/target excluded; straight fallback). Per-edge **height stagger**
+      (laneIndex) reduces overlap of parallel runs (true lateral lanes deferred).
+- [x] P4.2 `scene/edges/OrthogonalEdge.tsx` — drei `<Line>` along routed points + cone arrowhead;
+      `routing` orthogonal / smooth (Catmull) / direct, `style` solid / dashed; click selects.
+- [x] P4.3 `scene/edges/EdgeLabelsLayer.tsx` (+ in-Canvas projector) — DOM chip at the edge midpoint,
+      on-brand (editor tokens, hard shadow). (Anchor = source/target centre midpoint; path-accurate
+      midpoint is a refinement.)
+- [x] P4.4 Branching (1→many) + merging (many→1) via `sampleDiagram.branchingSampleDiagram`
+      (Scouts/Leads-style slice with labels + a dashed async edge).
+- [x] P4.5 Connect UX = **port handles** (chosen): nodes show in/out handles per catalog ports;
+      drag from the orange out-handle to a target node (scene raycast on pointer-up) creates an edge;
+      `ConnectPreview` shows a dashed preview line; `addEdge` guards self/duplicate. Implicit
+      consecutive-select stays disabled.
+- [x] P4.6 Stories `Editor/Edges` — Branching, RoutingStyles, Dark.
+- [x] **Green** — `typecheck` + `build-storybook` + `next build` pass; `/isometric-editor` 1.87 kB.
 
 ---
 

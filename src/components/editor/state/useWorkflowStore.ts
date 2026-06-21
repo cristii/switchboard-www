@@ -61,6 +61,12 @@ export interface WorkflowState {
   selectEdge: (id: string) => void;
   clearSelection: () => void;
 
+  // --- connecting (port-drag) ---
+  /** Source node id while dragging a new connection from its out-handle. */
+  connectSourceId: string | null;
+  startConnect: (id: string) => void;
+  endConnect: () => void;
+
   // --- viewport ---
   setViewport: (viewport: Partial<Viewport>) => void;
 
@@ -87,6 +93,7 @@ export const useWorkflowStore = create<WorkflowState>()((set, get) => {
     nodes: [],
     edges: [],
     selection: null,
+    connectSourceId: null,
     viewport: DEFAULT_VIEWPORT,
     nextNodeId: 1,
     nextEdgeId: 1,
@@ -200,6 +207,9 @@ export const useWorkflowStore = create<WorkflowState>()((set, get) => {
     selectNode: (id) => set({ selection: { type: "node", id } }),
     selectEdge: (id) => set({ selection: { type: "edge", id } }),
     clearSelection: () => set({ selection: null }),
+
+    startConnect: (id) => set({ connectSourceId: id }),
+    endConnect: () => set({ connectSourceId: null }),
 
     setViewport: (viewport) => set((s) => ({ viewport: { ...s.viewport, ...viewport } })),
 

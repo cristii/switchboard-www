@@ -17,6 +17,10 @@ const DEFAULT_ZOOM = 38;
 export interface CameraApi {
   reset: () => void;
   fit: () => void;
+  zoomIn: () => void;
+  zoomOut: () => void;
+  /** Read the current WebGL frame as a PNG data URL (set by the canvas). */
+  capturePng: () => string | null;
 }
 
 export interface CameraControlsProps {
@@ -85,8 +89,21 @@ export function CameraControls({ api }: CameraControlsProps) {
       applyCamera();
     };
 
+    const zoomBy = (factor: number) => {
+      ortho.zoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, ortho.zoom * factor));
+      ortho.updateProjectionMatrix();
+    };
+    const zoomIn = () => zoomBy(1.2);
+    const zoomOut = () => zoomBy(1 / 1.2);
+
     reset();
-    if (api) api.current = { reset, fit };
+    // Merge fields (don't replace the object) so capturePng set in onCreated survives.
+    if (api) {
+      api.current.reset = reset;
+      api.current.fit = fit;
+      api.current.zoomIn = zoomIn;
+      api.current.zoomOut = zoomOut;
+    }
 
     const onPointerDown = (e: PointerEvent) => {
       const isPan = e.button === 1 || e.button === 2 || (e.button === 0 && e.ctrlKey);

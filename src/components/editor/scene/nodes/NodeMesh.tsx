@@ -1,7 +1,8 @@
 // Interactive wrapper around a node's visible shape: catalog-driven shape +
-// colour, selection, and drag-on-ground. The shape and colour role come from
-// the node catalog (catalog/nodeCatalog.ts); dragging uses window listeners
-// (robust when the pointer leaves the mesh) and raycasts onto the y=0 plane.
+// colour, selection, drag-on-ground, and port handles for creating connections.
+// Dragging the body uses window listeners (robust off-mesh). Dragging from the
+// out-handle starts a connection; on pointer-up the scene is raycast for a
+// target node (tagged via group userData.nodeId). See description.md §7/§8.
 
 import { useMemo } from "react";
 import { type ThreeEvent, useThree } from "@react-three/fiber";
@@ -18,6 +19,17 @@ export interface NodeMeshProps {
   selected: boolean;
 }
 
+/** Walk up the object graph to find the nodeId tagged on a node's group. */
+function findNodeId(object: THREE.Object3D | null): string | null {
+  let o: THREE.Object3D | null = object;
+  while (o) {
+    const id = (o.userData as { nodeId?: unknown }).nodeId;
+    if (typeof id === "string") return id;
+    o = o.parent;
+  }
+  return null;
+}
+
 function SelectionRing({ radius, color }: { radius: number; color: string }) {
   return (
     <mesh position={[0, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]} renderOrder={999}>
@@ -28,10 +40,13 @@ function SelectionRing({ radius, color }: { radius: number; color: string }) {
 }
 
 export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
-  const { camera, gl, raycaster } = useThree();
+  const { camera, gl, raycaster, scene } = useThree();
   const selectNode = useWorkflowStore((s) => s.selectNode);
   const moveNode = useWorkflowStore((s) => s.moveNode);
   const beginInteraction = useWorkflowStore((s) => s.beginInteraction);
+  const addEdge = useWorkflowStore((s) => s.addEdge);
+  const startConnect = useWorkflowStore((s) => s.startConnect);
+  const endConnect = useWorkflowStore((s) => s.endConnect);
   const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), []);
 
   const entry = getNodeCatalogEntry(node.kind);
@@ -39,6 +54,8 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
   const width = node.width ?? entry.defaultSize.width;
   const depth = node.depth ?? entry.defaultSize.depth;
   const height = node.height ?? entry.defaultSize.height;
+  const hasOut = entry.defaultPorts.some((p) => p.side === "out");
+  const hasIn = entry.defaultPorts.some((p) => p.side === "in");
 
   const isNote = entry.shape === "paperTile";
   const baseColor = node.color ?? (isNote ? theme.paper : theme.nodeColors[entry.colorRole]);
@@ -49,25 +66,25 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
       ? 0
       : theme.nodeEmissiveIntensity;
 
-  const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
-    // Left-button only; ctrl/middle/right are reserved for camera panning.
-    if (e.button !== 0 || e.nativeEvent.ctrlKey) return;
+  const ndcFromEvent = (ev: PointerEvent) => {
+    const rect = gl.domElement.getBoundingClientRect();
+    return new THREE.Vector2(
+      ((ev.clientX - rect.left) / rect.width) * 2 - 1,
+      -((ev.clientY - rect.top) / rect.height) * 2 + 1,
+    );
+  };
+
+  const handleBodyPointerDown = (e: ThreeEvent<PointerEvent>) => {
+    if (e.button !== 0 || e.nativeEvent.ctrlKey) return; // ctrl/middle/right = camera pan
     e.stopPropagation();
     selectNode(node.id);
     beginInteraction();
     gl.domElement.style.cursor = "grabbing";
 
     const onMove = (ev: PointerEvent) => {
-      const rect = gl.domElement.getBoundingClientRect();
-      const ndc = new THREE.Vector2(
-        ((ev.clientX - rect.left) / rect.width) * 2 - 1,
-        -((ev.clientY - rect.top) / rect.height) * 2 + 1,
-      );
-      raycaster.setFromCamera(ndc, camera);
+      raycaster.setFromCamera(ndcFromEvent(ev), camera);
       const point = new THREE.Vector3();
-      if (raycaster.ray.intersectPlane(plane, point)) {
-        moveNode(node.id, point.x, point.z);
-      }
+      if (raycaster.ray.intersectPlane(plane, point)) moveNode(node.id, point.x, point.z);
     };
     const onUp = () => {
       window.removeEventListener("pointermove", onMove);
@@ -78,12 +95,33 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
     window.addEventListener("pointerup", onUp);
   };
 
+  const handleOutPointerDown = (e: ThreeEvent<PointerEvent>) => {
+    if (e.button !== 0) return;
+    e.stopPropagation();
+    startConnect(node.id);
+    const onUp = (ev: PointerEvent) => {
+      raycaster.setFromCamera(ndcFromEvent(ev), camera);
+      const hits = raycaster.intersectObjects(scene.children, true);
+      let targetId: string | null = null;
+      for (const hit of hits) {
+        const id = findNodeId(hit.object);
+        if (id) {
+          targetId = id;
+          break;
+        }
+      }
+      if (targetId && targetId !== node.id) addEdge(node.id, targetId);
+      endConnect();
+    };
+    window.addEventListener("pointerup", onUp, { once: true });
+  };
+
   return (
-    <group position={[node.x, 0, node.y]}>
+    <group position={[node.x, 0, node.y]} userData={{ nodeId: node.id }}>
       {/* invisible, slightly enlarged hit volume for comfortable grabbing */}
       <mesh
         position={[0, height / 2, 0]}
-        onPointerDown={handlePointerDown}
+        onPointerDown={handleBodyPointerDown}
         onClick={(e) => {
           e.stopPropagation();
           selectNode(node.id);
@@ -101,6 +139,24 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
         emissive={emissive}
         emissiveIntensity={emissiveIntensity}
       />
+
+      {hasIn ? (
+        <mesh position={[-(width / 2 + 0.16), height * 0.5, 0]}>
+          <sphereGeometry args={[0.1, 16, 16]} />
+          <meshStandardMaterial color={theme.edge} roughness={0.6} />
+        </mesh>
+      ) : null}
+      {hasOut ? (
+        <mesh position={[width / 2 + 0.16, height * 0.5, 0]} onPointerDown={handleOutPointerDown}>
+          <sphereGeometry args={[0.12, 16, 16]} />
+          <meshStandardMaterial
+            color={theme.nodeColors.orange}
+            emissive={theme.nodeColors.orange}
+            emissiveIntensity={0.45}
+            roughness={0.5}
+          />
+        </mesh>
+      ) : null}
 
       {selected ? (
         <SelectionRing radius={Math.max(width, depth) * 0.62} color={theme.selection} />

@@ -24,7 +24,7 @@ export { useWorkflowStore } from "./state/useWorkflowStore";
 export type { WorkflowState } from "./state/useWorkflowStore";
 
 export { serialize, deserialize, toJSON, validate, SCHEMA_VERSION } from "./state/schema";
-export { mvpSampleDiagram, allKindsDiagram } from "./sampleDiagram";
+export { mvpSampleDiagram, allKindsDiagram, branchingSampleDiagram } from "./sampleDiagram";
 
 export type {
   Diagram,
