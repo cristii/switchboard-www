@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { primaryNav } from "@/lib/nav";
+import { usePathname } from "next/navigation";
+import { primaryNav, isActiveRoute } from "@/lib/nav";
 import { BookCall } from "./BookCall";
 
 /**
@@ -13,6 +14,7 @@ import { BookCall } from "./BookCall";
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
+  const pathname = usePathname() ?? "/";
 
   React.useEffect(() => {
     if (!open) return;
@@ -51,16 +53,25 @@ export function MobileNav() {
           className="absolute inset-x-0 top-full z-50 border-b border-ink bg-paper shadow-pop"
         >
           <nav className="mx-auto flex max-w-content flex-col px-gutter py-1">
-            {primaryNav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="border-b border-line-soft py-[14px] font-display text-base font-semibold text-ink no-underline transition-colors last:border-0 hover:text-orange"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {primaryNav.map((item) => {
+              const active = isActiveRoute(item.href, pathname);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  aria-current={active ? "page" : undefined}
+                  className={`flex items-center justify-between border-b border-line-soft py-[14px] font-display text-base font-semibold no-underline transition-colors last:border-0 ${
+                    active ? "text-orange" : "text-ink hover:text-orange"
+                  }`}
+                >
+                  <span>{item.label}</span>
+                  {active && (
+                    <span className="h-[8px] w-[8px] rounded-full bg-orange" aria-hidden="true" />
+                  )}
+                </Link>
+              );
+            })}
             <div className="py-4">
               <BookCall size="md" arrow onClick={() => setOpen(false)} style={{ width: "100%" }}>
                 Book a 15-min call

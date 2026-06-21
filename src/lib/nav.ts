@@ -63,3 +63,36 @@ export const socialLinks = {
 
 /** Where the "Book a 15-min call" CTAs point until Cal.com is wired (Phase 2.2). */
 export const bookingHref = "/contact";
+
+/** Human label per route, used by the mobile header's current-page badge. */
+const routeNames: Record<string, string> = {
+  "/": "Home",
+  "/services": "Services",
+  "/work": "Work",
+  "/process": "Process",
+  "/pricing": "Pricing",
+  "/about": "About",
+  "/faq": "FAQ",
+  "/blog": "Daily Log",
+  "/knowledge-base": "Knowledge Base",
+  "/calculator": "Cost estimator",
+  "/contact": "Contact",
+  "/privacy": "Privacy",
+  "/terms": "Terms",
+};
+
+/** Display name for the current route (falls back to the top-level segment for
+ *  nested pages like /blog/[slug], returns "" when unknown). */
+export function routeName(pathname: string): string {
+  const path =
+    pathname !== "/" && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+  if (routeNames[path]) return routeNames[path];
+  const top = "/" + (path.split("/")[1] ?? "");
+  return routeNames[top] ?? "";
+}
+
+/** Whether a nav href matches the active route, including nested routes. */
+export function isActiveRoute(href: string, pathname: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(href + "/");
+}
