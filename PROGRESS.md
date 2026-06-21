@@ -3,7 +3,8 @@
 Living checklist so work can resume in a fresh session. Update + commit often.
 See `PLAN.md` for the overall roadmap and `AGENTS.md` for conventions.
 
-**Phase 1 (design system + Storybook): ✅ done.** Phase 2 (Next.js app) in progress below.
+**Phase 1 (design system + Storybook): ✅ done. Phase 2 (Next.js app): ✅ done** — all
+2.0–2.12 routes built (see below). Phase 3 (Supabase newsletter) is next.
 
 ## Goal
 Implement the Switchboard design system from `references/design-system/` as a typed
@@ -171,7 +172,17 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   blueprints". Newsletter POST is Phase 3 — the form confirms optimistically for now.
   Gotcha fixed: the client `BlogArchive` must `import type` from the fs-backed lib.
   Green: `next build`, `typecheck`, `build-storybook`.
-- ⬜ 2.12 `/privacy` + `/terms`
+- ✅ **2.12 `/privacy` + `/terms`** — ported from `Privacy Policy.dc.html` +
+  `Terms of Service.dc.html`. New shared server component `LegalPage` (alt-band hero
+  with last-updated chip, sticky table of contents, prose article with a
+  plain-English summary callout and a counsel disclaimer) + helpers `LegalLink`
+  / `LegalBullets` / `legalP`. Each page is thin data passed to `LegalPage`; copy
+  verbatim, email/Telegram via `src/lib/nav`. TOC is static anchor links (scrollspy
+  dropped). Green: `next build`, `typecheck`, `build-storybook`.
+
+**Phase 2 complete** — all routes build; `next build` passes with no env (34 static
+pages + `/api/lead`). Next: Phase 3 (Supabase newsletter) wires the Daily Log /
+contact forms to real backends.
 
 ## Phase 2 notes / decisions
 - `jsx` switched to `preserve` and `@/*` paths added for Next; `vite/client` types
