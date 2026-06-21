@@ -46,6 +46,10 @@ export {
   groupedSampleDiagram,
 } from "./sampleDiagram";
 
+export { PRESETS, n8nSampleDiagram, scoutsLeadsDiagram } from "./catalog/presets";
+export type { PresetEntry } from "./catalog/presets";
+export { layeredLayout } from "./catalog/layout/autoLayout";
+
 export type {
   Diagram,
   EdgeRouting,

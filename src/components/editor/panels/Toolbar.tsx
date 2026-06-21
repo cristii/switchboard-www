@@ -20,7 +20,26 @@ export interface ToolbarProps {
   onToggleTheme: () => void;
   /** Pack buttons + allow horizontal scroll (narrow screens). @default false */
   compact?: boolean;
+  /** Optional template picker entries (load presets). */
+  templates?: { id: string; label: string }[];
+  onPickTemplate?: (id: string) => void;
+  /** Optional auto-arrange action. */
+  onAutoArrange?: () => void;
 }
+
+const templateSelectStyle: React.CSSProperties = {
+  height: 32,
+  maxWidth: 150,
+  padding: "0 8px",
+  borderRadius: 8,
+  border: "1.5px solid var(--editor-border-soft)",
+  background: "var(--editor-surface-2)",
+  color: "var(--editor-text)",
+  fontFamily: "var(--font-body, sans-serif)",
+  fontSize: "0.78rem",
+  cursor: "pointer",
+  flex: "none",
+};
 
 function Divider() {
   return (
@@ -31,7 +50,15 @@ function Divider() {
   );
 }
 
-export function Toolbar({ apiRef, theme, onToggleTheme, compact = false }: ToolbarProps) {
+export function Toolbar({
+  apiRef,
+  theme,
+  onToggleTheme,
+  compact = false,
+  templates,
+  onPickTemplate,
+  onAutoArrange,
+}: ToolbarProps) {
   const undo = useWorkflowStore((s) => s.undo);
   const redo = useWorkflowStore((s) => s.redo);
   const pastLen = useWorkflowStore((s) => s.past.length);
@@ -54,6 +81,30 @@ export function Toolbar({ apiRef, theme, onToggleTheme, compact = false }: Toolb
         overflowX: compact ? "auto" : "visible",
       }}
     >
+      {templates && templates.length > 0 ? (
+        <>
+          <select
+            aria-label="Load a template"
+            title="Load a template"
+            value=""
+            onChange={(e) => {
+              if (e.currentTarget.value) onPickTemplate?.(e.currentTarget.value);
+              e.currentTarget.value = "";
+            }}
+            style={templateSelectStyle}
+          >
+            <option value="" disabled>
+              Templates…
+            </option>
+            {templates.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.label}
+              </option>
+            ))}
+          </select>
+          <Divider />
+        </>
+      ) : null}
       <IconButton label="Undo" glyph="undo" onClick={undo} disabled={pastLen === 0} />
       <IconButton label="Redo" glyph="redo" onClick={redo} disabled={futureLen === 0} />
       <Divider />
@@ -61,6 +112,9 @@ export function Toolbar({ apiRef, theme, onToggleTheme, compact = false }: Toolb
       <IconButton label="Zoom out" glyph="zoomOut" onClick={() => apiRef.current.zoomOut()} />
       <IconButton label="Fit to content" glyph="fit" onClick={() => apiRef.current.fit()} />
       <IconButton label="Reset view" glyph="reset" onClick={() => apiRef.current.reset()} />
+      {onAutoArrange ? (
+        <IconButton label="Auto-arrange" glyph="layout" onClick={onAutoArrange} />
+      ) : null}
       <Divider />
       <IconButton label="Export JSON" glyph="download" onClick={exportJson} />
       <IconButton label="Export PNG" glyph="image" onClick={exportPng} />

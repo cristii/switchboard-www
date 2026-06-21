@@ -31,7 +31,8 @@ export type GlyphName =
   | "moon"
   | "trash"
   | "plus"
-  | "close";
+  | "close"
+  | "layout";
 
 const PATHS: Record<GlyphName, React.ReactNode> = {
   zap: <path d="M13 2 L4 14 h7 l-1 8 L20 9 h-7 z" />,
@@ -101,6 +102,13 @@ const PATHS: Record<GlyphName, React.ReactNode> = {
   trash: <path d="M5 7 h14 M9 7 V5 h6 v2 M7 7 l1 13 h8 l1 -13" />,
   plus: <path d="M12 6 v12 M6 12 h12" />,
   close: <path d="M6 6 l12 12 M18 6 l-12 12" />,
+  layout: (
+    <>
+      <rect x="4" y="5" width="6" height="14" rx="1.5" />
+      <rect x="14" y="5" width="6" height="6" rx="1.5" />
+      <rect x="14" y="13" width="6" height="6" rx="1.5" />
+    </>
+  ),
 };
 
 export interface NodeGlyphProps {

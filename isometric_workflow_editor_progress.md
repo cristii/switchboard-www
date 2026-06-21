@@ -201,16 +201,19 @@ Goal: usable on touch devices; panels collapse into drawers.
 
 ---
 
-## Phase P10 — Presets & samples
+## Phase P10 — Presets & samples ✅
 Goal: prove both target use cases; one-click templates.
 
-- [ ] P10.1 `catalog/presets/n8n.ts` — n8n node presets + a sample n8n workflow.
-- [ ] P10.2 `catalog/presets/architecture.ts` — the full **Scouts/Leads** architecture as a preset
-      (tiers, fan-out/in, group layers, DB, AI layer, commission engine, dashboard).
-- [ ] P10.3 `catalog/layout/autoLayout.ts` — layered/ranked auto-arrange; "Auto-arrange" toolbar
-      action.
-- [ ] P10.4 Template picker (load a preset into the store).
-- [ ] P10.5 Story: `Editor/Full Editor` seeded with both presets.
+- [x] P10.1 `catalog/presets/n8n.ts` — an n8n-style workflow (webhook → set → IF → HTTP/Slack + no-op).
+- [x] P10.2 `catalog/presets/architecture.ts` — the full **Scouts/Leads** system (22 nodes: tiers,
+      fan-out/in, a grouped "AI Processing Layer", database, output automations, commission engine,
+      scout dashboard; labels + a dashed async edge).
+- [x] P10.3 `catalog/layout/autoLayout.ts` — layered (longest-path rank) auto-arrange + store
+      `arrange` action (one undo step; group moves cascade to children); "Auto-arrange" toolbar button.
+- [x] P10.4 Template picker — toolbar `<select>` loads any `PRESETS` entry (or Clear) into the store
+      (`catalog/presets/index.ts`).
+- [x] P10.5 Story `Editor/Full Editor` — Architecture / N8nWorkflow / ArchitectureDark.
+- [x] **Green** — `typecheck` + `build-storybook` + `next build` pass; `/isometric-editor` 1.87 kB.
 - [ ] **Green + commit + push.**
 
 ---

@@ -74,6 +74,8 @@ export interface WorkflowState {
   setViewport: (viewport: Partial<Viewport>) => void;
 
   // --- document ---
+  /** Apply computed positions in one undo step; group moves cascade to children. */
+  arrange: (positions: Record<string, { x: number; y: number }>) => void;
   loadDiagram: (diagram: Diagram, opts?: { resetHistory?: boolean }) => void;
   exportDiagram: () => Diagram;
   importDiagram: (input: string | unknown) => void;
@@ -236,6 +238,28 @@ export const useWorkflowStore = create<WorkflowState>()((set, get) => {
     endConnect: () => set({ connectSourceId: null }),
 
     setViewport: (viewport) => set((s) => ({ viewport: { ...s.viewport, ...viewport } })),
+
+    arrange: (positions) => {
+      snapshot();
+      set((s) => {
+        const deltas: Record<string, { dx: number; dy: number }> = {};
+        for (const n of s.nodes) {
+          const p = positions[n.id];
+          if (p && n.kind === "group") deltas[n.id] = { dx: p.x - n.x, dy: p.y - n.y };
+        }
+        return {
+          nodes: s.nodes.map((n) => {
+            const p = positions[n.id];
+            if (p) return { ...n, x: p.x, y: p.y };
+            if (n.parentId && deltas[n.parentId]) {
+              const d = deltas[n.parentId];
+              return { ...n, x: n.x + d.dx, y: n.y + d.dy };
+            }
+            return n;
+          }),
+        };
+      });
+    },
 
     loadDiagram: (diagram, opts = {}) => {
       const { resetHistory = true } = opts;

@@ -19,6 +19,8 @@ import { NodeGlyph } from "./icons/NodeGlyph";
 import { useEditorTheme } from "./theme/useEditorTheme";
 import { useResponsiveLayout } from "./hooks/useResponsiveLayout";
 import { useWorkflowStore } from "./state/useWorkflowStore";
+import { PRESETS } from "./catalog/presets";
+import { layeredLayout } from "./catalog/layout/autoLayout";
 import { mvpSampleDiagram } from "./sampleDiagram";
 import type { Diagram, EditorTheme, NodeKind } from "./state/types";
 
@@ -91,6 +93,23 @@ export function IsometricWorkflowEditor({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  const templateOptions = React.useMemo(
+    () => [...PRESETS.map((p) => ({ id: p.id, label: p.label })), { id: "clear", label: "Clear canvas" }],
+    [],
+  );
+  const handlePickTemplate = (id: string) => {
+    if (id === "clear") useWorkflowStore.getState().clear();
+    else {
+      const preset = PRESETS.find((p) => p.id === id);
+      if (preset) loadDiagram(preset.diagram);
+    }
+    setDrawer("none");
+  };
+  const handleAutoArrange = () => {
+    const s = useWorkflowStore.getState();
+    s.arrange(layeredLayout(s.nodes, s.edges));
+  };
+
   const rootStyle: React.CSSProperties = {
     position: "relative",
     display: "flex",
@@ -159,7 +178,17 @@ export function IsometricWorkflowEditor({
 
   return (
     <div ref={rootRef} data-editor-theme={theme} className={className} style={rootStyle}>
-      {chrome ? <Toolbar apiRef={apiRef} theme={theme} onToggleTheme={toggleTheme} compact={isMobile} /> : null}
+      {chrome ? (
+        <Toolbar
+          apiRef={apiRef}
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          compact={isMobile}
+          templates={templateOptions}
+          onPickTemplate={handlePickTemplate}
+          onAutoArrange={handleAutoArrange}
+        />
+      ) : null}
 
       {!chrome ? (
         <div style={{ display: "flex", flex: 1, minHeight: 0 }}>{stage}</div>
