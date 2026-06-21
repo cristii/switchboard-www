@@ -1,10 +1,10 @@
 "use client";
 
-// Top-level, composed editor. Owns the data-editor-theme root (so the scoped
-// tokens apply), seeds the store from `initialDiagram`, and lays out the node
-// palette beside the 3D stage (canvas + DOM label overlays). The lifted camera
-// api ref lets the (P6) toolbar drive the camera + PNG capture. Toolbar/inspector
-// arrive in P6; the real light/dark toggle in P7.
+// Top-level, composed editor. Owns the data-editor-theme root + theme toggle,
+// seeds the store, and lays out the chrome: toolbar on top, then
+// palette | stage | inspector. The lifted camera api ref drives the toolbar's
+// camera + PNG capture. `chrome={false}` renders just the stage (galleries /
+// read-only embeds). Persisted theme + system default arrive in P7.
 
 import * as React from "react";
 import { DiagramCanvas } from "./scene/DiagramCanvas";
@@ -12,6 +12,8 @@ import { LabelsLayer, type LabelsRegistry } from "./scene/LabelsLayer";
 import { EdgeLabelsLayer, type EdgeLabelsRegistry } from "./scene/edges/EdgeLabelsLayer";
 import type { CameraApi } from "./scene/CameraControls";
 import { NodePalette } from "./panels/NodePalette";
+import { Toolbar } from "./panels/Toolbar";
+import { Inspector } from "./panels/Inspector";
 import { useWorkflowStore } from "./state/useWorkflowStore";
 import { mvpSampleDiagram } from "./sampleDiagram";
 import type { Diagram, EditorTheme } from "./state/types";
@@ -19,10 +21,10 @@ import type { Diagram, EditorTheme } from "./state/types";
 export interface IsometricWorkflowEditorProps {
   /** Seed document loaded on mount. @default mvpSampleDiagram */
   initialDiagram?: Diagram;
-  /** Initial theme; an interactive toggle lands in P7. @default "light" */
+  /** Initial theme; persistence + system default land in P7. @default "light" */
   defaultTheme?: EditorTheme;
-  /** Hide the node palette (e.g. read-only embeds). @default false */
-  hidePalette?: boolean;
+  /** Render the toolbar + palette + inspector. @default true */
+  chrome?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -38,11 +40,11 @@ const NOOP_API: CameraApi = {
 export function IsometricWorkflowEditor({
   initialDiagram = mvpSampleDiagram,
   defaultTheme = "light",
-  hidePalette = false,
+  chrome = true,
   className,
   style,
 }: IsometricWorkflowEditorProps) {
-  const [theme] = React.useState<EditorTheme>(defaultTheme);
+  const [theme, setTheme] = React.useState<EditorTheme>(defaultTheme);
   const [ready, setReady] = React.useState(false);
   const labelsRef = React.useRef<LabelsRegistry>(new Map());
   const edgeLabelsRef = React.useRef<EdgeLabelsRegistry>(new Map());
@@ -57,9 +59,31 @@ export function IsometricWorkflowEditor({
     loadDiagram(initialDiagram);
   }, [initialDiagram, loadDiagram]);
 
+  // Minimal keyboard handling (full shortcuts in P13): delete selection, and
+  // escape to cancel a connect drag or clear the selection.
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (document.activeElement?.tagName ?? "").toLowerCase();
+      if (tag === "input" || tag === "textarea" || tag === "select") return;
+      const s = useWorkflowStore.getState();
+      if (e.key === "Delete" || e.key === "Backspace") {
+        if (s.selection?.type === "node") s.deleteNode(s.selection.id);
+        else if (s.selection?.type === "edge") s.deleteEdge(s.selection.id);
+      } else if (e.key === "Escape") {
+        if (s.connectSourceId) s.endConnect();
+        else s.clearSelection();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  const toggleTheme = () => setTheme((t) => (t === "light" ? "dark" : "light"));
+
   const rootStyle: React.CSSProperties = {
     position: "relative",
     display: "flex",
+    flexDirection: "column",
     width: "100%",
     height: "70vh",
     minHeight: 420,
@@ -73,46 +97,51 @@ export function IsometricWorkflowEditor({
 
   return (
     <div data-editor-theme={theme} className={className} style={rootStyle}>
-      {!hidePalette ? (
-        <NodePalette
-          style={{
-            flex: "none",
-            width: 212,
-            height: "100%",
-            borderRight: "1.5px solid var(--editor-border-soft)",
-          }}
-        />
-      ) : null}
+      {chrome ? <Toolbar apiRef={apiRef} theme={theme} onToggleTheme={toggleTheme} /> : null}
 
-      <div style={{ position: "relative", flex: 1, minWidth: 0, height: "100%" }}>
-        <DiagramCanvas
-          theme={theme}
-          labelsRef={labelsRef}
-          edgeLabelsRef={edgeLabelsRef}
-          apiRef={apiRef}
-          onReady={() => setReady(true)}
-        />
-        <LabelsLayer nodes={nodes} selection={selection} labelsRef={labelsRef} />
-        <EdgeLabelsLayer edges={edges} registry={edgeLabelsRef} />
+      <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
+        {chrome ? (
+          <NodePalette
+            style={{ flex: "none", width: 208, height: "100%", borderRight: "1.5px solid var(--editor-border-soft)" }}
+          />
+        ) : null}
 
-        {!ready ? (
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              display: "grid",
-              placeItems: "center",
-              background: "var(--editor-bg)",
-              color: "var(--editor-text-muted)",
-              fontFamily: "var(--font-display, sans-serif)",
-              fontSize: "0.8rem",
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-              pointerEvents: "none",
-            }}
-          >
-            Initialising scene…
-          </div>
+        <div style={{ position: "relative", flex: 1, minWidth: 0, height: "100%" }}>
+          <DiagramCanvas
+            theme={theme}
+            labelsRef={labelsRef}
+            edgeLabelsRef={edgeLabelsRef}
+            apiRef={apiRef}
+            onReady={() => setReady(true)}
+          />
+          <LabelsLayer nodes={nodes} selection={selection} labelsRef={labelsRef} />
+          <EdgeLabelsLayer edges={edges} registry={edgeLabelsRef} />
+
+          {!ready ? (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "grid",
+                placeItems: "center",
+                background: "var(--editor-bg)",
+                color: "var(--editor-text-muted)",
+                fontFamily: "var(--font-display, sans-serif)",
+                fontSize: "0.8rem",
+                letterSpacing: "0.04em",
+                textTransform: "uppercase",
+                pointerEvents: "none",
+              }}
+            >
+              Initialising scene…
+            </div>
+          ) : null}
+        </div>
+
+        {chrome ? (
+          <Inspector
+            style={{ flex: "none", width: 264, height: "100%", borderLeft: "1.5px solid var(--editor-border-soft)" }}
+          />
         ) : null}
       </div>
     </div>

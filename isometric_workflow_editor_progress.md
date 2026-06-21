@@ -131,19 +131,23 @@ Goal: tiered "layer" boxes for advanced architecture diagrams.
 
 ---
 
-## Phase P6 — Chrome (toolbar / inspector / export)
+## Phase P6 — Chrome (toolbar / inspector / export) ✅
 Goal: the 2D editor frame, built from editor primitives (and `src/components/ui` where it fits).
 
-- [ ] P6.1 `primitives/*` — IconButton, Panel, Field, Select, Slider, Tooltip, SegmentedControl
-      (only those not already in `src/components/ui`); CSS-var styled; **with stories**.
-- [ ] P6.2 `panels/Toolbar.tsx` — undo/redo, zoom in/out, fit, reset, export JSON, export PNG, theme
-      toggle slot. Bespoke icons (no emoji).
-- [ ] P6.3 `panels/Inspector.tsx` — selected node/edge: label, sublabel, color, ports, connected
-      edges, delete. Port the prototype inspector, on-brand.
-- [ ] P6.4 `hooks/useExportJson.ts` + `hooks/useExportPng.ts` (uses `preserveDrawingBuffer`; offer
-      1x/2x).
-- [ ] P6.5 Stories: `Editor/Panels/Toolbar`, `Editor/Panels/Inspector`.
-- [ ] **Green + commit + push.**
+- [x] P6.1 `primitives/{IconButton,Panel,Field,Select}.tsx` — editor-token styled, Tailwind-free,
+      `Editor/Primitives` story (light/dark). (Slider/Tooltip/SegmentedControl deferred to first use.)
+- [x] P6.2 `panels/Toolbar.tsx` — undo/redo (store + past/future length), zoom in/out, fit, reset
+      (lifted camera api), export JSON, export PNG, and a working light/dark toggle. Bespoke action
+      glyphs added to `NodeGlyph` (no emoji).
+- [x] P6.3 `panels/Inspector.tsx` — node: type, label, sublabel, colour swatches (+ default),
+      position, group width/depth, connected-edges list (select/delete), delete; edge: source→target,
+      routing/style selects, label, delete; empty state otherwise.
+- [x] P6.4 `hooks/useExportJson.ts` (schema.serialize → download) + `hooks/useExportPng.ts`
+      (canvas `toDataURL`; canvas-only this pass — labels/2x deferred per the locked decision).
+- [x] P6.5 Stories `Editor/Panels/Toolbar` + `Editor/Panels/Inspector` (node/edge/empty); editor
+      gains a `chrome` prop (toolbar+palette+inspector), theme-toggle state, and a minimal
+      delete/escape keydown (full shortcuts in P13).
+- [x] **Green** — `typecheck` + `build-storybook` + `next build` pass; `/isometric-editor` 1.87 kB.
 
 ---
 

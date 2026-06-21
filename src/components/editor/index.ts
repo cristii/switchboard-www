@@ -7,8 +7,18 @@ export type { IsometricWorkflowEditorProps } from "./IsometricWorkflowEditor";
 
 export { NodePalette } from "./panels/NodePalette";
 export type { NodePaletteProps } from "./panels/NodePalette";
+export { Toolbar } from "./panels/Toolbar";
+export { Inspector } from "./panels/Inspector";
 export { NodeGlyph } from "./icons/NodeGlyph";
 export type { GlyphName } from "./icons/NodeGlyph";
+
+export { IconButton } from "./primitives/IconButton";
+export { Panel } from "./primitives/Panel";
+export { Field } from "./primitives/Field";
+export { Select } from "./primitives/Select";
+
+export { useExportJson } from "./hooks/useExportJson";
+export { useExportPng } from "./hooks/useExportPng";
 
 export {
   NODE_CATALOG,

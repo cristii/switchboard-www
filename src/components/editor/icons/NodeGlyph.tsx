@@ -17,7 +17,20 @@ export type GlyphName =
   | "hub"
   | "send"
   | "frame"
-  | "note";
+  | "note"
+  // toolbar / action glyphs
+  | "undo"
+  | "redo"
+  | "zoomIn"
+  | "zoomOut"
+  | "fit"
+  | "reset"
+  | "download"
+  | "image"
+  | "sun"
+  | "moon"
+  | "trash"
+  | "plus";
 
 const PATHS: Record<GlyphName, React.ReactNode> = {
   zap: <path d="M13 2 L4 14 h7 l-1 8 L20 9 h-7 z" />,
@@ -53,6 +66,39 @@ const PATHS: Record<GlyphName, React.ReactNode> = {
       <path d="M14 3 v4 h4 M9 13 h6 M9 17 h5" />
     </>
   ),
+  undo: <path d="M4 12 l5 -5 M4 12 l5 5 M4 12 h10 a5 5 0 0 1 0 10 h-3" />,
+  redo: <path d="M20 12 l-5 -5 M20 12 l-5 5 M20 12 h-10 a5 5 0 0 0 0 10 h3" />,
+  zoomIn: (
+    <>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20 l-3.5 -3.5 M11 8 v6 M8 11 h6" />
+    </>
+  ),
+  zoomOut: (
+    <>
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20 l-3.5 -3.5 M8 11 h6" />
+    </>
+  ),
+  fit: <path d="M4 9 V4 h5 M15 4 h5 v5 M20 15 v5 h-5 M9 20 H4 v-5" />,
+  reset: <path d="M20 12 a8 8 0 1 1 -2.4 -5.7 M20 4 v4 h-4" />,
+  download: <path d="M12 4 v10 M8 11 l4 4 4 -4 M5 19 h14" />,
+  image: (
+    <>
+      <rect x="4" y="5" width="16" height="14" rx="2" />
+      <path d="M7 15 l3 -3 3 3 2 -2 2 2" />
+      <circle cx="9" cy="9" r="1.2" />
+    </>
+  ),
+  sun: (
+    <>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 3 v2 M12 19 v2 M3 12 h2 M19 12 h2 M5.6 5.6 l1.4 1.4 M17 17 l1.4 1.4 M18.4 5.6 l-1.4 1.4 M7 17 l-1.4 1.4" />
+    </>
+  ),
+  moon: <path d="M20 13 a8 8 0 1 1 -9 -10 a6 6 0 0 0 9 10 z" />,
+  trash: <path d="M5 7 h14 M9 7 V5 h6 v2 M7 7 l1 13 h8 l1 -13" />,
+  plus: <path d="M12 6 v12 M6 12 h12" />,
 };
 
 export interface NodeGlyphProps {

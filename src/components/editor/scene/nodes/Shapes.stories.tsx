@@ -12,7 +12,7 @@ const meta = {
   parameters: { layout: "fullscreen" },
   args: {
     initialDiagram: allKindsDiagram,
-    hidePalette: true,
+    chrome: false,
     defaultTheme: "light",
     style: { height: "82vh" },
   },
@@ -29,5 +29,5 @@ export const Dark: Story = {
 
 /** A group container holding children — drag the group to move them together. */
 export const Grouped: Story = {
-  args: { initialDiagram: groupedSampleDiagram, hidePalette: false },
+  args: { initialDiagram: groupedSampleDiagram, chrome: true },
 };
