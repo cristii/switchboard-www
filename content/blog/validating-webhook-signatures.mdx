@@ -1,0 +1,23 @@
+---
+title: "Validating webhook signatures before you trust a payload"
+date: "2026-06-12"
+tags: ["Trigger.dev", "Webhooks", "Node.js"]
+excerpt: "A constant-time HMAC check that rejects forged deliveries at the door — the one guard every public webhook needs."
+read: "3 min read"
+---
+
+A public webhook URL is an open door: anyone who finds it can POST whatever they like. The fix is a signature check that proves the payload came from who it claims to.
+
+## Verify the HMAC first
+
+```ts
+// verify.ts
+const ok = crypto
+  .createHmac("sha256", secret)
+  .update(raw)
+  .digest("hex") === sig;   // constant-time in prod
+```
+
+Compute the HMAC over the **raw** body (not the parsed JSON) with the shared secret, and compare it to the signature header. In production, use a constant-time comparison so an attacker can't time their way to a match.
+
+Reject anything that fails before it touches the rest of your handler. It's one check, it runs in microseconds, and it's the difference between a trusted pipeline and a forgeable one.

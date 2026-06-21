@@ -1,0 +1,30 @@
+---
+title: "Vector memory management in LangChain chatbots"
+date: "2026-06-17"
+tags: ["LangChain", "AI", "Pinecone"]
+excerpt: "Retrieve only the nearest few turns from a vector store so long conversations never blow past the context window."
+read: "4 min read"
+---
+
+Stuffing an entire conversation into every prompt works until it doesn't — then your context window overflows and costs climb with each turn. A vector-store retriever fixes both by pulling back only the handful of past turns that actually matter to the current message.
+
+## Retrieve the nearest turns, not all of them
+
+```ts
+// memory.ts
+const memory = new VectorStoreRetrieverMemory({
+  vectorStoreRetriever: pinecone.asRetriever(4),
+  memoryKey: "history",
+});
+// only the 4 nearest turns reach the prompt
+```
+
+Each turn is embedded and stored; on the next message the retriever returns the four closest, and those are the only history the model sees.
+
+## Why it holds up
+
+- The prompt stays small, so latency and cost stay flat as the chat grows.
+- Relevance beats recency — an answer from twenty messages ago still surfaces when it matters.
+- Swap the `k` value to trade recall for tokens without touching the rest of the chain.
+
+For anything beyond a few short exchanges, retrieval-based memory is the pattern that keeps a chatbot affordable and on-topic.

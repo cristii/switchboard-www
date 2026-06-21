@@ -159,7 +159,19 @@ Build ONE unit at a time; after each is green (`next build` + `typecheck`, and
   **⌘K search overlay** filtering the index. Built from `Badge` + `Icon` + Tailwind;
   code uses `font-mono`. The right-hand TOC + scrollspy and the mobile drawer were
   dropped (sidebar stacks on mobile). Green: `next build`, `typecheck`, `build-storybook`.
-- ⬜ 2.11 `/blog` + `/blog/[slug]` (MDX) · ⬜ 2.12 `/privacy` + `/terms`
+- ✅ **2.11 `/blog` + `/blog/[slug]`** (MDX) — ported from `The Daily Log.dc.html` +
+  `Blog Post.dc.html`. Added `gray-matter` + `next-mdx-remote`. **9 posts** in
+  `content/blog/*.mdx` (frontmatter: title/date/tags/excerpt/read); the lead post
+  carries the full ported body, the rest their excerpt + real code. `src/lib/blog.ts`
+  parses frontmatter (server-only, fs). `/blog`: hero + `NewsletterSignup` card +
+  client `BlogArchive` (tag filter + load-more) + shared `HireMeBand`. `/blog/[slug]`:
+  `generateStaticParams` (all 9 prerendered) + `generateMetadata`, rendered with
+  `next-mdx-remote/rsc` and on-brand MDX components (styled headings, prose, code
+  cards via `font-mono`, green-tick lists), author row, inline signup, "more
+  blueprints". Newsletter POST is Phase 3 — the form confirms optimistically for now.
+  Gotcha fixed: the client `BlogArchive` must `import type` from the fs-backed lib.
+  Green: `next build`, `typecheck`, `build-storybook`.
+- ⬜ 2.12 `/privacy` + `/terms`
 
 ## Phase 2 notes / decisions
 - `jsx` switched to `preserve` and `@/*` paths added for Next; `vite/client` types

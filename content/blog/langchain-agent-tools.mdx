@@ -1,0 +1,19 @@
+---
+title: "Giving a LangChain agent tools without prompt bloat"
+date: "2026-06-11"
+tags: ["LangChain", "AI"]
+excerpt: "Bind tools as structured schemas instead of stuffing instructions into the system prompt — cheaper tokens, sharper calls."
+read: "3 min read"
+---
+
+The tempting way to give an agent abilities is to describe them in the system prompt. It works at first, then the prompt balloons, tokens get expensive, and the model still picks the wrong tool. Structured tool-binding is the better path.
+
+## Bind tools as schemas
+
+Define each tool with a name, a description, and a typed argument schema, then bind the set to the model. The model now receives the tools as structured function definitions — not prose — and returns a clean, validated call you can execute directly.
+
+- The system prompt stays short, so every turn is cheaper.
+- Typed arguments mean malformed calls fail loudly instead of silently.
+- Adding a capability is one schema, not another paragraph of instructions.
+
+Let the framework do the wiring. Your prompt should set the agent's *intent*; the tool schemas handle the *how*.

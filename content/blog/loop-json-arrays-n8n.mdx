@@ -1,0 +1,31 @@
+---
+title: "How to loop JSON arrays in n8n without Code nodes"
+date: "2026-06-18"
+tags: ["n8n", "JSON", "Optimization"]
+excerpt: "Skip the JavaScript Code node — the Split Out node plus JSON-path keeps executions lightweight and fully visual for clients."
+read: "3 min read"
+---
+
+Reaching for a Code node every time you need to loop an array is the fastest way to make an n8n workflow a client can't maintain. The **Split Out** node does the same job visually, runs lighter, and leaves a flow anyone on the team can read.
+
+## Split Out instead of a Code node
+
+Point Split Out at the array field and list the keys you want to keep. Each element becomes its own item, ready for the next node.
+
+```text
+// Item Lists → "Split Out" — no Code node
+fieldToSplitOut: "body.data",
+include:         "id, email, status"
+
+// expression → {{ $json.body.data[*].id }}
+```
+
+That expression form is handy when you only need the ids — JSON-path plucks the field without expanding the whole array.
+
+## Why it's worth the swap
+
+- Executions stay lightweight — no JavaScript runtime per item.
+- The flow is fully visual, so a non-developer can follow it.
+- Field selection is explicit, which makes downstream mapping obvious.
+
+Keep the Code node for genuine logic. For plain reshaping, Split Out plus an expression covers almost everything.

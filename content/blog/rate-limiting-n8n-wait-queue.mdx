@@ -1,0 +1,19 @@
+---
+title: "Rate-limiting outbound calls in n8n with a wait queue"
+date: "2026-06-13"
+tags: ["n8n", "Node.js", "Optimization"]
+excerpt: "Throttle a burst of items through a third-party API without tripping its rate limit — no external queue service required."
+read: "3 min read"
+---
+
+Loop a few hundred items through an API at full speed and you'll trip its rate limit, get a wave of 429s, and lose half the batch. You don't need a queue service to fix it — n8n can pace itself.
+
+## Space the calls out
+
+Put a **Wait** node inside the loop so each item is spaced just far enough apart to stay under the per-second ceiling. When a `429` does come back, read the `Retry-After` header and wait that long before the next attempt instead of hammering blindly.
+
+- Add a small wait between items to stay under the cap.
+- Honor `Retry-After` on `429` responses.
+- Back off exponentially, then give up after a sane ceiling so a broken upstream can't loop forever.
+
+It's a few extra seconds per run in exchange for never dropping work — a trade worth making every time.
