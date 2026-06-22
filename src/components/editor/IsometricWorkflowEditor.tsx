@@ -1,10 +1,11 @@
 "use client";
 
-// Top-level, composed editor. Owns the data-editor-theme root + theme toggle,
-// seeds the store, and lays out the chrome responsively: toolbar on top, then
-// either palette | stage | inspector (desktop) or stage + a segmented
-// Add/Inspect bar opening bottom-sheet drawers (mobile). `chrome={false}`
-// renders just the stage (galleries / read-only embeds).
+// Top-level, composed editor. Owns the active ThemeSpec (via useThemeManager) +
+// the data-editor-theme root, seeds the store, and lays out the chrome
+// responsively: toolbar on top, then either palette | stage | inspector (desktop)
+// or stage + a segmented Add/Inspect bar opening bottom-sheet drawers (mobile).
+// The Theme manager pane opens from the toolbar (desktop overlay / mobile drawer).
+// `chrome={false}` renders just the stage (galleries / read-only embeds).
 
 import * as React from "react";
 import { DiagramCanvas } from "./scene/DiagramCanvas";
@@ -14,9 +15,10 @@ import type { CameraApi } from "./scene/CameraControls";
 import { NodePalette } from "./panels/NodePalette";
 import { Toolbar } from "./panels/Toolbar";
 import { Inspector } from "./panels/Inspector";
+import { ThemeManager } from "./panels/ThemeManager";
 import { MobileDrawer } from "./panels/MobileDrawer";
 import { NodeGlyph } from "./icons/NodeGlyph";
-import { useEditorTheme } from "./theme/useEditorTheme";
+import { useThemeManager } from "./theme/useThemeManager";
 import { useResponsiveLayout } from "./hooks/useResponsiveLayout";
 import { useWorkflowStore } from "./state/useWorkflowStore";
 import { PRESETS } from "./catalog/presets";
@@ -27,9 +29,12 @@ import type { Diagram, EditorTheme, NodeKind } from "./state/types";
 export interface IsometricWorkflowEditorProps {
   /** Seed document loaded on mount. @default mvpSampleDiagram */
   initialDiagram?: Diagram;
-  /** Force an initial theme (deterministic). When omitted, the editor uses the
-   *  stored preference, then the OS preference. */
+  /** Force an initial chrome theme (deterministic). Maps to the built-in
+   *  light/dark theme ids. When omitted, the stored/last-used theme is used. */
   defaultTheme?: EditorTheme;
+  /** Force an initial theme by id ("light" | "dark" | "aws" | user id). Takes
+   *  precedence over defaultTheme. */
+  defaultThemeId?: string;
   /** Render the toolbar + palette + inspector. @default true */
   chrome?: boolean;
   className?: string;
@@ -44,22 +49,21 @@ const NOOP_API: CameraApi = {
   capturePng: () => null,
 };
 
-type Drawer = "none" | "add" | "inspect";
+type Drawer = "none" | "add" | "inspect" | "theme";
 
 export function IsometricWorkflowEditor({
   initialDiagram = mvpSampleDiagram,
   defaultTheme,
+  defaultThemeId,
   chrome = true,
   className,
   style,
 }: IsometricWorkflowEditorProps) {
-  const { theme, toggle: toggleTheme } = useEditorTheme(defaultTheme);
+  const manager = useThemeManager(defaultThemeId ?? defaultTheme);
+  const spec = manager.spec;
   const [ready, setReady] = React.useState(false);
   const [drawer, setDrawer] = React.useState<Drawer>("none");
-  // Per-instance view settings (kept local, not in the singleton store, so future
-  // multiple preview instances each keep their own — see preview-mode doc).
-  const [showGrid, setShowGrid] = React.useState(true);
-  const [showGround, setShowGround] = React.useState(true);
+  const [themePanel, setThemePanel] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement>(null);
   const mode = useResponsiveLayout(rootRef);
   const isMobile = mode === "mobile";
@@ -116,6 +120,11 @@ export function IsometricWorkflowEditor({
     s.arrange(layeredLayout(s.nodes, s.edges));
   };
 
+  const toggleThemeManager = () => {
+    if (isMobile) setDrawer((d) => (d === "theme" ? "none" : "theme"));
+    else setThemePanel((v) => !v);
+  };
+
   const rootStyle: React.CSSProperties = {
     position: "relative",
     display: "flex",
@@ -134,15 +143,15 @@ export function IsometricWorkflowEditor({
   const stage = (
     <div style={{ position: "relative", flex: 1, minWidth: 0, minHeight: 0 }}>
       <DiagramCanvas
-        theme={theme}
+        spec={spec}
         nodes={nodes}
         edges={edges}
         selection={selection}
         labelsRef={labelsRef}
         edgeLabelsRef={edgeLabelsRef}
         apiRef={apiRef}
-        showGrid={showGrid}
-        showGround={showGround}
+        showGrid={spec.grid.show}
+        showGround={spec.shadow.enabled}
         onSelectEdge={selectEdge}
         onBackgroundClick={clearSelection}
         onReady={() => setReady(true)}
@@ -190,20 +199,22 @@ export function IsometricWorkflowEditor({
   });
 
   return (
-    <div ref={rootRef} data-editor-theme={theme} className={className} style={rootStyle}>
+    <div ref={rootRef} data-editor-theme={manager.chromeBase} className={className} style={rootStyle}>
       {chrome ? (
         <Toolbar
           apiRef={apiRef}
-          theme={theme}
-          onToggleTheme={toggleTheme}
+          theme={manager.chromeBase}
+          onToggleTheme={manager.toggleChrome}
           compact={isMobile}
           templates={templateOptions}
           onPickTemplate={handlePickTemplate}
           onAutoArrange={handleAutoArrange}
-          showGrid={showGrid}
-          showGround={showGround}
-          onToggleGrid={() => setShowGrid((v) => !v)}
-          onToggleGround={() => setShowGround((v) => !v)}
+          showGrid={spec.grid.show}
+          showGround={spec.shadow.enabled}
+          onToggleGrid={() => manager.patch((d) => (d.grid.show = !d.grid.show))}
+          onToggleGround={() => manager.patch((d) => (d.shadow.enabled = !d.shadow.enabled))}
+          onToggleThemeManager={toggleThemeManager}
+          themeManagerOpen={isMobile ? drawer === "theme" : themePanel}
         />
       ) : null}
 
@@ -240,9 +251,12 @@ export function IsometricWorkflowEditor({
           <MobileDrawer open={drawer === "inspect"} title="Inspector" onClose={() => setDrawer("none")}>
             <Inspector />
           </MobileDrawer>
+          <MobileDrawer open={drawer === "theme"} title="Theme manager" onClose={() => setDrawer("none")}>
+            <ThemeManager manager={manager} />
+          </MobileDrawer>
         </div>
       ) : (
-        <div style={{ display: "flex", flex: 1, minHeight: 0 }}>
+        <div style={{ position: "relative", display: "flex", flex: 1, minHeight: 0 }}>
           <NodePalette
             style={{ flex: "none", width: 208, height: "100%", borderRight: "1.5px solid var(--editor-border-soft)" }}
           />
@@ -250,6 +264,22 @@ export function IsometricWorkflowEditor({
           <Inspector
             style={{ flex: "none", width: 264, height: "100%", borderLeft: "1.5px solid var(--editor-border-soft)" }}
           />
+          {themePanel ? (
+            <ThemeManager
+              manager={manager}
+              onClose={() => setThemePanel(false)}
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                width: 300,
+                height: "100%",
+                borderLeft: "1.5px solid var(--editor-border-soft)",
+                boxShadow: "var(--editor-shadow)",
+                zIndex: 12,
+              }}
+            />
+          ) : null}
         </div>
       )}
     </div>

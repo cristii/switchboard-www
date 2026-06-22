@@ -30,6 +30,9 @@ export interface ToolbarProps {
   showGround?: boolean;
   onToggleGrid?: () => void;
   onToggleGround?: () => void;
+  /** Theme manager pane toggle. */
+  onToggleThemeManager?: () => void;
+  themeManagerOpen?: boolean;
 }
 
 const templateSelectStyle: React.CSSProperties = {
@@ -67,6 +70,8 @@ export function Toolbar({
   showGround = true,
   onToggleGrid,
   onToggleGround,
+  onToggleThemeManager,
+  themeManagerOpen = false,
 }: ToolbarProps) {
   const undo = useWorkflowStore((s) => s.undo);
   const redo = useWorkflowStore((s) => s.redo);
@@ -135,6 +140,9 @@ export function Toolbar({
       <IconButton label="Export JSON" glyph="download" onClick={exportJson} />
       <IconButton label="Export PNG" glyph="image" onClick={exportPng} />
       {compact ? <Divider /> : <div style={{ flex: 1 }} />}
+      {onToggleThemeManager ? (
+        <IconButton label="Theme manager" glyph="palette" active={themeManagerOpen} onClick={onToggleThemeManager} />
+      ) : null}
       <ThemeToggle theme={theme} onToggle={onToggleTheme} />
     </div>
   );

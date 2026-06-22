@@ -18,4 +18,9 @@ export interface ShapeProps {
   color: string;
   emissive: string;
   emissiveIntensity: number;
+  /** Material opacity (0–1); < 1 renders the node transparent. @default 1 */
+  opacity?: number;
+  /** Theme roughness/metalness overrides; each shape keeps its own when undefined. */
+  roughness?: number;
+  metalness?: number;
 }

@@ -2,9 +2,10 @@
 // rendered in a paper tone (NodeMesh passes the theme paper colour for notes).
 
 import { RoundedBox } from "@react-three/drei";
+import { NodeStandardMaterial } from "./NodeStandardMaterial";
 import type { ShapeProps } from "./types";
 
-export function PaperTileNode({ width, depth, height, color, emissive, emissiveIntensity }: ShapeProps) {
+export function PaperTileNode({ width, depth, height, color, emissive, emissiveIntensity, opacity, roughness, metalness }: ShapeProps) {
   const h = Math.max(0.12, height);
   return (
     <RoundedBox
@@ -15,12 +16,15 @@ export function PaperTileNode({ width, depth, height, color, emissive, emissiveI
       castShadow
       receiveShadow
     >
-      <meshStandardMaterial
+      <NodeStandardMaterial
         color={color}
-        roughness={0.85}
-        metalness={0}
         emissive={emissive}
         emissiveIntensity={emissiveIntensity}
+        opacity={opacity}
+        roughness={roughness}
+        metalness={metalness}
+        defaultRoughness={0.85}
+        defaultMetalness={0}
       />
     </RoundedBox>
   );

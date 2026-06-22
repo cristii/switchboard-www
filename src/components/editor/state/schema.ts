@@ -8,6 +8,7 @@ import type {
   EdgeRouting,
   EdgeStyle,
   EditorTheme,
+  TextOrientation,
   Viewport,
   WorkflowEdge,
   WorkflowNode,
@@ -41,6 +42,7 @@ export function toJSON(diagram: Diagram): string {
 const ROUTINGS: EdgeRouting[] = ["orthogonal", "smooth", "direct"];
 const STYLES: EdgeStyle[] = ["solid", "dashed"];
 const FLOWS: EdgeFlow[] = ["off", "slow", "normal", "fast"];
+const ORIENTATIONS: TextOrientation[] = ["billboard", "ground", "uprightX", "uprightZ"];
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null;
@@ -63,6 +65,7 @@ function asNode(v: unknown): WorkflowNode | null {
   if (typeof v.depth === "number") node.depth = v.depth;
   if (typeof v.height === "number") node.height = v.height;
   if (typeof v.color === "string") node.color = v.color;
+  if (typeof v.opacity === "number") node.opacity = v.opacity;
   if (typeof v.icon === "string") node.icon = v.icon;
   if (typeof v.parentId === "string") node.parentId = v.parentId;
   if (Array.isArray(v.ports)) node.ports = v.ports as WorkflowNode["ports"];
@@ -90,6 +93,9 @@ function asEdge(v: unknown): WorkflowEdge | null {
     edge.flow = v.flow as EdgeFlow;
   }
   if (typeof v.color === "string") edge.color = v.color;
+  if (typeof v.labelOrientation === "string" && ORIENTATIONS.includes(v.labelOrientation as TextOrientation)) {
+    edge.labelOrientation = v.labelOrientation as TextOrientation;
+  }
   return edge;
 }
 

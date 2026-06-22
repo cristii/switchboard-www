@@ -2,9 +2,10 @@
 // small gaps, reading as a stack of buffered items.
 
 import { RoundedBox } from "@react-three/drei";
+import { NodeStandardMaterial } from "./NodeStandardMaterial";
 import type { ShapeProps } from "./types";
 
-export function SlabNode({ width, depth, height, color, emissive, emissiveIntensity }: ShapeProps) {
+export function SlabNode({ width, depth, height, color, emissive, emissiveIntensity, opacity, roughness, metalness }: ShapeProps) {
   const slabH = height * 0.24;
   const gap = height * 0.14;
   const radius = Math.min(0.05, slabH / 2 - 0.001);
@@ -20,12 +21,13 @@ export function SlabNode({ width, depth, height, color, emissive, emissiveIntens
           castShadow
           receiveShadow
         >
-          <meshStandardMaterial
+          <NodeStandardMaterial
             color={color}
-            roughness={0.42}
-            metalness={0.06}
             emissive={emissive}
             emissiveIntensity={emissiveIntensity}
+            opacity={opacity}
+            roughness={roughness}
+            metalness={metalness}
           />
         </RoundedBox>
       ))}

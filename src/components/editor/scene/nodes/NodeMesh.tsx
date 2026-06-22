@@ -9,6 +9,7 @@ import { type ThreeEvent, useThree } from "@react-three/fiber";
 import { animated, useSpring } from "@react-spring/three";
 import * as THREE from "three";
 import { GroupContainer } from "./shapes/GroupContainer";
+import { TextNode } from "./shapes/TextNode";
 import { resolveNodeVisual } from "./nodeVisual";
 import { getNodeCatalogEntry } from "../../catalog/nodeCatalog";
 import { useWorkflowStore } from "../../state/useWorkflowStore";
@@ -54,8 +55,21 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
   const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), []);
 
   const reduced = usePrefersReducedMotion();
-  const { entry, isGroup, Shape, width, depth, height, color: baseColor, emissive, emissiveIntensity } =
-    resolveNodeVisual(node, theme, selected);
+  const {
+    entry,
+    isGroup,
+    isText,
+    Shape,
+    width,
+    depth,
+    height,
+    color: baseColor,
+    emissive,
+    emissiveIntensity,
+    opacity,
+    roughness,
+    metalness,
+  } = resolveNodeVisual(node, theme, selected);
   const hasOut = entry.defaultPorts.some((p) => p.side === "out");
   const hasIn = entry.defaultPorts.some((p) => p.side === "in");
 
@@ -155,6 +169,8 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
       <animated.group scale={scale}>
         {isGroup ? (
           <GroupContainer node={node} theme={theme} selected={selected} />
+        ) : isText ? (
+          <TextNode node={node} theme={theme} selected={selected} />
         ) : (
           <Shape
             width={width}
@@ -163,6 +179,9 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
             color={baseColor}
             emissive={emissive}
             emissiveIntensity={emissiveIntensity}
+            opacity={opacity}
+            roughness={roughness}
+            metalness={metalness}
           />
         )}
 
@@ -184,7 +203,7 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
           </mesh>
         ) : null}
 
-        {selected && !isGroup ? (
+        {selected && !isGroup && !isText ? (
           <SelectionRing radius={Math.max(width, depth) * 0.62} color={theme.selection} />
         ) : null}
       </animated.group>

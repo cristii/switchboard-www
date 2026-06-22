@@ -7,6 +7,7 @@ import { Line } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { getRoutePoints } from "./edgeRouting";
+import { TextLabel } from "../nodes/shapes/TextNode";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import type { SceneTheme } from "../../theme/sceneTheme";
 import type { EdgeFlow as EdgeFlowMode, WorkflowEdge, WorkflowNode } from "../../state/types";
@@ -83,13 +84,15 @@ export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0, on
   const dir = new THREE.Vector3().subVectors(end, prev).normalize();
   const quat = new THREE.Quaternion().setFromUnitVectors(UP, dir);
   const flow = edge.flow ?? "off";
+  const arrow = theme.arrowSize;
+  const midVec = vecs[Math.floor((vecs.length - 1) / 2)] ?? end;
 
   return (
     <group>
       <Line
         points={vecs}
         color={color}
-        lineWidth={selected ? 3.6 : 2}
+        lineWidth={selected ? theme.edgeWidthSelected : theme.edgeWidth}
         dashed={edge.style === "dashed"}
         dashSize={0.3}
         gapSize={0.18}
@@ -103,10 +106,24 @@ export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0, on
         }
       />
       <mesh position={end} quaternion={quat}>
-        <coneGeometry args={[0.11, 0.26, 12]} />
+        <coneGeometry args={[0.11 * arrow, 0.26 * arrow, 12]} />
         <meshBasicMaterial color={color} />
       </mesh>
       {flow !== "off" ? <EdgeFlow points={vecs} color={theme.flow} speed={FLOW_SPEED[flow]} /> : null}
+      {edge.labelOrientation && edge.label ? (
+        <group position={[midVec.x, 0, midVec.z]}>
+          <TextLabel
+            text={edge.label}
+            color={theme.text.color}
+            opacity={theme.text.opacity}
+            size={theme.text.size * 0.8}
+            orientation={edge.labelOrientation}
+            font={theme.text.font}
+            selected={selected}
+            selectionColor={theme.selection}
+          />
+        </group>
+      ) : null}
     </group>
   );
 }

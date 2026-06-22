@@ -31,7 +31,7 @@ export function EdgeLabelProjector({ edges, nodes, registry }: EdgeLabelProjecto
   useFrame(() => {
     const rect = gl.domElement.getBoundingClientRect();
     for (const edge of edges) {
-      if (!edge.label) continue;
+      if (!edge.label || edge.labelOrientation) continue; // 3D labels render in-scene
       const el = registry.current.get(edge.id);
       if (!el) continue;
       const mid = midpoint(edge, nodes);
@@ -77,7 +77,7 @@ export function EdgeLabelsLayer({ edges, registry }: EdgeLabelsLayerProps) {
   return (
     <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 9 }} aria-hidden>
       {edges
-        .filter((e) => e.label)
+        .filter((e) => e.label && !e.labelOrientation)
         .map((edge) => (
           <div
             key={edge.id}

@@ -17,9 +17,12 @@ the `ThemeSpec` / routing / linking architecture.
 
 ### themes/
 - [`isometric_workflow_editor_theming_guide.md`](./themes/isometric_workflow_editor_theming_guide.md)
-  — how to adjust lighting, colour, shadows, backdrop, and create/load themes.
-- `CREATING_THEMES.md` *(Step 1)* — short tutorial: manager → localStorage → export → commit.
-- `THEME_PROMPT.md` *(Step 1)* — copy-paste prompt to generate a `ThemeSpec` (incl. the AWS look).
+  — the `ThemeSpec` model + how to adjust camera, lighting, colour, shadows, backdrop, text, and
+  create/load themes (§0 is the current entry point).
+- [`CREATING_THEMES.md`](./themes/CREATING_THEMES.md) — short tutorial: manager → localStorage →
+  export → commit; per-node/edge overrides; preview theme field.
+- [`THEME_PROMPT.md`](./themes/THEME_PROMPT.md) — copy-paste prompt to generate a `ThemeSpec` with an
+  LLM (incl. the AWS look as a worked example).
 
 ### nodes/
 - [`isometric_workflow_editor_3d_model_prompts.md`](./nodes/isometric_workflow_editor_3d_model_prompts.md)

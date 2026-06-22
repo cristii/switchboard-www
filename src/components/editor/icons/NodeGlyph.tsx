@@ -18,6 +18,7 @@ export type GlyphName =
   | "send"
   | "frame"
   | "note"
+  | "type"
   // toolbar / action glyphs
   | "undo"
   | "redo"
@@ -34,7 +35,8 @@ export type GlyphName =
   | "close"
   | "layout"
   | "grid"
-  | "shadow";
+  | "shadow"
+  | "palette";
 
 const PATHS: Record<GlyphName, React.ReactNode> = {
   zap: <path d="M13 2 L4 14 h7 l-1 8 L20 9 h-7 z" />,
@@ -70,6 +72,7 @@ const PATHS: Record<GlyphName, React.ReactNode> = {
       <path d="M14 3 v4 h4 M9 13 h6 M9 17 h5" />
     </>
   ),
+  type: <path d="M5 6 V5 h14 v1 M12 5 v14 M9 19 h6" />,
   undo: <path d="M4 12 l5 -5 M4 12 l5 5 M4 12 h10 a5 5 0 0 1 0 10 h-3" />,
   redo: <path d="M20 12 l-5 -5 M20 12 l-5 5 M20 12 h-10 a5 5 0 0 0 0 10 h3" />,
   zoomIn: (
@@ -116,6 +119,14 @@ const PATHS: Record<GlyphName, React.ReactNode> = {
     <>
       <rect x="4.5" y="4.5" width="11" height="11" rx="2.5" />
       <path d="M9 19 h10 v-10" />
+    </>
+  ),
+  palette: (
+    <>
+      <path d="M12 3 a9 9 0 1 0 0 18 a2.5 2.5 0 0 0 0 -5 h1.6 a3.4 3.4 0 0 0 3.4 -3.4 A8 8 0 0 0 12 3 Z" />
+      <circle cx="8" cy="11" r="1" />
+      <circle cx="12" cy="8" r="1" />
+      <circle cx="15.5" cy="11" r="1" />
     </>
   ),
 };

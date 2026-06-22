@@ -168,6 +168,18 @@ export const NODE_CATALOG: Record<NodeKind, NodeCatalogEntry> = {
     defaultPorts: [],
     defaultSize: { width: 1.5, depth: 1.05, height: 0.18 },
   },
+  text: {
+    kind: "text",
+    category: "Layout",
+    label: "Text",
+    description: "Free-floating 3D label — billboard, flat on the ground, or upright.",
+    // Rendered via TextNode (not the shape registry); `shape` is a harmless placeholder.
+    shape: "paperTile",
+    colorRole: "ink",
+    glyph: "type",
+    defaultPorts: [],
+    defaultSize: { width: 1.6, depth: 0.6, height: 0.4 },
+  },
 };
 
 export const CATALOG_LIST: NodeCatalogEntry[] = Object.values(NODE_CATALOG);

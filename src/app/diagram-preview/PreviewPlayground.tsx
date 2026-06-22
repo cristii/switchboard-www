@@ -15,6 +15,7 @@ import {
   type PreviewConfig,
   type PreviewDoc,
 } from "@/components/editor/preview/previewConfig";
+import { BUILT_IN_THEMES } from "@/components/editor/theme/themeRegistry";
 
 const DiagramPreview = dynamic(
   () => import("@/components/editor/preview/DiagramPreview").then((m) => m.DiagramPreview),
@@ -101,12 +102,21 @@ export function PreviewPlayground() {
         >
           Camera movable
         </Chip>
-        <Chip
-          active={cfg.theme === "dark"}
-          onClick={() => setConfig({ theme: cfg.theme === "dark" ? "light" : "dark" })}
-        >
-          Dark
-        </Chip>
+        <label className="flex items-center gap-2 text-sm text-ink-soft">
+          Theme
+          <select
+            value={typeof cfg.theme === "string" ? cfg.theme : cfg.theme.id}
+            onChange={(e) => setConfig({ theme: e.currentTarget.value })}
+            className="rounded-pill border border-line bg-white px-3 py-1 text-sm text-ink hover:border-ink"
+            aria-label="Preview theme"
+          >
+            {BUILT_IN_THEMES.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
       <textarea
         value={text}

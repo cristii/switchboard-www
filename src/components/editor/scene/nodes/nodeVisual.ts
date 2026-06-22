@@ -13,6 +13,7 @@ export interface NodeVisual {
   entry: NodeCatalogEntry;
   isGroup: boolean;
   isNote: boolean;
+  isText: boolean;
   Shape: ComponentType<ShapeProps>;
   width: number;
   depth: number;
@@ -20,6 +21,11 @@ export interface NodeVisual {
   color: string;
   emissive: string;
   emissiveIntensity: number;
+  /** Resolved material opacity (per-node override → theme default). */
+  opacity: number;
+  /** Theme material overrides (undefined = shape keeps its intrinsic value). */
+  roughness?: number;
+  metalness?: number;
 }
 
 export function resolveNodeVisual(
@@ -29,8 +35,9 @@ export function resolveNodeVisual(
 ): NodeVisual {
   const entry = getNodeCatalogEntry(node.kind);
   const isGroup = node.kind === "group";
-  const isNote = entry.shape === "paperTile";
-  const Shape = SHAPES[entry.shape];
+  const isText = node.kind === "text";
+  const isNote = entry.shape === "paperTile" && !isText;
+  const Shape = SHAPES[entry.shape] ?? SHAPES.box;
   const width = node.width ?? entry.defaultSize.width;
   const depth = node.depth ?? entry.defaultSize.depth;
   const height = node.height ?? entry.defaultSize.height;
@@ -41,5 +48,21 @@ export function resolveNodeVisual(
     : isNote
       ? 0
       : theme.nodeEmissiveIntensity;
-  return { entry, isGroup, isNote, Shape, width, depth, height, color, emissive, emissiveIntensity };
+  const opacity = node.opacity ?? theme.nodeOpacity;
+  return {
+    entry,
+    isGroup,
+    isNote,
+    isText,
+    Shape,
+    width,
+    depth,
+    height,
+    color,
+    emissive,
+    emissiveIntensity,
+    opacity,
+    roughness: theme.nodeRoughness,
+    metalness: theme.nodeMetalness,
+  };
 }

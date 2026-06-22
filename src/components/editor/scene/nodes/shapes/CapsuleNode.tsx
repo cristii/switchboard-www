@@ -2,9 +2,10 @@
 // radius near half its smaller dimension reads as a stadium-shaped pill.
 
 import { RoundedBox } from "@react-three/drei";
+import { NodeStandardMaterial } from "./NodeStandardMaterial";
 import type { ShapeProps } from "./types";
 
-export function CapsuleNode({ width, depth, height, color, emissive, emissiveIntensity }: ShapeProps) {
+export function CapsuleNode({ width, depth, height, color, emissive, emissiveIntensity, opacity, roughness, metalness }: ShapeProps) {
   const radius = (Math.min(depth, height) / 2) * 0.98;
   return (
     <RoundedBox
@@ -15,12 +16,13 @@ export function CapsuleNode({ width, depth, height, color, emissive, emissiveInt
       castShadow
       receiveShadow
     >
-      <meshStandardMaterial
+      <NodeStandardMaterial
         color={color}
-        roughness={0.42}
-        metalness={0.06}
         emissive={emissive}
         emissiveIntensity={emissiveIntensity}
+        opacity={opacity}
+        roughness={roughness}
+        metalness={metalness}
       />
     </RoundedBox>
   );

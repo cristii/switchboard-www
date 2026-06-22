@@ -10,8 +10,30 @@ export type { NodePaletteProps } from "./panels/NodePalette";
 export { Toolbar } from "./panels/Toolbar";
 export { Inspector } from "./panels/Inspector";
 export { ThemeToggle } from "./panels/ThemeToggle";
+export { ThemeManager } from "./panels/ThemeManager";
+export type { ThemeManagerProps } from "./panels/ThemeManager";
 export { MobileDrawer } from "./panels/MobileDrawer";
 export { useEditorTheme } from "./theme/useEditorTheme";
+export { useThemeManager } from "./theme/useThemeManager";
+export type { ThemeManagerApi } from "./theme/useThemeManager";
+
+// Theme system (ThemeSpec authoring + registry + resolution)
+export { cloneThemeSpec, normalizeThemeSpec } from "./theme/themeSpec";
+export type { ThemeSpec, LightSpec, ConnectorStyle } from "./theme/themeSpec";
+export {
+  BUILT_IN_THEMES,
+  listThemes,
+  getThemeSpec,
+  saveUserTheme,
+  deleteUserTheme,
+  resolveThemeFromConfig,
+  USER_THEMES_KEY,
+} from "./theme/themeRegistry";
+export { lightTheme } from "./theme/themes/light";
+export { darkTheme } from "./theme/themes/dark";
+export { awsTheme } from "./theme/themes/aws";
+export { resolveSceneTheme, getSceneTheme } from "./theme/sceneTheme";
+export type { SceneTheme } from "./theme/sceneTheme";
 export { useResponsiveLayout } from "./hooks/useResponsiveLayout";
 export { usePrefersReducedMotion } from "./hooks/usePrefersReducedMotion";
 export { NodeGlyph } from "./icons/NodeGlyph";
@@ -56,7 +78,7 @@ export {
   groupedSampleDiagram,
 } from "./sampleDiagram";
 
-export { PRESETS, n8nSampleDiagram, scoutsLeadsDiagram } from "./catalog/presets";
+export { PRESETS, n8nSampleDiagram, scoutsLeadsDiagram, awsWebHostingDiagram } from "./catalog/presets";
 export type { PresetEntry } from "./catalog/presets";
 export { layeredLayout } from "./catalog/layout/autoLayout";
 
@@ -69,6 +91,7 @@ export type {
   NodeKind,
   Port,
   Selection,
+  TextOrientation,
   Viewport,
   WorkflowEdge,
   WorkflowNode,

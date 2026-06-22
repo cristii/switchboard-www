@@ -16,10 +16,19 @@ export type NodeKind =
   | "integration"
   | "output"
   | "group"
-  | "note";
+  | "note"
+  | "text";
 
 /** Brand colour role a node maps onto (resolved to real colours per theme). */
 export type NodeColorRole = "orange" | "green" | "violet" | "amber" | "ink";
+
+/** How a piece of 3D canvas text is oriented in the scene:
+ *  - `billboard` — always faces the camera (legible from any angle);
+ *  - `ground`    — lies flat on the ground plane, read from above ("facing the sky");
+ *  - `uprightX`  — stands upright facing the +X plane;
+ *  - `uprightZ`  — stands upright facing the +Z plane.
+ *  See docs/themes/…theming_guide.md and the `text` node kind. */
+export type TextOrientation = "billboard" | "ground" | "uprightX" | "uprightZ";
 
 /** A connection point on a node. */
 export interface Port {
@@ -43,6 +52,8 @@ export interface WorkflowNode {
   height?: number;
   /** Explicit colour override; otherwise derived from the catalog colour role. */
   color?: string;
+  /** Per-node material opacity (0–1); falls back to the theme's node opacity. */
+  opacity?: number;
   /** Icon key into the editor icon set. */
   icon?: string;
   /** Membership in a `group` container node. */
@@ -72,6 +83,9 @@ export interface WorkflowEdge {
   /** Animated data-flow pulse. @default "off" */
   flow?: EdgeFlow;
   color?: string;
+  /** When set, the edge's `label` is rendered as 3D in-canvas text with this
+   *  orientation (instead of the flat DOM chip). See TextOrientation. */
+  labelOrientation?: TextOrientation;
 }
 
 /** Camera/viewport state (ground-plane target + orthographic zoom). */

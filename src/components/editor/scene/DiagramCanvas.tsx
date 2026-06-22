@@ -1,34 +1,41 @@
 "use client";
 
-// The shared R3F scene: orthographic isometric canvas with a soft gradient
-// backdrop, hemisphere + key/fill lighting, real (toggleable) soft cast shadows,
-// a faded grid, nodes, edges (with optional data-flow pulse), label projectors
-// and camera controls. Fully controlled (nodes/edges/selection via props) so the
-// editor and the read-only preview reuse it. `interactive` swaps the editable
-// NodeMesh / ConnectPreview for the static PreviewNode.
+// The shared R3F scene: a theme-driven isometric canvas. The active ThemeSpec
+// supplies the camera (orthographic OR perspective + FOV/position), a soft gradient
+// backdrop, multiple coloured lights + real (toggleable) soft cast shadows, an
+// optional faded grid, node materials (incl. transparency), connector width/colour
+// and 3D text. Fully controlled (nodes/edges/selection via props) so the editor and
+// the read-only preview reuse it. `interactive` swaps the editable NodeMesh /
+// ConnectPreview for the static PreviewNode.
 
+import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
 import { Backdrop } from "./Backdrop";
 import { Grid } from "./Grid";
+import { Lights } from "./Lights";
 import { NodeMesh } from "./nodes/NodeMesh";
 import { PreviewNode } from "./nodes/PreviewNode";
 import { OrthogonalEdge } from "./edges/OrthogonalEdge";
 import { ConnectPreview } from "./edges/ConnectPreview";
 import { EdgeLabelProjector, type EdgeLabelsRegistry } from "./edges/EdgeLabelsLayer";
 import { LabelProjector } from "./LabelProjector";
-import { CameraControls, type CameraApi } from "./CameraControls";
+import { CameraControls, type CameraApi, type CameraSpec } from "./CameraControls";
 import type { LabelsRegistry } from "./LabelsLayer";
-import { getSceneTheme } from "../theme/sceneTheme";
-import type { EditorTheme, Selection, WorkflowEdge, WorkflowNode } from "../state/types";
+import { resolveSceneTheme } from "../theme/sceneTheme";
+import type { ThemeSpec } from "../theme/themeSpec";
+import type { Selection, WorkflowEdge, WorkflowNode } from "../state/types";
 
 export interface DiagramCanvasProps {
-  theme: EditorTheme;
+  /** Active resolved theme. */
+  spec: ThemeSpec;
   nodes: WorkflowNode[];
   edges: WorkflowEdge[];
   selection?: Selection;
   /** Editable (NodeMesh + connect) vs static preview (PreviewNode). @default true */
   interactive?: boolean;
+  /** Master grid toggle (ANDed with the theme's grid.show via the host). */
   showGrid?: boolean;
+  /** Master shadow toggle. */
   showGround?: boolean;
   labelsRef: React.MutableRefObject<LabelsRegistry>;
   edgeLabelsRef: React.MutableRefObject<EdgeLabelsRegistry>;
@@ -43,8 +50,28 @@ export interface DiagramCanvasProps {
   onReady?: () => void;
 }
 
+/** Initial three.js camera props derived from the theme camera spec. */
+function initialCamera(cam: ThemeSpec["camera"], initialZoom?: number) {
+  const [dx, dy, dz] = cam.isoDir ?? [1, 1, 1];
+  const dir = new THREE.Vector3(dx, dy, dz);
+  if (dir.lengthSq() === 0) dir.set(1, 1, 1);
+  dir.normalize();
+  if (cam.kind === "perspective") {
+    const distance = cam.distance ?? 52;
+    const pos = dir.multiplyScalar(distance);
+    return { position: [pos.x, pos.y, pos.z] as [number, number, number], fov: cam.fov ?? 35, near: 0.1, far: 400 };
+  }
+  const pos = dir.multiplyScalar(40);
+  return {
+    position: [pos.x, pos.y, pos.z] as [number, number, number],
+    zoom: initialZoom ?? cam.zoom ?? 38,
+    near: 0.1,
+    far: 200,
+  };
+}
+
 export function DiagramCanvas({
-  theme,
+  spec,
   nodes,
   edges,
   selection = null,
@@ -62,14 +89,24 @@ export function DiagramCanvas({
   onBackgroundClick,
   onReady,
 }: DiagramCanvasProps) {
-  const scene = getSceneTheme(theme);
+  const scene = resolveSceneTheme(spec);
+  const isOrtho = spec.camera.kind !== "perspective";
+  const cameraSpec: CameraSpec = {
+    kind: spec.camera.kind,
+    isoDir: spec.camera.isoDir,
+    distance: spec.camera.distance,
+    fov: spec.camera.fov,
+  };
+  const initialTargetVal = initialTarget ?? spec.camera.target;
+  const showShadows = showGround && spec.shadow.enabled;
 
   // Stagger parallel edges that share a source so they don't perfectly overlap.
   const laneBySource: Record<string, number> = {};
 
   return (
     <Canvas
-      orthographic
+      key={spec.camera.kind}
+      orthographic={isOrtho}
       shadows
       dpr={[1, 2]}
       gl={{
@@ -78,42 +115,25 @@ export function DiagramCanvas({
         preserveDrawingBuffer: true,
         powerPreference: "high-performance",
       }}
-      camera={{ position: [24, 24, 24], zoom: initialZoom ?? 38, near: 0.1, far: 200 }}
+      camera={initialCamera(spec.camera, initialZoom)}
       style={{ width: "100%", height: "100%", display: "block", touchAction: "none" }}
       onCreated={({ gl }) => {
         apiRef.current.capturePng = () => gl.domElement.toDataURL("image/png");
         onReady?.();
       }}
     >
-      <Backdrop inner={scene.backgroundHi} outer={scene.background} />
+      <Backdrop inner={spec.background.colorHi ?? spec.background.color} outer={spec.background.color} />
 
-      <hemisphereLight args={[scene.hemiSky, scene.hemiGround, scene.hemiIntensity]} />
-      <ambientLight color={scene.ambient} intensity={scene.ambientIntensity} />
-      <directionalLight
-        position={[16, 24, 12]}
-        color={scene.key}
-        intensity={scene.keyIntensity}
-        castShadow={showGround}
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-        shadow-camera-near={1}
-        shadow-camera-far={90}
-        shadow-camera-left={-24}
-        shadow-camera-right={24}
-        shadow-camera-top={24}
-        shadow-camera-bottom={-24}
-        shadow-bias={-0.0004}
-        shadow-normalBias={0.02}
-        shadow-radius={6}
-      />
-      <directionalLight position={[-14, 10, -10]} color={scene.fill} intensity={scene.fillIntensity} />
+      <Lights lights={spec.lights} shadow={spec.shadow} castShadow={showShadows} />
 
-      {showGrid ? <Grid color={scene.grid} sectionColor={scene.gridStrong} /> : null}
+      {showGrid && spec.grid.show ? (
+        <Grid color={scene.grid} sectionColor={scene.gridStrong} opacity={scene.gridOpacity} />
+      ) : null}
 
-      {showGround ? (
+      {showShadows ? (
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
           <planeGeometry args={[400, 400]} />
-          <shadowMaterial transparent opacity={scene.shadowOpacity} />
+          <shadowMaterial transparent opacity={spec.shadow.opacity} />
         </mesh>
       ) : null}
 
@@ -178,9 +198,10 @@ export function DiagramCanvas({
       <CameraControls
         api={apiRef}
         nodes={nodes}
+        camera={cameraSpec}
         enabled={cameraEnabled}
-        initialZoom={initialZoom}
-        initialTarget={initialTarget}
+        initialZoom={initialZoom ?? spec.camera.zoom}
+        initialTarget={initialTargetVal}
         fitOnMount={fitOnMount}
       />
     </Canvas>

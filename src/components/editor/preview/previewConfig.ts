@@ -2,7 +2,8 @@
 // document ({ config, diagram }). The diagram itself is validated by schema.ts.
 
 import { deserialize } from "../state/schema";
-import type { Diagram, EditorTheme } from "../state/types";
+import type { ThemeSpec } from "../theme/themeSpec";
+import type { Diagram } from "../state/types";
 
 export interface PreviewConfig {
   showGrid: boolean;
@@ -13,7 +14,8 @@ export interface PreviewConfig {
   /** Explicit camera zoom; if both zoom and target are omitted the preview fits. */
   cameraZoom?: number;
   cameraTarget?: [number, number];
-  theme: EditorTheme;
+  /** A registered theme id ("light" | "dark" | "aws" | …) OR an inline ThemeSpec. */
+  theme: string | ThemeSpec;
 }
 
 export const DEFAULT_PREVIEW_CONFIG: PreviewConfig = {
@@ -30,12 +32,16 @@ function bool(v: unknown, fallback: boolean): boolean {
 
 export function mergePreviewConfig(partial?: Partial<PreviewConfig> | null): PreviewConfig {
   const p = (partial ?? {}) as Partial<PreviewConfig>;
+  const theme: string | ThemeSpec =
+    typeof p.theme === "string" || (!!p.theme && typeof p.theme === "object")
+      ? p.theme
+      : DEFAULT_PREVIEW_CONFIG.theme;
   const cfg: PreviewConfig = {
     showGrid: bool(p.showGrid, DEFAULT_PREVIEW_CONFIG.showGrid),
     showGround: bool(p.showGround, DEFAULT_PREVIEW_CONFIG.showGround),
     showLabels: bool(p.showLabels, DEFAULT_PREVIEW_CONFIG.showLabels),
     cameraMovable: bool(p.cameraMovable, DEFAULT_PREVIEW_CONFIG.cameraMovable),
-    theme: p.theme === "dark" ? "dark" : "light",
+    theme,
   };
   if (typeof p.cameraZoom === "number") cfg.cameraZoom = p.cameraZoom;
   if (Array.isArray(p.cameraTarget) && p.cameraTarget.length === 2) {

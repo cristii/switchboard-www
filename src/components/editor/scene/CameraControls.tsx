@@ -1,8 +1,11 @@
-// Orthographic isometric camera: a fixed iso view direction onto a movable
-// ground target. Pan = ctrl/middle/right drag + two-finger touch; zoom = wheel /
-// pinch (instant). Button/double-click actions (reset/fit/zoom) tween via a
-// per-frame lerp (disabled under reduced motion). Store-free: `nodes` (for fit)
-// and the initial camera come from props, so the editor and previews share it.
+// Isometric camera controls, driven by a theme CameraSpec (orthographic OR
+// perspective, with a configurable view direction, distance and FOV). A fixed iso
+// view direction looks onto a movable ground target. Pan = ctrl/middle/right drag
+// + two-finger touch; zoom = wheel / pinch (instant). Button/double-click actions
+// (reset/fit/zoom) tween via a per-frame lerp (disabled under reduced motion).
+// Store-free: `nodes` (for fit) and the camera config come from props, so the
+// editor and previews share it. Orthographic "scale" = zoom; perspective "scale"
+// = distance to the target (smaller = closer).
 
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -10,10 +13,20 @@ import * as THREE from "three";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import type { WorkflowNode } from "../state/types";
 
-const ISO_DIR = new THREE.Vector3(1, 1, 1).normalize();
-const CAM_DISTANCE = 40;
 const MIN_ZOOM = 8;
 const MAX_ZOOM = 120;
+const MIN_DIST = 12;
+const MAX_DIST = 200;
+
+export interface CameraSpec {
+  kind: "orthographic" | "perspective";
+  /** View direction onto the target. @default [1,1,1] */
+  isoDir?: [number, number, number];
+  /** Base camera distance along isoDir (perspective; ortho uses a fixed rig). */
+  distance?: number;
+  /** Perspective field of view (deg). @default 35 */
+  fov?: number;
+}
 
 export interface CameraApi {
   reset: () => void;
@@ -27,9 +40,11 @@ export interface CameraControlsProps {
   api?: React.MutableRefObject<CameraApi>;
   /** Nodes used by fit(). */
   nodes: WorkflowNode[];
+  /** Theme camera configuration. */
+  camera?: CameraSpec;
   /** Attach pan/zoom/touch listeners ("camera movable"). @default true */
   enabled?: boolean;
-  /** @default 38 */
+  /** Orthographic zoom on first frame. @default 38 */
   initialZoom?: number;
   /** @default [0,0] */
   initialTarget?: [number, number];
@@ -37,9 +52,12 @@ export interface CameraControlsProps {
   fitOnMount?: boolean;
 }
 
+const ORTHO_DISTANCE = 40;
+
 export function CameraControls({
   api,
   nodes,
+  camera: cameraSpec = { kind: "orthographic" },
   enabled = true,
   initialZoom = 38,
   initialTarget,
@@ -48,9 +66,21 @@ export function CameraControls({
   const { camera, gl, raycaster, size } = useThree();
   const reduced = usePrefersReducedMotion();
 
+  const isPersp = cameraSpec.kind === "perspective";
+  const dir = useMemo(() => {
+    const [x, y, z] = cameraSpec.isoDir ?? [1, 1, 1];
+    const v = new THREE.Vector3(x, y, z);
+    if (v.lengthSq() === 0) v.set(1, 1, 1);
+    return v.normalize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cameraSpec.isoDir?.[0], cameraSpec.isoDir?.[1], cameraSpec.isoDir?.[2]]);
+  const baseDistance = cameraSpec.distance ?? (isPersp ? 52 : ORTHO_DISTANCE);
+  const fov = cameraSpec.fov ?? 35;
+
   const target = useRef(new THREE.Vector3(0, 0, 0));
   const desiredTarget = useRef(new THREE.Vector3(0, 0, 0));
-  const desiredZoom = useRef(initialZoom);
+  const desiredScale = useRef(isPersp ? baseDistance : initialZoom); // zoom (ortho) | distance (persp)
+  const dist = useRef(baseDistance); // live distance (persp)
   const tweening = useRef(false);
   const panning = useRef(false);
   const last = useRef({ x: 0, y: 0 });
@@ -66,18 +96,28 @@ export function CameraControls({
   reducedRef.current = reduced;
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
+  const cfgRef = useRef({ isPersp, dir, baseDistance, fov });
+  cfgRef.current = { isPersp, dir, baseDistance, fov };
   const ix = initialTarget?.[0] ?? 0;
   const iy = initialTarget?.[1] ?? 0;
   const initRef = useRef({ zoom: initialZoom, x: ix, y: iy, fit: fitOnMount });
   initRef.current = { zoom: initialZoom, x: ix, y: iy, fit: fitOnMount };
 
   const ortho = () => camera as THREE.OrthographicCamera;
+  const persp = () => camera as THREE.PerspectiveCamera;
   const clampZoom = (z: number) => Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, z));
+  const clampDist = (d: number) => Math.max(MIN_DIST, Math.min(MAX_DIST, d));
 
   const applyCamera = () => {
-    camera.position.copy(target.current).addScaledVector(ISO_DIR, CAM_DISTANCE);
+    const { isPersp: p, dir: d, baseDistance: base, fov: f } = cfgRef.current;
+    const distance = p ? dist.current : base;
+    camera.position.copy(target.current).addScaledVector(d, distance);
     camera.up.set(0, 1, 0);
     camera.lookAt(target.current);
+    if (p) {
+      const pc = persp();
+      if (pc.fov !== f) pc.fov = f;
+    }
     camera.updateProjectionMatrix();
   };
 
@@ -88,16 +128,17 @@ export function CameraControls({
       -((clientY - rect.top) / rect.height) * 2 + 1,
     );
     raycaster.setFromCamera(ndc, camera);
-    const p = new THREE.Vector3();
-    return raycaster.ray.intersectPlane(plane, p) ? p : null;
+    const pt = new THREE.Vector3();
+    return raycaster.ray.intersectPlane(plane, pt) ? pt : null;
   };
 
-  const goTo = (tx: number, tz: number, zoom: number) => {
+  const goTo = (tx: number, tz: number, scale: number) => {
     desiredTarget.current.set(tx, 0, tz);
-    desiredZoom.current = clampZoom(zoom);
+    desiredScale.current = cfgRef.current.isPersp ? clampDist(scale) : clampZoom(scale);
     if (reducedRef.current) {
       target.current.copy(desiredTarget.current);
-      ortho().zoom = desiredZoom.current;
+      if (cfgRef.current.isPersp) dist.current = desiredScale.current;
+      else ortho().zoom = desiredScale.current;
       tweening.current = false;
       applyCamera();
     } else {
@@ -105,7 +146,8 @@ export function CameraControls({
     }
   };
 
-  const reset = () => goTo(initRef.current.x, initRef.current.y, initRef.current.zoom);
+  const resetScale = () => (cfgRef.current.isPersp ? cfgRef.current.baseDistance : initRef.current.zoom);
+  const reset = () => goTo(initRef.current.x, initRef.current.y, resetScale());
 
   const fit = () => {
     const ns = nodesRef.current;
@@ -123,28 +165,49 @@ export function CameraControls({
     const pad = 3;
     const worldW = maxX - minX + pad * 2;
     const worldH = maxZ - minZ + pad * 2;
-    const isoFactor = 1.7;
-    const { w, h } = sizeRef.current;
-    const zoom = Math.min(w / (worldW * isoFactor), h / (worldH * isoFactor));
-    goTo((minX + maxX) / 2, (minZ + maxZ) / 2, zoom);
+    const cx = (minX + maxX) / 2;
+    const cz = (minZ + maxZ) / 2;
+    if (cfgRef.current.isPersp) {
+      const half = (cfgRef.current.fov * Math.PI) / 180 / 2;
+      const need = Math.max(worldW, worldH) * 0.85;
+      const distance = need / Math.max(0.1, Math.tan(half));
+      goTo(cx, cz, distance);
+    } else {
+      const isoFactor = 1.7;
+      const { w, h } = sizeRef.current;
+      const zoom = Math.min(w / (worldW * isoFactor), h / (worldH * isoFactor));
+      goTo(cx, cz, zoom);
+    }
   };
 
-  const baseline = () => (tweening.current ? desiredZoom.current : ortho().zoom);
-  const zoomIn = () => goTo(desiredTarget.current.x, desiredTarget.current.z, baseline() * 1.2);
-  const zoomOut = () => goTo(desiredTarget.current.x, desiredTarget.current.z, baseline() / 1.2);
+  const baseline = () => {
+    if (tweening.current) return desiredScale.current;
+    return cfgRef.current.isPersp ? dist.current : ortho().zoom;
+  };
+  // Perspective "zoom in" = smaller distance; orthographic "zoom in" = larger zoom.
+  const zoomIn = () =>
+    goTo(desiredTarget.current.x, desiredTarget.current.z, cfgRef.current.isPersp ? baseline() / 1.2 : baseline() * 1.2);
+  const zoomOut = () =>
+    goTo(desiredTarget.current.x, desiredTarget.current.z, cfgRef.current.isPersp ? baseline() * 1.2 : baseline() / 1.2);
 
   useFrame(() => {
     if (!tweening.current) return;
     target.current.lerp(desiredTarget.current, 0.18);
-    const oz = ortho().zoom;
-    ortho().zoom = oz + (desiredZoom.current - oz) * 0.18;
+    if (cfgRef.current.isPersp) {
+      dist.current += (desiredScale.current - dist.current) * 0.18;
+    } else {
+      const oz = ortho().zoom;
+      ortho().zoom = oz + (desiredScale.current - oz) * 0.18;
+    }
     applyCamera();
+    const cur = cfgRef.current.isPersp ? dist.current : ortho().zoom;
     if (
       target.current.distanceTo(desiredTarget.current) < 0.01 &&
-      Math.abs(ortho().zoom - desiredZoom.current) < 0.05
+      Math.abs(cur - desiredScale.current) < (cfgRef.current.isPersp ? 0.08 : 0.05)
     ) {
       target.current.copy(desiredTarget.current);
-      ortho().zoom = desiredZoom.current;
+      if (cfgRef.current.isPersp) dist.current = desiredScale.current;
+      else ortho().zoom = desiredScale.current;
       applyCamera();
       tweening.current = false;
     }
@@ -191,10 +254,16 @@ export function CameraControls({
     const onWheel = (e: WheelEvent) => {
       if (!enabledRef.current) return;
       e.preventDefault();
-      const factor = Math.exp(-e.deltaY * 0.0015);
-      ortho().zoom = clampZoom(ortho().zoom * factor);
-      desiredZoom.current = ortho().zoom;
-      ortho().updateProjectionMatrix();
+      if (cfgRef.current.isPersp) {
+        dist.current = clampDist(dist.current * Math.exp(e.deltaY * 0.0015));
+        desiredScale.current = dist.current;
+        applyCamera();
+      } else {
+        const factor = Math.exp(-e.deltaY * 0.0015);
+        ortho().zoom = clampZoom(ortho().zoom * factor);
+        desiredScale.current = ortho().zoom;
+        ortho().updateProjectionMatrix();
+      }
     };
     const onContextMenu = (e: MouseEvent) => e.preventDefault();
 
@@ -226,8 +295,14 @@ export function CameraControls({
         target.current.add(before.sub(after));
         desiredTarget.current.copy(target.current);
       }
-      ortho().zoom = clampZoom(ortho().zoom * (info.dist / pinch.dist));
-      desiredZoom.current = ortho().zoom;
+      const ratio = info.dist / pinch.dist;
+      if (cfgRef.current.isPersp) {
+        dist.current = clampDist(dist.current / ratio);
+        desiredScale.current = dist.current;
+      } else {
+        ortho().zoom = clampZoom(ortho().zoom * ratio);
+        desiredScale.current = ortho().zoom;
+      }
       applyCamera();
       pinch = info;
     };
@@ -272,6 +347,14 @@ export function CameraControls({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialZoom, ix, iy]);
+
+  // Re-apply when the theme camera (direction / distance / fov) changes.
+  useEffect(() => {
+    if (!didInit.current) return;
+    if (isPersp) dist.current = Math.min(dist.current, baseDistance);
+    applyCamera();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPersp, baseDistance, fov, dir]);
 
   return null;
 }

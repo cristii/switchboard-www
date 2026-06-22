@@ -4,6 +4,7 @@
 
 import { animated, useSpring } from "@react-spring/three";
 import { GroupContainer } from "./shapes/GroupContainer";
+import { TextNode } from "./shapes/TextNode";
 import { resolveNodeVisual } from "./nodeVisual";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import type { SceneTheme } from "../../theme/sceneTheme";
@@ -16,7 +17,7 @@ export interface PreviewNodeProps {
 
 export function PreviewNode({ node, theme }: PreviewNodeProps) {
   const reduced = usePrefersReducedMotion();
-  const { isGroup, Shape, width, depth, height, color, emissive, emissiveIntensity } =
+  const { isGroup, isText, Shape, width, depth, height, color, emissive, emissiveIntensity, opacity, roughness, metalness } =
     resolveNodeVisual(node, theme, false);
 
   const { scale } = useSpring({
@@ -31,6 +32,8 @@ export function PreviewNode({ node, theme }: PreviewNodeProps) {
       <animated.group scale={scale}>
         {isGroup ? (
           <GroupContainer node={node} theme={theme} selected={false} />
+        ) : isText ? (
+          <TextNode node={node} theme={theme} selected={false} />
         ) : (
           <Shape
             width={width}
@@ -39,6 +42,9 @@ export function PreviewNode({ node, theme }: PreviewNodeProps) {
             color={color}
             emissive={emissive}
             emissiveIntensity={emissiveIntensity}
+            opacity={opacity}
+            roughness={roughness}
+            metalness={metalness}
           />
         )}
       </animated.group>

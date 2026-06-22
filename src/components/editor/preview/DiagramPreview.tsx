@@ -15,6 +15,7 @@ import { LabelsLayer, type LabelsRegistry } from "../scene/LabelsLayer";
 import { EdgeLabelsLayer, type EdgeLabelsRegistry } from "../scene/edges/EdgeLabelsLayer";
 import type { CameraApi } from "../scene/CameraControls";
 import { DEFAULT_PREVIEW_CONFIG, type PreviewConfig } from "./previewConfig";
+import { resolveThemeFromConfig } from "../theme/themeRegistry";
 import type { Diagram } from "../state/types";
 
 export interface DiagramPreviewProps {
@@ -34,6 +35,7 @@ const NOOP_API: CameraApi = {
 
 export function DiagramPreview({ diagram, config, className, style }: DiagramPreviewProps) {
   const cfg: PreviewConfig = { ...DEFAULT_PREVIEW_CONFIG, ...config };
+  const spec = React.useMemo(() => resolveThemeFromConfig(cfg.theme), [cfg.theme]);
   const [ready, setReady] = React.useState(false);
   const labelsRef = React.useRef<LabelsRegistry>(new Map());
   const edgeLabelsRef = React.useRef<EdgeLabelsRegistry>(new Map());
@@ -51,10 +53,10 @@ export function DiagramPreview({ diagram, config, className, style }: DiagramPre
   };
 
   return (
-    <div data-editor-theme={cfg.theme} className={className} style={rootStyle}>
+    <div data-editor-theme={spec.chromeBase} className={className} style={rootStyle}>
       <div style={{ position: "absolute", inset: 0 }}>
         <DiagramCanvas
-          theme={cfg.theme}
+          spec={spec}
           nodes={diagram.nodes}
           edges={diagram.edges}
           interactive={false}

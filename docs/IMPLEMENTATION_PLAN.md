@@ -195,8 +195,25 @@ docs/
   playground JSON field).
 
 ## Status
-- [x] Step 0 — `docs/` reorg + this plan (current task).
-- [ ] Step 1 — remaining tutorial/prompt docs.
-- [ ] Step 2 — theme system + manager + AWS theme + in-canvas text.
+- [x] Step 0 — `docs/` reorg + this plan.
+- [x] Step 1 (theme docs) — `themes/CREATING_THEMES.md`, `themes/THEME_PROMPT.md`, theming guide
+  expanded for `ThemeSpec`. *(Node-type / path-algorithm / Blender docs intentionally deferred to land
+  with Steps 3 & 4, so the tutorials describe shipped APIs.)*
+- [x] Step 2 — theme system (`ThemeSpec` + registry + `useThemeManager`), data-driven multi-light
+  scene (`Lights.tsx`), spec-driven camera (orthographic **+** perspective/FOV), node transparency,
+  3D in-canvas text (`TextNode`) + 3D edge labels, **Theme manager pane**, built-in **`aws`** theme +
+  showcase preset, preview/playground theme selection (id or inline spec).
 - [ ] Step 3 — pluggable routing + connector styles.
 - [ ] Step 4 — model support + linking system.
+
+### Step 2 implementation notes / deviations
+- **`SceneCamera` folded into `CameraControls`** (a single `CameraSpec`-driven controller handles both
+  orthographic and perspective) rather than a separate component — less double-management of the camera.
+- **`SceneTheme` kept as the resolved runtime view**: `resolveSceneTheme(spec)` flattens a `ThemeSpec`
+  so the existing meshes/edges/shapes consume it unchanged; the spec is the authoring/serialisation unit.
+- **`connector: "ribbonArrow" | "tube"`** is accepted in the spec now but renders as a thick line until
+  the Step 3 connector renderers ship (AWS flow arrows therefore read as thick orange lines for now).
+- **Chrome** still uses the `light`/`dark` `editor-tokens.css` blocks via `spec.chromeBase`; a fully
+  custom chrome palette per theme is a small follow-up (noted in the theming guide §6).
+- **Routing registry** (`spec.edges.routing` is a string id) is wired through the type but resolved by
+  the existing `getRoutePoints`; the pluggable registry itself is Step 3.

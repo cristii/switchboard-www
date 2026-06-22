@@ -6,6 +6,40 @@ and the read-only preview (`DiagramPreview` / `/diagram-preview`) — they share
 
 ---
 
+## 0. The `ThemeSpec` system (current model — start here)
+
+As of the theme system (Step 2 of [`../IMPLEMENTATION_PLAN.md`](../IMPLEMENTATION_PLAN.md)), a theme is
+**one `ThemeSpec` object** describing every canvas visual, edited **live** in the **Theme manager**
+pane (toolbar palette button). You rarely hand-edit `sceneTheme.ts` any more — the old `LIGHT`/`DARK`
+constants are now *derived* from `ThemeSpec`s. The field-level guidance in §3–§5 below still applies —
+those values are now **fields of the spec** instead of loose constants.
+
+- **Author a theme:** [`CREATING_THEMES.md`](./CREATING_THEMES.md) (manager → autosave → export →
+  commit). **Generate one with an LLM:** [`THEME_PROMPT.md`](./THEME_PROMPT.md).
+- **What a `ThemeSpec` contains:** `chromeBase` (light/dark DOM tokens), `background`, `grid`,
+  `lights[]` (multiple coloured ambient/hemisphere/directional/point), `shadow`, `camera`
+  (orthographic **or** perspective + FOV/zoom/direction), `nodes` (opacity, roughness, metalness,
+  glow, the five role colours, selection, paper), `edges` (colour, width, flow, arrow size, routing,
+  connector), `text` (colour/opacity/size/orientation/font). Full type:
+  `src/components/editor/theme/themeSpec.ts`.
+- **Registry + persistence:** `theme/themeRegistry.ts` merges **built-in** themes
+  (`theme/themes/{light,dark,aws}.ts`, shipped in the build) with **user** themes from
+  `localStorage["sb-editor-themes"]`. `theme/useThemeManager.ts` owns the active theme +
+  create/duplicate/rename/delete/import/export; `panels/ThemeManager.tsx` is the pane.
+- **Resolution:** `resolveSceneTheme(spec)` (in `sceneTheme.ts`) flattens a `ThemeSpec` into the
+  `SceneTheme` the meshes/edges consume; `DiagramCanvas` reads `lights`/`camera`/`shadow`/`grid`/
+  `background` straight off the spec (data-driven `<Lights>` + spec-driven `<CameraControls>`).
+- **Built-in `aws` theme:** reproduces the AWS isometric look (white bg, matte-grey transparent
+  nodes, soft shadows, thick orange flow, translucent orange platforms). Try it: Storybook
+  `Editor/Theming → AWS`, or `<IsometricWorkflowEditor defaultThemeId="aws" />`, or the
+  `aws` preset / `config.theme: "aws"`.
+
+> The rest of this guide (the original two-layer explanation + per-field tuning) remains accurate as a
+> **reference for what each field does**; just remember the manager/spec is the entry point now, and
+> "edit the `LIGHT` constant" means "edit the `lightTheme` spec (or use the manager)".
+
+---
+
 ## 1. The two theming layers (read this first)
 
 A theme has **two halves** that must stay in sync, because the DOM and WebGL can't share values:
@@ -13,7 +47,7 @@ A theme has **two halves** that must stay in sync, because the DOM and WebGL can
 | Layer | What it styles | Source of truth | Form |
 |---|---|---|---|
 | **Chrome tokens** | Toolbar, palette, inspector, labels, panels (HTML/CSS) | `src/components/editor/theme/editor-tokens.css` | CSS variables scoped to `[data-editor-theme="…"]` |
-| **Scene palette** | The 3D canvas: lights, materials, grid, shadows, backdrop, edges, flow (WebGL) | `src/components/editor/theme/sceneTheme.ts` | TypeScript constants (`LIGHT` / `DARK`) — **hex strings** |
+| **Scene (ThemeSpec)** | The 3D canvas: camera, lights, materials, grid, shadows, backdrop, edges, flow, text (WebGL) | `theme/themeSpec.ts` + `theme/themes/*` (resolved by `resolveSceneTheme` in `sceneTheme.ts`) | A **`ThemeSpec`** object — **hex strings** + numbers |
 
 WebGL materials/lights **cannot** read CSS variables, so the scene palette duplicates the brand
 colours as concrete hex. **Rule of thumb:** when you change a colour, update it in **both** places
@@ -32,15 +66,23 @@ A single string — the **theme value** (`"light"` or `"dark"`, type `EditorThem
 ```
 src/components/editor/
   theme/
-    editor-tokens.css     # chrome CSS vars (--editor-*, --node-*) per theme
-    sceneTheme.ts         # WebGL palette: SceneTheme interface + LIGHT/DARK + getSceneTheme()
-    useEditorTheme.ts     # theme state: localStorage ("sb-editor-theme") + prefers-color-scheme
+    themeSpec.ts          # ThemeSpec + LightSpec types, defaults, normalizeThemeSpec (import)
+    themes/{light,dark,aws}.ts  # built-in ThemeSpecs (shipped in the build)
+    themeRegistry.ts      # built-in + localStorage user themes; getThemeSpec / resolveThemeFromConfig
+    useThemeManager.ts    # active theme + CRUD/import/export (localStorage "sb-editor-theme(s)")
+    sceneTheme.ts         # SceneTheme (resolved view) + resolveSceneTheme(spec) + getSceneTheme()
+    editor-tokens.css     # chrome CSS vars (--editor-*, --node-*) per chromeBase
+    useEditorTheme.ts     # legacy light/dark chrome toggle (kept; editor now uses useThemeManager)
+  panels/ThemeManager.tsx # the live theme-editor pane (toolbar palette button)
   scene/
-    DiagramCanvas.tsx     # the lights live here (hemisphere + ambient + key/fill directional)
-    Backdrop.tsx          # radial gradient background (uses scene.backgroundHi → scene.background)
-    Grid.tsx              # grid colours come from scene.grid / scene.gridStrong
-    nodes/shapes/*.tsx    # material roughness/metalness (sheen) per shape
-  preview/previewConfig.ts # PreviewConfig.theme for embeds
+    DiagramCanvas.tsx     # reads spec.camera/lights/shadow/grid/background; passes resolved scene down
+    Lights.tsx            # data-driven lights from spec.lights[] (ambient/hemisphere/directional/point)
+    CameraControls.tsx    # orthographic OR perspective (CameraSpec: kind/isoDir/distance/fov)
+    Backdrop.tsx          # gradient background (spec.background.colorHi → color)
+    Grid.tsx              # grid colours/opacity from the resolved scene
+    nodes/shapes/*.tsx    # NodeStandardMaterial: opacity + roughness/metalness overrides
+    nodes/shapes/TextNode.tsx # 3D in-canvas text (billboard/ground/upright) + edge labels
+  preview/previewConfig.ts # PreviewConfig.theme = theme id OR inline ThemeSpec
 ```
 
 The light-theme chrome tokens are derived from the site brand tokens in `src/styles/colors.css`
@@ -165,42 +207,28 @@ colour there, reflect it in the scene `LIGHT` palette too.
 
 ## 6. Create a NEW theme (e.g. "midnight" or "blueprint")
 
-The system ships `light` + `dark`. Adding a theme is a small, well-defined change in 4–5 spots:
+> **This is now data-driven** — no type-widening, no scene-palette constant. The scene reads a
+> `ThemeSpec`, so a new theme is **one object**. The step-by-step is in
+> [`CREATING_THEMES.md`](./CREATING_THEMES.md); the short version:
 
-1. **Widen the type** — `state/types.ts`:
-   ```ts
-   export type EditorTheme = "light" | "dark" | "midnight";
-   ```
-2. **Add the chrome block** — `theme/editor-tokens.css`: copy the `[data-editor-theme="dark"]` block,
-   rename to `[data-editor-theme="midnight"]`, and set every `--editor-*` / `--node-*` value.
-3. **Add the scene palette** — `theme/sceneTheme.ts`: copy `DARK` into a new `MIDNIGHT: SceneTheme`,
-   tune the hex/intensities, then map it:
-   ```ts
-   export function getSceneTheme(theme: EditorTheme): SceneTheme {
-     if (theme === "dark") return DARK;
-     if (theme === "midnight") return MIDNIGHT;
-     return LIGHT;
-   }
-   ```
-4. **Decide how it's selected:**
-   - The sun/moon **toggle** only flips light↔dark. For 3+ themes, drive it with `setTheme("midnight")`
-     (e.g. a small theme dropdown), or change `useEditorTheme.toggle` to **cycle** an ordered list.
-   - **Preview config** currently coerces unknown themes to light/dark in `mergePreviewConfig`
-     (`previewConfig.ts`: `p.theme === "dark" ? "dark" : "light"`). To allow `"midnight"` in preview
-     JSON, accept it there too (e.g. validate against the set of known themes).
-5. **Test in the new theme:** Storybook `Editor/Theming` (force `defaultTheme="midnight"`) and the
-   `/diagram-preview` playground (`"config": { "theme": "midnight" }`).
+1. **Author the spec** in the Theme manager (palette button) — *New* forks the current theme; tune
+   everything live; it autosaves to `localStorage`. (Or generate one via
+   [`THEME_PROMPT.md`](./THEME_PROMPT.md) and **Import** the JSON.)
+2. **Pick `chromeBase`** — `"light"` or `"dark"`. This selects which `editor-tokens.css` block styles
+   the **HTML chrome** (toolbar/palette/inspector). Most themes reuse one of the two existing chrome
+   palettes; the **scene** is fully recoloured by the spec regardless.
+3. **Ship it (optional)** — Export JSON → add `theme/themes/<id>.ts` → register in
+   `theme/themeRegistry.ts`'s `BUILT_IN_THEMES`. Now it's available to everyone (manager dropdown,
+   preview `theme` field, playground). `npm run typecheck && npm run build`.
+4. **Use it** — `<IsometricWorkflowEditor defaultThemeId="<id>" />`, or preview
+   `"config": { "theme": "<id>" }` (an inline full `ThemeSpec` works too).
 
-> Keep the **chrome block** and the **scene palette** for the new theme consistent (same accent,
-> same surface family) — they're two views of the same theme.
-
-### Optional: make themes fully data-driven (future refactor)
-Adding themes touches several files because chrome tokens (CSS) and scene palette (TS) are separate.
-If you'll have many themes, consider a single registry: a `themes.ts` exporting
-`Record<string, { scene: SceneTheme; tokens: Record<string,string> }>`, apply `tokens` to the editor
-root via inline CSS custom properties (instead of static CSS blocks), and look up `scene` by name.
-Then a new theme = one object, and `EditorTheme` becomes `string`. Not required for light/dark — only
-worth it past ~3 themes.
+**Custom chrome palette (advanced):** if `chromeBase: "light" | "dark"` isn't enough and you want a
+bespoke toolbar/panel colourway, add a new `[data-editor-theme="<id>"]` block in `editor-tokens.css`
+and set `chromeBase` to that id's base — but `data-editor-theme` currently only renders `light`/`dark`
+strings (from `spec.chromeBase`); wiring a third chrome id is a small follow-up (set
+`data-editor-theme={spec.id}` when a matching CSS block exists). The **preview** already accepts any
+theme id / inline spec — `mergePreviewConfig` no longer coerces to light/dark.
 
 ---
 

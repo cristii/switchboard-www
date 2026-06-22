@@ -14,7 +14,7 @@ import { NodeGlyph } from "../icons/NodeGlyph";
 import { getNodeCatalogEntry } from "../catalog/nodeCatalog";
 import { useWorkflowStore } from "../state/useWorkflowStore";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
-import type { EdgeFlow, NodeColorRole } from "../state/types";
+import type { EdgeFlow, NodeColorRole, TextOrientation } from "../state/types";
 
 const SWATCHES: { role: NodeColorRole; hex: string }[] = [
   { role: "orange", hex: "#b45309" },
@@ -179,6 +179,53 @@ export function Inspector({ className, style }: InspectorProps) {
               </button>
             </div>
           </Row>
+
+          {node.kind !== "group" ? (
+            <Row>
+              <div style={sectionLabel}>Opacity</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <input
+                  type="range"
+                  min={0.1}
+                  max={1}
+                  step={0.02}
+                  value={node.opacity ?? 1}
+                  onChange={(e) => updateNode(node.id, { opacity: Number(e.currentTarget.value) })}
+                  style={{ flex: 1, accentColor: "var(--editor-accent)" }}
+                  aria-label="Node opacity"
+                />
+                <span style={{ fontFamily: "var(--font-mono, monospace)", fontSize: "0.7rem", color: "var(--editor-text-muted)", width: 32, textAlign: "right" }}>
+                  {(node.opacity ?? 1).toFixed(2)}
+                </span>
+              </div>
+            </Row>
+          ) : null}
+
+          {node.kind === "text" ? (
+            <Row>
+              <div style={sectionLabel}>Text</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <Select
+                  label="Orientation"
+                  value={(node.meta?.orientation as TextOrientation) ?? "billboard"}
+                  options={[
+                    { value: "billboard", label: "Billboard (faces camera)" },
+                    { value: "ground", label: "Ground (flat)" },
+                    { value: "uprightX", label: "Upright · X plane" },
+                    { value: "uprightZ", label: "Upright · Z plane" },
+                  ]}
+                  onChange={(v) => updateNode(node.id, { meta: { ...node.meta, orientation: v } })}
+                />
+                <Field
+                  key={`tsize-${node.id}`}
+                  label="Size"
+                  type="number"
+                  defaultValue={typeof node.meta?.size === "number" ? (node.meta.size as number) : 0.6}
+                  onCommit={(v) => Number(v) > 0 && updateNode(node.id, { meta: { ...node.meta, size: Number(v) } })}
+                />
+              </div>
+            </Row>
+          ) : null}
 
           {node.kind === "group" ? (
             <Row>
