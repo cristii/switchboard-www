@@ -14,7 +14,7 @@ import { NodeGlyph } from "../icons/NodeGlyph";
 import { getNodeCatalogEntry } from "../catalog/nodeCatalog";
 import { useWorkflowStore } from "../state/useWorkflowStore";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
-import type { NodeColorRole } from "../state/types";
+import type { EdgeFlow, NodeColorRole } from "../state/types";
 
 const SWATCHES: { role: NodeColorRole; hex: string }[] = [
   { role: "orange", hex: "#b45309" },
@@ -258,6 +258,19 @@ export function Inspector({ className, style }: InspectorProps) {
                 { value: "dashed", label: "Dashed (async)" },
               ]}
               onChange={(v) => updateEdge(edge.id, { style: v as "solid" | "dashed" })}
+            />
+          </Row>
+          <Row>
+            <Select
+              label="Data flow"
+              value={edge.flow ?? "off"}
+              options={[
+                { value: "off", label: "Off" },
+                { value: "slow", label: "Slow" },
+                { value: "normal", label: "Normal" },
+                { value: "fast", label: "Fast" },
+              ]}
+              onChange={(v) => updateEdge(edge.id, { flow: v as EdgeFlow })}
             />
           </Row>
           <Row>

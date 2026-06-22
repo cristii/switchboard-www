@@ -25,6 +25,11 @@ export interface ToolbarProps {
   onPickTemplate?: (id: string) => void;
   /** Optional auto-arrange action. */
   onAutoArrange?: () => void;
+  /** View toggles. */
+  showGrid?: boolean;
+  showGround?: boolean;
+  onToggleGrid?: () => void;
+  onToggleGround?: () => void;
 }
 
 const templateSelectStyle: React.CSSProperties = {
@@ -58,6 +63,10 @@ export function Toolbar({
   templates,
   onPickTemplate,
   onAutoArrange,
+  showGrid = true,
+  showGround = true,
+  onToggleGrid,
+  onToggleGround,
 }: ToolbarProps) {
   const undo = useWorkflowStore((s) => s.undo);
   const redo = useWorkflowStore((s) => s.redo);
@@ -114,6 +123,13 @@ export function Toolbar({
       <IconButton label="Reset view" glyph="reset" onClick={() => apiRef.current.reset()} />
       {onAutoArrange ? (
         <IconButton label="Auto-arrange" glyph="layout" onClick={onAutoArrange} />
+      ) : null}
+      <Divider />
+      {onToggleGrid ? (
+        <IconButton label="Toggle grid" glyph="grid" active={showGrid} onClick={onToggleGrid} />
+      ) : null}
+      {onToggleGround ? (
+        <IconButton label="Toggle shadows" glyph="shadow" active={showGround} onClick={onToggleGround} />
       ) : null}
       <Divider />
       <IconButton label="Export JSON" glyph="download" onClick={exportJson} />

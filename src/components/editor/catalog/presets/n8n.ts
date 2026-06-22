@@ -15,9 +15,9 @@ export const n8nSampleDiagram: Diagram = {
     { id: "n", kind: "output", label: "No-op", x: 3.5, y: 3 },
   ],
   edges: [
-    { id: "e1", source: "t", target: "s" },
-    { id: "e2", source: "s", target: "f" },
-    { id: "e3", source: "f", target: "h", label: "true" },
+    { id: "e1", source: "t", target: "s", flow: "normal" },
+    { id: "e2", source: "s", target: "f", flow: "normal" },
+    { id: "e3", source: "f", target: "h", label: "true", flow: "normal" },
     { id: "e4", source: "f", target: "n", label: "false", style: "dashed" },
     { id: "e5", source: "h", target: "sl" },
   ],

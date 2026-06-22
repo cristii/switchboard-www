@@ -1,12 +1,13 @@
 "use client";
 
-// The R3F scene: orthographic isometric canvas, lights, grid, contact shadow,
-// node meshes, edges, the connection preview, the label projectors and camera
-// controls. Colours come from the theme palette (sceneTheme.ts).
-// preserveDrawingBuffer is on so PNG export (P6) can read the canvas.
+// The R3F scene: orthographic isometric canvas with a soft gradient backdrop,
+// hemisphere + key/fill lighting, real (toggleable) soft cast shadows, a faded
+// grid, node meshes, edges (with optional data-flow pulse), the connection
+// preview, label projectors and camera controls. Colours come from the theme
+// palette (sceneTheme.ts). preserveDrawingBuffer keeps PNG export working.
 
 import { Canvas } from "@react-three/fiber";
-import { ContactShadows } from "@react-three/drei";
+import { Backdrop } from "./Backdrop";
 import { Grid } from "./Grid";
 import { NodeMesh } from "./nodes/NodeMesh";
 import { OrthogonalEdge } from "./edges/OrthogonalEdge";
@@ -25,10 +26,22 @@ export interface DiagramCanvasProps {
   edgeLabelsRef: React.MutableRefObject<EdgeLabelsRegistry>;
   /** Imperative camera/scene api, populated by CameraControls + onCreated. */
   apiRef: React.MutableRefObject<CameraApi>;
+  /** Show the ground grid. @default true */
+  showGrid?: boolean;
+  /** Cast soft node shadows onto a ground plane. @default true */
+  showGround?: boolean;
   onReady?: () => void;
 }
 
-export function DiagramCanvas({ theme, labelsRef, edgeLabelsRef, apiRef, onReady }: DiagramCanvasProps) {
+export function DiagramCanvas({
+  theme,
+  labelsRef,
+  edgeLabelsRef,
+  apiRef,
+  showGrid = true,
+  showGround = true,
+  onReady,
+}: DiagramCanvasProps) {
   const scene = getSceneTheme(theme);
   const nodes = useWorkflowStore((s) => s.nodes);
   const edges = useWorkflowStore((s) => s.edges);
@@ -41,6 +54,7 @@ export function DiagramCanvas({ theme, labelsRef, edgeLabelsRef, apiRef, onReady
   return (
     <Canvas
       orthographic
+      shadows
       dpr={[1, 2]}
       gl={{
         antialias: true,
@@ -55,13 +69,38 @@ export function DiagramCanvas({ theme, labelsRef, edgeLabelsRef, apiRef, onReady
         onReady?.();
       }}
     >
-      <color attach="background" args={[scene.background]} />
+      <Backdrop inner={scene.backgroundHi} outer={scene.background} />
 
+      <hemisphereLight args={[scene.hemiSky, scene.hemiGround, scene.hemiIntensity]} />
       <ambientLight color={scene.ambient} intensity={scene.ambientIntensity} />
-      <directionalLight position={[14, 22, 10]} color={scene.key} intensity={scene.keyIntensity} />
-      <directionalLight position={[-12, 10, -8]} color={scene.fill} intensity={scene.fillIntensity} />
+      <directionalLight
+        position={[16, 24, 12]}
+        color={scene.key}
+        intensity={scene.keyIntensity}
+        castShadow={showGround}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-camera-near={1}
+        shadow-camera-far={90}
+        shadow-camera-left={-24}
+        shadow-camera-right={24}
+        shadow-camera-top={24}
+        shadow-camera-bottom={-24}
+        shadow-bias={-0.0004}
+        shadow-normalBias={0.02}
+        shadow-radius={6}
+      />
+      <directionalLight position={[-14, 10, -10]} color={scene.fill} intensity={scene.fillIntensity} />
 
-      <Grid color={scene.grid} sectionColor={scene.gridStrong} />
+      {showGrid ? <Grid color={scene.grid} sectionColor={scene.gridStrong} /> : null}
+
+      {/* soft cast-shadow ground (toggleable) */}
+      {showGround ? (
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+          <planeGeometry args={[400, 400]} />
+          <shadowMaterial transparent opacity={scene.shadowOpacity} />
+        </mesh>
+      ) : null}
 
       {/* invisible ground for empty-space clicks (clear) and double-click (reset) */}
       <mesh
@@ -79,15 +118,6 @@ export function DiagramCanvas({ theme, labelsRef, edgeLabelsRef, apiRef, onReady
         <planeGeometry args={[400, 400]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
-
-      <ContactShadows
-        position={[0, 0, 0]}
-        scale={48}
-        far={9}
-        blur={2.4}
-        opacity={scene.contactShadowOpacity}
-        color={scene.contactShadow}
-      />
 
       {edges.map((edge) => {
         const lane = laneBySource[edge.source] ?? 0;
@@ -113,7 +143,7 @@ export function DiagramCanvas({ theme, labelsRef, edgeLabelsRef, apiRef, onReady
         />
       ))}
 
-      <ConnectPreview color={scene.nodeColors.orange} />
+      <ConnectPreview color={scene.flow} />
 
       <LabelProjector nodes={nodes} labelsRef={labelsRef} />
       <EdgeLabelProjector edges={edges} nodes={nodes} registry={edgeLabelsRef} />

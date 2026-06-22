@@ -13,11 +13,13 @@ export function BoxNode({ width, depth, height, color, emissive, emissiveIntensi
       radius={radius}
       smoothness={4}
       position={[0, height / 2, 0]}
+      castShadow
+      receiveShadow
     >
       <meshStandardMaterial
         color={color}
-        roughness={0.5}
-        metalness={0.08}
+        roughness={0.42}
+        metalness={0.06}
         emissive={emissive}
         emissiveIntensity={emissiveIntensity}
       />

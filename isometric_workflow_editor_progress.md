@@ -214,7 +214,28 @@ Goal: prove both target use cases; one-click templates.
       (`catalog/presets/index.ts`).
 - [x] P10.5 Story `Editor/Full Editor` — Architecture / N8nWorkflow / ArchitectureDark.
 - [x] **Green** — `typecheck` + `build-storybook` + `next build` pass; `/isometric-editor` 1.87 kB.
-- [ ] **Green + commit + push.**
+
+---
+
+## Styling pass ✅ (premium SaaS look + data-flow + toggles)
+Goal: make the canvas/nodes read like a premium SaaS diagram while staying on-brand + playful.
+
+- [x] **Soft gradient backdrop** (`scene/Backdrop.tsx`, radial CanvasTexture → `scene.background`,
+      theme-aware) so the canvas reads as one cohesive surface; opaque PNG export preserved.
+- [x] **Professional soft shadows** — real PCFSoft shadow maps; key light + node `castShadow` + a
+      toggleable `shadowMaterial` ground; replaced drei `ContactShadows`.
+- [x] **Hemisphere + key/fill lighting** and slightly glossier matte materials for pro shading.
+- [x] **Grid radial fade** (`scene/Grid.tsx`, RGBA per-vertex alpha) so it melts into the backdrop.
+- [x] **Animated data-flow pulse** — per-edge `flow: off|slow|normal|fast` (`types`/`schema`),
+      travelling dots in `OrthogonalEdge` (reduced-motion aware), adjustable in the **Inspector**;
+      flagship presets ship with flow on key edges.
+- [x] **Toolbar toggles** for grid + soft-shadow ground (bespoke `grid`/`shadow` glyphs); view
+      settings kept **instance-local** in `IsometricWorkflowEditor` (multi-instance-friendly).
+- [x] **Green** — `typecheck` + `build-storybook` + `next build` pass; `/isometric-editor` 1.87 kB.
+- Docs added: `isometric_workflow_editor_3d_model_prompts.md` (per-kind 3D-model generation prompts)
+  and `isometric_workflow_editor_preview_mode.md` (read-only scroll-driven embed spec — not built;
+  notes the singleton-store→factory refactor it needs).
+- Caveat: WebGL aesthetics (shadow softness, gradient strength, flow speed) need a browser pass.
 
 ---
 

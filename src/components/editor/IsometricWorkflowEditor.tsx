@@ -56,6 +56,10 @@ export function IsometricWorkflowEditor({
   const { theme, toggle: toggleTheme } = useEditorTheme(defaultTheme);
   const [ready, setReady] = React.useState(false);
   const [drawer, setDrawer] = React.useState<Drawer>("none");
+  // Per-instance view settings (kept local, not in the singleton store, so future
+  // multiple preview instances each keep their own — see preview-mode doc).
+  const [showGrid, setShowGrid] = React.useState(true);
+  const [showGround, setShowGround] = React.useState(true);
   const rootRef = React.useRef<HTMLDivElement>(null);
   const mode = useResponsiveLayout(rootRef);
   const isMobile = mode === "mobile";
@@ -132,6 +136,8 @@ export function IsometricWorkflowEditor({
         labelsRef={labelsRef}
         edgeLabelsRef={edgeLabelsRef}
         apiRef={apiRef}
+        showGrid={showGrid}
+        showGround={showGround}
         onReady={() => setReady(true)}
       />
       <LabelsLayer nodes={nodes} selection={selection} labelsRef={labelsRef} />
@@ -187,6 +193,10 @@ export function IsometricWorkflowEditor({
           templates={templateOptions}
           onPickTemplate={handlePickTemplate}
           onAutoArrange={handleAutoArrange}
+          showGrid={showGrid}
+          showGround={showGround}
+          onToggleGrid={() => setShowGrid((v) => !v)}
+          onToggleGround={() => setShowGround((v) => !v)}
         />
       ) : null}
 

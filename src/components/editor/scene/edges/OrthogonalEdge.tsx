@@ -1,14 +1,16 @@
-// Renders one edge: a routed drei <Line> (pickable, supports width + dashed) plus
-// a cone arrowhead at the target. Clicking selects the edge. A small per-edge
-// height stagger (laneIndex) keeps parallel runs from perfectly overlapping.
+// Renders one edge: a routed drei <Line> (pickable, width + dashed) + a cone
+// arrowhead, and — when edge.flow is set — an animated "data flow" pulse of small
+// dots travelling source→target along the path. Clicking selects the edge.
 
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import { Line } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { getRoutePoints } from "./edgeRouting";
 import { useWorkflowStore } from "../../state/useWorkflowStore";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import type { SceneTheme } from "../../theme/sceneTheme";
-import type { WorkflowEdge, WorkflowNode } from "../../state/types";
+import type { EdgeFlow as EdgeFlowMode, WorkflowEdge, WorkflowNode } from "../../state/types";
 
 export interface OrthogonalEdgeProps {
   edge: WorkflowEdge;
@@ -19,6 +21,44 @@ export interface OrthogonalEdgeProps {
 }
 
 const UP = new THREE.Vector3(0, 1, 0);
+const FLOW_SPEED: Record<Exclude<EdgeFlowMode, "off">, number> = {
+  slow: 0.12,
+  normal: 0.25,
+  fast: 0.5,
+};
+const FLOW_DOTS = 3;
+
+function EdgeFlow({ points, color, speed }: { points: THREE.Vector3[]; color: string; speed: number }) {
+  const curve = useMemo(() => new THREE.CatmullRomCurve3(points), [points]);
+  const refs = useRef<(THREE.Object3D | null)[]>([]);
+  const phase = useRef(0);
+  const reduced = usePrefersReducedMotion();
+
+  useFrame((_, dt) => {
+    if (!reduced) phase.current = (phase.current + dt * speed) % 1;
+    for (let k = 0; k < FLOW_DOTS; k++) {
+      const t = (phase.current + k / FLOW_DOTS) % 1;
+      const p = curve.getPointAt(t);
+      refs.current[k]?.position.copy(p);
+    }
+  });
+
+  return (
+    <>
+      {Array.from({ length: FLOW_DOTS }).map((_, k) => (
+        <mesh
+          key={k}
+          ref={(el) => {
+            refs.current[k] = el;
+          }}
+        >
+          <sphereGeometry args={[0.08, 12, 12]} />
+          <meshBasicMaterial color={color} toneMapped={false} />
+        </mesh>
+      ))}
+    </>
+  );
+}
 
 export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0 }: OrthogonalEdgeProps) {
   const selectEdge = useWorkflowStore((s) => s.selectEdge);
@@ -42,6 +82,7 @@ export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0 }: 
   const prev = vecs[vecs.length - 2];
   const dir = new THREE.Vector3().subVectors(end, prev).normalize();
   const quat = new THREE.Quaternion().setFromUnitVectors(UP, dir);
+  const flow = edge.flow ?? "off";
 
   return (
     <group>
@@ -61,6 +102,7 @@ export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0 }: 
         <coneGeometry args={[0.11, 0.26, 12]} />
         <meshBasicMaterial color={color} />
       </mesh>
+      {flow !== "off" ? <EdgeFlow points={vecs} color={theme.flow} speed={FLOW_SPEED[flow]} /> : null}
     </group>
   );
 }

@@ -32,7 +32,9 @@ export type GlyphName =
   | "trash"
   | "plus"
   | "close"
-  | "layout";
+  | "layout"
+  | "grid"
+  | "shadow";
 
 const PATHS: Record<GlyphName, React.ReactNode> = {
   zap: <path d="M13 2 L4 14 h7 l-1 8 L20 9 h-7 z" />,
@@ -107,6 +109,13 @@ const PATHS: Record<GlyphName, React.ReactNode> = {
       <rect x="4" y="5" width="6" height="14" rx="1.5" />
       <rect x="14" y="5" width="6" height="6" rx="1.5" />
       <rect x="14" y="13" width="6" height="6" rx="1.5" />
+    </>
+  ),
+  grid: <path d="M4 9 h16 M4 15 h16 M9 4 v16 M15 4 v16" />,
+  shadow: (
+    <>
+      <rect x="4.5" y="4.5" width="11" height="11" rx="2.5" />
+      <path d="M9 19 h10 v-10" />
     </>
   ),
 };

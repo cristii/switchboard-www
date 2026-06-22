@@ -17,11 +17,13 @@ export function SlabNode({ width, depth, height, color, emissive, emissiveIntens
           radius={radius}
           smoothness={3}
           position={[0, slabH / 2 + i * (slabH + gap), 0]}
+          castShadow
+          receiveShadow
         >
           <meshStandardMaterial
             color={color}
-            roughness={0.5}
-            metalness={0.08}
+            roughness={0.42}
+            metalness={0.06}
             emissive={emissive}
             emissiveIntensity={emissiveIntensity}
           />

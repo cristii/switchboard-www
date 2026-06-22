@@ -7,6 +7,8 @@ import type { EditorTheme, NodeColorRole } from "../state/types";
 
 export interface SceneTheme {
   background: string;
+  /** Brighter centre of the radial backdrop gradient (Backdrop). */
+  backgroundHi: string;
   grid: string;
   gridStrong: string;
   ambient: string;
@@ -15,10 +17,16 @@ export interface SceneTheme {
   keyIntensity: number;
   fill: string;
   fillIntensity: number;
-  contactShadow: string;
-  contactShadowOpacity: number;
+  /** Hemisphere light sky / ground tones + intensity (soft pro shading). */
+  hemiSky: string;
+  hemiGround: string;
+  hemiIntensity: number;
+  /** Opacity of the soft cast-shadow ground plane. */
+  shadowOpacity: number;
   selection: string;
   edge: string;
+  /** Data-flow pulse colour. */
+  flow: string;
   /** Tile colour for `note` nodes (paper tone). */
   paper: string;
   nodeColors: Record<NodeColorRole, string>;
@@ -27,19 +35,23 @@ export interface SceneTheme {
 }
 
 const LIGHT: SceneTheme = {
-  background: "#e9e8df", // --paper
+  background: "#e6e5db", // --paper, a touch deeper for gradient contrast
+  backgroundHi: "#f3f2ea", // brighter centre
   grid: "#b9c2b6", // --line
   gridStrong: "#cbd2c5", // --line-soft
-  ambient: "#e9e6da",
-  ambientIntensity: 0.65,
-  key: "#ffffff",
-  keyIntensity: 1.7,
-  fill: "#cfd6cd",
-  fillIntensity: 0.4,
-  contactShadow: "#15211f", // --ink
-  contactShadowOpacity: 0.22,
+  ambient: "#efeee6",
+  ambientIntensity: 0.45,
+  key: "#fffaf2",
+  keyIntensity: 1.45,
+  fill: "#d6dcd2",
+  fillIntensity: 0.3,
+  hemiSky: "#fff6e9",
+  hemiGround: "#c9d0c6",
+  hemiIntensity: 0.55,
+  shadowOpacity: 0.26,
   selection: "#fbbf24", // --amber
   edge: "#54605c", // --ink-soft
+  flow: "#c2410c", // bright burnt orange
   paper: "#f5f4ec",
   nodeColors: {
     orange: "#b45309",
@@ -48,24 +60,28 @@ const LIGHT: SceneTheme = {
     amber: "#fbbf24",
     ink: "#15211f",
   },
-  nodeEmissiveIntensity: 0.12,
+  nodeEmissiveIntensity: 0.1,
   selectionEmissiveIntensity: 0.5,
 };
 
 const DARK: SceneTheme = {
-  background: "#0e1a18",
+  background: "#0c1716",
+  backgroundHi: "#14221f",
   grid: "#243330",
   gridStrong: "#2e403c",
-  ambient: "#22302d",
-  ambientIntensity: 0.45,
-  key: "#ffffff",
-  keyIntensity: 1.35,
+  ambient: "#1d2b28",
+  ambientIntensity: 0.35,
+  key: "#eaf2ff",
+  keyIntensity: 1.25,
   fill: "#1c2a27",
-  fillIntensity: 0.35,
-  contactShadow: "#000000",
-  contactShadowOpacity: 0.5,
+  fillIntensity: 0.28,
+  hemiSky: "#33474a",
+  hemiGround: "#0c1716",
+  hemiIntensity: 0.5,
+  shadowOpacity: 0.5,
   selection: "#fbbf24",
   edge: "#9aa49d", // --on-dark-muted
+  flow: "#f0935a",
   paper: "#26332f",
   nodeColors: {
     orange: "#e08742",
@@ -74,7 +90,7 @@ const DARK: SceneTheme = {
     amber: "#fbbf24",
     ink: "#c8cec6",
   },
-  nodeEmissiveIntensity: 0.18,
+  nodeEmissiveIntensity: 0.16,
   selectionEmissiveIntensity: 0.6,
 };
 

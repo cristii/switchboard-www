@@ -7,7 +7,13 @@ export function DiamondNode({ width, depth, height, color, emissive, emissiveInt
   const radius = Math.min(width, depth) / 2;
   const scaleY = height / (2 * radius);
   return (
-    <mesh position={[0, height / 2, 0]} scale={[1, scaleY, 1]} rotation={[0, Math.PI / 4, 0]}>
+    <mesh
+      position={[0, height / 2, 0]}
+      scale={[1, scaleY, 1]}
+      rotation={[0, Math.PI / 4, 0]}
+      castShadow
+      receiveShadow
+    >
       <octahedronGeometry args={[radius, 0]} />
       <meshStandardMaterial
         color={color}

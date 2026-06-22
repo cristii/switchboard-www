@@ -4,6 +4,7 @@
 
 import type {
   Diagram,
+  EdgeFlow,
   EdgeRouting,
   EdgeStyle,
   EditorTheme,
@@ -39,6 +40,7 @@ export function toJSON(diagram: Diagram): string {
 
 const ROUTINGS: EdgeRouting[] = ["orthogonal", "smooth", "direct"];
 const STYLES: EdgeStyle[] = ["solid", "dashed"];
+const FLOWS: EdgeFlow[] = ["off", "slow", "normal", "fast"];
 
 function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null;
@@ -83,6 +85,9 @@ function asEdge(v: unknown): WorkflowEdge | null {
   }
   if (typeof v.style === "string" && STYLES.includes(v.style as EdgeStyle)) {
     edge.style = v.style as EdgeStyle;
+  }
+  if (typeof v.flow === "string" && FLOWS.includes(v.flow as EdgeFlow)) {
+    edge.flow = v.flow as EdgeFlow;
   }
   if (typeof v.color === "string") edge.color = v.color;
   return edge;

@@ -12,6 +12,8 @@ export function PaperTileNode({ width, depth, height, color, emissive, emissiveI
       radius={Math.min(0.04, h / 2 - 0.001)}
       smoothness={3}
       position={[0, h / 2, 0]}
+      castShadow
+      receiveShadow
     >
       <meshStandardMaterial
         color={color}

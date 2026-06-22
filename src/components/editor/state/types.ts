@@ -54,6 +54,8 @@ export interface WorkflowNode {
 
 export type EdgeRouting = "orthogonal" | "smooth" | "direct";
 export type EdgeStyle = "solid" | "dashed";
+/** Animated "data flow" pulse travelling along an edge. */
+export type EdgeFlow = "off" | "slow" | "normal" | "fast";
 
 /** A directed connection between two nodes (optionally between named ports). */
 export interface WorkflowEdge {
@@ -67,6 +69,8 @@ export interface WorkflowEdge {
   routing?: EdgeRouting;
   /** @default "solid" — `dashed` reads as conditional/async. */
   style?: EdgeStyle;
+  /** Animated data-flow pulse. @default "off" */
+  flow?: EdgeFlow;
   color?: string;
 }
 
