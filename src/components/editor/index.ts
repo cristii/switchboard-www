@@ -25,6 +25,16 @@ export { Select } from "./primitives/Select";
 export { useExportJson } from "./hooks/useExportJson";
 export { useExportPng } from "./hooks/useExportPng";
 
+export { DiagramPreview } from "./preview/DiagramPreview";
+export type { DiagramPreviewProps } from "./preview/DiagramPreview";
+export {
+  DEFAULT_PREVIEW_CONFIG,
+  mergePreviewConfig,
+  parsePreviewDoc,
+  serializePreviewDoc,
+} from "./preview/previewConfig";
+export type { PreviewConfig, PreviewDoc } from "./preview/previewConfig";
+
 export {
   NODE_CATALOG,
   CATALOG_LIST,

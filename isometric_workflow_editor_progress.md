@@ -239,6 +239,27 @@ Goal: make the canvas/nodes read like a premium SaaS diagram while staying on-br
 
 ---
 
+## Preview — Phase 1 ✅ (static, embeddable, no scroll triggers)
+Goal: a read-only preview that reuses the same canvas/nodes, for embedding across the site.
+
+- [x] **Controlled canvas refactor** — `DiagramCanvas` is now fully controlled (nodes/edges/selection
+      + `interactive` via props); `CameraControls` is store-free (`nodes` prop, `enabled`, initial
+      camera, `fitOnMount`, no reset-on-resize); `OrthogonalEdge` selects via an `onSelect` callback;
+      node visual logic extracted to `scene/nodes/nodeVisual.ts` (shared by `NodeMesh` + new
+      `PreviewNode`). The editor wires the store through; previews are store-free.
+- [x] **`preview/DiagramPreview.tsx`** — read-only view (`interactive={false}` → `PreviewNode`), with
+      `PreviewConfig` (grid / ground / labels / theme + camera movable / zoom / target / fit-on-mount).
+      Mount via `next/dynamic({ssr:false})`; host imports `editor-tokens.css`.
+- [x] **Playground route `/diagram-preview`** (footer → Resources) — desktop: JSON editor + preview
+      side by side; mobile: two tabs. JSON doc is `{ config, diagram }`; appearance toggles (grid /
+      shadows / labels / camera-movable / dark) write back into the JSON; live parse + error line.
+- [x] **Green** — `typecheck` + `build-storybook` + `next build` pass; `/diagram-preview` 7.09 kB /
+      94.5 kB (three.js code-split), `/isometric-editor` still builds.
+- Phase 2 (scroll choreography + **keyframe editor** for camera moves & active-node highlights) is
+  specified in `isometric_workflow_editor_preview_mode.md` — not built yet.
+
+---
+
 ## Phase P11 — Route & footer integration ✅ (brought forward for live preview)
 Goal: the editor is reachable, full-screen, and linked from the footer.
 

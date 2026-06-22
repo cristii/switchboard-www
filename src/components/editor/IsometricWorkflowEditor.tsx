@@ -73,6 +73,8 @@ export function IsometricWorkflowEditor({
   const nodes = useWorkflowStore((s) => s.nodes);
   const edges = useWorkflowStore((s) => s.edges);
   const selection = useWorkflowStore((s) => s.selection);
+  const selectEdge = useWorkflowStore((s) => s.selectEdge);
+  const clearSelection = useWorkflowStore((s) => s.clearSelection);
 
   React.useEffect(() => {
     loadDiagram(initialDiagram);
@@ -133,11 +135,16 @@ export function IsometricWorkflowEditor({
     <div style={{ position: "relative", flex: 1, minWidth: 0, minHeight: 0 }}>
       <DiagramCanvas
         theme={theme}
+        nodes={nodes}
+        edges={edges}
+        selection={selection}
         labelsRef={labelsRef}
         edgeLabelsRef={edgeLabelsRef}
         apiRef={apiRef}
         showGrid={showGrid}
         showGround={showGround}
+        onSelectEdge={selectEdge}
+        onBackgroundClick={clearSelection}
         onReady={() => setReady(true)}
       />
       <LabelsLayer nodes={nodes} selection={selection} labelsRef={labelsRef} />

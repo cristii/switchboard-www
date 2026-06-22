@@ -7,7 +7,6 @@ import { Line } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { getRoutePoints } from "./edgeRouting";
-import { useWorkflowStore } from "../../state/useWorkflowStore";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import type { SceneTheme } from "../../theme/sceneTheme";
 import type { EdgeFlow as EdgeFlowMode, WorkflowEdge, WorkflowNode } from "../../state/types";
@@ -18,6 +17,8 @@ export interface OrthogonalEdgeProps {
   theme: SceneTheme;
   selected: boolean;
   laneIndex?: number;
+  /** Called on click when set (editor). Omit for read-only previews. */
+  onSelect?: (id: string) => void;
 }
 
 const UP = new THREE.Vector3(0, 1, 0);
@@ -60,8 +61,7 @@ function EdgeFlow({ points, color, speed }: { points: THREE.Vector3[]; color: st
   );
 }
 
-export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0 }: OrthogonalEdgeProps) {
-  const selectEdge = useWorkflowStore((s) => s.selectEdge);
+export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0, onSelect }: OrthogonalEdgeProps) {
   const source = nodes.find((n) => n.id === edge.source);
   const target = nodes.find((n) => n.id === edge.target);
 
@@ -93,10 +93,14 @@ export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0 }: 
         dashed={edge.style === "dashed"}
         dashSize={0.3}
         gapSize={0.18}
-        onClick={(e) => {
-          e.stopPropagation();
-          selectEdge(edge.id);
-        }}
+        onClick={
+          onSelect
+            ? (e) => {
+                e.stopPropagation();
+                onSelect(edge.id);
+              }
+            : undefined
+        }
       />
       <mesh position={end} quaternion={quat}>
         <coneGeometry args={[0.11, 0.26, 12]} />

@@ -36,6 +36,7 @@ export const footerColumns: { heading: string; links: NavLink[] }[] = [
       { label: "Knowledge Base", href: "/knowledge-base" },
       { label: "Cost estimator", href: "/calculator" },
       { label: "Isometric Workflow Editor (WIP)", href: "/isometric-editor" },
+      { label: "Diagram Preview (WIP)", href: "/diagram-preview" },
     ],
   },
   {
@@ -78,6 +79,7 @@ const routeNames: Record<string, string> = {
   "/knowledge-base": "Knowledge Base",
   "/calculator": "Cost estimator",
   "/isometric-editor": "Isometric Editor",
+  "/diagram-preview": "Diagram Preview",
   "/contact": "Contact",
   "/privacy": "Privacy",
   "/terms": "Terms",

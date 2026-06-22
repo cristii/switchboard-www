@@ -8,8 +8,8 @@ import { useMemo } from "react";
 import { type ThreeEvent, useThree } from "@react-three/fiber";
 import { animated, useSpring } from "@react-spring/three";
 import * as THREE from "three";
-import { SHAPES } from "./shapes";
 import { GroupContainer } from "./shapes/GroupContainer";
+import { resolveNodeVisual } from "./nodeVisual";
 import { getNodeCatalogEntry } from "../../catalog/nodeCatalog";
 import { useWorkflowStore } from "../../state/useWorkflowStore";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
@@ -54,9 +54,10 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
   const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), []);
 
   const reduced = usePrefersReducedMotion();
-  const entry = getNodeCatalogEntry(node.kind);
-  const isGroup = node.kind === "group";
-  const Shape = SHAPES[entry.shape];
+  const { entry, isGroup, Shape, width, depth, height, color: baseColor, emissive, emissiveIntensity } =
+    resolveNodeVisual(node, theme, selected);
+  const hasOut = entry.defaultPorts.some((p) => p.side === "out");
+  const hasIn = entry.defaultPorts.some((p) => p.side === "in");
 
   // Scale-in on mount, a gentle pop when selected. Disabled under reduced motion.
   const { scale } = useSpring({
@@ -84,20 +85,6 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
     }
     if ((moved.parentId ?? null) !== parent) setParent(node.id, parent);
   };
-  const width = node.width ?? entry.defaultSize.width;
-  const depth = node.depth ?? entry.defaultSize.depth;
-  const height = node.height ?? entry.defaultSize.height;
-  const hasOut = entry.defaultPorts.some((p) => p.side === "out");
-  const hasIn = entry.defaultPorts.some((p) => p.side === "in");
-
-  const isNote = entry.shape === "paperTile";
-  const baseColor = node.color ?? (isNote ? theme.paper : theme.nodeColors[entry.colorRole]);
-  const emissive = selected ? theme.selection : baseColor;
-  const emissiveIntensity = selected
-    ? theme.selectionEmissiveIntensity
-    : isNote
-      ? 0
-      : theme.nodeEmissiveIntensity;
 
   const ndcFromEvent = (ev: PointerEvent) => {
     const rect = gl.domElement.getBoundingClientRect();

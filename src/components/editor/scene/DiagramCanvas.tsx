@@ -1,52 +1,68 @@
 "use client";
 
-// The R3F scene: orthographic isometric canvas with a soft gradient backdrop,
-// hemisphere + key/fill lighting, real (toggleable) soft cast shadows, a faded
-// grid, node meshes, edges (with optional data-flow pulse), the connection
-// preview, label projectors and camera controls. Colours come from the theme
-// palette (sceneTheme.ts). preserveDrawingBuffer keeps PNG export working.
+// The shared R3F scene: orthographic isometric canvas with a soft gradient
+// backdrop, hemisphere + key/fill lighting, real (toggleable) soft cast shadows,
+// a faded grid, nodes, edges (with optional data-flow pulse), label projectors
+// and camera controls. Fully controlled (nodes/edges/selection via props) so the
+// editor and the read-only preview reuse it. `interactive` swaps the editable
+// NodeMesh / ConnectPreview for the static PreviewNode.
 
 import { Canvas } from "@react-three/fiber";
 import { Backdrop } from "./Backdrop";
 import { Grid } from "./Grid";
 import { NodeMesh } from "./nodes/NodeMesh";
+import { PreviewNode } from "./nodes/PreviewNode";
 import { OrthogonalEdge } from "./edges/OrthogonalEdge";
 import { ConnectPreview } from "./edges/ConnectPreview";
 import { EdgeLabelProjector, type EdgeLabelsRegistry } from "./edges/EdgeLabelsLayer";
 import { LabelProjector } from "./LabelProjector";
 import { CameraControls, type CameraApi } from "./CameraControls";
 import type { LabelsRegistry } from "./LabelsLayer";
-import { useWorkflowStore } from "../state/useWorkflowStore";
 import { getSceneTheme } from "../theme/sceneTheme";
-import type { EditorTheme } from "../state/types";
+import type { EditorTheme, Selection, WorkflowEdge, WorkflowNode } from "../state/types";
 
 export interface DiagramCanvasProps {
   theme: EditorTheme;
+  nodes: WorkflowNode[];
+  edges: WorkflowEdge[];
+  selection?: Selection;
+  /** Editable (NodeMesh + connect) vs static preview (PreviewNode). @default true */
+  interactive?: boolean;
+  showGrid?: boolean;
+  showGround?: boolean;
   labelsRef: React.MutableRefObject<LabelsRegistry>;
   edgeLabelsRef: React.MutableRefObject<EdgeLabelsRegistry>;
-  /** Imperative camera/scene api, populated by CameraControls + onCreated. */
   apiRef: React.MutableRefObject<CameraApi>;
-  /** Show the ground grid. @default true */
-  showGrid?: boolean;
-  /** Cast soft node shadows onto a ground plane. @default true */
-  showGround?: boolean;
+  /** Allow pan/zoom ("camera movable"). @default true */
+  cameraEnabled?: boolean;
+  initialZoom?: number;
+  initialTarget?: [number, number];
+  fitOnMount?: boolean;
+  onSelectEdge?: (id: string) => void;
+  onBackgroundClick?: () => void;
   onReady?: () => void;
 }
 
 export function DiagramCanvas({
   theme,
+  nodes,
+  edges,
+  selection = null,
+  interactive = true,
+  showGrid = true,
+  showGround = true,
   labelsRef,
   edgeLabelsRef,
   apiRef,
-  showGrid = true,
-  showGround = true,
+  cameraEnabled = true,
+  initialZoom,
+  initialTarget,
+  fitOnMount,
+  onSelectEdge,
+  onBackgroundClick,
   onReady,
 }: DiagramCanvasProps) {
   const scene = getSceneTheme(theme);
-  const nodes = useWorkflowStore((s) => s.nodes);
-  const edges = useWorkflowStore((s) => s.edges);
-  const selection = useWorkflowStore((s) => s.selection);
-  const clearSelection = useWorkflowStore((s) => s.clearSelection);
 
   // Stagger parallel edges that share a source so they don't perfectly overlap.
   const laneBySource: Record<string, number> = {};
@@ -62,7 +78,7 @@ export function DiagramCanvas({
         preserveDrawingBuffer: true,
         powerPreference: "high-performance",
       }}
-      camera={{ position: [24, 24, 24], zoom: 38, near: 0.1, far: 200 }}
+      camera={{ position: [24, 24, 24], zoom: initialZoom ?? 38, near: 0.1, far: 200 }}
       style={{ width: "100%", height: "100%", display: "block", touchAction: "none" }}
       onCreated={({ gl }) => {
         apiRef.current.capturePng = () => gl.domElement.toDataURL("image/png");
@@ -94,7 +110,6 @@ export function DiagramCanvas({
 
       {showGrid ? <Grid color={scene.grid} sectionColor={scene.gridStrong} /> : null}
 
-      {/* soft cast-shadow ground (toggleable) */}
       {showGround ? (
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
           <planeGeometry args={[400, 400]} />
@@ -102,18 +117,26 @@ export function DiagramCanvas({
         </mesh>
       ) : null}
 
-      {/* invisible ground for empty-space clicks (clear) and double-click (reset) */}
+      {/* invisible ground for empty-space clicks + double-click reset */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, -0.01, 0]}
-        onClick={(e) => {
-          e.stopPropagation();
-          clearSelection();
-        }}
-        onDoubleClick={(e) => {
-          e.stopPropagation();
-          apiRef.current.reset();
-        }}
+        onClick={
+          onBackgroundClick
+            ? (e) => {
+                e.stopPropagation();
+                onBackgroundClick();
+              }
+            : undefined
+        }
+        onDoubleClick={
+          cameraEnabled
+            ? (e) => {
+                e.stopPropagation();
+                apiRef.current.reset();
+              }
+            : undefined
+        }
       >
         <planeGeometry args={[400, 400]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
@@ -130,24 +153,36 @@ export function DiagramCanvas({
             theme={scene}
             selected={selection?.type === "edge" && selection.id === edge.id}
             laneIndex={lane}
+            onSelect={interactive ? onSelectEdge : undefined}
           />
         );
       })}
 
-      {nodes.map((node) => (
-        <NodeMesh
-          key={node.id}
-          node={node}
-          theme={scene}
-          selected={selection?.type === "node" && selection.id === node.id}
-        />
-      ))}
+      {nodes.map((node) =>
+        interactive ? (
+          <NodeMesh
+            key={node.id}
+            node={node}
+            theme={scene}
+            selected={selection?.type === "node" && selection.id === node.id}
+          />
+        ) : (
+          <PreviewNode key={node.id} node={node} theme={scene} />
+        ),
+      )}
 
-      <ConnectPreview color={scene.flow} />
+      {interactive ? <ConnectPreview color={scene.flow} /> : null}
 
       <LabelProjector nodes={nodes} labelsRef={labelsRef} />
       <EdgeLabelProjector edges={edges} nodes={nodes} registry={edgeLabelsRef} />
-      <CameraControls api={apiRef} />
+      <CameraControls
+        api={apiRef}
+        nodes={nodes}
+        enabled={cameraEnabled}
+        initialZoom={initialZoom}
+        initialTarget={initialTarget}
+        fitOnMount={fitOnMount}
+      />
     </Canvas>
   );
 }

@@ -1,4 +1,4 @@
-# Isometric Workflow Editor — Preview / Embed Mode (spec — NOT yet implemented)
+# Isometric Workflow Editor — Preview / Embed Mode (Phase 1 done; Phase 2 = scroll/keyframes)
 
 A **read-only, embeddable, scroll-driven** version of the editor to place across the marketing site
 (`/`, `/work`, `/work/[slug]`, `/about`) to explain system architectures, n8n automations and AI
@@ -6,8 +6,39 @@ chatbot flows. Typical layout: the **diagram is pinned on one side**, **explanat
 the other**, and as the reader scrolls, the diagram **moves / rotates / zooms and highlights** the
 nodes being explained, toggling labels and isolating sub-flows.
 
-This is a design note to implement later. It also records the constraints that the current styling
-pass already respected so preview mode stays cheap to add.
+This is a design note. It records the constraints the styling pass respected, and is split into
+phases.
+
+---
+
+## Status
+- **Phase 1 — static preview: DONE.** `DiagramPreview` (`src/components/editor/preview/DiagramPreview.tsx`)
+  is a read-only view reusing the shared `DiagramCanvas` in `interactive={false}` mode (renders the
+  static `PreviewNode`, no editing, no store). `PreviewConfig` (`preview/previewConfig.ts`) controls
+  appearance (grid / ground-shadows / labels / theme) and camera (movable, zoom, target, or
+  fit-on-mount). A playground route **`/diagram-preview`** (footer → Resources) pairs a JSON editor
+  with a live preview (desktop: two cards; mobile: two tabs); the JSON is `{ config, diagram }` and
+  quick toggles write back into it. Consumers mount it via `next/dynamic({ ssr:false })`; the host
+  page imports `editor/theme/editor-tokens.css`.
+  - To embed elsewhere (Work/About/home): `const DiagramPreview = dynamic(() =>
+    import("@/components/editor/preview/DiagramPreview").then(m => m.DiagramPreview), { ssr:false })`,
+    then `<DiagramPreview diagram={...} config={{ cameraMovable:false, theme:"light" }} />` in a sized
+    box. (Note the multi-instance caveat below — fine today because previews are store-free for
+    rendering, but the full store refactor is still needed before previews that need their own
+    *editing/selection* state.)
+- **Phase 2 — scroll-driven choreography + keyframe editor: LATER** (below).
+
+## Phase 2 — scroll choreography & the keyframe editor (later)
+On top of the static preview, add scroll-driven control and an authoring tool:
+- **Scroll controller** (`ScrollDiagram` + `useDiagramController`): map scroll progress to a sequence
+  of steps that drive the preview's camera + highlights + label visibility. Diagram pinned one side,
+  captions scrolling the other. Reuses the camera tween (P8) + react-spring; reduced-motion aware.
+- **Keyframe editor** (an enhanced playground): a timeline/keyframe UI to author, per scroll step,
+  the **camera movement** (target / zoom / optional yaw-orbit) and **active-node/group highlights**
+  (focus, dim others, isolate, show/hide labels) — i.e. "as the user scrolls to here, move the camera
+  there and light up these nodes while I describe them." Output is serialised into the diagram doc as
+  a `steps[]` block alongside `config`/`diagram`, so a page just provides the doc. The `PreviewStep`
+  shape + highlight mechanics are specified below.
 
 ---
 
