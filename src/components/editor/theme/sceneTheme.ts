@@ -37,6 +37,8 @@ export interface SceneTheme {
   arrowSize: number;
   connector: ConnectorStyle;
   routing: string;
+  /** Where node/edge labels render: 3D in-canvas hovering text, or DOM chips. */
+  labelMode: "3d" | "dom";
   /** 3D in-canvas text defaults. */
   text: {
     font?: string;
@@ -68,7 +70,14 @@ export function resolveSceneTheme(spec: ThemeSpec): SceneTheme {
     arrowSize: spec.edges.arrowSize,
     connector: spec.edges.connector,
     routing: spec.edges.routing,
-    text: { ...spec.text },
+    labelMode: spec.text.mode ?? "3d",
+    text: {
+      font: spec.text.font,
+      color: spec.text.color,
+      opacity: spec.text.opacity,
+      size: spec.text.size,
+      orientation: spec.text.orientation,
+    },
   };
 }
 

@@ -17,8 +17,10 @@ import { NodeMesh } from "./nodes/NodeMesh";
 import { PreviewNode } from "./nodes/PreviewNode";
 import { OrthogonalEdge } from "./edges/OrthogonalEdge";
 import { ConnectPreview } from "./edges/ConnectPreview";
+import { LinkPreview } from "./edges/LinkPreview";
 import { EdgeLabelProjector, type EdgeLabelsRegistry } from "./edges/EdgeLabelsLayer";
 import { LabelProjector } from "./LabelProjector";
+import { NodeLabels3D } from "./NodeLabels3D";
 import { CameraControls, type CameraApi, type CameraSpec } from "./CameraControls";
 import type { LabelsRegistry } from "./LabelsLayer";
 import { resolveSceneTheme } from "../theme/sceneTheme";
@@ -37,6 +39,8 @@ export interface DiagramCanvasProps {
   showGrid?: boolean;
   /** Master shadow toggle. */
   showGround?: boolean;
+  /** Master label toggle (3D labels or DOM chips, per theme.text.mode). @default true */
+  showLabels?: boolean;
   labelsRef: React.MutableRefObject<LabelsRegistry>;
   edgeLabelsRef: React.MutableRefObject<EdgeLabelsRegistry>;
   apiRef: React.MutableRefObject<CameraApi>;
@@ -78,6 +82,7 @@ export function DiagramCanvas({
   interactive = true,
   showGrid = true,
   showGround = true,
+  showLabels = true,
   labelsRef,
   edgeLabelsRef,
   apiRef,
@@ -173,6 +178,7 @@ export function DiagramCanvas({
             theme={scene}
             selected={selection?.type === "edge" && selection.id === edge.id}
             laneIndex={lane}
+            showLabel={showLabels}
             onSelect={interactive ? onSelectEdge : undefined}
           />
         );
@@ -192,9 +198,17 @@ export function DiagramCanvas({
       )}
 
       {interactive ? <ConnectPreview color={scene.flow} /> : null}
+      {interactive ? <LinkPreview color={scene.selection} /> : null}
 
-      <LabelProjector nodes={nodes} labelsRef={labelsRef} />
-      <EdgeLabelProjector edges={edges} nodes={nodes} registry={edgeLabelsRef} />
+      {showLabels && scene.labelMode === "dom" ? (
+        <>
+          <LabelProjector nodes={nodes} labelsRef={labelsRef} />
+          <EdgeLabelProjector edges={edges} nodes={nodes} registry={edgeLabelsRef} />
+        </>
+      ) : null}
+      {showLabels && scene.labelMode === "3d" ? (
+        <NodeLabels3D nodes={nodes} selection={selection} theme={scene} />
+      ) : null}
       <CameraControls
         api={apiRef}
         nodes={nodes}

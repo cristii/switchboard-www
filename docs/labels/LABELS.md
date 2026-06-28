@@ -1,0 +1,86 @@
+# Labels & Tooltips (3D in-canvas)
+
+Node names and edge labels render as **3D text hovering in the scene** by default — not DOM chips —
+so the canvas stays uncluttered and labels live in the same isometric space as the diagram. A flat
+**DOM mode** is kept as an option for later use. Applies to the editor and the read-only preview.
+
+---
+
+## 1. The model
+
+| Layer | Renders | Where |
+|---|---|---|
+| **3D labels (default)** | `NodeLabels3D` (node names) + `OrthogonalEdge`'s 3D label (edge labels) | inside the Canvas (drei `Text` / `Billboard`) |
+| **DOM chips (opt-in)** | `LabelsLayer` / `EdgeLabelsLayer`, positioned by the projectors | DOM overlay over the Canvas |
+
+The active mode is **`spec.text.mode`** (`"3d"` default | `"dom"`). It's a per-theme (per-scene)
+setting, so switching theme or toggling it in the **Theme manager → Labels & text → Label
+presentation** flips every label at once. `text` nodes are always their own 3D text regardless of mode.
+
+---
+
+## 2. The four orientations
+
+3D labels (node labels, edge labels, and `text` nodes) support four facings:
+
+| Orientation | Faces | Reads as |
+|---|---|---|
+| `billboard` | always toward the camera | a floating tag (most legible) |
+| `ground` | up (+Y) | painted flat on the ground ("facing the sky") |
+| `uprightX` | the +X iso plane | a standing sign, left face in iso view |
+| `uprightZ` | the +Z iso plane | a standing sign, right face in iso view |
+
+Set the default per scene in the theme (`spec.text.orientation`); override per object:
+- **Node:** Inspector → *Label facing* (writes `node.labelOrientation`).
+- **Edge:** Inspector → *Label facing* (writes `edge.labelOrientation`).
+- **Text node:** Inspector → *Text → Orientation* (writes `node.meta.orientation`).
+
+---
+
+## 3. Style: global / per-scene / per-individual
+
+| Scope | Font | Colour | Size | Opacity | Orientation |
+|---|---|---|---|---|---|
+| **Global / per-scene** (theme) | `spec.text.font` | `spec.text.color` | `spec.text.size` | `spec.text.opacity` | `spec.text.orientation` |
+| **Per node** | (theme) | `node.meta.labelColor` | `node.meta.labelSize` | (node `opacity`/theme) | `node.labelOrientation` |
+| **Per edge** | (theme) | `edge.meta.labelColor` | `edge.meta.labelSize` | (theme) | `edge.labelOrientation` |
+| **Per `text` node** | `node.meta.font` | `node.color` | `node.meta.size` | `node.opacity` | `node.meta.orientation` |
+
+"Globally / per scene" = edit the theme (Theme manager → *Labels & text*, or the theme module). Each
+theme is a scene, so this is the per-scene layer; committing a theme makes it the shared global default
+(see [`../themes/CREATING_THEMES.md`](../themes/CREATING_THEMES.md)). Per-individual overrides win over
+the theme.
+
+> Font is an optional **font-file URL** (troika); omit it for the default sans. Set it once on the
+> theme for a consistent look.
+
+---
+
+## 4. JSON examples
+
+```jsonc
+// A node whose label lies flat on the ground, in a custom grey, larger:
+{ "id": "vpc", "kind": "group", "label": "VPC", "x": 0, "y": 0,
+  "labelOrientation": "ground", "meta": { "labelColor": "#9aa0a6", "labelSize": 0.7 } }
+
+// An edge label standing upright facing +Z:
+{ "id": "e1", "source": "app", "target": "s3", "label": "store", "labelOrientation": "uprightZ" }
+
+// Force the whole scene back to flat DOM chips (in the theme):
+{ "config": { "theme": { "id": "x", "name": "X", "chromeBase": "light", "text": { "mode": "dom", "color": "#15211f", "opacity": 1, "size": 0.6, "orientation": "billboard" } /* …rest… */ } } }
+```
+
+---
+
+## 5. Notes & verification
+
+- **Visibility:** the `showLabels` master (preview `config.showLabels`) hides all labels (3D and DOM).
+  In `dom` mode the host renders the chip overlays; in `3d` mode they're suppressed and the in-canvas
+  text is used instead — no double labels.
+- **Legibility:** `billboard` is the safest default; `ground`/`upright` are great for titles and zone
+  labels but can foreshorten at grazing camera angles.
+- **DOM mode** remains available for future needs (HTML interactivity, accessibility experiments) via
+  `spec.text.mode = "dom"`.
+- Verify in Storybook `Editor/Theming → AWS` (3D labels + an upright edge label) and the
+  `/diagram-preview` playground; check `prefers-reduced-motion` (billboard tracking is per-frame but
+  cheap). `typecheck` + `build` + `build-storybook` stay green.

@@ -36,7 +36,8 @@ export type GlyphName =
   | "layout"
   | "grid"
   | "shadow"
-  | "palette";
+  | "palette"
+  | "link";
 
 const PATHS: Record<GlyphName, React.ReactNode> = {
   zap: <path d="M13 2 L4 14 h7 l-1 8 L20 9 h-7 z" />,
@@ -127,6 +128,13 @@ const PATHS: Record<GlyphName, React.ReactNode> = {
       <circle cx="8" cy="11" r="1" />
       <circle cx="12" cy="8" r="1" />
       <circle cx="15.5" cy="11" r="1" />
+    </>
+  ),
+  link: (
+    <>
+      <path d="M9.5 14.5 l5 -5" />
+      <path d="M11 6.5 l1.2 -1.2 a3.5 3.5 0 0 1 5 5 l-1.7 1.7" />
+      <path d="M13 17.5 l-1.2 1.2 a3.5 3.5 0 0 1 -5 -5 l1.7 -1.7" />
     </>
   ),
 };

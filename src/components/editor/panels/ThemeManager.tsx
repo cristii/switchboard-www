@@ -343,14 +343,23 @@ export function ThemeManager({ manager, onClose, className, style }: ThemeManage
           value={spec.edges.connector}
           options={[
             { value: "line", label: "Line" },
-            { value: "tube", label: "Tube (Step 3)" },
-            { value: "ribbonArrow", label: "Ribbon arrow (Step 3)" },
+            { value: "tube", label: "Tube" },
+            { value: "ribbonArrow", label: "Ribbon arrow" },
           ]}
           onChange={(v) => patch((d) => (d.edges.connector = v as ThemeSpec["edges"]["connector"]))}
         />
       </Section>
 
-      <Section title="3D text">
+      <Section title="Labels &amp; text">
+        <Select
+          label="Label presentation"
+          value={spec.text.mode ?? "3d"}
+          options={[
+            { value: "3d", label: "3D hovering (in-canvas)" },
+            { value: "dom", label: "Flat chips (DOM)" },
+          ]}
+          onChange={(v) => patch((d) => (d.text.mode = v as "3d" | "dom"))}
+        />
         <ColorRow label="Colour" value={spec.text.color} onChange={(v) => patch((d) => (d.text.color = v))} />
         <RangeRow label="Opacity" value={spec.text.opacity} min={0.1} max={1} step={0.02} onChange={(v) => patch((d) => (d.text.opacity = v))} />
         <RangeRow label="Size" value={spec.text.size} min={0.2} max={2} step={0.05} onChange={(v) => patch((d) => (d.text.size = v))} />

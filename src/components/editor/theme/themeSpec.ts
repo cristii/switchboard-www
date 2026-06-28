@@ -5,7 +5,9 @@
 // (theme/sceneTheme.ts) that the scene already consumes. The Theme manager pane
 // edits a ThemeSpec live. See docs/themes/CREATING_THEMES.md + IMPLEMENTATION_PLAN.md.
 
-import type { NodeColorRole, TextOrientation } from "../state/types";
+import type { ConnectorStyle, NodeColorRole, TextOrientation } from "../state/types";
+
+export type { ConnectorStyle };
 
 /** A single coloured light. The scene maps these to R3F light elements. */
 export type LightSpec =
@@ -27,8 +29,6 @@ export type LightSpec =
       position: [number, number, number];
       distance?: number;
     };
-
-export type ConnectorStyle = "line" | "tube" | "ribbonArrow";
 
 export interface ThemeSpec {
   /** Stable id ("light" | "dark" | "aws" | user ids). */
@@ -83,6 +83,9 @@ export interface ThemeSpec {
     opacity: number;
     size: number;
     orientation: TextOrientation;
+    /** Where node/edge labels render: 3D in-canvas hovering text (default) or
+     *  flat DOM chips. @default "3d" */
+    mode?: "3d" | "dom";
   };
 }
 
@@ -235,6 +238,7 @@ export function normalizeThemeSpec(input: unknown, base: ThemeSpec): ThemeSpec {
       opacity: num(textIn.opacity, base.text.opacity),
       size: num(textIn.size, base.text.size),
       orientation,
+      mode: textIn.mode === "dom" ? "dom" : textIn.mode === "3d" ? "3d" : base.text.mode,
     },
   };
 }

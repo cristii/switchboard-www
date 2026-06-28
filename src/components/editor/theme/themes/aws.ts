@@ -4,8 +4,7 @@
 // primary flow (thin grey for secondary, set per-edge), translucent orange group
 // platforms, and a subtle warm point light for that premium SaaS warmth. Camera
 // stays clean orthographic isometric. Edges default to the `ribbonArrow` connector
-// — until Step 3 ships the ribbon renderer they draw as thick orange lines.
-// See docs/IMPLEMENTATION_PLAN.md (reference-image table).
+// (the flat orange isometric arrow). See docs/IMPLEMENTATION_PLAN.md + PATH_ALGORITHMS.md.
 
 import type { ThemeSpec } from "../themeSpec";
 

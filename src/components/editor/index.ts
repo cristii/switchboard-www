@@ -12,7 +12,19 @@ export { Inspector } from "./panels/Inspector";
 export { ThemeToggle } from "./panels/ThemeToggle";
 export { ThemeManager } from "./panels/ThemeManager";
 export type { ThemeManagerProps } from "./panels/ThemeManager";
+export { NodeContextMenu } from "./panels/NodeContextMenu";
 export { MobileDrawer } from "./panels/MobileDrawer";
+
+// Pluggable routing + connectors (Step 3)
+export {
+  ROUTING_ALGORITHMS,
+  registerRoutingAlgorithm,
+  getRoutingAlgorithm,
+  listRoutingIds,
+} from "./scene/edges/routing";
+export type { RouteAlgorithm, RoutePoint, RouteOptions } from "./scene/edges/routing";
+export { CONNECTORS } from "./scene/edges/connectors";
+export type { ConnectorProps } from "./scene/edges/connectors";
 export { useEditorTheme } from "./theme/useEditorTheme";
 export { useThemeManager } from "./theme/useThemeManager";
 export type { ThemeManagerApi } from "./theme/useThemeManager";
@@ -66,6 +78,7 @@ export {
 } from "./catalog/nodeCatalog";
 export type { NodeCatalogEntry, NodeCategory } from "./catalog/nodeCatalog";
 export type { ShapeId } from "./scene/nodes/shapes/types";
+export { ModelNode } from "./scene/nodes/shapes/ModelNode";
 
 export { useWorkflowStore } from "./state/useWorkflowStore";
 export type { WorkflowState } from "./state/useWorkflowStore";

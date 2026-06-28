@@ -3,9 +3,9 @@
 // carry `version`, so `migrate()` is the single place future formats are upgraded.
 
 import type {
+  ConnectorStyle,
   Diagram,
   EdgeFlow,
-  EdgeRouting,
   EdgeStyle,
   EditorTheme,
   TextOrientation,
@@ -39,8 +39,8 @@ export function toJSON(diagram: Diagram): string {
   return JSON.stringify(diagram, null, 2);
 }
 
-const ROUTINGS: EdgeRouting[] = ["orthogonal", "smooth", "direct"];
 const STYLES: EdgeStyle[] = ["solid", "dashed"];
+const CONNECTORS: ConnectorStyle[] = ["line", "tube", "ribbonArrow"];
 const FLOWS: EdgeFlow[] = ["off", "slow", "normal", "fast"];
 const ORIENTATIONS: TextOrientation[] = ["billboard", "ground", "uprightX", "uprightZ"];
 
@@ -68,6 +68,9 @@ function asNode(v: unknown): WorkflowNode | null {
   if (typeof v.opacity === "number") node.opacity = v.opacity;
   if (typeof v.icon === "string") node.icon = v.icon;
   if (typeof v.parentId === "string") node.parentId = v.parentId;
+  if (typeof v.labelOrientation === "string" && ORIENTATIONS.includes(v.labelOrientation as TextOrientation)) {
+    node.labelOrientation = v.labelOrientation as TextOrientation;
+  }
   if (Array.isArray(v.ports)) node.ports = v.ports as WorkflowNode["ports"];
   if (isRecord(v.meta)) node.meta = v.meta;
   return node;
@@ -83,11 +86,13 @@ function asEdge(v: unknown): WorkflowEdge | null {
   if (typeof v.sourcePort === "string") edge.sourcePort = v.sourcePort;
   if (typeof v.targetPort === "string") edge.targetPort = v.targetPort;
   if (typeof v.label === "string") edge.label = v.label;
-  if (typeof v.routing === "string" && ROUTINGS.includes(v.routing as EdgeRouting)) {
-    edge.routing = v.routing as EdgeRouting;
-  }
+  // Routing is now an open registry id (built-ins + any registered algorithm).
+  if (typeof v.routing === "string") edge.routing = v.routing;
   if (typeof v.style === "string" && STYLES.includes(v.style as EdgeStyle)) {
     edge.style = v.style as EdgeStyle;
+  }
+  if (typeof v.connector === "string" && CONNECTORS.includes(v.connector as ConnectorStyle)) {
+    edge.connector = v.connector as ConnectorStyle;
   }
   if (typeof v.flow === "string" && FLOWS.includes(v.flow as EdgeFlow)) {
     edge.flow = v.flow as EdgeFlow;
@@ -96,6 +101,7 @@ function asEdge(v: unknown): WorkflowEdge | null {
   if (typeof v.labelOrientation === "string" && ORIENTATIONS.includes(v.labelOrientation as TextOrientation)) {
     edge.labelOrientation = v.labelOrientation as TextOrientation;
   }
+  if (isRecord(v.meta)) edge.meta = v.meta;
   return edge;
 }
 

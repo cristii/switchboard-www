@@ -58,13 +58,19 @@ export interface WorkflowNode {
   icon?: string;
   /** Membership in a `group` container node. */
   parentId?: string;
+  /** Orientation of this node's 3D hovering label; falls back to the theme. */
+  labelOrientation?: TextOrientation;
   /** Explicit ports; otherwise default in/out are assumed. */
   ports?: Port[];
+  /** Per-node extras: 3D model URL (`model`), `labelColor`, `labelSize`,
+   *  and (for `text` nodes) `orientation` / `size` / `font`. */
   meta?: Record<string, unknown>;
 }
 
 export type EdgeRouting = "orthogonal" | "smooth" | "direct";
 export type EdgeStyle = "solid" | "dashed";
+/** How a connector is rendered between two nodes (Step 3 connector renderers). */
+export type ConnectorStyle = "line" | "tube" | "ribbonArrow";
 /** Animated "data flow" pulse travelling along an edge. */
 export type EdgeFlow = "off" | "slow" | "normal" | "fast";
 
@@ -76,16 +82,21 @@ export interface WorkflowEdge {
   sourcePort?: string;
   targetPort?: string;
   label?: string;
-  /** @default "orthogonal" */
-  routing?: EdgeRouting;
+  /** Routing-algorithm id; defaults to the theme's routing. Built-ins:
+   *  "orthogonal" | "smooth" | "direct" (+ any registered algorithm). */
+  routing?: EdgeRouting | string;
   /** @default "solid" — `dashed` reads as conditional/async. */
   style?: EdgeStyle;
+  /** Connector render style; defaults to the theme's connector. */
+  connector?: ConnectorStyle;
   /** Animated data-flow pulse. @default "off" */
   flow?: EdgeFlow;
   color?: string;
   /** When set, the edge's `label` is rendered as 3D in-canvas text with this
    *  orientation (instead of the flat DOM chip). See TextOrientation. */
   labelOrientation?: TextOrientation;
+  /** Per-edge overrides (e.g. labelColor / labelSize). */
+  meta?: Record<string, unknown>;
 }
 
 /** Camera/viewport state (ground-plane target + orthographic zoom). */

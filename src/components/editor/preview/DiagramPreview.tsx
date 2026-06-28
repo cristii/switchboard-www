@@ -36,6 +36,7 @@ const NOOP_API: CameraApi = {
 export function DiagramPreview({ diagram, config, className, style }: DiagramPreviewProps) {
   const cfg: PreviewConfig = { ...DEFAULT_PREVIEW_CONFIG, ...config };
   const spec = React.useMemo(() => resolveThemeFromConfig(cfg.theme), [cfg.theme]);
+  const labelMode = spec.text.mode ?? "3d";
   const [ready, setReady] = React.useState(false);
   const labelsRef = React.useRef<LabelsRegistry>(new Map());
   const edgeLabelsRef = React.useRef<EdgeLabelsRegistry>(new Map());
@@ -62,6 +63,7 @@ export function DiagramPreview({ diagram, config, className, style }: DiagramPre
           interactive={false}
           showGrid={cfg.showGrid}
           showGround={cfg.showGround}
+          showLabels={cfg.showLabels}
           labelsRef={labelsRef}
           edgeLabelsRef={edgeLabelsRef}
           apiRef={apiRef}
@@ -71,10 +73,12 @@ export function DiagramPreview({ diagram, config, className, style }: DiagramPre
           fitOnMount={fitOnMount}
           onReady={() => setReady(true)}
         />
-        {cfg.showLabels ? (
+        {cfg.showLabels && labelMode === "dom" ? (
           <LabelsLayer nodes={diagram.nodes} selection={null} labelsRef={labelsRef} />
         ) : null}
-        {cfg.showLabels ? <EdgeLabelsLayer edges={diagram.edges} registry={edgeLabelsRef} /> : null}
+        {cfg.showLabels && labelMode === "dom" ? (
+          <EdgeLabelsLayer edges={diagram.edges} registry={edgeLabelsRef} />
+        ) : null}
       </div>
 
       {!ready ? (

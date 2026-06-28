@@ -77,6 +77,9 @@ export function Toolbar({
   const redo = useWorkflowStore((s) => s.redo);
   const pastLen = useWorkflowStore((s) => s.past.length);
   const futureLen = useWorkflowStore((s) => s.future.length);
+  const linkMode = useWorkflowStore((s) => s.linkMode);
+  const beginLink = useWorkflowStore((s) => s.beginLink);
+  const cancelLink = useWorkflowStore((s) => s.cancelLink);
   const exportJson = useExportJson();
   const exportPng = useExportPng(apiRef);
 
@@ -129,6 +132,12 @@ export function Toolbar({
       {onAutoArrange ? (
         <IconButton label="Auto-arrange" glyph="layout" onClick={onAutoArrange} />
       ) : null}
+      <IconButton
+        label={linkMode ? "Cancel linking" : "Link nodes"}
+        glyph="link"
+        active={linkMode}
+        onClick={() => (linkMode ? cancelLink() : beginLink(null))}
+      />
       <Divider />
       {onToggleGrid ? (
         <IconButton label="Toggle grid" glyph="grid" active={showGrid} onClick={onToggleGrid} />

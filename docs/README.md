@@ -25,17 +25,24 @@ the `ThemeSpec` / routing / linking architecture.
   LLM (incl. the AWS look as a worked example).
 
 ### nodes/
+- [`ADDING_NODE_TYPES.md`](./nodes/ADDING_NODE_TYPES.md) — add a node kind (catalog + shape + glyph),
+  with the registries and the `text` / model special cases.
+- [`BLENDER_MODELING.md`](./nodes/BLENDER_MODELING.md) — model nodes in Blender + simple textures,
+  origin/scale rules, export GLB, drop in via `node.meta.model`.
 - [`isometric_workflow_editor_3d_model_prompts.md`](./nodes/isometric_workflow_editor_3d_model_prompts.md)
   — per-kind 3D-model generation prompts (premium minimalist, glTF/GLB).
-- `ADDING_NODE_TYPES.md` *(Step 1)* — add a node kind (catalog + shape + glyph).
-- `BLENDER_MODELING.md` *(Step 1)* — model nodes in Blender + simple textures, export GLB.
 
 ### paths/
-- `PATH_ALGORITHMS.md` *(Step 1/3)* — switch / author routing (path-trajectory) algorithms.
+- [`PATH_ALGORITHMS.md`](./paths/PATH_ALGORITHMS.md) — switch / author routing (path-trajectory)
+  algorithms against the routing registry; connector render styles (line / tube / ribbon-arrow).
+
+### labels/
+- [`LABELS.md`](./labels/LABELS.md) — 3D in-canvas hovering labels/tooltips (4 orientations), the
+  DOM-chip fallback mode, and global / per-scene / per-object label styling.
 
 ### preview/
 - [`isometric_workflow_editor_preview_mode.md`](./preview/isometric_workflow_editor_preview_mode.md)
   — read-only embeddable preview (Phase 1 done) + scroll/keyframe plan (Phase 2).
 
 > Moved docs keep their original filenames so existing references in code comments stay valid; new
-> docs use short names. Items marked *(Step N)* are produced as that step of the implementation plan.
+> docs use short names.

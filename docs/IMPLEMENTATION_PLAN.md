@@ -183,6 +183,7 @@ docs/
   themes/   isometric_workflow_editor_theming_guide.md  CREATING_THEMES.md  THEME_PROMPT.md
   nodes/    isometric_workflow_editor_3d_model_prompts.md  ADDING_NODE_TYPES.md  BLENDER_MODELING.md
   paths/    PATH_ALGORITHMS.md
+  labels/   LABELS.md
   preview/  isometric_workflow_editor_preview_mode.md
 ```
 (Moved docs keep their filenames so existing in-code references stay valid; new docs use short names.)
@@ -196,24 +197,34 @@ docs/
 
 ## Status
 - [x] Step 0 — `docs/` reorg + this plan.
-- [x] Step 1 (theme docs) — `themes/CREATING_THEMES.md`, `themes/THEME_PROMPT.md`, theming guide
-  expanded for `ThemeSpec`. *(Node-type / path-algorithm / Blender docs intentionally deferred to land
-  with Steps 3 & 4, so the tutorials describe shipped APIs.)*
+- [x] Step 1 — docs: `themes/CREATING_THEMES.md`, `themes/THEME_PROMPT.md`, theming guide for
+  `ThemeSpec`, `paths/PATH_ALGORITHMS.md`, `nodes/ADDING_NODE_TYPES.md`, `nodes/BLENDER_MODELING.md`,
+  `labels/LABELS.md` (the node/path/Blender/label docs landed alongside Steps 3–5 so they describe
+  shipped APIs).
 - [x] Step 2 — theme system (`ThemeSpec` + registry + `useThemeManager`), data-driven multi-light
   scene (`Lights.tsx`), spec-driven camera (orthographic **+** perspective/FOV), node transparency,
-  3D in-canvas text (`TextNode`) + 3D edge labels, **Theme manager pane**, built-in **`aws`** theme +
-  showcase preset, preview/playground theme selection (id or inline spec).
-- [ ] Step 3 — pluggable routing + connector styles.
-- [ ] Step 4 — model support + linking system.
+  3D in-canvas text (`TextNode`), **Theme manager pane**, built-in **`aws`** theme + showcase preset,
+  preview/playground theme selection (id or inline spec).
+- [x] Step 3 — pluggable **routing registry** (`scene/edges/routing/`, A*/smooth/direct as entries,
+  `registerRoutingAlgorithm`) + **connector styles** (`line` / `tube` / `ribbonArrow`); edge `routing`
+  + `connector` fields, Inspector controls. The AWS flow arrows now render as real ribbon arrows.
+- [x] Step 4 — **textured model nodes** (`ModelNode` via `useGLTF`, Suspense + procedural fallback,
+  `Body` tint, footprint fit; opt-in via `node.meta.model`) + **node linking** with 3 entry points
+  (Inspector "Link to…", Toolbar "Link", right-click `NodeContextMenu`) sharing a store `linkMode`
+  slice + a cursor-following `LinkPreview`.
+- [x] Step 5 — **3D hovering labels/tooltips**: node/edge labels render as in-canvas 3D text (4
+  orientations) by default; DOM chips kept as an opt-in `spec.text.mode = "dom"`; global / per-scene /
+  per-object label styling. (`NodeLabels3D`, `text.mode`, Inspector + Theme-manager controls.)
 
-### Step 2 implementation notes / deviations
+### Implementation notes / deviations
 - **`SceneCamera` folded into `CameraControls`** (a single `CameraSpec`-driven controller handles both
-  orthographic and perspective) rather than a separate component — less double-management of the camera.
+  orthographic and perspective) rather than a separate component.
 - **`SceneTheme` kept as the resolved runtime view**: `resolveSceneTheme(spec)` flattens a `ThemeSpec`
   so the existing meshes/edges/shapes consume it unchanged; the spec is the authoring/serialisation unit.
-- **`connector: "ribbonArrow" | "tube"`** is accepted in the spec now but renders as a thick line until
-  the Step 3 connector renderers ship (AWS flow arrows therefore read as thick orange lines for now).
 - **Chrome** still uses the `light`/`dark` `editor-tokens.css` blocks via `spec.chromeBase`; a fully
   custom chrome palette per theme is a small follow-up (noted in the theming guide §6).
-- **Routing registry** (`spec.edges.routing` is a string id) is wired through the type but resolved by
-  the existing `getRoutePoints`; the pluggable registry itself is Step 3.
+- **Model assets**: no binary `.glb` is committed; model support is verified by construction (loader +
+  Suspense fallback to the procedural shape). Drop a `.glb` in `public/models/` and set
+  `node.meta.model` to see it — see `nodes/BLENDER_MODELING.md`.
+- **Right-click vs pan**: the camera uses right-drag to pan; a right-click (no drag) on a node opens
+  the context menu. A tiny pan can occur before the menu — acceptable.

@@ -14,7 +14,7 @@ import { NodeGlyph } from "../icons/NodeGlyph";
 import { getNodeCatalogEntry } from "../catalog/nodeCatalog";
 import { useWorkflowStore } from "../state/useWorkflowStore";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
-import type { EdgeFlow, NodeColorRole, TextOrientation } from "../state/types";
+import type { ConnectorStyle, EdgeFlow, NodeColorRole, TextOrientation } from "../state/types";
 
 const SWATCHES: { role: NodeColorRole; hex: string }[] = [
   { role: "orange", hex: "#b45309" },
@@ -88,6 +88,7 @@ export function Inspector({ className, style }: InspectorProps) {
   const deleteNode = useWorkflowStore((s) => s.deleteNode);
   const deleteEdge = useWorkflowStore((s) => s.deleteEdge);
   const selectEdge = useWorkflowStore((s) => s.selectEdge);
+  const beginLink = useWorkflowStore((s) => s.beginLink);
 
   const node = selection?.type === "node" ? nodes.find((n) => n.id === selection.id) : undefined;
   const edge = selection?.type === "edge" ? edges.find((e) => e.id === selection.id) : undefined;
@@ -201,6 +202,23 @@ export function Inspector({ className, style }: InspectorProps) {
             </Row>
           ) : null}
 
+          {node.kind !== "text" ? (
+            <Row>
+              <Select
+                label="Label facing"
+                value={node.labelOrientation ?? ""}
+                options={[
+                  { value: "", label: "Theme default" },
+                  { value: "billboard", label: "Billboard (camera)" },
+                  { value: "ground", label: "Ground (flat)" },
+                  { value: "uprightX", label: "Upright · X" },
+                  { value: "uprightZ", label: "Upright · Z" },
+                ]}
+                onChange={(v) => updateNode(node.id, { labelOrientation: (v || undefined) as TextOrientation | undefined })}
+              />
+            </Row>
+          ) : null}
+
           {node.kind === "text" ? (
             <Row>
               <div style={sectionLabel}>Text</div>
@@ -268,6 +286,16 @@ export function Inspector({ className, style }: InspectorProps) {
 
           <button
             type="button"
+            style={{ ...deleteBtn, marginTop: 0 }}
+            onClick={() => beginLink(node.id)}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--editor-accent)")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--editor-border-soft)")}
+          >
+            <NodeGlyph name="link" size={15} /> Link to…
+          </button>
+
+          <button
+            type="button"
             style={deleteBtn}
             onClick={() => deleteNode(node.id)}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--editor-accent)")}
@@ -298,6 +326,18 @@ export function Inspector({ className, style }: InspectorProps) {
           </Row>
           <Row>
             <Select
+              label="Connector"
+              value={edge.connector ?? "line"}
+              options={[
+                { value: "line", label: "Line" },
+                { value: "tube", label: "Tube" },
+                { value: "ribbonArrow", label: "Ribbon arrow" },
+              ]}
+              onChange={(v) => updateEdge(edge.id, { connector: v as ConnectorStyle })}
+            />
+          </Row>
+          <Row>
+            <Select
               label="Style"
               value={edge.style ?? "solid"}
               options={[
@@ -322,6 +362,20 @@ export function Inspector({ className, style }: InspectorProps) {
           </Row>
           <Row>
             <Field key={`elabel-${edge.id}`} label="Label" defaultValue={edge.label ?? ""} placeholder="optional" onCommit={(v) => updateEdge(edge.id, { label: v.trim() || undefined })} />
+          </Row>
+          <Row>
+            <Select
+              label="Label facing"
+              value={edge.labelOrientation ?? ""}
+              options={[
+                { value: "", label: "Theme default" },
+                { value: "billboard", label: "Billboard (camera)" },
+                { value: "ground", label: "Ground (flat)" },
+                { value: "uprightX", label: "Upright · X" },
+                { value: "uprightZ", label: "Upright · Z" },
+              ]}
+              onChange={(v) => updateEdge(edge.id, { labelOrientation: (v || undefined) as TextOrientation | undefined })}
+            />
           </Row>
           <button
             type="button"

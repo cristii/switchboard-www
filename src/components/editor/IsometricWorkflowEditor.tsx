@@ -16,6 +16,7 @@ import { NodePalette } from "./panels/NodePalette";
 import { Toolbar } from "./panels/Toolbar";
 import { Inspector } from "./panels/Inspector";
 import { ThemeManager } from "./panels/ThemeManager";
+import { NodeContextMenu } from "./panels/NodeContextMenu";
 import { MobileDrawer } from "./panels/MobileDrawer";
 import { NodeGlyph } from "./icons/NodeGlyph";
 import { useThemeManager } from "./theme/useThemeManager";
@@ -61,6 +62,7 @@ export function IsometricWorkflowEditor({
 }: IsometricWorkflowEditorProps) {
   const manager = useThemeManager(defaultThemeId ?? defaultTheme);
   const spec = manager.spec;
+  const labelMode = spec.text.mode ?? "3d";
   const [ready, setReady] = React.useState(false);
   const [drawer, setDrawer] = React.useState<Drawer>("none");
   const [themePanel, setThemePanel] = React.useState(false);
@@ -79,6 +81,8 @@ export function IsometricWorkflowEditor({
   const selection = useWorkflowStore((s) => s.selection);
   const selectEdge = useWorkflowStore((s) => s.selectEdge);
   const clearSelection = useWorkflowStore((s) => s.clearSelection);
+  const linkMode = useWorkflowStore((s) => s.linkMode);
+  const linkSourceId = useWorkflowStore((s) => s.linkSourceId);
 
   React.useEffect(() => {
     loadDiagram(initialDiagram);
@@ -95,8 +99,10 @@ export function IsometricWorkflowEditor({
         if (s.selection?.type === "node") s.deleteNode(s.selection.id);
         else if (s.selection?.type === "edge") s.deleteEdge(s.selection.id);
       } else if (e.key === "Escape") {
-        if (s.connectSourceId) s.endConnect();
+        if (s.linkMode) s.cancelLink();
+        else if (s.connectSourceId) s.endConnect();
         else s.clearSelection();
+        s.closeContextMenu();
       }
     };
     window.addEventListener("keydown", onKey);
@@ -141,7 +147,7 @@ export function IsometricWorkflowEditor({
   };
 
   const stage = (
-    <div style={{ position: "relative", flex: 1, minWidth: 0, minHeight: 0 }}>
+    <div style={{ position: "relative", flex: 1, minWidth: 0, minHeight: 0, cursor: linkMode ? "crosshair" : undefined }}>
       <DiagramCanvas
         spec={spec}
         nodes={nodes}
@@ -156,8 +162,12 @@ export function IsometricWorkflowEditor({
         onBackgroundClick={clearSelection}
         onReady={() => setReady(true)}
       />
-      <LabelsLayer nodes={nodes} selection={selection} labelsRef={labelsRef} />
-      <EdgeLabelsLayer edges={edges} registry={edgeLabelsRef} />
+      {labelMode === "dom" ? (
+        <>
+          <LabelsLayer nodes={nodes} selection={selection} labelsRef={labelsRef} />
+          <EdgeLabelsLayer edges={edges} registry={edgeLabelsRef} />
+        </>
+      ) : null}
       {!ready ? (
         <div
           style={{
@@ -175,6 +185,31 @@ export function IsometricWorkflowEditor({
           }}
         >
           Initialising scene…
+        </div>
+      ) : null}
+      {linkMode ? (
+        <div
+          style={{
+            position: "absolute",
+            top: 10,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 11,
+            padding: "6px 12px",
+            borderRadius: 8,
+            background: "var(--editor-surface)",
+            border: "1.5px solid var(--editor-accent)",
+            color: "var(--editor-text)",
+            boxShadow: "var(--editor-shadow)",
+            fontFamily: "var(--font-display, sans-serif)",
+            fontSize: "0.72rem",
+            fontWeight: 700,
+            letterSpacing: "0.02em",
+            pointerEvents: "none",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {linkSourceId ? "Click the target node" : "Click the first node"} · Esc to cancel
         </div>
       ) : null}
     </div>
@@ -282,6 +317,8 @@ export function IsometricWorkflowEditor({
           ) : null}
         </div>
       )}
+
+      {chrome ? <NodeContextMenu /> : null}
     </div>
   );
 }

@@ -70,6 +70,24 @@ export interface WorkflowState {
   startConnect: (id: string) => void;
   endConnect: () => void;
 
+  // --- linking (click-to-link: inspector / toolbar / context menu) ---
+  /** When true, clicking nodes links them instead of selecting/dragging. */
+  linkMode: boolean;
+  /** First node picked while linking (null = pick a source next). */
+  linkSourceId: string | null;
+  /** Enter link mode, optionally pre-seeding the source node. */
+  beginLink: (fromId?: string | null) => void;
+  /** Handle a node click while linking: set source, or complete the edge. */
+  linkClick: (id: string) => void;
+  cancelLink: () => void;
+
+  // --- context menu (desktop right-click on a node) ---
+  contextMenu: { nodeId: string; x: number; y: number } | null;
+  openContextMenu: (nodeId: string, x: number, y: number) => void;
+  closeContextMenu: () => void;
+  /** Duplicate a node a little offset from the original; selects the copy. */
+  duplicateNode: (id: string) => string | null;
+
   // --- viewport ---
   setViewport: (viewport: Partial<Viewport>) => void;
 
@@ -99,6 +117,9 @@ export const useWorkflowStore = create<WorkflowState>()((set, get) => {
     edges: [],
     selection: null,
     connectSourceId: null,
+    linkMode: false,
+    linkSourceId: null,
+    contextMenu: null,
     viewport: DEFAULT_VIEWPORT,
     nextNodeId: 1,
     nextEdgeId: 1,
@@ -236,6 +257,35 @@ export const useWorkflowStore = create<WorkflowState>()((set, get) => {
 
     startConnect: (id) => set({ connectSourceId: id }),
     endConnect: () => set({ connectSourceId: null }),
+
+    beginLink: (fromId = null) =>
+      set((s) => ({
+        linkMode: true,
+        linkSourceId: fromId ?? null,
+        contextMenu: null,
+        selection: fromId ? { type: "node", id: fromId } : s.selection,
+      })),
+    linkClick: (id) => {
+      const { linkSourceId } = get();
+      if (!linkSourceId) {
+        set({ linkSourceId: id });
+        return;
+      }
+      if (id !== linkSourceId) get().addEdge(linkSourceId, id);
+      set({ linkMode: false, linkSourceId: null });
+    },
+    cancelLink: () => set({ linkMode: false, linkSourceId: null }),
+
+    openContextMenu: (nodeId, x, y) => set({ contextMenu: { nodeId, x, y } }),
+    closeContextMenu: () => set({ contextMenu: null }),
+
+    duplicateNode: (id) => {
+      const original = get().nodes.find((n) => n.id === id);
+      if (!original) return null;
+      const { id: _omit, ...rest } = original;
+      void _omit;
+      return get().addNode(original.kind, { ...rest, x: original.x + 1.2, y: original.y + 1.2, parentId: undefined });
+    },
 
     setViewport: (viewport) => set((s) => ({ viewport: { ...s.viewport, ...viewport } })),
 
