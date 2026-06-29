@@ -254,6 +254,11 @@ bubble tag, right uprightZ info-card, bold arrows + dashed corner-connect links)
   `/services` capability cards now render an isometric scene.
 - [x] Camera fit gained a `fitScale` knob (preview `cameraFit`); the pillars use it (plus a capped
   panel width) to fill the card. Still iterating on slab/icon proportions via screenshots.
+- [x] **Static-snapshot pillars**: `PillarIsoPreview` renders each scene with a **module-level serial
+  queue** (one live WebGL context at a time), snapshots to a PNG (`capturePng`) once it settles, then
+  unmounts the canvas. Fixes later canvases rendering empty (they competed for GL contexts + the global
+  `SoftShadows` shader patch) and means the page is just images after first paint. `DiagramPreview`
+  gained optional `apiRef` + `onReady` props for this.
 
 #### Phase 7.1 — "Signal" layered theme (polished reference look) ✅
 Reworked the pillar to match the polished reference rendering via a dedicated built-in theme rather

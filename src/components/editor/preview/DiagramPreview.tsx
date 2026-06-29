@@ -23,6 +23,10 @@ export interface DiagramPreviewProps {
   config?: Partial<PreviewConfig>;
   className?: string;
   style?: React.CSSProperties;
+  /** External camera API ref (e.g. to capturePng for a static snapshot). */
+  apiRef?: React.MutableRefObject<CameraApi>;
+  /** Fired once the canvas is created/ready. */
+  onReady?: () => void;
 }
 
 const NOOP_API: CameraApi = {
@@ -33,14 +37,15 @@ const NOOP_API: CameraApi = {
   capturePng: () => null,
 };
 
-export function DiagramPreview({ diagram, config, className, style }: DiagramPreviewProps) {
+export function DiagramPreview({ diagram, config, className, style, apiRef: externalApiRef, onReady }: DiagramPreviewProps) {
   const cfg: PreviewConfig = { ...DEFAULT_PREVIEW_CONFIG, ...config };
   const spec = React.useMemo(() => resolveThemeFromConfig(cfg.theme), [cfg.theme]);
   const labelMode = spec.text.mode ?? "3d";
   const [ready, setReady] = React.useState(false);
   const labelsRef = React.useRef<LabelsRegistry>(new Map());
   const edgeLabelsRef = React.useRef<EdgeLabelsRegistry>(new Map());
-  const apiRef = React.useRef<CameraApi>({ ...NOOP_API });
+  const internalApiRef = React.useRef<CameraApi>({ ...NOOP_API });
+  const apiRef = externalApiRef ?? internalApiRef;
 
   const fitOnMount = cfg.cameraZoom === undefined && cfg.cameraTarget === undefined;
 
@@ -72,7 +77,10 @@ export function DiagramPreview({ diagram, config, className, style }: DiagramPre
           initialTarget={cfg.cameraTarget}
           fitOnMount={fitOnMount}
           fitScale={cfg.cameraFit}
-          onReady={() => setReady(true)}
+          onReady={() => {
+            setReady(true);
+            onReady?.();
+          }}
         />
         {cfg.showLabels && labelMode === "dom" ? (
           <LabelsLayer nodes={diagram.nodes} selection={null} labelsRef={labelsRef} />
