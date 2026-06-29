@@ -19,12 +19,13 @@ export const signalTheme: ThemeSpec = {
   grid: { show: true, color: "#e4e6df", sectionColor: "#d3d8cd", opacity: 0.55 },
   lights: [
     { id: "hemi", type: "hemisphere", sky: "#fbf9f2", ground: "#ded9cb", intensity: 0.62 },
-    { id: "ambient", type: "ambient", color: "#f3f1ea", intensity: 0.5 },
-    // Near-overhead key (tiny off-centre) → a soft, TOP-DOWN cast shadow on the floor
-    // and good top-vs-side contrast on the cuboids.
-    { id: "key", type: "directional", color: "#fffaf2", intensity: 1.2, position: [-2, 32, 4], castShadow: true },
-    { id: "fill", type: "directional", color: "#e6e7dc", intensity: 0.32, position: [12, 12, -12] },
-    { id: "warm", type: "point", color: "#f7b955", intensity: 0.18, position: [-8, 10, 10], distance: 44 },
+    { id: "ambient", type: "ambient", color: "#f3f1ea", intensity: 0.55 },
+    // Directional key centred at the top → a TOP-DOWN, parallel ("direct", non-radial)
+    // shadow straight under each slab. (A hair of offset avoids a degenerate
+    // perfectly-vertical shadow camera.)
+    { id: "key", type: "directional", color: "#fffaf2", intensity: 1.25, position: [0, 34, 2], castShadow: true },
+    // Soft directional fill (also direct, no radial falloff) for side variation.
+    { id: "fill", type: "directional", color: "#e6e7dc", intensity: 0.34, position: [10, 14, -10] },
   ],
   // Soft, diffused top-down floor shadow via PCSS (drei SoftShadows); only slabs cast.
   shadow: { enabled: true, opacity: 0.24, radius: 12, bias: -0.0004, soft: true },

@@ -132,7 +132,7 @@ export function DiagramCanvas({
 
       {/* PCSS soft shadows (distance-soft, diffused) — opt-in per theme. NB: SoftShadows
           patches three's shadow shader chunk globally, so it's a one-time scene cost. */}
-      {showShadows && spec.shadow.soft ? <SoftShadows size={25} focus={0.5} samples={10} /> : null}
+      {showShadows && spec.shadow.soft ? <SoftShadows size={48} focus={0.35} samples={16} /> : null}
 
       <Lights lights={spec.lights} shadow={spec.shadow} castShadow={showShadows} />
 

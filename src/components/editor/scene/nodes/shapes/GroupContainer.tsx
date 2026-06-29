@@ -98,7 +98,7 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
         </mesh>
         <mesh geometry={slabGeo} position={[0, layerH * 3, 0]} castShadow receiveShadow>
           <meshStandardMaterial
-            color={lighten(color, 0.97)}
+            color={lighten(color, 0.99)}
             roughness={0.78}
             metalness={0}
             emissive="#ffffff"
