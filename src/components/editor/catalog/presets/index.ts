@@ -44,3 +44,4 @@ export {
   processFlowDiagram,
   processStepDiagrams,
 } from "./processFlow";
+export { buildAboutFlow, aboutFlowDiagram } from "./aboutFlow";

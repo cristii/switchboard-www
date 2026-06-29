@@ -3,7 +3,8 @@
 // colour with lighter accents — recognisable, not detailed. Selected by
 // node.meta.icon; rendered via a NodeMesh/PreviewNode branch on the `icon` kind.
 // A real GLB can replace any of these via node.meta.model. Keys:
-//   bars · gear · check · mail · send · calendar · refresh · spark · alert (+ box fallback)
+//   bars · gear · check · mail · send · calendar · refresh · spark · alert · target ·
+//   bulb · people (+ box fallback)
 
 import { RoundedBox } from "@react-three/drei";
 import { NodeStandardMaterial } from "./NodeStandardMaterial";
@@ -182,6 +183,56 @@ export function StepIcon({ icon, width, depth, height, color, opacity, roughness
           <mesh position={[0, th * 0.3, s * 0.24]}>
             <boxGeometry args={[s * 0.08, s * 0.08, 0.02]} />
             <meshStandardMaterial color={accent} roughness={0.4} />
+          </mesh>
+        </group>
+      );
+    }
+    case "target": {
+      // bullseye: concentric rings + a centre dot, standing upright
+      const r = s * 0.46;
+      return (
+        <group position={[0, h * 0.5, 0]}>
+          <mesh castShadow receiveShadow>
+            <torusGeometry args={[r, r * 0.13, 12, 36]} />
+            <Body />
+          </mesh>
+          <mesh>
+            <torusGeometry args={[r * 0.58, r * 0.12, 12, 30]} />
+            <meshStandardMaterial color={accent} roughness={0.5} />
+          </mesh>
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
+            <cylinderGeometry args={[r * 0.18, r * 0.18, r * 0.16, 16]} />
+            <Body />
+          </mesh>
+        </group>
+      );
+    }
+    case "bulb": {
+      // lightbulb: a glass sphere on a small accent base
+      return (
+        <group>
+          <mesh position={[0, h * 0.58, 0]} castShadow receiveShadow>
+            <sphereGeometry args={[s * 0.33, 20, 20]} />
+            <Body />
+          </mesh>
+          <mesh position={[0, h * 0.24, 0]} castShadow>
+            <cylinderGeometry args={[s * 0.15, s * 0.19, h * 0.26, 14]} />
+            <meshStandardMaterial color={accent} roughness={0.5} />
+          </mesh>
+        </group>
+      );
+    }
+    case "people": {
+      // a simple person: head + tapered torso (wider at the shoulders/base)
+      return (
+        <group>
+          <mesh position={[0, h * 0.72, 0]} castShadow>
+            <sphereGeometry args={[s * 0.2, 16, 16]} />
+            <Body />
+          </mesh>
+          <mesh position={[0, h * 0.34, 0]} castShadow receiveShadow>
+            <cylinderGeometry args={[s * 0.16, s * 0.32, h * 0.5, 18]} />
+            <Body />
           </mesh>
         </group>
       );

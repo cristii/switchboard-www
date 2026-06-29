@@ -14,15 +14,18 @@ import {
 import { BookCall } from "@/components/sections/BookCall";
 import { BucharestBand } from "@/components/sections/BucharestBand";
 import { SnowboardBand } from "@/components/sections/SnowboardBand";
+import { AboutIsoPreview } from "@/components/sections/AboutIsoPreview";
+import { aboutFlowDiagram } from "@/components/editor/catalog/presets";
 import { socialLinks } from "@/lib/nav";
+
+// Editor-scoped tokens so --editor-* resolve for the embedded isometric preview.
+import "@/components/editor/theme/editor-tokens.css";
 
 import assistantIcon from "@/assets/icons/assistant.svg";
 import chartIcon from "@/assets/icons/chart.svg";
 import funnelIcon from "@/assets/icons/funnel.svg";
-import lightbulbIcon from "@/assets/icons/lightbulb.svg";
 import mailIcon from "@/assets/icons/mail.svg";
 import peopleIcon from "@/assets/icons/people.svg";
-import refreshIcon from "@/assets/icons/refresh.svg";
 import sendIcon from "@/assets/icons/send.svg";
 import targetIcon from "@/assets/icons/target.svg";
 import workflowIcon from "@/assets/icons/workflow.svg";
@@ -71,33 +74,6 @@ const linkedinGlyph = (color: string) => (
 );
 
 /* ---------- Data (copy ported verbatim, conversational variant) ---------- */
-
-const howIWork: { n: string; icon: IconSource; title: string; body: string }[] = [
-  {
-    n: "01",
-    icon: targetIcon,
-    title: "Workflow audit",
-    body: "We map your current tools and find exactly where time, leads and money are leaking out.",
-  },
-  {
-    n: "02",
-    icon: lightbulbIcon,
-    title: "Architecture & design",
-    body: "I design the pipeline before writing a line, nodes, fallbacks and integrations, mapped end to end.",
-  },
-  {
-    n: "03",
-    icon: refreshIcon,
-    title: "Build & test",
-    body: "I build layer by layer, then feed it bad data and dropped connections on purpose, so the live version doesn't flinch.",
-  },
-  {
-    n: "04",
-    icon: peopleIcon,
-    title: "Handoff & maintenance",
-    body: "I hand you the keys with clear docs, then keep it tuned as your tools and volume change.",
-  },
-];
 
 type StackCard = { icon: React.ReactNode; title: string; tags: string[]; body: string };
 const stack: StackCard[] = [
@@ -321,19 +297,8 @@ export default function AboutPage() {
             happening and where your system is headed.
           </p>
         </div>
-        <div className="mt-11 grid gap-[18px] sm:grid-cols-2 lg:grid-cols-4">
-          {howIWork.map((s) => (
-            <Card key={s.n} tone="white" style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-              <div className="flex items-center justify-between">
-                <span className={`${display} text-[1.9rem] font-extrabold leading-none text-orange`}>
-                  {s.n}
-                </span>
-                <Icon src={s.icon} color="var(--ink)" size={24} />
-              </div>
-              <h3 className={`${display} mb-[7px] mt-[14px] text-[1.12rem] font-bold`}>{s.title}</h3>
-              <p className="m-0 text-[.92rem] leading-[1.5] text-ink-soft">{s.body}</p>
-            </Card>
-          ))}
+        <div className="mt-8">
+          <AboutIsoPreview diagram={aboutFlowDiagram} />
         </div>
         <p className="mt-[34px] text-center text-[.98rem] text-ink-soft">
           Want the full walkthrough?{" "}
