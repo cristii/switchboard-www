@@ -122,9 +122,12 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
   }
 
   // Colored "base" tray: one solid rounded slab, resizable to group nodeCards.
+  // FLOATS one base-height off the ground (gap below) so it casts a soft shadow on
+  // the floor, like the /services slabs. nodeCards sit on top via meta.elevation =
+  // 2·baseH (the floated top).
   if (base && baseGeo) {
     return (
-      <mesh geometry={baseGeo} position={[0, 0, 0]} castShadow receiveShadow>
+      <mesh geometry={baseGeo} position={[0, baseH, 0]} castShadow receiveShadow>
         <meshStandardMaterial
           color={color}
           roughness={0.7}

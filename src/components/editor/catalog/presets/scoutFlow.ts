@@ -84,7 +84,9 @@ const EDGES: [string, string][] = [
 
 function buildScoutFlow(): Diagram {
   const byId = new Map(STEPS.map((s) => [s.id, s]));
-  const xy = (s: Step) => ({ x: s.col * SX, y: s.row * SY });
+  // Centre the layout on the origin (cols 0–7 → centre 3.5, rows −1–2 → centre 0.5)
+  // so the whole diagram stays inside the directional light's shadow frustum.
+  const xy = (s: Step) => ({ x: (s.col - 3.5) * SX, y: (s.row - 0.5) * SY });
   const nodes: WorkflowNode[] = [];
 
   // Bases first (drawn under the cards).
@@ -127,7 +129,8 @@ function buildScoutFlow(): Diagram {
         height: CARD_H,
         color: s.color,
         parentId: b.id,
-        meta: { icon: s.icon, elevation: BASE_H },
+        // 2·BASE_H = the floated base's top surface (see GroupContainer "base").
+        meta: { icon: s.icon, elevation: BASE_H * 2 },
       });
       nodes.push({
         id: `${id}_t`,
