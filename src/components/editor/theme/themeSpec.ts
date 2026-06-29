@@ -42,7 +42,9 @@ export interface ThemeSpec {
   grid: { show: boolean; color: string; sectionColor: string; opacity?: number };
   /** Multiple, coloured light sources. */
   lights: LightSpec[];
-  shadow: { enabled: boolean; opacity: number; radius: number; bias: number };
+  /** `soft: true` enables drei <SoftShadows> (PCSS) for distance-soft, diffused
+   *  shadows — pairs with a near-overhead light for a soft top-down floor shadow. */
+  shadow: { enabled: boolean; opacity: number; radius: number; bias: number; soft?: boolean };
   camera: {
     kind: "orthographic" | "perspective";
     /** View direction onto the target. @default [1,1,1] */
@@ -214,6 +216,7 @@ export function normalizeThemeSpec(input: unknown, base: ThemeSpec): ThemeSpec {
       opacity: num(shadowIn.opacity, base.shadow.opacity),
       radius: num(shadowIn.radius, base.shadow.radius),
       bias: num(shadowIn.bias, base.shadow.bias),
+      soft: bool(shadowIn.soft, base.shadow.soft ?? false),
     },
     camera: {
       kind: camIn.kind === "perspective" ? "perspective" : "orthographic",

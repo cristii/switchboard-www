@@ -10,6 +10,7 @@
 
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
+import { SoftShadows } from "@react-three/drei";
 import { Backdrop } from "./Backdrop";
 import { Grid } from "./Grid";
 import { Lights } from "./Lights";
@@ -128,6 +129,10 @@ export function DiagramCanvas({
       }}
     >
       <Backdrop inner={spec.background.colorHi ?? spec.background.color} outer={spec.background.color} />
+
+      {/* PCSS soft shadows (distance-soft, diffused) — opt-in per theme. NB: SoftShadows
+          patches three's shadow shader chunk globally, so it's a one-time scene cost. */}
+      {showShadows && spec.shadow.soft ? <SoftShadows size={25} focus={0.5} samples={10} /> : null}
 
       <Lights lights={spec.lights} shadow={spec.shadow} castShadow={showShadows} />
 
