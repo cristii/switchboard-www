@@ -10,7 +10,6 @@
 
 import * as THREE from "three";
 import { Canvas } from "@react-three/fiber";
-import { ContactShadows } from "@react-three/drei";
 import { Backdrop } from "./Backdrop";
 import { Grid } from "./Grid";
 import { Lights } from "./Lights";
@@ -137,23 +136,10 @@ export function DiagramCanvas({
       ) : null}
 
       {showShadows ? (
-        spec.shadow.contact ? (
-          // Top-down soft, diffused shadow blob on the ground (the reference look).
-          <ContactShadows
-            position={[0, 0.01, 0]}
-            scale={80}
-            far={14}
-            blur={3}
-            opacity={spec.shadow.opacity}
-            color="#6b665b"
-            resolution={1024}
-          />
-        ) : (
-          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-            <planeGeometry args={[400, 400]} />
-            <shadowMaterial transparent opacity={spec.shadow.opacity} />
-          </mesh>
-        )
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
+          <planeGeometry args={[400, 400]} />
+          <shadowMaterial transparent opacity={spec.shadow.opacity} />
+        </mesh>
       ) : null}
 
       {/* invisible ground for empty-space clicks + double-click reset */}

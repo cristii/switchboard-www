@@ -14,21 +14,20 @@ export const signalTheme: ThemeSpec = {
   name: "Switchboard Signal",
   builtIn: true,
   chromeBase: "light",
-  // Soft warm-grey ground: pure-white pill labels separate against it (flat 3D
-  // label plates cast no shadow, so white-on-white would wash out).
-  background: { type: "flat", color: "#efeee8", colorHi: "#efeee8" },
-  grid: { show: false, color: "#dfe2d9", sectionColor: "#cbd2c5", opacity: 0.4 },
+  // White ground to match the /services capability card; grid on.
+  background: { type: "flat", color: "#ffffff", colorHi: "#ffffff" },
+  grid: { show: true, color: "#e4e6df", sectionColor: "#d3d8cd", opacity: 0.55 },
   lights: [
     { id: "hemi", type: "hemisphere", sky: "#fbf9f2", ground: "#ded9cb", intensity: 0.62 },
     { id: "ambient", type: "ambient", color: "#f3f1ea", intensity: 0.5 },
-    // Key from the top-LEFT for gentle side-modelling (the ground shadow is a separate
-    // top-down ContactShadows blob, so this light does NOT cast).
-    { id: "key", type: "directional", color: "#fffaf2", intensity: 1.15, position: [-14, 26, 12] },
-    { id: "fill", type: "directional", color: "#e6e7dc", intensity: 0.3, position: [12, 12, -12] },
+    // Near-overhead key (slightly off-centre) → a soft, mostly TOP-DOWN cast shadow
+    // on the floor, and good top-vs-side contrast on the cuboids.
+    { id: "key", type: "directional", color: "#fffaf2", intensity: 1.2, position: [-4, 30, 6], castShadow: true },
+    { id: "fill", type: "directional", color: "#e6e7dc", intensity: 0.32, position: [12, 12, -12] },
     { id: "warm", type: "point", color: "#f7b955", intensity: 0.18, position: [-8, 10, 10], distance: 44 },
   ],
-  // Top-down soft, diffused ground shadow (drei ContactShadows) like the reference.
-  shadow: { enabled: true, opacity: 0.32, radius: 18, bias: -0.0004, contact: true },
+  // Soft, diffused top-down floor shadow (blurred shadow-map; only the slabs cast).
+  shadow: { enabled: true, opacity: 0.22, radius: 16, bias: -0.0004 },
   camera: { kind: "orthographic", isoDir: [1, 1, 1], zoom: 46 },
   nodes: {
     opacity: 1,

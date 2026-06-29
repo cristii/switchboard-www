@@ -42,9 +42,7 @@ export interface ThemeSpec {
   grid: { show: boolean; color: string; sectionColor: string; opacity?: number };
   /** Multiple, coloured light sources. */
   lights: LightSpec[];
-  /** `contact: true` renders a top-down soft, diffused ground-shadow blob
-   *  (drei ContactShadows) instead of the directional shadow-map plane. */
-  shadow: { enabled: boolean; opacity: number; radius: number; bias: number; contact?: boolean };
+  shadow: { enabled: boolean; opacity: number; radius: number; bias: number };
   camera: {
     kind: "orthographic" | "perspective";
     /** View direction onto the target. @default [1,1,1] */
@@ -216,7 +214,6 @@ export function normalizeThemeSpec(input: unknown, base: ThemeSpec): ThemeSpec {
       opacity: num(shadowIn.opacity, base.shadow.opacity),
       radius: num(shadowIn.radius, base.shadow.radius),
       bias: num(shadowIn.bias, base.shadow.bias),
-      contact: bool(shadowIn.contact, base.shadow.contact ?? false),
     },
     camera: {
       kind: camIn.kind === "perspective" ? "perspective" : "orthographic",

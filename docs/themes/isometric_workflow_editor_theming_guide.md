@@ -34,9 +34,10 @@ those values are now **fields of the spec** instead of loose constants.
   `Editor/Theming → AWS`, or `<IsometricWorkflowEditor defaultThemeId="aws" />`, or the
   `aws` preset / `config.theme: "aws"`.
 - **Built-in `signal` theme:** the layered "premium-but-playful" capability look — double-layer
-  rounded-square **slab** platforms (`meta.platform: "slab"`) on a soft warm-grey ground, white pill
-  labels, pastel `meta.plateColor` tags, and a thin **arrowless** flow line (`arrowSize: 0`). Drives
-  the `/services` capability pillars via `buildPillarDiagram` + `PillarIsoPreview`.
+  rounded-square **slab** platforms (`meta.platform: "slab"`) floating over a white ground (grid on),
+  with a soft top-down floor shadow, white pill labels, pastel `meta.plateColor` tags, and a thin
+  **arrowless** flow line (`arrowSize: 0`). Drives the `/services` capability pillars via
+  `buildPillarDiagram` + `PillarIsoPreview`.
 
 > The rest of this guide (the original two-layer explanation + per-field tuning) remains accurate as a
 > **reference for what each field does**; just remember the manager/spec is the entry point now, and

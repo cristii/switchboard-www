@@ -5,9 +5,8 @@
 // WebGL context only initialises when it nears the viewport — important with
 // several scenes on one marketing page. The page must import editor tokens CSS.
 //
-// Uses the layered "signal" theme: a double-layer rounded-square slab per stage on
-// a soft warm-grey ground (grid off), so the white description pills read cleanly
-// as a contained panel inside the (white) capability card.
+// Uses the layered "signal" theme: a double-layer rounded-square slab per stage on a
+// white ground with the grid on, matching (and blending into) the capability card.
 
 import * as React from "react";
 import dynamic from "next/dynamic";
@@ -59,7 +58,7 @@ export function PillarIsoPreview({ diagram }: { diagram: Diagram }) {
       {show ? (
         <DiagramPreview
           diagram={diagram}
-          config={{ theme: signalTheme, showGrid: false, showGround: true, showLabels: true, cameraMovable: false }}
+          config={{ theme: signalTheme, showGrid: true, showGround: true, showLabels: true, cameraMovable: false }}
           style={{ background: "transparent" }}
         />
       ) : (
