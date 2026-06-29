@@ -97,12 +97,15 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
           />
         </mesh>
         <mesh geometry={slabGeo} position={[0, layerH * 3, 0]} castShadow receiveShadow>
+          {/* toneMapped off so the white renders as true white (matching the DOM card)
+              instead of ACES-compressed grey; a little emissive lifts the shaded sides. */}
           <meshStandardMaterial
             color={lighten(color, 0.99)}
             roughness={0.78}
             metalness={0}
             emissive="#ffffff"
-            emissiveIntensity={0.06}
+            emissiveIntensity={0.12}
+            toneMapped={false}
           />
         </mesh>
       </group>
