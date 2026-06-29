@@ -2,15 +2,17 @@
 // representing a tier/layer (e.g. an "AI Processing Layer" or an availability
 // zone). A translucent rounded slab by default; `meta.platform` switches the look:
 //   "disc" — a soft round platform; "hex" — a double-layer rounded hexagon;
-//   "slab" — a double-layer rounded SQUARE (solid colour base + floating white top
-//   plate; the "signal" theme's capability-pillar look). depthWrite is off on the
-// translucent default so children render cleanly over it. Label = standard overlay.
+//   "slab" — two equal stacked rounded-square cuboids (solid colour base + near-white
+//   top; rounded VERTICAL edges, sharp horizontal edges — the "signal" theme's
+//   capability look). depthWrite is off on the translucent default so children render
+// cleanly over it. Label = standard overlay.
 // See description.md §7; membership + cascade-move live in the store / NodeMesh.
 
 import { useEffect, useMemo } from "react";
 import { RoundedBox } from "@react-three/drei";
 import { getNodeCatalogEntry } from "../../../catalog/nodeCatalog";
 import { roundedHexGeometry } from "./hexGeometry";
+import { roundedRectPrismGeometry } from "./slabGeometry";
 import { lighten } from "./deviceTones";
 import type { SceneTheme } from "../../../theme/sceneTheme";
 import type { WorkflowNode } from "../../../state/types";
@@ -44,10 +46,21 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
     () => (hex ? roundedHexGeometry(radius * 0.88, Math.min(0.45, radius * 0.25), topH) : null),
     [hex, radius, topH],
   );
+
+  // Slab: two EQUAL stacked cuboids (base + top share one geometry). `height` is the
+  // TOTAL slab height, so each layer is height/2 and the top surface (plate-top) is
+  // at y = height — which is the icon's meta.elevation in the preset.
+  const layerH = Math.max(0.2, height / 2);
+  const slabRad = Math.min(0.6, Math.min(width, depth) * 0.16);
+  const slabGeo = useMemo(
+    () => (slab ? roundedRectPrismGeometry(width, depth, layerH, slabRad) : null),
+    [slab, width, depth, layerH, slabRad],
+  );
   useEffect(() => () => {
     bottomGeo?.dispose();
     topGeo?.dispose();
-  }, [bottomGeo, topGeo]);
+    slabGeo?.dispose();
+  }, [bottomGeo, topGeo, slabGeo]);
 
   if (hex && bottomGeo && topGeo) {
     return (
@@ -68,35 +81,23 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
     );
   }
 
-  // Double-layer rounded-square "slab": a solid coloured base with a floating,
-  // near-white top plate the centred icon sits on (the icon's meta.elevation must
-  // match the plate-top = bH·(1 + 0.12 + 0.5); keep these ratios in sync).
-  if (slab) {
-    const bH = Math.max(0.4, height);
-    const gap = bH * 0.12;
-    const tH = bH * 0.5;
-    const rad = Math.min(0.22, Math.min(width, depth) * 0.12);
+  // Slab: solid colour base + an identical near-white cuboid stacked flush on top.
+  // Same footprint + height for both layers (rounded vertical edges, sharp top/bottom).
+  if (slab && slabGeo) {
     return (
       <group>
-        <RoundedBox args={[width, bH, depth]} radius={rad} smoothness={4} position={[0, bH / 2, 0]} castShadow receiveShadow>
+        <mesh geometry={slabGeo} position={[0, 0, 0]} castShadow receiveShadow>
           <meshStandardMaterial
             color={color}
-            roughness={0.68}
+            roughness={0.66}
             metalness={0}
             emissive={selected ? theme.selection : color}
             emissiveIntensity={selected ? 0.3 : 0.05}
           />
-        </RoundedBox>
-        <RoundedBox
-          args={[width * 0.8, tH, depth * 0.8]}
-          radius={rad * 0.9}
-          smoothness={4}
-          position={[0, bH + gap + tH / 2, 0]}
-          castShadow
-          receiveShadow
-        >
-          <meshStandardMaterial color={lighten(color, 0.9)} roughness={0.82} metalness={0} />
-        </RoundedBox>
+        </mesh>
+        <mesh geometry={slabGeo} position={[0, layerH, 0]} castShadow receiveShadow>
+          <meshStandardMaterial color={lighten(color, 0.95)} roughness={0.8} metalness={0} />
+        </mesh>
       </group>
     );
   }
