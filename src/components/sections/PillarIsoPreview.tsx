@@ -51,7 +51,7 @@ export function PillarIsoPreview({ diagram }: { diagram: Diagram }) {
   }, []);
 
   return (
-    <div ref={ref} className="h-[440px] w-full overflow-hidden sm:h-[520px]">
+    <div ref={ref} className="h-[380px] w-full overflow-hidden sm:h-[440px]">
       {show ? (
         <DiagramPreview
           diagram={diagram}

@@ -22,13 +22,16 @@ export function isLabelStyle(v: unknown): v is LabelStyle {
 
 /** Plate fill + label colour for a style, kept theme-safe. `plain` has no plate. */
 export function labelPalette(style: LabelStyle, theme: SceneTheme): { plate?: string; text: string } {
+  // Use the theme's text colour (the intended ink) — NOT nodeColors.ink, which a
+  // theme may repurpose as a light node tone (e.g. blueprint/aws) and would make
+  // plated labels low-contrast.
   switch (style) {
     case "tips":
-      return { plate: theme.nodeColors.ink, text: theme.paper };
+      return { plate: theme.text.color, text: theme.paper };
     case "bubble":
     case "info":
     case "note":
-      return { plate: theme.paper, text: theme.nodeColors.ink };
+      return { plate: theme.paper, text: theme.text.color };
     default:
       return { text: theme.text.color };
   }

@@ -25,9 +25,9 @@ export interface PillarStage {
 // stacked along the diagonal (t, t) read as a VERTICAL on-screen line (constant
 // screen-x), the tag sits LEFT at (c−SIDE, c+SIDE), the info card RIGHT at
 // (c+SIDE, c−SIDE), and the description sits straight BELOW at (c+UB, c+UB).
-const STEP = 5; // along (t,t) → vertical screen spacing 2·STEP
-const SIDE = 3.8; // tag / card horizontal offset
-const UB = 2.8; // description drop below the icon
+const STEP = 5.5; // along (t,t) → vertical screen spacing 2·STEP
+const SIDE = 4.2; // tag / card horizontal offset (clears the hex + text)
+const UB = 3.6; // description drop below the icon (clears the hex)
 
 export function buildPillarDiagram(stages: PillarStage[]): Diagram {
   const nodes: WorkflowNode[] = [];
@@ -46,7 +46,7 @@ export function buildPillarDiagram(stages: PillarStage[]): Diagram {
       // left bubble stage tag
       { id: `tg${i}`, kind: "text", label: s.tag, x: c - SIDE, y: c + SIDE, color: s.color, meta: { labelStyle: "bubble", orientation: "billboard" } },
       // right upright info card
-      { id: `cd${i}`, kind: "text", label: s.cardTitle, sublabel: s.cardItems.join("\n"), x: c + SIDE, y: c - SIDE, meta: { labelStyle: "info", orientation: "uprightZ", size: 0.5 } },
+      { id: `cd${i}`, kind: "text", label: s.cardTitle, sublabel: s.cardItems.join("\n"), x: c + SIDE, y: c - SIDE, meta: { labelStyle: "info", orientation: "uprightZ", size: 0.62 } },
     );
     // dashed corner-connect from the stage to its info card
     edges.push({ id: `e-card-${i}`, source: ic, target: `cd${i}`, connector: "cornerConnect", routing: "orthogonal", style: "dashed" });
@@ -64,7 +64,7 @@ export const opsPillarDiagram: Diagram = buildPillarDiagram([
   {
     tag: "INPUT",
     icon: "bars",
-    color: "#54605c",
+    color: "#6a4a8a",
     label: "Traffic surge hits",
     cardTitle: "Monitoring & Resilience",
     cardItems: ["Uptime monitoring", "Failover & retry", "High-volume queues"],
