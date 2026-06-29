@@ -245,6 +245,8 @@ export function TextNode({ node, theme, selected }: TextNodeProps) {
   const pal = labelPalette(style, theme);
   const color = node.color ?? (typeof meta.labelColor === "string" ? meta.labelColor : pal.text);
   const opacity = node.opacity ?? theme.text.opacity;
+  const subColor = typeof meta.sublabelColor === "string" ? meta.sublabelColor : theme.text.sublabel.color;
+  const subSize = typeof meta.sublabelSize === "number" ? meta.sublabelSize : theme.text.sublabel.size;
 
   return (
     <TextLabel
@@ -253,8 +255,8 @@ export function TextNode({ node, theme, selected }: TextNodeProps) {
       color={color}
       size={size}
       font={font}
-      sublabelColor={theme.text.sublabel.color}
-      sublabelSize={theme.text.sublabel.size}
+      sublabelColor={subColor}
+      sublabelSize={subSize}
       sublabelFont={theme.text.sublabel.font}
       opacity={opacity}
       orientation={orientation}

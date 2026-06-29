@@ -26,7 +26,7 @@ export interface PillarStage {
 // screen-x), the tag sits LEFT at (c−SIDE, c+SIDE), the info card RIGHT at
 // (c+SIDE, c−SIDE), and the description sits straight BELOW at (c+UB, c+UB).
 const STEP = 5.5; // along (t,t) → vertical screen spacing 2·STEP
-const SIDE = 4.2; // tag / card horizontal offset (clears the hex + text)
+const SIDE = 3.6; // tag / card horizontal offset (clears the hex + text)
 const UB = 3.6; // description drop below the icon (clears the hex)
 
 export function buildPillarDiagram(stages: PillarStage[]): Diagram {
@@ -45,8 +45,9 @@ export function buildPillarDiagram(stages: PillarStage[]): Diagram {
       { id: `lb${i}`, kind: "text", label: s.label, x: c + UB, y: c + UB, meta: { labelStyle: "plain", orientation: "billboard" } },
       // left bubble stage tag
       { id: `tg${i}`, kind: "text", label: s.tag, x: c - SIDE, y: c + SIDE, color: s.color, meta: { labelStyle: "bubble", orientation: "billboard" } },
-      // right upright info card
-      { id: `cd${i}`, kind: "text", label: s.cardTitle, sublabel: s.cardItems.join("\n"), x: c + SIDE, y: c - SIDE, meta: { labelStyle: "info", orientation: "uprightZ", size: 0.62 } },
+      // right info card — billboard (faces camera) so the body text stays legible
+      // on small/mobile screens (uprightZ foreshortens it). Sized up for readability.
+      { id: `cd${i}`, kind: "text", label: s.cardTitle, sublabel: s.cardItems.join("\n"), x: c + SIDE, y: c - SIDE, meta: { labelStyle: "info", orientation: "billboard", size: 0.72, sublabelSize: 0.5 } },
     );
     // dashed corner-connect from the stage to its info card
     edges.push({ id: `e-card-${i}`, source: ic, target: `cd${i}`, connector: "cornerConnect", routing: "orthogonal", style: "dashed" });

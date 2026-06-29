@@ -58,6 +58,6 @@ export const blueprintTheme: ThemeSpec = {
     style: "bubble",
     scale: 1.1,
     offset: [0, 0.55, 0],
-    sublabel: { color: "#3b443f", size: 0.42 },
+    sublabel: { color: "#1c2b27", size: 0.42 },
   },
 };

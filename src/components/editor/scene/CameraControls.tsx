@@ -162,7 +162,7 @@ export function CameraControls({
       minZ = Math.min(minZ, n.y);
       maxZ = Math.max(maxZ, n.y);
     }
-    const pad = 2.4;
+    const pad = 1;
     const worldW = maxX - minX + pad * 2;
     const worldH = maxZ - minZ + pad * 2;
     const cx = (minX + maxX) / 2;
@@ -192,7 +192,7 @@ export function CameraControls({
       const spanU = (maxU - minU) / Math.SQRT2 + pad * 2;
       const spanV = (maxV - minV) / Math.SQRT2 + pad * 2;
       const { w, h } = sizeRef.current;
-      const zoom = Math.min(w / spanU, h / spanV) * 0.94;
+      const zoom = Math.min(w / spanU, h / spanV) * 0.98;
       const uc = (minU + maxU) / 2;
       const vc = (minV + maxV) / 2;
       goTo((uc + vc) / 2, (vc - uc) / 2, zoom);
