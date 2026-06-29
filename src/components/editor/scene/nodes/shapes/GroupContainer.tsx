@@ -47,10 +47,10 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
     [hex, radius, topH],
   );
 
-  // Slab: two EQUAL stacked cuboids (base + top share one geometry). `height` is the
-  // TOTAL slab height, so each layer is height/2 and the top surface (plate-top) is
-  // at y = height — which is the icon's meta.elevation in the preset.
-  const layerH = Math.max(0.2, height / 2);
+  // Slab: a flat solid-colour base + an identical near-white cuboid FLOATING one
+  // layer-height above it (the gap = one layer). `height` is ONE layer's height, so
+  // the top surface (plate-top) is at y = 3·height — the icon's meta.elevation.
+  const layerH = Math.max(0.16, height);
   const slabRad = Math.min(0.6, Math.min(width, depth) * 0.16);
   const slabGeo = useMemo(
     () => (slab ? roundedRectPrismGeometry(width, depth, layerH, slabRad) : null),
@@ -81,8 +81,8 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
     );
   }
 
-  // Slab: solid colour base + an identical near-white cuboid stacked flush on top.
-  // Same footprint + height for both layers (rounded vertical edges, sharp top/bottom).
+  // Slab: solid colour base + an identical near-white cuboid floating one layer-height
+  // above it (rounded vertical edges, sharp top/bottom; gap = one layer).
   if (slab && slabGeo) {
     return (
       <group>
@@ -95,8 +95,14 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
             emissiveIntensity={selected ? 0.3 : 0.05}
           />
         </mesh>
-        <mesh geometry={slabGeo} position={[0, layerH, 0]} castShadow receiveShadow>
-          <meshStandardMaterial color={lighten(color, 0.95)} roughness={0.8} metalness={0} />
+        <mesh geometry={slabGeo} position={[0, layerH * 2, 0]} castShadow receiveShadow>
+          <meshStandardMaterial
+            color={lighten(color, 0.97)}
+            roughness={0.78}
+            metalness={0}
+            emissive="#ffffff"
+            emissiveIntensity={0.06}
+          />
         </mesh>
       </group>
     );

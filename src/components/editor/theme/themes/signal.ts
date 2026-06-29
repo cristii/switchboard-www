@@ -27,7 +27,8 @@ export const signalTheme: ThemeSpec = {
     { id: "fill", type: "directional", color: "#e6e7dc", intensity: 0.3, position: [12, 12, -12] },
     { id: "warm", type: "point", color: "#f7b955", intensity: 0.18, position: [-8, 10, 10], distance: 44 },
   ],
-  shadow: { enabled: true, opacity: 0.18, radius: 9, bias: -0.0004 },
+  // Soft, diffuse drop shadow (high blur radius, low opacity) like the reference.
+  shadow: { enabled: true, opacity: 0.14, radius: 18, bias: -0.0004 },
   camera: { kind: "orthographic", isoDir: [1, 1, 1], zoom: 46 },
   nodes: {
     opacity: 1,

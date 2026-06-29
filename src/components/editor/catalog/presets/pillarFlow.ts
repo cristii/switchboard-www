@@ -29,15 +29,15 @@ export interface PillarStage {
 // stacked along the diagonal (t, t) read as a VERTICAL on-screen line, the tag sits
 // LEFT at (c−TAG, c+TAG) (same screen row), and the description pill sits straight
 // BELOW at (c+UB, c+UB).
-const STEP = 5.8; // along (t,t) → vertical screen spacing
+const STEP = 8.0; // along (t,t) → vertical screen spacing (gap ≈ one node)
 const TAG = 3.6; // left stage-tag offset
-const UB = 3.4; // description-pill drop below the icon
+const UB = 3.0; // description-pill drop below the icon
 const SLAB_W = 4.4; // slab footprint
-const SLAB_H = 2.0; // TOTAL slab height (two equal stacked layers of SLAB_H/2 each)
+const SLAB_H = 0.55; // ONE layer height (flat); the slab = base + gap + top = 3 layers
 const ICON_W = 2.2;
 const ICON_H = 1.5;
-// The slab's top surface (plate-top) sits at y = total height; seats the icon on it.
-const ELEV = SLAB_H;
+// The slab's top surface (plate-top) sits at y = 3·layer (base + gap + top); seats the icon.
+const ELEV = SLAB_H * 3;
 
 /** Lerp a #rrggbb colour toward white by `amt` (0–1). Pure JS (no three) so this
  *  module stays importable from a Server Component. */
