@@ -76,6 +76,7 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
     opacity,
     roughness,
     metalness,
+    elevation,
   } = resolveNodeVisual(node, theme, selected);
   const hasOut = entry.defaultPorts.some((p) => p.side === "out");
   const hasIn = entry.defaultPorts.some((p) => p.side === "in");
@@ -205,16 +206,18 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
         ) : isText ? (
           <TextNode node={node} theme={theme} selected={selected} />
         ) : isIcon ? (
-          <StepIcon
-            icon={(node.meta?.icon as string) ?? "spark"}
-            width={width}
-            depth={depth}
-            height={height}
-            color={baseColor}
-            opacity={opacity}
-            roughness={roughness}
-            metalness={metalness}
-          />
+          <group position={[0, elevation, 0]}>
+            <StepIcon
+              icon={(node.meta?.icon as string) ?? "spark"}
+              width={width}
+              depth={depth}
+              height={height}
+              color={baseColor}
+              opacity={opacity}
+              roughness={roughness}
+              metalness={metalness}
+            />
+          </group>
         ) : modelUrl ? (
           <Suspense fallback={shapeEl}>
             <ModelNode url={modelUrl} width={width} depth={depth} height={height} color={baseColor} opacity={opacity} />

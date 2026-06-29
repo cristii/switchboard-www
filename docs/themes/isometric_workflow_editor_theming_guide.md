@@ -23,7 +23,7 @@ those values are now **fields of the spec** instead of loose constants.
   connector), `text` (colour/opacity/size/orientation/font). Full type:
   `src/components/editor/theme/themeSpec.ts`.
 - **Registry + persistence:** `theme/themeRegistry.ts` merges **built-in** themes
-  (`theme/themes/{light,dark,aws,blueprint}.ts`, shipped in the build) with **user** themes from
+  (`theme/themes/{light,dark,aws,blueprint,signal}.ts`, shipped in the build) with **user** themes from
   `localStorage["sb-editor-themes"]`. `theme/useThemeManager.ts` owns the active theme +
   create/duplicate/rename/delete/import/export; `panels/ThemeManager.tsx` is the pane.
 - **Resolution:** `resolveSceneTheme(spec)` (in `sceneTheme.ts`) flattens a `ThemeSpec` into the
@@ -33,6 +33,10 @@ those values are now **fields of the spec** instead of loose constants.
   nodes, soft shadows, thick orange flow, translucent orange platforms). Try it: Storybook
   `Editor/Theming → AWS`, or `<IsometricWorkflowEditor defaultThemeId="aws" />`, or the
   `aws` preset / `config.theme: "aws"`.
+- **Built-in `signal` theme:** the layered "premium-but-playful" capability look — double-layer
+  rounded-square **slab** platforms (`meta.platform: "slab"`) on a soft warm-grey ground, white pill
+  labels, pastel `meta.plateColor` tags, and a thin **arrowless** flow line (`arrowSize: 0`). Drives
+  the `/services` capability pillars via `buildPillarDiagram` + `PillarIsoPreview`.
 
 > The rest of this guide (the original two-layer explanation + per-field tuning) remains accurate as a
 > **reference for what each field does**; just remember the manager/spec is the entry point now, and
@@ -67,7 +71,7 @@ A single string — the **theme value** (`"light"` or `"dark"`, type `EditorThem
 src/components/editor/
   theme/
     themeSpec.ts          # ThemeSpec + LightSpec types, defaults, normalizeThemeSpec (import)
-    themes/{light,dark,aws,blueprint}.ts  # built-in ThemeSpecs (shipped in the build)
+    themes/{light,dark,aws,blueprint,signal}.ts  # built-in ThemeSpecs (shipped in the build)
     themeRegistry.ts      # built-in + localStorage user themes; getThemeSpec / resolveThemeFromConfig
     useThemeManager.ts    # active theme + CRUD/import/export (localStorage "sb-editor-theme(s)")
     sceneTheme.ts         # SceneTheme (resolved view) + resolveSceneTheme(spec) + getSceneTheme()

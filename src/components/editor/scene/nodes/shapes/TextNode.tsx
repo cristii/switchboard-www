@@ -247,6 +247,9 @@ export function TextNode({ node, theme, selected }: TextNodeProps) {
   const font = typeof meta.font === "string" ? meta.font : theme.text.font;
   const pal = labelPalette(style, theme);
   const color = node.color ?? (typeof meta.labelColor === "string" ? meta.labelColor : pal.text);
+  // Optional custom plate fill (e.g. a pale tint of the node colour for a tinted
+  // "tag" pill); otherwise the style's default plate.
+  const plate = typeof meta.plateColor === "string" ? meta.plateColor : pal.plate;
   const opacity = node.opacity ?? theme.text.opacity;
   const subColor = typeof meta.sublabelColor === "string" ? meta.sublabelColor : theme.text.sublabel.color;
   const subSize = typeof meta.sublabelSize === "number" ? meta.sublabelSize : theme.text.sublabel.size;
@@ -264,7 +267,7 @@ export function TextNode({ node, theme, selected }: TextNodeProps) {
       opacity={opacity}
       orientation={orientation}
       style={style}
-      plate={pal.plate}
+      plate={plate}
       scale={theme.text.scale}
       offset={theme.text.offset}
       selected={selected}

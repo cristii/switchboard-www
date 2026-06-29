@@ -27,6 +27,9 @@ export interface NodeVisual {
   /** Theme material overrides (undefined = shape keeps its intrinsic value). */
   roughness?: number;
   metalness?: number;
+  /** Extra +Y lift (world units) for the rendered shape, from `meta.elevation`.
+   *  Used to seat an `icon` on a raised platform (e.g. the "slab" top plate). */
+  elevation: number;
 }
 
 export function resolveNodeVisual(
@@ -51,6 +54,7 @@ export function resolveNodeVisual(
       ? 0
       : theme.nodeEmissiveIntensity;
   const opacity = node.opacity ?? theme.nodeOpacity;
+  const elevation = typeof node.meta?.elevation === "number" ? node.meta.elevation : 0;
   return {
     entry,
     isGroup,
@@ -67,5 +71,6 @@ export function resolveNodeVisual(
     opacity,
     roughness: theme.nodeRoughness,
     metalness: theme.nodeMetalness,
+    elevation,
   };
 }

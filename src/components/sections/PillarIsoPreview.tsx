@@ -5,13 +5,13 @@
 // WebGL context only initialises when it nears the viewport — important with
 // several scenes on one marketing page. The page must import editor tokens CSS.
 //
-// The scene blends into its containing pillar card: no inner card chrome, a white
-// background to match the card, and the grid enabled (the blueprint theme ships
-// grid-off, so we pass an inline override here).
+// Uses the layered "signal" theme: a double-layer rounded-square slab per stage on
+// a soft warm-grey ground (grid off), so the white description pills read cleanly
+// as a contained panel inside the (white) capability card.
 
 import * as React from "react";
 import dynamic from "next/dynamic";
-import { blueprintTheme } from "@/components/editor/theme/themes/blueprint";
+import { signalTheme } from "@/components/editor/theme/themes/signal";
 import type { Diagram } from "@/components/editor/state/types";
 
 const DiagramPreview = dynamic(
@@ -20,15 +20,15 @@ const DiagramPreview = dynamic(
 );
 
 function Fallback() {
-  return <div className="grid h-full place-items-center text-sm text-ink-soft">Loading diagram…</div>;
+  return (
+    <div
+      className="grid h-full place-items-center text-sm text-ink-soft"
+      style={{ background: signalTheme.background.color }}
+    >
+      Loading diagram…
+    </div>
+  );
 }
-
-// Blueprint, but on a flat white ground (matching the pillar card) with the grid on.
-const pillarTheme = {
-  ...blueprintTheme,
-  background: { type: "flat" as const, color: "#ffffff", colorHi: "#ffffff" },
-  grid: { show: true, color: "#dfe2d9", sectionColor: "#cbd2c5", opacity: 0.5 },
-};
 
 export function PillarIsoPreview({ diagram }: { diagram: Diagram }) {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -51,11 +51,15 @@ export function PillarIsoPreview({ diagram }: { diagram: Diagram }) {
   }, []);
 
   return (
-    <div ref={ref} className="h-[340px] w-full overflow-hidden sm:h-[400px]">
+    <div
+      ref={ref}
+      className="h-[340px] w-full overflow-hidden rounded-xl sm:h-[400px]"
+      style={{ background: signalTheme.background.color }}
+    >
       {show ? (
         <DiagramPreview
           diagram={diagram}
-          config={{ theme: pillarTheme, showGrid: true, showGround: true, showLabels: true, cameraMovable: false }}
+          config={{ theme: signalTheme, showGrid: false, showGround: true, showLabels: true, cameraMovable: false }}
           style={{ background: "transparent" }}
         />
       ) : (

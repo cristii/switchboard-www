@@ -1,35 +1,55 @@
-// Builds a capabilities "pillar" as an isometric scene (the architecture-reference
-// layout): 3 stacked stages, each a double-layer hex platform with a centered 3D
-// step-icon, a billboard description below, a left bubble stage-tag, and a right
-// upright info-card — joined by bold arrows + dashed corner-connect links. Data-
+// Builds a capabilities "pillar" as an isometric scene — the layered reference
+// rendering: stacked stages, each a double-layer rounded-square SLAB (solid colour
+// base + floating white top plate) with a 3D step-icon seated on the plate, a white
+// "bubble" description pill below, and a pastel stage-tag on the left joined by a
+// dashed link. Stages are joined by a thin colour flow line down the column. Data-
 // driven from PillarStage[], so each /services pillar is one call. Pair with the
-// `blueprint` theme. See docs/IMPLEMENTATION_PLAN.md Phase 7.
+// `signal` theme (white plates, arrowless lines). See docs/IMPLEMENTATION_PLAN.md.
+//
+// NOTE: keep this module three-free — it is reachable from the /services Server
+// Component, and importing three (e.g. via deviceTones.lighten) breaks the build.
 
 import type { Diagram, WorkflowEdge, WorkflowNode } from "../../state/types";
 
 export interface PillarStage {
-  /** Left bubble tag, e.g. "INPUT". */
+  /** Left stage tag, e.g. "INPUT". */
   tag: string;
   /** StepIcon key (bars / gear / check / mail / send / calendar / refresh / spark). */
   icon: string;
-  /** Stage colour (hex) — bottom hex layer + icon tint. */
+  /** Stage colour (hex) — slab base, icon tint, tag text + flow line. */
   color: string;
-  /** Description shown below the icon. */
+  /** Description shown in the white pill below the icon. */
   label: string;
-  /** Right info-card heading + bullet items. */
-  cardTitle: string;
-  cardItems: string[];
+  /** Reserved for the right-hand info-card (deferred — not rendered yet). */
+  cardTitle?: string;
+  cardItems?: string[];
 }
 
 // In the (1,1,1) iso view: screen-down ∝ (x+y), screen-right ∝ (x−y). So stages
-// stacked along the diagonal (t, t) read as a VERTICAL on-screen line (constant
-// screen-x), the tag sits LEFT at (c−SIDE, c+SIDE), the info card RIGHT at
-// (c+SIDE, c−SIDE), and the description sits straight BELOW at (c+UB, c+UB).
-const STEP = 5.5; // along (t,t) → vertical screen spacing 2·STEP
-const TAG = 3.8; // left stage-tag offset
-const CARD = 3.0; // info-card anchor (its plate grows rightward from here)
-const UB = 3.6; // description drop below the icon (clears the hex)
-const CARD_SIZE = 0.7;
+// stacked along the diagonal (t, t) read as a VERTICAL on-screen line, the tag sits
+// LEFT at (c−TAG, c+TAG) (same screen row), and the description pill sits straight
+// BELOW at (c+UB, c+UB).
+const STEP = 5.8; // along (t,t) → vertical screen spacing
+const TAG = 3.6; // left stage-tag offset
+const UB = 3.4; // description-pill drop below the icon
+const SLAB_W = 5.0; // slab footprint
+const SLAB_H = 0.9; // slab base height (GroupContainer bottomH)
+const ICON_W = 2.4;
+const ICON_H = 1.6;
+// Plate-top of the "slab" platform = bH·(1 + gap + topH ratios); keep in sync with
+// GroupContainer's slab branch (gap = bH·0.12, topH = bH·0.5). Seats the icon on it.
+const ELEV = SLAB_H * (1 + 0.12 + 0.5);
+
+/** Lerp a #rrggbb colour toward white by `amt` (0–1). Pure JS (no three) so this
+ *  module stays importable from a Server Component. */
+function paleTint(hex: string, amt = 0.82): string {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return hex;
+  const n = parseInt(m[1], 16);
+  const mix = (c: number) => Math.round(c + (255 - c) * amt);
+  const out = (mix((n >> 16) & 255) << 16) | (mix((n >> 8) & 255) << 8) | mix(n & 255);
+  return "#" + out.toString(16).padStart(6, "0");
+}
 
 export function buildPillarDiagram(stages: PillarStage[]): Diagram {
   const nodes: WorkflowNode[] = [];
@@ -40,30 +60,23 @@ export function buildPillarDiagram(stages: PillarStage[]): Diagram {
     const c = (i - (n - 1) / 2) * STEP;
     const g = `g${i}`;
     const ic = `ic${i}`;
+    const tg = `tg${i}`;
     nodes.push(
-      { id: g, kind: "group", label: "", x: c, y: c, width: 5.4, depth: 5.4, color: s.color, meta: { platform: "hex" } },
-      { id: ic, kind: "icon", label: "", x: c, y: c, width: 2.4, depth: 2.4, height: 1.8, color: s.color, parentId: g, meta: { icon: s.icon } },
-      // description straight below the icon (plain billboard text)
-      { id: `lb${i}`, kind: "text", label: s.label, x: c + UB, y: c + UB, meta: { labelStyle: "plain", orientation: "billboard" } },
-      // left bubble stage tag
-      { id: `tg${i}`, kind: "text", label: s.tag, x: c - TAG, y: c + TAG, color: s.color, meta: { labelStyle: "bubble", orientation: "billboard" } },
-      // right info card — billboard (faces camera) so the body text stays legible
-      // on small/mobile screens (uprightZ foreshortens it). Plate grows rightward
-      // from the anchor so it never covers the hex.
-      { id: `cd${i}`, kind: "text", label: s.cardTitle, sublabel: s.cardItems.join("\n"), x: c + CARD, y: c - CARD, meta: { labelStyle: "info", orientation: "billboard", size: CARD_SIZE, sublabelSize: 0.48 } },
+      // double-layer rounded-square slab (solid base + white top plate)
+      { id: g, kind: "group", label: "", x: c, y: c, width: SLAB_W, depth: SLAB_W, height: SLAB_H, color: s.color, meta: { platform: "slab" } },
+      // 3D step-icon seated on the white plate (meta.elevation = plate-top)
+      { id: ic, kind: "icon", label: "", x: c, y: c, width: ICON_W, depth: ICON_W, height: ICON_H, color: s.color, parentId: g, meta: { icon: s.icon, elevation: ELEV } },
+      // white description pill straight below the icon
+      { id: `lb${i}`, kind: "text", label: s.label, x: c + UB, y: c + UB, meta: { labelStyle: "bubble", orientation: "billboard" } },
+      // pastel stage tag on the left — saturated colour text on a pale tinted plate
+      { id: tg, kind: "text", label: s.tag, x: c - TAG, y: c + TAG, color: s.color, meta: { labelStyle: "bubble", orientation: "billboard", plateColor: paleTint(s.color), size: 0.46 } },
     );
-    // Invisible spacer at the card's approximate right edge so the camera auto-fit
-    // frames (and centres) the real visual bounds — otherwise the wide cards push
-    // the content right and leave a left margin.
-    const longest = Math.max(s.cardTitle.length, ...s.cardItems.map((t) => t.length));
-    const a = (longest * CARD_SIZE * 0.5 + 1) / Math.SQRT2;
-    nodes.push({ id: `sp${i}`, kind: "text", label: "", x: c + CARD + a, y: c - CARD - a });
 
-    // dashed corner-connect from the stage to its info card
-    edges.push({ id: `e-card-${i}`, source: ic, target: `cd${i}`, connector: "cornerConnect", routing: "orthogonal", style: "dashed" });
-    // bold arrow to the next stage
+    // dashed link from the tag to the slab
+    edges.push({ id: `e-tag-${i}`, source: tg, target: ic, connector: "line", routing: "direct", style: "dashed", color: paleTint(s.color, 0.4), flow: "off" });
+    // thin colour flow line down to the next stage (arrowless — theme arrowSize 0)
     if (i < n - 1) {
-      edges.push({ id: `e-flow-${i}`, source: ic, target: `ic${i + 1}`, connector: "boldArrow", routing: "direct", flow: "normal" });
+      edges.push({ id: `e-flow-${i}`, source: ic, target: `ic${i + 1}`, connector: "line", routing: "direct", color: s.color, flow: "off" });
     }
   });
 
@@ -75,7 +88,7 @@ export const opsPillarDiagram: Diagram = buildPillarDiagram([
   {
     tag: "INPUT",
     icon: "bars",
-    color: "#6a4a8a",
+    color: "#7a57c2",
     label: "Traffic surge hits",
     cardTitle: "Monitoring & Resilience",
     cardItems: ["Uptime monitoring", "Failover & retry", "High-volume queues"],
@@ -83,17 +96,17 @@ export const opsPillarDiagram: Diagram = buildPillarDiagram([
   {
     tag: "PROCESSING",
     icon: "gear",
-    color: "#b45309",
+    color: "#e8801f",
     label: "Queued, monitored, retried",
     cardTitle: "Pipeline",
-    cardItems: ["Queue management", "Retry logic", "Alerting"],
+    cardItems: ["Queue management", "Retry logic", "Backoff strategy"],
   },
   {
     tag: "OUTPUT",
     icon: "check",
-    color: "#3f7a4e",
+    color: "#34a35b",
     label: "Processed, nothing dropped",
     cardTitle: "Visibility & Insights",
-    cardItems: ["Custom dashboards", "Reporting"],
+    cardItems: ["Custom dashboards", "Reporting", "Real-time metrics"],
   },
 ]);

@@ -250,7 +250,24 @@ bubble tag, right uprightZ info-card, bold arrows + dashed corner-connect links)
 - [x] Wired the reference pillar ("Operations Assurance", `opsPillarDiagram`) into `/services` pillar
   04 + Storybook `Editor/Theming → Capabilities`.
 - [ ] After a browser look, roll out the other three pillars (each is one `buildPillarDiagram` call
-  with that pillar's icons/colours/copy) + tune hex/icon proportions and the stage layout.
+  with that pillar's icons/colours/copy) + tune slab/icon proportions and the stage layout.
+
+#### Phase 7.1 — "Signal" layered theme (polished reference look) ✅
+Reworked the pillar to match the polished reference rendering via a dedicated built-in theme rather
+than mutating `blueprint`:
+- **`signal` theme** (`theme/themes/signal.ts`, registered) — brightened on-brand stage hues
+  (violet `#7a57c2` / orange `#e8801f` / green `#34a35b`, no blue), soft warm-grey ground (grid off),
+  top-left key light + gentle drop shadow, white plates, **arrowless** thin flow line (`arrowSize: 0`),
+  `bubble` (white pill) default label.
+- **`slab` platform** (`GroupContainer`) — double-layer rounded square: solid colour base + a floating
+  near-white top plate (`lighten(color, 0.9)`), replacing hexagons for this look.
+- **`meta.elevation`** (`nodeVisual` → `NodeMesh`/`PreviewNode`) — seats the `icon` on the slab plate.
+- **`meta.plateColor`** (`TextNode`) — pastel tag pills (saturated text on a pale tint).
+- **`pillarFlow`** reworked to the layered layout (slabs, seated icons, white description pills, pastel
+  tags + dashed links, thin colour flow line); a pure-JS `paleTint` keeps the module three-free for the
+  `/services` Server Component. `PillarIsoPreview` now uses `signal`.
+- **Deferred** (per "omit the cards for now"): the right-hand UI info-cards (copy retained on
+  `PillarStage.cardTitle/cardItems`); leading line-glyph icons inside the description pills.
 
 ### Implementation notes / deviations
 - **`SceneCamera` folded into `CameraControls`** (a single `CameraSpec`-driven controller handles both

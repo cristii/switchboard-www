@@ -105,12 +105,18 @@ ring: <circle cx="12" cy="12" r="7" />,
   `serverStack`) live under the **Devices** palette category; their shapes are primitives in
   `scene/nodes/shapes/*` (theme-aware screens via `deviceTones.ts`). Add more the same way, or supply a
   GLB via `meta.model`.
-- **Round / hex platform** — a `group` node with `meta.platform: "disc"` renders a soft round zone;
-  `meta.platform: "hex"` renders a **double-layer hexagon** (solid bottom + lighter inset top, soft
-  corners) for the architecture/capabilities look.
+- **Platform shapes** — a `group` node's `meta.platform` switches the container look: `"disc"` (soft
+  round zone), `"hex"` (**double-layer hexagon** — solid bottom + lighter inset top), or `"slab"`
+  (**double-layer rounded square** — solid colour base + a floating near-white top plate; the layered
+  "signal"-theme capability look). Omit for the default translucent rounded slab.
 - **Step icons** — the `icon` kind renders a simple procedural 3D icon chosen by `meta.icon`
   (`bars` / `gear` / `check` / `mail` / `send` / `calendar` / `refresh` / `spark`); see `StepIcon`.
-  Build pillar scenes with `buildPillarDiagram(stages)` (`catalog/presets/pillarFlow.ts`).
+  Set `meta.elevation` (a +Y lift in world units) to seat an icon on a raised platform (e.g. the
+  `slab` top plate). Build pillar scenes with `buildPillarDiagram(stages)`
+  (`catalog/presets/pillarFlow.ts`).
+- **Tinted label plate** — any label (a `text` node or an edge label) can override its pill fill with
+  `meta.plateColor` (hex) while the text keeps its own colour — e.g. a pale tint of the stage colour
+  for a "tag" pill. See `docs/labels/LABELS.md`.
 
 ---
 

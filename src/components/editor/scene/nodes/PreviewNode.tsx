@@ -20,7 +20,7 @@ export interface PreviewNodeProps {
 
 export function PreviewNode({ node, theme }: PreviewNodeProps) {
   const reduced = usePrefersReducedMotion();
-  const { isGroup, isText, isIcon, Shape, width, depth, height, color, emissive, emissiveIntensity, opacity, roughness, metalness } =
+  const { isGroup, isText, isIcon, Shape, width, depth, height, color, emissive, emissiveIntensity, opacity, roughness, metalness, elevation } =
     resolveNodeVisual(node, theme, false);
   const modelUrl = typeof node.meta?.model === "string" ? (node.meta.model as string) : null;
 
@@ -53,16 +53,18 @@ export function PreviewNode({ node, theme }: PreviewNodeProps) {
         ) : isText ? (
           <TextNode node={node} theme={theme} selected={false} />
         ) : isIcon ? (
-          <StepIcon
-            icon={(node.meta?.icon as string) ?? "spark"}
-            width={width}
-            depth={depth}
-            height={height}
-            color={color}
-            opacity={opacity}
-            roughness={roughness}
-            metalness={metalness}
-          />
+          <group position={[0, elevation, 0]}>
+            <StepIcon
+              icon={(node.meta?.icon as string) ?? "spark"}
+              width={width}
+              depth={depth}
+              height={height}
+              color={color}
+              opacity={opacity}
+              roughness={roughness}
+              metalness={metalness}
+            />
+          </group>
         ) : modelUrl ? (
           <Suspense fallback={shapeEl}>
             <ModelNode url={modelUrl} width={width} depth={depth} height={height} color={color} opacity={opacity} />

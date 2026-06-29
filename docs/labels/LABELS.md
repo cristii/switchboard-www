@@ -55,6 +55,10 @@ The 7 reference "tags" = **style × orientation** (e.g. *bubble tag isometric* =
 default per scene (`spec.text.style`) or override per object (`node.meta.labelStyle` /
 `edge.meta.labelStyle`); the **Inspector → Label style** select drives it.
 
+**Custom plate fill** — override the plate colour with `meta.plateColor` (hex) while the text keeps its
+own colour. Used for pastel "tag" pills: set `node.color` to the saturated stage colour and
+`meta.plateColor` to a pale tint of it (e.g. the INPUT/PROCESSING/OUTPUT tags in `pillarFlow.ts`).
+
 ## 4. Style scopes: global / per-scene / per-individual
 
 | Scope | Style | Font | Colour | Size | Orientation |
@@ -63,6 +67,8 @@ default per scene (`spec.text.style`) or override per object (`node.meta.labelSt
 | **Per node** | `node.meta.labelStyle` | (theme) | `node.meta.labelColor` | `node.meta.labelSize` | `node.labelOrientation` |
 | **Per edge** | `edge.meta.labelStyle` | (theme) | `edge.meta.labelColor` | `edge.meta.labelSize` | `edge.labelOrientation` |
 | **Per `text` node** | `node.meta.labelStyle` | `node.meta.font` | `node.color` | `node.meta.size` | `node.meta.orientation` |
+
+Plate fill follows the style by default; override per object with `meta.plateColor` (hex).
 
 "Globally / per scene" = edit the theme (Theme manager → *Labels & text*, or the theme module). Each
 theme is a scene, so this is the per-scene layer; committing a theme makes it the shared global default
