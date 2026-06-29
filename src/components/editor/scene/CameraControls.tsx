@@ -162,18 +162,18 @@ export function CameraControls({
       minZ = Math.min(minZ, n.y);
       maxZ = Math.max(maxZ, n.y);
     }
-    const pad = 3;
+    const pad = 2.4;
     const worldW = maxX - minX + pad * 2;
     const worldH = maxZ - minZ + pad * 2;
     const cx = (minX + maxX) / 2;
     const cz = (minZ + maxZ) / 2;
     if (cfgRef.current.isPersp) {
       const half = (cfgRef.current.fov * Math.PI) / 180 / 2;
-      const need = Math.max(worldW, worldH) * 0.85;
+      const need = Math.max(worldW, worldH) * 0.7;
       const distance = need / Math.max(0.1, Math.tan(half));
       goTo(cx, cz, distance);
     } else {
-      const isoFactor = 1.7;
+      const isoFactor = 1.35;
       const { w, h } = sizeRef.current;
       const zoom = Math.min(w / (worldW * isoFactor), h / (worldH * isoFactor));
       goTo(cx, cz, zoom);

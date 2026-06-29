@@ -21,10 +21,13 @@ export interface PillarStage {
   cardItems: string[];
 }
 
-/** Vertical spacing between stacked stages. */
-const STEP = 7;
-/** Side offset (along the screen-horizontal-keeping axis) for tag / card. */
-const SIDE = 3.4;
+// In the (1,1,1) iso view: screen-down ∝ (x+y), screen-right ∝ (x−y). So stages
+// stacked along the diagonal (t, t) read as a VERTICAL on-screen line (constant
+// screen-x), the tag sits LEFT at (c−SIDE, c+SIDE), the info card RIGHT at
+// (c+SIDE, c−SIDE), and the description sits straight BELOW at (c+UB, c+UB).
+const STEP = 3.5; // along (t,t) → vertical screen spacing 2·STEP
+const SIDE = 3.6; // tag / card horizontal offset
+const UB = 2.3; // description drop below the icon
 
 export function buildPillarDiagram(stages: PillarStage[]): Diagram {
   const nodes: WorkflowNode[] = [];
@@ -32,18 +35,18 @@ export function buildPillarDiagram(stages: PillarStage[]): Diagram {
   const n = stages.length;
 
   stages.forEach((s, i) => {
-    const sy = (i - (n - 1) / 2) * STEP;
+    const c = (i - (n - 1) / 2) * STEP;
     const g = `g${i}`;
     const ic = `ic${i}`;
     nodes.push(
-      { id: g, kind: "group", label: "", x: 0, y: sy, width: 4.8, depth: 4.8, color: s.color, meta: { platform: "hex" } },
-      { id: ic, kind: "icon", label: "", x: 0, y: sy, color: s.color, parentId: g, meta: { icon: s.icon } },
-      // description below the icon (plain billboard text)
-      { id: `lb${i}`, kind: "text", label: s.label, x: 0, y: sy + 2.8, meta: { labelStyle: "plain", orientation: "billboard" } },
+      { id: g, kind: "group", label: "", x: c, y: c, width: 5, depth: 5, color: s.color, meta: { platform: "hex" } },
+      { id: ic, kind: "icon", label: "", x: c, y: c, width: 2, depth: 2, height: 1.5, color: s.color, parentId: g, meta: { icon: s.icon } },
+      // description straight below the icon (plain billboard text)
+      { id: `lb${i}`, kind: "text", label: s.label, x: c + UB, y: c + UB, meta: { labelStyle: "plain", orientation: "billboard" } },
       // left bubble stage tag
-      { id: `tg${i}`, kind: "text", label: s.tag, x: SIDE, y: sy - SIDE, color: s.color, meta: { labelStyle: "bubble", orientation: "billboard" } },
+      { id: `tg${i}`, kind: "text", label: s.tag, x: c - SIDE, y: c + SIDE, color: s.color, meta: { labelStyle: "bubble", orientation: "billboard" } },
       // right upright info card
-      { id: `cd${i}`, kind: "text", label: s.cardTitle, sublabel: s.cardItems.join("\n"), x: -SIDE, y: sy + SIDE, meta: { labelStyle: "info", orientation: "uprightZ" } },
+      { id: `cd${i}`, kind: "text", label: s.cardTitle, sublabel: s.cardItems.join("\n"), x: c + SIDE, y: c - SIDE, meta: { labelStyle: "info", orientation: "uprightZ", size: 0.5 } },
     );
     // dashed corner-connect from the stage to its info card
     edges.push({ id: `e-card-${i}`, source: ic, target: `cd${i}`, connector: "cornerConnect", routing: "orthogonal", style: "dashed" });
