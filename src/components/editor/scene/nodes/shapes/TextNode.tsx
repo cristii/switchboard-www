@@ -59,6 +59,7 @@ function LabelBody({
   opacity,
   style,
   plate,
+  border,
   selected,
   selectionColor,
 }: {
@@ -73,11 +74,13 @@ function LabelBody({
   opacity: number;
   style: LabelStyle;
   plate?: string;
+  border?: string;
   selected: boolean;
   selectionColor: string;
 }) {
   const isInfo = style === "info";
   const hasPlate = style !== "plain" && !!plate;
+  const bw = size * 0.08; // border thickness (when `border` is set)
   const lblLines = label.split("\n");
   const subLines = sublabel ? sublabel.split("\n") : [];
   const { w, h } = plateDims(lblLines, subLines, size, subSize, isInfo);
@@ -94,12 +97,24 @@ function LabelBody({
   const gx = isInfo ? w / 2 + size * 0.35 : 0;
   const tx = (isInfo ? -w / 2 + size * 0.47 : 0) + gx;
 
+  const plateRadius = Math.min(h * 0.3, style === "info" || style === "note" ? 0.08 : 0.16);
+
   return (
     <group>
+      {hasPlate && border ? (
+        <RoundedBox
+          args={[w + bw * 2, h + bw * 2, 0.02]}
+          radius={plateRadius + bw}
+          smoothness={3}
+          position={[gx, 0, -0.03]}
+        >
+          <meshBasicMaterial color={border} toneMapped={false} transparent opacity={0.97} />
+        </RoundedBox>
+      ) : null}
       {hasPlate ? (
         <RoundedBox
           args={[w, h, 0.02]}
-          radius={Math.min(h * 0.3, style === "info" || style === "note" ? 0.08 : 0.16)}
+          radius={plateRadius}
           smoothness={3}
           position={[gx, 0, -0.02]}
         >
@@ -157,6 +172,8 @@ export interface TextLabelProps {
   orientation: TextOrientation;
   style?: LabelStyle;
   plate?: string;
+  /** Plate border colour (drawn just behind the plate). */
+  border?: string;
   /** Global size multiplier (theme.text.scale). @default 1 */
   scale?: number;
   /** Global [x,y,z] offset (theme.text.offset). */
@@ -181,6 +198,7 @@ export function TextLabel({
   orientation,
   style = "plain",
   plate,
+  border,
   scale = 1,
   offset = [0, 0, 0],
   selected = false,
@@ -204,6 +222,7 @@ export function TextLabel({
       opacity={opacity}
       style={style}
       plate={plate}
+      border={border}
       selected={selected}
       selectionColor={selectionColor}
     />
@@ -250,6 +269,9 @@ export function TextNode({ node, theme, selected }: TextNodeProps) {
   // Optional custom plate fill (e.g. a pale tint of the node colour for a tinted
   // "tag" pill); otherwise the style's default plate.
   const plate = typeof meta.plateColor === "string" ? meta.plateColor : pal.plate;
+  const border = typeof meta.borderColor === "string" ? meta.borderColor : undefined;
+  // Optional float height (world units) — lets a tag hover above a platform.
+  const lift = typeof meta.elevation === "number" ? meta.elevation : undefined;
   const opacity = node.opacity ?? theme.text.opacity;
   const subColor = typeof meta.sublabelColor === "string" ? meta.sublabelColor : theme.text.sublabel.color;
   const subSize = typeof meta.sublabelSize === "number" ? meta.sublabelSize : theme.text.sublabel.size;
@@ -268,8 +290,10 @@ export function TextNode({ node, theme, selected }: TextNodeProps) {
       orientation={orientation}
       style={style}
       plate={plate}
+      border={border}
       scale={theme.text.scale}
       offset={theme.text.offset}
+      y={lift}
       selected={selected}
       selectionColor={theme.selection}
     />

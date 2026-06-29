@@ -10,6 +10,11 @@ import {
   type IconSource,
 } from "@/components/ui";
 import { BookCall } from "@/components/sections/BookCall";
+import { ProcessIsoPreview } from "@/components/sections/ProcessIsoPreview";
+import { processFlowDiagram, processStepDiagrams } from "@/components/editor/catalog/presets";
+
+// Editor-scoped tokens so --editor-* resolve for the embedded isometric previews.
+import "@/components/editor/theme/editor-tokens.css";
 
 import checkIcon from "@/assets/icons/check.svg";
 import funnelIcon from "@/assets/icons/funnel.svg";
@@ -26,79 +31,6 @@ export const metadata: Metadata = {
 
 const heading = "font-display font-extrabold tracking-tight";
 const display = "font-display";
-const ERROR_RED = "#C12A2A";
-
-/* ---------- n8n-style node glyphs (inline, ported from Process.dc.html) ---------- */
-
-const glyphProps = {
-  width: 46,
-  height: 46,
-  viewBox: "0 0 24 24",
-  fill: "none",
-  strokeWidth: 1.8,
-  strokeLinecap: "round",
-  strokeLinejoin: "round",
-} as const;
-
-const webhookGlyph = (
-  <svg {...glyphProps} stroke="var(--ink)">
-    <path d="M13 2 4 14h7l-1 8 10-13h-7z" />
-  </svg>
-);
-const switchGlyph = (
-  <svg {...glyphProps} stroke="var(--ink)">
-    <path d="M3 12h5" />
-    <path d="M8 12c5 0 4-6 9-6" />
-    <path d="M8 12c5 0 4 6 9 6" />
-    <circle cx="18" cy="6" r="1.6" />
-    <circle cx="18" cy="18" r="1.6" />
-  </svg>
-);
-const errorGlyph = (
-  <svg {...glyphProps} stroke={ERROR_RED}>
-    <path d="M12 3 22 20H2z" />
-    <path d="M12 9v5" />
-    <circle cx="12" cy="17.3" r=".5" fill={ERROR_RED} stroke="none" />
-  </svg>
-);
-const setGlyph = (
-  <svg {...glyphProps} width={40} height={40} stroke="var(--ink)">
-    <line x1="5" y1="7" x2="19" y2="7" />
-    <circle cx="9" cy="7" r="2.2" />
-    <line x1="5" y1="14" x2="19" y2="14" />
-    <circle cx="15" cy="14" r="2.2" />
-  </svg>
-);
-const pushGlyph = (
-  <svg {...glyphProps} width={40} height={40} stroke="var(--ink)">
-    <path d="M3 11l18-8-8 18-2.5-7.5z" />
-  </svg>
-);
-const scheduleGlyph = (
-  <span className="relative grid place-items-center">
-    <svg width="92" height="92" viewBox="0 0 92 92" fill="none" className="absolute" aria-hidden="true">
-      <circle
-        cx="46"
-        cy="46"
-        r="42"
-        stroke="color-mix(in srgb, var(--orange) 45%, transparent)"
-        strokeWidth="2"
-        strokeDasharray="3 9"
-        strokeLinecap="round"
-      />
-    </svg>
-    <svg {...glyphProps} width={48} height={48} stroke="var(--ink)">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3.5 2" />
-    </svg>
-  </span>
-);
-const lockGlyph = (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
-    <rect x="5" y="11" width="14" height="9" rx="2" />
-    <path d="M8 11V8a4 4 0 0 1 8 0v3" />
-  </svg>
-);
 
 /* ---------- Data (copy ported verbatim) ---------- */
 
@@ -124,7 +56,7 @@ const steps: Step[] = [
     title: "Every system starts by listening.",
     body: "A webhook sits quietly until something happens, then fires. Discovery is the same: before we build anything, we listen. We map your current tools, find where work is getting stuck, and agree on exactly what success looks like.",
     tone: "default",
-    node: <NodeCard glyph={webhookGlyph} label="Webhook" />,
+    node: <ProcessIsoPreview diagram={processStepDiagrams["01"]} />,
     rows: [
       {
         kind: "What happens",
@@ -147,7 +79,7 @@ const steps: Step[] = [
     title: "We build it, and adjust as we go.",
     body: "A switch node sends work down whichever path fits the moment. Our build phase works the same way: we develop layer by layer, then branch based on your feedback. Business needs shift, regular check-ins let us route around them instead of grinding to a halt.",
     tone: "alt",
-    node: <NodeCard glyph={switchGlyph} label="Switch" />,
+    node: <ProcessIsoPreview diagram={processStepDiagrams["02"]} />,
     rows: [
       {
         kind: "What happens",
@@ -180,7 +112,7 @@ const steps: Step[] = [
       </>
     ),
     tone: "dark",
-    node: <NodeCard glyph={errorGlyph} label="Error Trigger" />,
+    node: <ProcessIsoPreview diagram={processStepDiagrams["03"]} />,
     rows: [
       {
         kind: "What happens",
@@ -203,18 +135,7 @@ const steps: Step[] = [
     title: "We hand you the keys.",
     body: "The last two nodes in any workflow set the final values and push them where they belong. Handoff is the same: we deploy to your live environment, lock it in, and make sure your team can run it without us. You finish this step owning a system, not renting one.",
     tone: "alt",
-    node: (
-      <div className="flex items-center">
-        <NodeCard glyph={setGlyph} label="Set" size={132} dots="none" />
-        <div className="h-[2px] w-[30px] bg-ink" />
-        <div className="relative">
-          <NodeCard glyph={pushGlyph} label="Push" size={132} dots="none" />
-          <span className="absolute -right-[13px] -top-[13px] grid h-[30px] w-[30px] place-items-center rounded-full border-2 border-ink bg-green">
-            {lockGlyph}
-          </span>
-        </div>
-      </div>
-    ),
+    node: <ProcessIsoPreview diagram={processStepDiagrams["04"]} />,
     rows: [
       {
         kind: "What happens",
@@ -251,44 +172,7 @@ const retainerTiers = [
   },
 ];
 
-/** Compact, clickable map of the steps shown in the hero. */
-const overview: { n: string; label: string }[] = [
-  { n: "01", label: "Discovery" },
-  { n: "02", label: "Build & feedback" },
-  { n: "03", label: "QA & testing" },
-  { n: "04", label: "Handoff" },
-  { n: "05", label: "Retainer" },
-];
-
 /* ---------- Sub-components ---------- */
-
-function NodeCard({
-  glyph,
-  label,
-  size = 150,
-  dots = "both",
-}: {
-  glyph: React.ReactNode;
-  label: string;
-  size?: number;
-  dots?: "both" | "top" | "none";
-}) {
-  const dot =
-    "absolute left-1/2 h-[13px] w-[13px] -translate-x-1/2 rounded-full border-2 border-ink bg-ink";
-  return (
-    <div
-      className="relative flex flex-col items-center justify-center gap-3 rounded-[18px] border-2 border-ink bg-white shadow-raised"
-      style={{ width: size, height: size }}
-    >
-      {(dots === "both" || dots === "top") && <span className={`${dot} -top-[7px]`} aria-hidden="true" />}
-      {dots === "both" && <span className={`${dot} -bottom-[7px]`} aria-hidden="true" />}
-      {glyph}
-      <span className={`${display} text-[.8rem] font-bold uppercase tracking-[.05em] text-ink`}>
-        {label}
-      </span>
-    </div>
-  );
-}
 
 function StepRow({ row, onDark }: { row: Row; onDark: boolean }) {
   return (
@@ -333,27 +217,7 @@ export default function ProcessPage() {
           a system you own.
         </p>
 
-        <div className="mx-auto flex max-w-[20rem] flex-col gap-2 lg:max-w-none lg:flex-row lg:items-stretch lg:justify-center">
-          {overview.map((o, i) => (
-            <React.Fragment key={o.n}>
-              <a
-                href={`#step-${o.n}`}
-                className="flex items-center gap-[10px] rounded-[12px] border border-ink bg-white px-[14px] py-[10px] text-ink no-underline shadow-card transition-transform hover:-translate-y-[2px]"
-              >
-                <span className={`${display} text-[1.05rem] font-extrabold text-orange`}>{o.n}</span>
-                <span className={`${display} whitespace-nowrap text-[.9rem] font-bold`}>{o.label}</span>
-              </a>
-              {i < overview.length - 1 && (
-                <span
-                  aria-hidden="true"
-                  className="hidden shrink-0 self-center px-1 text-[1.1rem] text-orange lg:inline"
-                >
-                  →
-                </span>
-              )}
-            </React.Fragment>
-          ))}
-        </div>
+        <ProcessIsoPreview diagram={processFlowDiagram} variant="flow" />
 
         <p className="m-0 mt-7 inline-flex flex-col items-center font-hand text-[1.3rem] text-ink-soft">
           ↓ follow the wires
@@ -408,7 +272,7 @@ export default function ProcessPage() {
       <Section id="step-05" style={{ borderTop: "1.5px solid var(--ink)" }}>
         <div className="grid items-center gap-12 lg:grid-cols-[40%_60%]">
           <div className="flex justify-center">
-            <NodeCard glyph={scheduleGlyph} label="Schedule" dots="top" />
+            <ProcessIsoPreview diagram={processStepDiagrams["05"]} />
           </div>
           <div>
             <div className="mb-[10px] flex items-center gap-[10px]">

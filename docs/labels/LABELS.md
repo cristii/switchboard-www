@@ -55,9 +55,11 @@ The 7 reference "tags" = **style × orientation** (e.g. *bubble tag isometric* =
 default per scene (`spec.text.style`) or override per object (`node.meta.labelStyle` /
 `edge.meta.labelStyle`); the **Inspector → Label style** select drives it.
 
-**Custom plate fill** — override the plate colour with `meta.plateColor` (hex) while the text keeps its
-own colour. Used for pastel "tag" pills: set `node.color` to the saturated stage colour and
-`meta.plateColor` to a pale tint of it (e.g. the INPUT/PROCESSING/OUTPUT tags in `pillarFlow.ts`).
+**Custom plate fill + border** — override the plate colour with `meta.plateColor` (hex) while the text
+keeps its own colour, and add a plate outline with `meta.borderColor` (hex). Used for pastel "tag"
+pills: set `node.color` to the saturated stage colour and `meta.plateColor` to a pale tint of it (e.g.
+the INPUT/PROCESSING/OUTPUT tags in `pillarFlow.ts`). The Inspector exposes both as colour pickers
+("Tag background & border") for any plated label.
 
 ## 4. Style scopes: global / per-scene / per-individual
 

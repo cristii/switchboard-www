@@ -245,6 +245,45 @@ export function Inspector({ className, style }: InspectorProps) {
             />
           </Row>
 
+          {/* Plated styles (bubble/tips/info/note, or a plated theme default) get a
+              background + border colour. Hidden only for the explicit "plain" style. */}
+          {((node.meta?.labelStyle as string) ?? "") !== "plain" ? (
+            <Row>
+              <div style={sectionLabel}>Tag background &amp; border</div>
+              <div style={{ display: "flex", gap: 14 }}>
+                {([
+                  { key: "plateColor", caption: "Fill", fallback: "#ffffff" },
+                  { key: "borderColor", caption: "Border", fallback: "#15211f" },
+                ] as const).map(({ key, caption, fallback }) => {
+                  const set = typeof node.meta?.[key] === "string";
+                  return (
+                    <div key={key} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                      <span style={{ fontSize: "0.62rem", color: "var(--editor-text-muted)" }}>{caption}</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <input
+                          type="color"
+                          aria-label={`Tag ${caption.toLowerCase()} colour`}
+                          value={set ? (node.meta?.[key] as string) : fallback}
+                          onChange={(e) => updateNode(node.id, { meta: { ...node.meta, [key]: e.currentTarget.value } })}
+                          style={{ width: 30, height: 24, padding: 0, border: "1.5px solid var(--editor-border-soft)", borderRadius: 6, background: "none", cursor: "pointer" }}
+                        />
+                        <button
+                          type="button"
+                          title={set ? `Clear ${caption.toLowerCase()}` : "Not set"}
+                          disabled={!set}
+                          onClick={() => updateNode(node.id, { meta: { ...node.meta, [key]: undefined } })}
+                          style={{ background: "transparent", border: "none", color: "var(--editor-text-muted)", fontSize: "0.62rem", cursor: set ? "pointer" : "default", opacity: set ? 1 : 0.45, padding: 0 }}
+                        >
+                          {set ? "clear" : "none"}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </Row>
+          ) : null}
+
           {node.kind !== "text" ? (
             <Row>
               <Select

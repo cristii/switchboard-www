@@ -38,3 +38,9 @@ export {
   customerExpPillarDiagram,
 } from "./pillarFlow";
 export type { PillarStage } from "./pillarFlow";
+export {
+  buildProcessFlow,
+  buildProcessNode,
+  processFlowDiagram,
+  processStepDiagrams,
+} from "./processFlow";
