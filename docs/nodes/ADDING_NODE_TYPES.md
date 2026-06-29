@@ -101,6 +101,12 @@ ring: <circle cx="12" cy="12" r="7" />,
   [`../labels/LABELS.md`](../labels/LABELS.md).
 - **Model nodes** — *any* node renders a GLB instead of its procedural shape when
   `node.meta.model` is a URL. No new kind required. See [`BLENDER_MODELING.md`](./BLENDER_MODELING.md).
+- **Device shapes** — built-in procedural devices (`monitor`, `laptop`, `phone`, `browser`,
+  `serverStack`) live under the **Devices** palette category; their shapes are primitives in
+  `scene/nodes/shapes/*` (theme-aware screens via `deviceTones.ts`). Add more the same way, or supply a
+  GLB via `meta.model`.
+- **Round platform** — a `group` node with `meta.platform: "disc"` renders a soft round zone instead
+  of the rectangular slab.
 
 ---
 

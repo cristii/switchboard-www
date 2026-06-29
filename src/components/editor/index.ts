@@ -62,6 +62,8 @@ export { useExportPng } from "./hooks/useExportPng";
 
 export { DiagramPreview } from "./preview/DiagramPreview";
 export type { DiagramPreviewProps } from "./preview/DiagramPreview";
+export { DiagramFrame } from "./preview/DiagramFrame";
+export type { DiagramFrameProps } from "./preview/DiagramFrame";
 export {
   DEFAULT_PREVIEW_CONFIG,
   mergePreviewConfig,
@@ -92,7 +94,14 @@ export {
   groupedSampleDiagram,
 } from "./sampleDiagram";
 
-export { PRESETS, n8nSampleDiagram, scoutsLeadsDiagram, awsWebHostingDiagram, servicesFlowDiagram } from "./catalog/presets";
+export {
+  PRESETS,
+  n8nSampleDiagram,
+  scoutsLeadsDiagram,
+  awsWebHostingDiagram,
+  servicesFlowDiagram,
+  architectureDeviceDiagram,
+} from "./catalog/presets";
 export type { PresetEntry } from "./catalog/presets";
 export { layeredLayout } from "./catalog/layout/autoLayout";
 

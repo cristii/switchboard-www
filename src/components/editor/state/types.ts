@@ -17,7 +17,13 @@ export type NodeKind =
   | "output"
   | "group"
   | "note"
-  | "text";
+  | "text"
+  // device nodes (Phase 6)
+  | "monitor"
+  | "laptop"
+  | "phone"
+  | "browser"
+  | "serverStack";
 
 /** Brand colour role a node maps onto (resolved to real colours per theme). */
 export type NodeColorRole = "orange" | "green" | "violet" | "amber" | "ink";

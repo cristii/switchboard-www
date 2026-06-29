@@ -11,6 +11,11 @@ import { DiamondNode } from "./DiamondNode";
 import { SlabNode } from "./SlabNode";
 import { CapsuleNode } from "./CapsuleNode";
 import { PaperTileNode } from "./PaperTileNode";
+import { MonitorNode } from "./MonitorNode";
+import { LaptopNode } from "./LaptopNode";
+import { PhoneNode } from "./PhoneNode";
+import { BrowserNode } from "./BrowserNode";
+import { ServerStackNode } from "./ServerStackNode";
 
 export const SHAPES: Record<ShapeId, ComponentType<ShapeProps>> = {
   box: BoxNode,
@@ -20,6 +25,11 @@ export const SHAPES: Record<ShapeId, ComponentType<ShapeProps>> = {
   slab: SlabNode,
   capsule: CapsuleNode,
   paperTile: PaperTileNode,
+  monitor: MonitorNode,
+  laptop: LaptopNode,
+  phone: PhoneNode,
+  browser: BrowserNode,
+  serverStack: ServerStackNode,
 };
 
 export type { ShapeId, ShapeProps } from "./types";

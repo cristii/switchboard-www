@@ -37,7 +37,13 @@ export type GlyphName =
   | "grid"
   | "shadow"
   | "palette"
-  | "link";
+  | "link"
+  // device glyphs
+  | "monitor"
+  | "laptop"
+  | "phone"
+  | "browser"
+  | "serverStack";
 
 const PATHS: Record<GlyphName, React.ReactNode> = {
   zap: <path d="M13 2 L4 14 h7 l-1 8 L20 9 h-7 z" />,
@@ -135,6 +141,36 @@ const PATHS: Record<GlyphName, React.ReactNode> = {
       <path d="M9.5 14.5 l5 -5" />
       <path d="M11 6.5 l1.2 -1.2 a3.5 3.5 0 0 1 5 5 l-1.7 1.7" />
       <path d="M13 17.5 l-1.2 1.2 a3.5 3.5 0 0 1 -5 -5 l1.7 -1.7" />
+    </>
+  ),
+  monitor: (
+    <>
+      <rect x="3" y="4" width="18" height="12" rx="1.5" />
+      <path d="M9 20 h6 M12 16 v4" />
+    </>
+  ),
+  laptop: (
+    <>
+      <rect x="4" y="5" width="16" height="10" rx="1.5" />
+      <path d="M2 19 h20" />
+    </>
+  ),
+  phone: (
+    <>
+      <rect x="7" y="3" width="10" height="18" rx="2" />
+      <path d="M10.5 18 h3" />
+    </>
+  ),
+  browser: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M3 9 h18 M6 7 h0.01 M8.5 7 h0.01" />
+    </>
+  ),
+  serverStack: (
+    <>
+      <path d="M12 3 l7 4 -7 4 -7 -4 z" />
+      <path d="M5 11 l7 4 7 -4 M5 15 l7 4 7 -4" />
     </>
   ),
 };

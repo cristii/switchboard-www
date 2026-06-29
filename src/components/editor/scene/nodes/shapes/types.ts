@@ -9,7 +9,13 @@ export type ShapeId =
   | "diamond"
   | "slab"
   | "capsule"
-  | "paperTile";
+  | "paperTile"
+  // device shapes (Phase 6)
+  | "monitor"
+  | "laptop"
+  | "phone"
+  | "browser"
+  | "serverStack";
 
 export interface ShapeProps {
   width: number;

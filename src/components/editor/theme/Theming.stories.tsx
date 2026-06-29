@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { IsometricWorkflowEditor } from "../IsometricWorkflowEditor";
+import { DiagramFrame } from "../preview/DiagramFrame";
 import { branchingSampleDiagram } from "../sampleDiagram";
-import { awsWebHostingDiagram, servicesFlowDiagram } from "../catalog/presets";
+import { architectureDeviceDiagram, awsWebHostingDiagram, servicesFlowDiagram } from "../catalog/presets";
 
 // Editor-scoped theming: the same diagram in both themes. The toggle lives in
 // the toolbar (see Editor/Panels/Toolbar); here we force each theme to compare
@@ -59,6 +60,31 @@ export const Blueprint: StoryObj = {
         initialDiagram={servicesFlowDiagram}
         style={{ height: "100%" }}
       />
+    </div>
+  ),
+};
+
+/** Phase 6: device nodes (browser/phone/monitor/laptop) around a server stack on a
+ *  round platform, dashed corner-connect links + bubble-tag arrows, inside the
+ *  titled DiagramFrame embed chrome — the architecture-reference look, Switchboard
+ *  colors. */
+export const Architecture: StoryObj = {
+  parameters: { layout: "fullscreen" },
+  render: () => (
+    <div data-editor-theme="light" style={{ padding: 24, height: "82vh", boxSizing: "border-box", background: "var(--editor-bg)" }}>
+      <DiagramFrame
+        title="Architecture Diagram"
+        subtitle="Devices, platform and bubble-tag arrows — Switchboard blueprint"
+        footer="Switchboard · isometric workflow editor"
+        style={{ height: "100%" }}
+      >
+        <IsometricWorkflowEditor
+          chrome={false}
+          defaultThemeId="blueprint"
+          initialDiagram={architectureDeviceDiagram}
+          style={{ height: "100%", border: "none", borderRadius: 0, boxShadow: "none" }}
+        />
+      </DiagramFrame>
     </div>
   ),
 };

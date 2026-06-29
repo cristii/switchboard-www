@@ -14,6 +14,7 @@ export type NodeCategory =
   | "AI"
   | "Data"
   | "Services"
+  | "Devices"
   | "Output"
   | "Layout"
   | "Annotate";
@@ -147,6 +148,61 @@ export const NODE_CATALOG: Record<NodeKind, NodeCatalogEntry> = {
     defaultPorts: [IN],
     defaultSize: { width: 1.6, depth: 1.0, height: 0.6 },
   },
+  monitor: {
+    kind: "monitor",
+    category: "Devices",
+    label: "Monitor",
+    description: "A desktop / dashboard screen.",
+    shape: "monitor",
+    colorRole: "ink",
+    glyph: "monitor",
+    defaultPorts: IN_OUT,
+    defaultSize: { width: 1.5, depth: 1.0, height: 1.2 },
+  },
+  laptop: {
+    kind: "laptop",
+    category: "Devices",
+    label: "Laptop",
+    description: "A laptop / admin client.",
+    shape: "laptop",
+    colorRole: "ink",
+    glyph: "laptop",
+    defaultPorts: IN_OUT,
+    defaultSize: { width: 1.6, depth: 1.2, height: 0.95 },
+  },
+  phone: {
+    kind: "phone",
+    category: "Devices",
+    label: "Phone",
+    description: "A mobile client.",
+    shape: "phone",
+    colorRole: "ink",
+    glyph: "phone",
+    defaultPorts: IN_OUT,
+    defaultSize: { width: 0.85, depth: 0.85, height: 1.1 },
+  },
+  browser: {
+    kind: "browser",
+    category: "Devices",
+    label: "Web app",
+    description: "A browser window / web app.",
+    shape: "browser",
+    colorRole: "ink",
+    glyph: "browser",
+    defaultPorts: IN_OUT,
+    defaultSize: { width: 1.6, depth: 0.95, height: 1.1 },
+  },
+  serverStack: {
+    kind: "serverStack",
+    category: "Devices",
+    label: "Server stack",
+    description: "A stacked server / datastore.",
+    shape: "serverStack",
+    colorRole: "ink",
+    glyph: "serverStack",
+    defaultPorts: IN_OUT,
+    defaultSize: { width: 1.2, depth: 1.2, height: 1.4 },
+  },
   group: {
     kind: "group",
     category: "Layout",
@@ -191,6 +247,7 @@ export const CATEGORIES: NodeCategory[] = [
   "AI",
   "Data",
   "Services",
+  "Devices",
   "Output",
   "Layout",
   "Annotate",

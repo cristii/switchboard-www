@@ -125,6 +125,12 @@ The Inspector's **"Connection"** dropdown bundles routing + connector + dashed i
 
 The routing / connector / style selects below the preset remain available for fine control.
 
+### Bubble-tag arrows
+A connector can carry a label that rides its midpoint as a 3D tag — the "Memory / Transfer / AI model"
+arrows in the references. Set the edge's `label`, a `boldArrow` connector, and a tag style via
+`edge.meta.labelStyle` (e.g. `"bubble"`); the label renders at the path midpoint (see
+[`../labels/LABELS.md`](../labels/LABELS.md)). The `architectureDeviceDiagram` preset shows two.
+
 All take the same `ConnectorProps` (`points`, `color`, `width`, `arrowSize`, `dashed?`, `onSelect?`).
 Width + arrow size come from the theme (`spec.edges.width` / `widthSelected` / `arrowSize`) or a
 per-edge override. Pick per edge in the Inspector → *Connector*, or per theme via `spec.edges.connector`.

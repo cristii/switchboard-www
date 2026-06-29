@@ -223,18 +223,20 @@ docs/
   example; and the `/services` "systematic approach" section now embeds a horizontal isometric
   **`SystematicApproachPreview`** (`servicesFlowDiagram`).
 
-### Phase 6 — Architecture-diagram renderings (roadmap, not yet built)
-Goal: reproduce the supplied case-1 / case-2 references in Switchboard colors. Remaining pieces:
-1. **Procedural device-node shapes** — monitor / laptop / phone / browser-window / server-hex-stack
-   built from primitives (no binary assets needed), registered in `SHAPES`; GLB drop-in already works
-   via `node.meta.model`.
-2. **Round/elliptical group platform** — a soft disc variant of `GroupContainer` (the platform under
-   the server stack).
-3. **Bubble-tag arrows** — a `bubble`/`info` label riding a connector midpoint (reuse the edge-label
-   midpoint + a `boldArrow`), e.g. "Memory" / "Transfer" / "AI MODEL".
-4. **Title-bar embed chrome** — an optional header/footer frame around `DiagramPreview` for the
-   "Architecture Diagram" framing.
-5. **Theme polish** — tune `blueprint` against the references once devices land.
+### Phase 6 — Architecture-diagram renderings ✅
+Goal: reproduce the supplied case-1 / case-2 references in Switchboard colors.
+- [x] **Procedural device-node shapes** — `monitor` / `laptop` / `phone` / `browser` / `serverStack`
+  built from primitives (theme-aware screens via `deviceTones`), a new **Devices** palette category +
+  glyphs; registered in `SHAPES`. GLB drop-in still works via `node.meta.model`.
+- [x] **Round group platform** — `GroupContainer` renders a soft disc when `node.meta.platform ===
+  "disc"` (the zone under the server stack).
+- [x] **Bubble-tag arrows** — an edge with a `bubble`/`info` label rides the connector midpoint
+  (`edge.label` + `edge.meta.labelStyle` + a `boldArrow`), e.g. "Transfer" / "AI model".
+- [x] **Title-bar embed chrome** — `preview/DiagramFrame.tsx` (title / subtitle / logo / footer,
+  `tone` light|ink|accent) wraps any preview for the "Architecture Diagram" framing.
+- [x] Showcase: `architectureDeviceDiagram` preset ("Architecture (devices)") + Storybook
+  `Editor/Theming → Architecture`. **Theme polish** of `blueprint` against the references continues as
+  a visual-tuning task (needs a browser pass).
 
 ### Implementation notes / deviations
 - **`SceneCamera` folded into `CameraControls`** (a single `CameraSpec`-driven controller handles both
