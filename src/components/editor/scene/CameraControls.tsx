@@ -173,10 +173,29 @@ export function CameraControls({
       const distance = need / Math.max(0.1, Math.tan(half));
       goTo(cx, cz, distance);
     } else {
-      const isoFactor = 1.35;
+      // Frame the actual on-screen footprint: the iso view projects (x−z) → the
+      // screen-x axis and (x+z) → screen-y. Using these per-node extents (not the
+      // square world bbox) lets a diagonal/vertical layout fill a tall frame
+      // instead of being width-limited, and a horizontal row fill a wide one.
+      let minU = Infinity;
+      let maxU = -Infinity;
+      let minV = Infinity;
+      let maxV = -Infinity;
+      for (const n of ns) {
+        const u = n.x - n.y;
+        const v = n.x + n.y;
+        if (u < minU) minU = u;
+        if (u > maxU) maxU = u;
+        if (v < minV) minV = v;
+        if (v > maxV) maxV = v;
+      }
+      const spanU = (maxU - minU) / Math.SQRT2 + pad * 2;
+      const spanV = (maxV - minV) / Math.SQRT2 + pad * 2;
       const { w, h } = sizeRef.current;
-      const zoom = Math.min(w / (worldW * isoFactor), h / (worldH * isoFactor));
-      goTo(cx, cz, zoom);
+      const zoom = Math.min(w / spanU, h / spanV) * 0.94;
+      const uc = (minU + maxU) / 2;
+      const vc = (minV + maxV) / 2;
+      goTo((uc + vc) / 2, (vc - uc) / 2, zoom);
     }
   };
 

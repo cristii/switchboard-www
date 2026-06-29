@@ -25,9 +25,9 @@ export interface PillarStage {
 // stacked along the diagonal (t, t) read as a VERTICAL on-screen line (constant
 // screen-x), the tag sits LEFT at (c−SIDE, c+SIDE), the info card RIGHT at
 // (c+SIDE, c−SIDE), and the description sits straight BELOW at (c+UB, c+UB).
-const STEP = 3.5; // along (t,t) → vertical screen spacing 2·STEP
-const SIDE = 3.6; // tag / card horizontal offset
-const UB = 2.3; // description drop below the icon
+const STEP = 5; // along (t,t) → vertical screen spacing 2·STEP
+const SIDE = 3.8; // tag / card horizontal offset
+const UB = 2.8; // description drop below the icon
 
 export function buildPillarDiagram(stages: PillarStage[]): Diagram {
   const nodes: WorkflowNode[] = [];
@@ -39,8 +39,8 @@ export function buildPillarDiagram(stages: PillarStage[]): Diagram {
     const g = `g${i}`;
     const ic = `ic${i}`;
     nodes.push(
-      { id: g, kind: "group", label: "", x: c, y: c, width: 5, depth: 5, color: s.color, meta: { platform: "hex" } },
-      { id: ic, kind: "icon", label: "", x: c, y: c, width: 2, depth: 2, height: 1.5, color: s.color, parentId: g, meta: { icon: s.icon } },
+      { id: g, kind: "group", label: "", x: c, y: c, width: 5.4, depth: 5.4, color: s.color, meta: { platform: "hex" } },
+      { id: ic, kind: "icon", label: "", x: c, y: c, width: 2.4, depth: 2.4, height: 1.8, color: s.color, parentId: g, meta: { icon: s.icon } },
       // description straight below the icon (plain billboard text)
       { id: `lb${i}`, kind: "text", label: s.label, x: c + UB, y: c + UB, meta: { labelStyle: "plain", orientation: "billboard" } },
       // left bubble stage tag
