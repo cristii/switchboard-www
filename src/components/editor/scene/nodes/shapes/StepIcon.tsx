@@ -3,7 +3,7 @@
 // colour with lighter accents — recognisable, not detailed. Selected by
 // node.meta.icon; rendered via a NodeMesh/PreviewNode branch on the `icon` kind.
 // A real GLB can replace any of these via node.meta.model. Keys:
-//   bars · gear · check · mail · send · calendar · refresh · spark (+ box fallback)
+//   bars · gear · check · mail · send · calendar · refresh · spark · alert (+ box fallback)
 
 import { RoundedBox } from "@react-three/drei";
 import { NodeStandardMaterial } from "./NodeStandardMaterial";
@@ -162,6 +162,26 @@ export function StepIcon({ icon, width, depth, height, color, opacity, roughness
           <mesh position={[s * 0.4, h * 0.28, 0]}>
             <octahedronGeometry args={[s * 0.1, 0]} />
             <meshStandardMaterial color={accent} roughness={0.4} emissive={accent} emissiveIntensity={0.3} />
+          </mesh>
+        </group>
+      );
+    }
+    case "alert": {
+      // warning triangle (3-sided pyramid) + an exclamation on the front face
+      const th = h * 0.92;
+      return (
+        <group>
+          <mesh position={[0, th / 2, 0]} rotation={[0, Math.PI / 6, 0]} castShadow receiveShadow>
+            <coneGeometry args={[s * 0.5, th, 3]} />
+            <Body />
+          </mesh>
+          <mesh position={[0, th * 0.52, s * 0.24]}>
+            <boxGeometry args={[s * 0.07, th * 0.3, 0.02]} />
+            <meshStandardMaterial color={accent} roughness={0.4} />
+          </mesh>
+          <mesh position={[0, th * 0.3, s * 0.24]}>
+            <boxGeometry args={[s * 0.08, s * 0.08, 0.02]} />
+            <meshStandardMaterial color={accent} roughness={0.4} />
           </mesh>
         </group>
       );

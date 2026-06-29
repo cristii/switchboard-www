@@ -226,6 +226,7 @@ export function DiagramCanvas({
         initialTarget={initialTargetVal}
         fitOnMount={fitOnMount}
         fitScale={fitScale}
+        animate={interactive}
       />
     </Canvas>
   );

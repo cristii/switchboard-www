@@ -52,6 +52,9 @@ export interface CameraControlsProps {
   fitOnMount?: boolean;
   /** fit() zoom multiplier — <1 leaves margin, >1 fills tighter. @default 0.98 */
   fitScale?: number;
+  /** Tween camera moves (reset/fit/zoom). Off = instant — used by static previews
+   *  so a snapshot can't catch a camera mid-tween. @default true */
+  animate?: boolean;
 }
 
 const ORTHO_DISTANCE = 40;
@@ -65,6 +68,7 @@ export function CameraControls({
   initialTarget,
   fitOnMount = false,
   fitScale = 0.98,
+  animate = true,
 }: CameraControlsProps) {
   const { camera, gl, raycaster, size } = useThree();
   const reduced = usePrefersReducedMotion();
@@ -101,6 +105,8 @@ export function CameraControls({
   enabledRef.current = enabled;
   const fitScaleRef = useRef(fitScale);
   fitScaleRef.current = fitScale;
+  const animateRef = useRef(animate);
+  animateRef.current = animate;
   const cfgRef = useRef({ isPersp, dir, baseDistance, fov });
   cfgRef.current = { isPersp, dir, baseDistance, fov };
   const ix = initialTarget?.[0] ?? 0;
@@ -140,7 +146,7 @@ export function CameraControls({
   const goTo = (tx: number, tz: number, scale: number) => {
     desiredTarget.current.set(tx, 0, tz);
     desiredScale.current = cfgRef.current.isPersp ? clampDist(scale) : clampZoom(scale);
-    if (reducedRef.current) {
+    if (reducedRef.current || !animateRef.current) {
       target.current.copy(desiredTarget.current);
       if (cfgRef.current.isPersp) dist.current = desiredScale.current;
       else ortho().zoom = desiredScale.current;

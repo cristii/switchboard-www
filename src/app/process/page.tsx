@@ -44,9 +44,15 @@ interface Step {
   title: string;
   body: React.ReactNode;
   tone: "default" | "alt" | "dark";
-  node: React.ReactNode;
   rows?: Row[];
 }
+
+/** Section-tone background colours (so an embedded diagram blends into its section). */
+const TONE_BG: Record<Step["tone"], string> = {
+  default: "#E9E8DF", // --paper
+  alt: "#E1E2D7", // --paper-2
+  dark: "#11201E", // --dark
+};
 
 const steps: Step[] = [
   {
@@ -56,7 +62,6 @@ const steps: Step[] = [
     title: "Every system starts by listening.",
     body: "A webhook sits quietly until something happens, then fires. Discovery is the same: before we build anything, we listen. We map your current tools, find where work is getting stuck, and agree on exactly what success looks like.",
     tone: "default",
-    node: <ProcessIsoPreview diagram={processStepDiagrams["01"]} />,
     rows: [
       {
         kind: "What happens",
@@ -79,7 +84,6 @@ const steps: Step[] = [
     title: "We build it, and adjust as we go.",
     body: "A switch node sends work down whichever path fits the moment. Our build phase works the same way: we develop layer by layer, then branch based on your feedback. Business needs shift, regular check-ins let us route around them instead of grinding to a halt.",
     tone: "alt",
-    node: <ProcessIsoPreview diagram={processStepDiagrams["02"]} />,
     rows: [
       {
         kind: "What happens",
@@ -112,7 +116,6 @@ const steps: Step[] = [
       </>
     ),
     tone: "dark",
-    node: <ProcessIsoPreview diagram={processStepDiagrams["03"]} />,
     rows: [
       {
         kind: "What happens",
@@ -135,7 +138,6 @@ const steps: Step[] = [
     title: "We hand you the keys.",
     body: "The last two nodes in any workflow set the final values and push them where they belong. Handoff is the same: we deploy to your live environment, lock it in, and make sure your team can run it without us. You finish this step owning a system, not renting one.",
     tone: "alt",
-    node: <ProcessIsoPreview diagram={processStepDiagrams["04"]} />,
     rows: [
       {
         kind: "What happens",
@@ -217,7 +219,7 @@ export default function ProcessPage() {
           a system you own.
         </p>
 
-        <ProcessIsoPreview diagram={processFlowDiagram} variant="flow" />
+        <ProcessIsoPreview diagram={processFlowDiagram} variant="flow" background={TONE_BG.default} />
 
         <p className="m-0 mt-7 inline-flex flex-col items-center font-hand text-[1.3rem] text-ink-soft">
           ↓ follow the wires
@@ -235,7 +237,9 @@ export default function ProcessPage() {
             style={{ borderTop: `1.5px solid ${onDark ? "#000" : "var(--ink)"}` }}
           >
             <div className="grid items-center gap-12 lg:grid-cols-[40%_60%]">
-              <div className="flex justify-center">{s.node}</div>
+              <div className="flex justify-center">
+                <ProcessIsoPreview diagram={processStepDiagrams[s.n]} background={TONE_BG[s.tone]} />
+              </div>
               <div>
                 <div className="mb-[10px] flex items-center gap-[10px]">
                   <span className={`${display} text-base font-extrabold`} style={{ color: s.numColor }}>
@@ -272,7 +276,7 @@ export default function ProcessPage() {
       <Section id="step-05" style={{ borderTop: "1.5px solid var(--ink)" }}>
         <div className="grid items-center gap-12 lg:grid-cols-[40%_60%]">
           <div className="flex justify-center">
-            <ProcessIsoPreview diagram={processStepDiagrams["05"]} />
+            <ProcessIsoPreview diagram={processStepDiagrams["05"]} background={TONE_BG.default} />
           </div>
           <div>
             <div className="mb-[10px] flex items-center gap-[10px]">
