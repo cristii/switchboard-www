@@ -26,6 +26,9 @@ export const signalTheme: ThemeSpec = {
     { id: "key", type: "directional", color: "#fffaf2", intensity: 1.25, position: [0, 34, 2], castShadow: true },
     // Soft directional fill (also direct, no radial falloff) for side variation.
     { id: "fill", type: "directional", color: "#e6e7dc", intensity: 0.34, position: [10, 14, -10] },
+    // Warm front fill from the camera's direction (iso [1,1,1]) so the faces toward
+    // the viewer pick up a little Switchboard warmth. Low, and doesn't cast shadows.
+    { id: "cam", type: "directional", color: "#ffe7c4", intensity: 0.38, position: [22, 22, 22] },
   ],
   // Soft, diffused top-down floor shadow via PCSS (drei SoftShadows); only slabs cast.
   shadow: { enabled: true, opacity: 0.24, radius: 12, bias: -0.0004, soft: true },
