@@ -26,8 +26,10 @@ export interface PillarStage {
 // screen-x), the tag sits LEFT at (c−SIDE, c+SIDE), the info card RIGHT at
 // (c+SIDE, c−SIDE), and the description sits straight BELOW at (c+UB, c+UB).
 const STEP = 5.5; // along (t,t) → vertical screen spacing 2·STEP
-const SIDE = 3.6; // tag / card horizontal offset (clears the hex + text)
+const TAG = 3.8; // left stage-tag offset
+const CARD = 3.0; // info-card anchor (its plate grows rightward from here)
 const UB = 3.6; // description drop below the icon (clears the hex)
+const CARD_SIZE = 0.7;
 
 export function buildPillarDiagram(stages: PillarStage[]): Diagram {
   const nodes: WorkflowNode[] = [];
@@ -44,11 +46,19 @@ export function buildPillarDiagram(stages: PillarStage[]): Diagram {
       // description straight below the icon (plain billboard text)
       { id: `lb${i}`, kind: "text", label: s.label, x: c + UB, y: c + UB, meta: { labelStyle: "plain", orientation: "billboard" } },
       // left bubble stage tag
-      { id: `tg${i}`, kind: "text", label: s.tag, x: c - SIDE, y: c + SIDE, color: s.color, meta: { labelStyle: "bubble", orientation: "billboard" } },
+      { id: `tg${i}`, kind: "text", label: s.tag, x: c - TAG, y: c + TAG, color: s.color, meta: { labelStyle: "bubble", orientation: "billboard" } },
       // right info card — billboard (faces camera) so the body text stays legible
-      // on small/mobile screens (uprightZ foreshortens it). Sized up for readability.
-      { id: `cd${i}`, kind: "text", label: s.cardTitle, sublabel: s.cardItems.join("\n"), x: c + SIDE, y: c - SIDE, meta: { labelStyle: "info", orientation: "billboard", size: 0.72, sublabelSize: 0.5 } },
+      // on small/mobile screens (uprightZ foreshortens it). Plate grows rightward
+      // from the anchor so it never covers the hex.
+      { id: `cd${i}`, kind: "text", label: s.cardTitle, sublabel: s.cardItems.join("\n"), x: c + CARD, y: c - CARD, meta: { labelStyle: "info", orientation: "billboard", size: CARD_SIZE, sublabelSize: 0.48 } },
     );
+    // Invisible spacer at the card's approximate right edge so the camera auto-fit
+    // frames (and centres) the real visual bounds — otherwise the wide cards push
+    // the content right and leave a left margin.
+    const longest = Math.max(s.cardTitle.length, ...s.cardItems.map((t) => t.length));
+    const a = (longest * CARD_SIZE * 0.5 + 1) / Math.SQRT2;
+    nodes.push({ id: `sp${i}`, kind: "text", label: "", x: c + CARD + a, y: c - CARD - a });
+
     // dashed corner-connect from the stage to its info card
     edges.push({ id: `e-card-${i}`, source: ic, target: `cd${i}`, connector: "cornerConnect", routing: "orthogonal", style: "dashed" });
     // bold arrow to the next stage

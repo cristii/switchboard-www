@@ -89,7 +89,10 @@ function LabelBody({
   const labelCenterY = h / 2 - pad - labelH / 2;
   const subCenterY = labelCenterY - labelH / 2 - size * 0.12 - subH / 2;
   const anchorX = isInfo ? ("left" as const) : ("center" as const);
-  const tx = isInfo ? -w / 2 + size * 0.47 : 0;
+  // Info cards grow to the RIGHT of their anchor (node = card's left edge) so they
+  // don't overlap the node they annotate; others stay centred on the anchor.
+  const gx = isInfo ? w / 2 + size * 0.35 : 0;
+  const tx = (isInfo ? -w / 2 + size * 0.47 : 0) + gx;
 
   return (
     <group>
@@ -98,12 +101,12 @@ function LabelBody({
           args={[w, h, 0.02]}
           radius={Math.min(h * 0.3, style === "info" || style === "note" ? 0.08 : 0.16)}
           smoothness={3}
-          position={[0, 0, -0.02]}
+          position={[gx, 0, -0.02]}
         >
           <meshBasicMaterial color={plate} toneMapped={false} transparent opacity={0.97} />
         </RoundedBox>
       ) : null}
-      {hasPlate && (style === "tips" || style === "info") ? (
+      {hasPlate && style === "tips" ? (
         <mesh position={[0, -h / 2 - size * 0.16, -0.012]} rotation={[0, 0, Math.PI]}>
           <coneGeometry args={[size * 0.32, size * 0.5, 3]} />
           <meshBasicMaterial color={plate} toneMapped={false} />
