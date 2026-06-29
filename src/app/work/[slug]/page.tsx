@@ -4,7 +4,11 @@ import { notFound } from "next/navigation";
 
 import { Badge, Card, Eyebrow, HandUnderline, Icon, Section, Stat } from "@/components/ui";
 import { BookCall } from "@/components/sections/BookCall";
+import { WorkIsoPreview } from "@/components/sections/WorkIsoPreview";
 import { categoryFor, getWorkItem, workItems } from "@/lib/work";
+
+// Editor-scoped tokens so --editor-* resolve for the embedded isometric diagram.
+import "@/components/editor/theme/editor-tokens.css";
 
 const heading = "font-display font-extrabold tracking-tight";
 const display = "font-display";
@@ -109,6 +113,25 @@ export default function WorkItemPage({ params }: { params: { slug: string } }) {
               ))}
             </div>
           </Section>
+
+          {/* ============ THE WORKFLOW (isometric) ============ */}
+          {cs.iso && (
+            <Section py="50px">
+              <div className="text-center">
+                <Eyebrow>The workflow</Eyebrow>
+                <h2 className={`${heading} mx-auto mt-3 max-w-[18em] text-[clamp(1.5rem,2.6vw,2rem)]`}>
+                  Every node, the way it actually runs.
+                </h2>
+                <p className="mx-auto mt-[14px] max-w-[40em] text-lead text-ink-soft">
+                  The live n8n graph: a webhook in, a command router, an AI fallback for plain chat,
+                  and one response out, grouped by layer.
+                </p>
+              </div>
+              <div className="mt-8">
+                <WorkIsoPreview diagram={cs.iso} />
+              </div>
+            </Section>
+          )}
 
           {/* ============ WHAT GOES OUT ============ */}
           <Section py="58px">

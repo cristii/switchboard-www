@@ -4,8 +4,9 @@
 //   "disc" — a soft round platform; "hex" — a double-layer rounded hexagon;
 //   "slab" — two equal stacked rounded-square cuboids (solid colour base + near-white
 //   top; rounded VERTICAL edges, sharp horizontal edges — the "signal" theme's
-//   capability look). depthWrite is off on the translucent default so children render
-// cleanly over it. Label = standard overlay.
+//   capability look); "base" — a single solid colour rounded slab (a resizable tray
+//   that groups n8n-style `nodeCard`s sitting on top via meta.elevation). depthWrite
+// is off on the translucent default so children render cleanly over it.
 // See description.md §7; membership + cascade-move live in the store / NodeMesh.
 
 import { useEffect, useMemo } from "react";
@@ -33,6 +34,7 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
   const disc = platform === "disc";
   const hex = platform === "hex";
   const slab = platform === "slab";
+  const base = platform === "base";
 
   // Double-layer hex platform: solid bottom + lighter inset top, soft corners.
   const radius = Math.max(width, depth) / 2;
@@ -57,11 +59,18 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
     () => (slab ? roundedRectPrismGeometry(width, depth, layerH, slabRad) : null),
     [slab, width, depth, layerH, slabRad],
   );
+  // A single colored rounded slab "base" — a resizable tray that holds nodeCards.
+  const baseH = Math.max(0.16, height);
+  const baseGeo = useMemo(
+    () => (base ? roundedRectPrismGeometry(width, depth, baseH, Math.min(0.5, Math.min(width, depth) * 0.1)) : null),
+    [base, width, depth, baseH],
+  );
   useEffect(() => () => {
     bottomGeo?.dispose();
     topGeo?.dispose();
     slabGeo?.dispose();
-  }, [bottomGeo, topGeo, slabGeo]);
+    baseGeo?.dispose();
+  }, [bottomGeo, topGeo, slabGeo, baseGeo]);
 
   if (hex && bottomGeo && topGeo) {
     return (
@@ -109,6 +118,21 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
           />
         </mesh>
       </group>
+    );
+  }
+
+  // Colored "base" tray: one solid rounded slab, resizable to group nodeCards.
+  if (base && baseGeo) {
+    return (
+      <mesh geometry={baseGeo} position={[0, 0, 0]} castShadow receiveShadow>
+        <meshStandardMaterial
+          color={color}
+          roughness={0.7}
+          metalness={0}
+          emissive={selected ? theme.selection : color}
+          emissiveIntensity={selected ? 0.3 : 0.05}
+        />
+      </mesh>
     );
   }
 

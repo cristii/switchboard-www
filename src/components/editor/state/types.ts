@@ -25,7 +25,9 @@ export type NodeKind =
   | "browser"
   | "serverStack"
   // a procedural 3D step-icon (meta.icon picks which)
-  | "icon";
+  | "icon"
+  // an n8n-style white slab with a flat 2D icon texture on top (meta.icon picks which)
+  | "nodeCard";
 
 /** Brand colour role a node maps onto (resolved to real colours per theme). */
 export type NodeColorRole = "orange" | "green" | "violet" | "amber" | "ink";

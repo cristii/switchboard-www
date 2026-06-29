@@ -45,3 +45,4 @@ export {
   processStepDiagrams,
 } from "./processFlow";
 export { buildAboutFlow, aboutFlowDiagram } from "./aboutFlow";
+export { scoutFlowDiagram } from "./scoutFlow";

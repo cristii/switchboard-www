@@ -8,6 +8,7 @@ import { GroupContainer } from "./shapes/GroupContainer";
 import { TextNode } from "./shapes/TextNode";
 import { ModelNode } from "./shapes/ModelNode";
 import { StepIcon } from "./shapes/StepIcon";
+import { NodeCardNode } from "./shapes/NodeCardNode";
 import { resolveNodeVisual } from "./nodeVisual";
 import type { SceneTheme } from "../../theme/sceneTheme";
 import type { WorkflowNode } from "../../state/types";
@@ -18,7 +19,7 @@ export interface PreviewNodeProps {
 }
 
 export function PreviewNode({ node, theme }: PreviewNodeProps) {
-  const { isGroup, isText, isIcon, Shape, width, depth, height, color, emissive, emissiveIntensity, opacity, roughness, metalness, elevation } =
+  const { isGroup, isText, isIcon, isNodeCard, Shape, width, depth, height, color, emissive, emissiveIntensity, opacity, roughness, metalness, elevation } =
     resolveNodeVisual(node, theme, false);
   const modelUrl = typeof node.meta?.model === "string" ? (node.meta.model as string) : null;
 
@@ -54,6 +55,10 @@ export function PreviewNode({ node, theme }: PreviewNodeProps) {
             roughness={roughness}
             metalness={metalness}
           />
+        </group>
+      ) : isNodeCard ? (
+        <group position={[0, elevation, 0]}>
+          <NodeCardNode width={width} depth={depth} height={height} icon={node.meta?.icon as string | undefined} iconColor={color} />
         </group>
       ) : modelUrl ? (
         <Suspense fallback={shapeEl}>

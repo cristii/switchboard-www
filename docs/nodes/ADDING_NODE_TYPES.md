@@ -106,9 +106,16 @@ ring: <circle cx="12" cy="12" r="7" />,
   `scene/nodes/shapes/*` (theme-aware screens via `deviceTones.ts`). Add more the same way, or supply a
   GLB via `meta.model`.
 - **Platform shapes** — a `group` node's `meta.platform` switches the container look: `"disc"` (soft
-  round zone), `"hex"` (**double-layer hexagon** — solid bottom + lighter inset top), or `"slab"`
+  round zone), `"hex"` (**double-layer hexagon** — solid bottom + lighter inset top), `"slab"`
   (**double-layer rounded square** — solid colour base + a floating near-white top plate; the layered
-  "signal"-theme capability look). Omit for the default translucent rounded slab.
+  "signal"-theme capability look), or `"base"` (a single solid-colour rounded **tray**, resizable via
+  width/depth, that **groups several `nodeCard`s** sitting on top via `meta.elevation`). Omit for the
+  default translucent rounded slab.
+- **n8n-style `nodeCard`** — a white rounded slab with a FLAT 2D **icon texture** on its top face
+  (`meta.icon` picks it; tinted to `node.color`). Rendered via `NodeCardNode`; icons come from
+  `scene/nodes/shapes/iconTextures.ts` — a string map of inline Lucide SVGs rasterised to canvas
+  textures (white-on-transparent so they tint). Add an icon by dropping its SVG markup in that map.
+  Sit cards on a `base` group with `meta.elevation` = base height (see `catalog/presets/scoutFlow.ts`).
 - **Step icons** — the `icon` kind renders a simple procedural 3D icon chosen by `meta.icon`
   (`bars` / `gear` / `check` / `mail` / `send` / `calendar` / `refresh` / `spark`); see `StepIcon`.
   Set `meta.elevation` (a +Y lift in world units) to seat an icon on a raised platform (e.g. the

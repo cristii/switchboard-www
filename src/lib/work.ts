@@ -5,6 +5,8 @@
 // the shared hero + outcome + "built with" + CTA.
 
 import type { IconSource } from "@/components/ui";
+import type { Diagram } from "@/components/editor/state/types";
+import { scoutFlowDiagram } from "@/components/editor/catalog/presets/scoutFlow";
 
 import assistantIcon from "@/assets/icons/assistant.svg";
 import calendarIcon from "@/assets/icons/calendar.svg";
@@ -84,6 +86,8 @@ export interface CaseStudy {
   outcomeTitle: string;
   outcomeStats: { value: string; label: string }[];
   technical: { body: string; codeName: string; code: string };
+  /** Optional isometric scene rendered in a "How it's wired" section. */
+  iso?: Diagram;
 }
 
 export interface WorkItem {
@@ -197,6 +201,77 @@ await mailer.send({
       { label: "Pinecone", variant: "neutral" },
       { label: "Web widget", variant: "neutral" },
     ],
+  },
+  {
+    slug: "scouts-referral-workflow",
+    group: "A",
+    title: "Scouts & Referral Workflow",
+    icon: peopleIcon,
+    blurb:
+      "A chat bot that lets referral scouts submit and update leads from Slack or Telegram. Every message becomes structured CRM data, the pipeline tracks itself, and commissions are calculated on won deals.",
+    outcome: "A referral team that runs entirely from a chat thread.",
+    builtWith: [
+      { label: "n8n", variant: "amber" },
+      { label: "OpenAI", variant: "neutral" },
+      { label: "Slack", variant: "neutral" },
+      { label: "Telegram", variant: "neutral" },
+      { label: "Airtable", variant: "neutral" },
+    ],
+    caseStudy: {
+      lead: {
+        pre: "Your scouts already know who needs your services. This is the system that turns every message they send into tracked, commissionable",
+        hand: "pipeline.",
+      },
+      whatItDoes:
+        "Scouts run the whole pipeline from chat — every message becomes structured CRM data, and commissions track themselves.",
+      problem: {
+        title: "Scouts have the leads. Dashboards kill the momentum.",
+        body: "A referral network only works if submitting a lead is effortless. The moment you ask scouts to log into a CRM, fill a form, or remember a process, they stop. So the leads stay in their heads and the follow-ups never happen. The fix isn't a better dashboard, it's no dashboard, just the chat apps they already live in.",
+      },
+      stepsIntro: "Seven commands, or just plain chat, run the whole pipeline from a Slack or Telegram thread.",
+      steps: [
+        { n: "01", icon: peopleIcon, title: "Scout submits", body: "A scout drops a lead in chat with /newlead, or just types “new lead here”, no form, no login." },
+        { n: "02", icon: assistantIcon, title: "AI structures it", body: "An AI router reads the message, extracts name, company and problem, scores the lead and flags scams." },
+        { n: "03", icon: checkIcon, title: "Pipeline tracks itself", body: "Every lead moves through contacted → qualified → closing → won/lost, stored automatically." },
+        { n: "04", icon: refreshIcon, title: "Updates by chat", body: "Scouts report replies in plain language; the bot re-scores the lead and advances its stage." },
+        { n: "05", icon: targetIcon, title: "Commission engine", body: "On a won deal it computes the 40% cut, waits for payment, then records the scout's payout." },
+      ],
+      email: {
+        from: "Scout Bot · Telegram",
+        time: "now",
+        subject: "/payments",
+        intro: "Even the payout math answers itself.",
+        note: "Scouts never open a dashboard. Commission rules, package prices and their own pending and paid earnings all come back as a chat reply, pulled live from the database and scoped to that scout.",
+        highlight: "You earn 40% per closed deal.",
+        body: [
+          "$800 → you get $320 · $1,500 → $600 · $4,000 → $1,600",
+          "Pending: $1,200 · Paid: $3,200",
+          "Payout unlocks when the client pays and the work ships.",
+        ],
+        aside: "↳ a real /payments reply.",
+      },
+      outcomeTitle: "Run a referral team from a chat thread.",
+      outcomeStats: [
+        { value: "Chat-only", label: "No dashboards, scouts work entirely from Slack or Telegram" },
+        { value: "Every message", label: "Turned into structured, tracked CRM data" },
+        { value: "40%", label: "Commissions calculated and recorded automatically on won deals" },
+      ],
+      technical: {
+        body: "An n8n webhook takes Slack/Telegram messages, a parser pulls the command and user, and a Switch routes the slash commands. Anything that isn't a command falls through to an OpenAI intent router, so plain chat (“they replied, interested but unsure on price”) maps to the same flows as /newlead and /update. The AI nodes return structured JSON (lead fields, interest, sentiment) that's written to the database; a single Respond node closes every branch back to the chat.",
+        codeName: "command-router.js",
+        code: `// every inbound chat message → command + user, before routing
+const text = $json.body?.text || $json.body?.message || "";
+const user_id = $json.body?.user_id || $json.body?.chat_id || "unknown";
+
+// a leading "/word" is a command; anything else falls through to the AI router
+const command = text.startsWith("/")
+  ? text.split(" ")[0].toLowerCase()
+  : null;
+
+return [{ text, user_id, command }];`,
+      },
+      iso: scoutFlowDiagram,
+    },
   },
   {
     slug: "client-onboarding-automation",
