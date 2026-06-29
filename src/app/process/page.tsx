@@ -47,13 +47,6 @@ interface Step {
   rows?: Row[];
 }
 
-/** Section-tone background colours (so an embedded diagram blends into its section). */
-const TONE_BG: Record<Step["tone"], string> = {
-  default: "#E9E8DF", // --paper
-  alt: "#E1E2D7", // --paper-2
-  dark: "#11201E", // --dark
-};
-
 const steps: Step[] = [
   {
     n: "01",
@@ -219,7 +212,7 @@ export default function ProcessPage() {
           a system you own.
         </p>
 
-        <ProcessIsoPreview diagram={processFlowDiagram} variant="flow" background={TONE_BG.default} />
+        <ProcessIsoPreview diagram={processFlowDiagram} variant="flow" />
 
         <p className="m-0 mt-7 inline-flex flex-col items-center font-hand text-[1.3rem] text-ink-soft">
           ↓ follow the wires
@@ -238,7 +231,7 @@ export default function ProcessPage() {
           >
             <div className="grid items-center gap-12 lg:grid-cols-[40%_60%]">
               <div className="flex justify-center">
-                <ProcessIsoPreview diagram={processStepDiagrams[s.n]} background={TONE_BG[s.tone]} />
+                <ProcessIsoPreview diagram={processStepDiagrams[s.n]} />
               </div>
               <div>
                 <div className="mb-[10px] flex items-center gap-[10px]">
@@ -276,7 +269,7 @@ export default function ProcessPage() {
       <Section id="step-05" style={{ borderTop: "1.5px solid var(--ink)" }}>
         <div className="grid items-center gap-12 lg:grid-cols-[40%_60%]">
           <div className="flex justify-center">
-            <ProcessIsoPreview diagram={processStepDiagrams["05"]} background={TONE_BG.default} />
+            <ProcessIsoPreview diagram={processStepDiagrams["05"]} />
           </div>
           <div>
             <div className="mb-[10px] flex items-center gap-[10px]">

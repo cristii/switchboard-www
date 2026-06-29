@@ -70,7 +70,8 @@ the INPUT/PROCESSING/OUTPUT tags in `pillarFlow.ts`). The Inspector exposes both
 | **Per edge** | `edge.meta.labelStyle` | (theme) | `edge.meta.labelColor` | `edge.meta.labelSize` | `edge.labelOrientation` |
 | **Per `text` node** | `node.meta.labelStyle` | `node.meta.font` | `node.color` | `node.meta.size` | `node.meta.orientation` |
 
-Plate fill follows the style by default; override per object with `meta.plateColor` (hex).
+Plate fill follows the style by default; override per object with `meta.plateColor` (hex). `meta.bold`
+faux-bolds the label (a thin same-colour outline), and `meta.elevation` floats it at a given height.
 
 "Globally / per scene" = edit the theme (Theme manager → *Labels & text*, or the theme module). Each
 theme is a scene, so this is the per-scene layer; committing a theme makes it the shared global default

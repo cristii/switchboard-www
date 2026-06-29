@@ -53,7 +53,7 @@ export function DiagramPreview({ diagram, config, className, style, apiRef: exte
     position: "relative",
     width: "100%",
     height: "100%",
-    background: "var(--editor-bg)",
+    background: cfg.transparent ? "transparent" : "var(--editor-bg)",
     overflow: "hidden",
     ...style,
   };
@@ -77,6 +77,7 @@ export function DiagramPreview({ diagram, config, className, style, apiRef: exte
           initialTarget={cfg.cameraTarget}
           fitOnMount={fitOnMount}
           fitScale={cfg.cameraFit}
+          transparent={cfg.transparent}
           onReady={() => {
             setReady(true);
             onReady?.();
@@ -97,7 +98,7 @@ export function DiagramPreview({ diagram, config, className, style, apiRef: exte
             inset: 0,
             display: "grid",
             placeItems: "center",
-            background: "var(--editor-bg)",
+            background: cfg.transparent ? "transparent" : "var(--editor-bg)",
             color: "var(--editor-text-muted)",
             fontFamily: "var(--font-display, sans-serif)",
             fontSize: "0.78rem",

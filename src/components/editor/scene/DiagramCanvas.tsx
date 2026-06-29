@@ -52,6 +52,8 @@ export interface DiagramCanvasProps {
   fitOnMount?: boolean;
   /** fit() zoom multiplier (<1 margin, >1 tighter). @default 0.98 */
   fitScale?: number;
+  /** Transparent canvas (alpha, no backdrop) so the host background shows through. */
+  transparent?: boolean;
   onSelectEdge?: (id: string) => void;
   onBackgroundClick?: () => void;
   onReady?: () => void;
@@ -94,6 +96,7 @@ export function DiagramCanvas({
   initialTarget,
   fitOnMount,
   fitScale,
+  transparent = false,
   onSelectEdge,
   onBackgroundClick,
   onReady,
@@ -120,7 +123,7 @@ export function DiagramCanvas({
       dpr={[1, 2]}
       gl={{
         antialias: true,
-        alpha: false,
+        alpha: transparent,
         preserveDrawingBuffer: true,
         powerPreference: "high-performance",
       }}
@@ -131,7 +134,9 @@ export function DiagramCanvas({
         onReady?.();
       }}
     >
-      <Backdrop inner={spec.background.colorHi ?? spec.background.color} outer={spec.background.color} />
+      {transparent ? null : (
+        <Backdrop inner={spec.background.colorHi ?? spec.background.color} outer={spec.background.color} />
+      )}
 
       {/* PCSS soft shadows (distance-soft, diffused) — opt-in per theme. NB: SoftShadows
           patches three's shadow shader chunk globally, so it's a one-time scene cost. */}

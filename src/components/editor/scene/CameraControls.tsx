@@ -193,12 +193,15 @@ export function CameraControls({
       let minV = Infinity;
       let maxV = -Infinity;
       for (const n of ns) {
+        // Expand each node by its footprint so the frame includes the meshes, not
+        // just centre points (otherwise a single node fits to a point → max zoom).
+        const ext = ((n.width ?? 1.2) + (n.depth ?? 1.2)) / 2;
         const u = n.x - n.y;
         const v = n.x + n.y;
-        if (u < minU) minU = u;
-        if (u > maxU) maxU = u;
-        if (v < minV) minV = v;
-        if (v > maxV) maxV = v;
+        if (u - ext < minU) minU = u - ext;
+        if (u + ext > maxU) maxU = u + ext;
+        if (v - ext < minV) minV = v - ext;
+        if (v + ext > maxV) maxV = v + ext;
       }
       const spanU = (maxU - minU) / Math.SQRT2 + pad * 2;
       const spanV = (maxV - minV) / Math.SQRT2 + pad * 2;

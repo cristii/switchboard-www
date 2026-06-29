@@ -60,6 +60,7 @@ function LabelBody({
   style,
   plate,
   border,
+  bold,
   selected,
   selectionColor,
 }: {
@@ -75,6 +76,7 @@ function LabelBody({
   style: LabelStyle;
   plate?: string;
   border?: string;
+  bold?: boolean;
   selected: boolean;
   selectionColor: string;
 }) {
@@ -134,8 +136,8 @@ function LabelBody({
         anchorY="middle"
         position={[tx, subLines.length ? labelCenterY : 0, 0.001]}
         fillOpacity={opacity}
-        outlineWidth={selected ? size * 0.05 : 0}
-        outlineColor={selectionColor}
+        outlineWidth={selected ? size * 0.06 : bold ? size * 0.04 : 0}
+        outlineColor={selected ? selectionColor : color}
         maxWidth={isInfo ? w - size * 0.95 : undefined}
         {...(font ? { font } : {})}
       >
@@ -174,6 +176,8 @@ export interface TextLabelProps {
   plate?: string;
   /** Plate border colour (drawn just behind the plate). */
   border?: string;
+  /** Faux-bold the label (a thin same-colour outline thickens the glyphs). */
+  bold?: boolean;
   /** Global size multiplier (theme.text.scale). @default 1 */
   scale?: number;
   /** Global [x,y,z] offset (theme.text.offset). */
@@ -199,6 +203,7 @@ export function TextLabel({
   style = "plain",
   plate,
   border,
+  bold,
   scale = 1,
   offset = [0, 0, 0],
   selected = false,
@@ -223,6 +228,7 @@ export function TextLabel({
       style={style}
       plate={plate}
       border={border}
+      bold={bold}
       selected={selected}
       selectionColor={selectionColor}
     />
@@ -272,6 +278,7 @@ export function TextNode({ node, theme, selected }: TextNodeProps) {
   const border = typeof meta.borderColor === "string" ? meta.borderColor : undefined;
   // Optional float height (world units) — lets a tag hover above a platform.
   const lift = typeof meta.elevation === "number" ? meta.elevation : undefined;
+  const bold = meta.bold === true;
   const opacity = node.opacity ?? theme.text.opacity;
   const subColor = typeof meta.sublabelColor === "string" ? meta.sublabelColor : theme.text.sublabel.color;
   const subSize = typeof meta.sublabelSize === "number" ? meta.sublabelSize : theme.text.sublabel.size;
@@ -291,6 +298,7 @@ export function TextNode({ node, theme, selected }: TextNodeProps) {
       style={style}
       plate={plate}
       border={border}
+      bold={bold}
       scale={theme.text.scale}
       offset={theme.text.offset}
       y={lift}

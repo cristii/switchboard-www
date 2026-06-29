@@ -12,7 +12,7 @@ const SLAB_H = 0.5; // one layer height (slab top is at ~4·SLAB_H)
 const PLATE_TOP = SLAB_H * 4; // where the icon sits
 const ICON_W = 1.8;
 const ICON_H = 0.9;
-const TAG_LIFT = 3.0; // bubble-tag float height (clears the icon on top)
+const TAG_DOWN = 2.6; // bubble-tag offset BELOW the node on screen (along +(t,t))
 
 // In the (1,1,1) iso view a HORIZONTAL on-screen row lies along (t, −t): x+y is
 // constant (same screen-y) while x−y varies (screen-x). So step i sits at (c, −c).
@@ -29,7 +29,8 @@ function nodesFor(prefix: string, x: number, y: number, step: ProcessStep): Work
   return [
     { id: g, kind: "group", label: "", x, y, width: SLAB_W, depth: SLAB_W, height: SLAB_H, color: ORANGE, meta: { platform: "slab" } },
     { id: `${prefix}i`, kind: "icon", label: "", x, y, width: ICON_W, depth: ICON_W, height: ICON_H, color: ORANGE, parentId: g, meta: { icon: step.icon, elevation: PLATE_TOP } },
-    { id: `${prefix}t`, kind: "text", label: step.label, x, y, color: "#ffffff", meta: { labelStyle: "bubble", orientation: "billboard", plateColor: ORANGE, elevation: TAG_LIFT, size: 0.5 } },
+    // Bubble tag sits BELOW the node (screen-down) in a bigger, bold style.
+    { id: `${prefix}t`, kind: "text", label: step.label, x: x + TAG_DOWN, y: y + TAG_DOWN, color: "#ffffff", meta: { labelStyle: "bubble", orientation: "billboard", plateColor: ORANGE, size: 0.62, bold: true } },
   ];
 }
 

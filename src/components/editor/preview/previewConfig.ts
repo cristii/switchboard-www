@@ -16,6 +16,9 @@ export interface PreviewConfig {
   cameraTarget?: [number, number];
   /** fit() zoom multiplier when fitting (<1 leaves margin, >1 fills tighter). */
   cameraFit?: number;
+  /** Render with a transparent canvas (no backdrop) so the host background — incl.
+   *  a CSS grid — shows through. */
+  transparent?: boolean;
   /** A registered theme id ("light" | "dark" | "aws" | …) OR an inline ThemeSpec. */
   theme: string | ThemeSpec;
 }
@@ -47,6 +50,7 @@ export function mergePreviewConfig(partial?: Partial<PreviewConfig> | null): Pre
   };
   if (typeof p.cameraZoom === "number") cfg.cameraZoom = p.cameraZoom;
   if (typeof p.cameraFit === "number") cfg.cameraFit = p.cameraFit;
+  if (typeof p.transparent === "boolean") cfg.transparent = p.transparent;
   if (Array.isArray(p.cameraTarget) && p.cameraTarget.length === 2) {
     cfg.cameraTarget = [Number(p.cameraTarget[0]), Number(p.cameraTarget[1])];
   }

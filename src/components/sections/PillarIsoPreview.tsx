@@ -1,9 +1,9 @@
 "use client";
 
-// A /services capabilities-pillar isometric scene (the layered "signal" theme:
-// double-layer rounded-square slabs on a white ground with the grid on, matching the
-// capability card). Rendered once to a static image via IsoSnapshotPreview. The host
-// page must import the editor tokens CSS.
+// A /services capabilities-pillar isometric scene (the layered "signal" theme).
+// Rendered once to a static image via IsoSnapshotPreview on a TRANSPARENT canvas so
+// it blends into the (white) capability card; the 3D grid stays on. The host page
+// must import the editor tokens CSS.
 
 import { signalTheme } from "@/components/editor/theme/themes/signal";
 import type { Diagram } from "@/components/editor/state/types";
@@ -13,9 +13,8 @@ export function PillarIsoPreview({ diagram }: { diagram: Diagram }) {
   return (
     <IsoSnapshotPreview
       diagram={diagram}
-      className="mx-auto h-[440px] w-full max-w-[400px] overflow-hidden rounded-xl sm:h-[520px]"
-      background={signalTheme.background.color}
-      config={{ theme: signalTheme, showGrid: true, showGround: true, showLabels: true, cameraMovable: false, cameraFit: 1.04 }}
+      className="mx-auto h-[460px] w-full max-w-[420px] overflow-hidden sm:h-[560px]"
+      config={{ theme: signalTheme, transparent: true, showGrid: true, showGround: true, showLabels: true, cameraMovable: false, cameraFit: 1.04 }}
     />
   );
 }
