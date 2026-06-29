@@ -48,6 +48,12 @@ export interface SceneTheme {
     orientation: TextOrientation;
     /** Default label container style ("tag"). */
     style: LabelStyle;
+    /** Global size multiplier. */
+    scale: number;
+    /** Global [x,y,z] offset applied to every label. */
+    offset: [number, number, number];
+    /** Sublabel (second line) styling. */
+    sublabel: { color: string; size: number; font?: string };
   };
 }
 
@@ -80,6 +86,13 @@ export function resolveSceneTheme(spec: ThemeSpec): SceneTheme {
       size: spec.text.size,
       orientation: spec.text.orientation,
       style: spec.text.style ?? "plain",
+      scale: spec.text.scale ?? 1,
+      offset: spec.text.offset ?? [0, 0.3, 0],
+      sublabel: {
+        color: spec.text.sublabel?.color ?? spec.text.color,
+        size: spec.text.sublabel?.size ?? spec.text.size * 0.72,
+        font: spec.text.sublabel?.font,
+      },
     },
   };
 }

@@ -31,19 +31,24 @@ export function NodeLabels3D({ nodes, selection, theme }: NodeLabels3DProps) {
         const pal = labelPalette(style, theme);
         const color = typeof meta.labelColor === "string" ? meta.labelColor : pal.text;
         const size = typeof meta.labelSize === "number" ? meta.labelSize : theme.text.size;
-        const text = node.sublabel ? `${node.label}\n${node.sublabel}` : node.label;
         const selected = selection?.type === "node" && selection.id === node.id;
         return (
           <group key={node.id} position={[node.x, hoverY, node.y]}>
             <TextLabel
-              text={text}
+              label={node.label}
+              sublabel={node.sublabel}
               color={color}
-              opacity={theme.text.opacity}
               size={size}
+              font={theme.text.font}
+              sublabelColor={theme.text.sublabel.color}
+              sublabelSize={theme.text.sublabel.size}
+              sublabelFont={theme.text.sublabel.font}
+              opacity={theme.text.opacity}
               orientation={orientation}
               style={style}
               plate={pal.plate}
-              font={theme.text.font}
+              scale={theme.text.scale}
+              offset={theme.text.offset}
               selected={selected}
               selectionColor={theme.selection}
               y={0}

@@ -116,7 +116,7 @@ export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0, sh
       {show3dLabel ? (
         <group position={[midVec.x, 0, midVec.z]}>
           <TextLabel
-            text={edge.label as string}
+            label={edge.label as string}
             color={labelColor}
             opacity={theme.text.opacity}
             size={labelSize}
@@ -124,6 +124,8 @@ export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0, sh
             style={labelStyle}
             plate={labelPal.plate}
             font={theme.text.font}
+            scale={theme.text.scale}
+            offset={theme.text.offset}
             selected={selected}
             selectionColor={theme.selection}
           />

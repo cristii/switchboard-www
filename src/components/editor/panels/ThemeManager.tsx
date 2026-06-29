@@ -360,9 +360,18 @@ export function ThemeManager({ manager, onClose, className, style }: ThemeManage
           ]}
           onChange={(v) => patch((d) => (d.text.mode = v as "3d" | "dom"))}
         />
-        <ColorRow label="Colour" value={spec.text.color} onChange={(v) => patch((d) => (d.text.color = v))} />
-        <RangeRow label="Opacity" value={spec.text.opacity} min={0.1} max={1} step={0.02} onChange={(v) => patch((d) => (d.text.opacity = v))} />
-        <RangeRow label="Size" value={spec.text.size} min={0.2} max={2} step={0.05} onChange={(v) => patch((d) => (d.text.size = v))} />
+        <Select
+          label="Default style"
+          value={spec.text.style ?? "plain"}
+          options={[
+            { value: "plain", label: "Plain text" },
+            { value: "bubble", label: "Bubble tag" },
+            { value: "tips", label: "Tips (callout)" },
+            { value: "info", label: "Info card" },
+            { value: "note", label: "Note tile" },
+          ]}
+          onChange={(v) => patch((d) => (d.text.style = v as ThemeSpec["text"]["style"]))}
+        />
         <Select
           label="Default orientation"
           value={spec.text.orientation}
@@ -374,7 +383,19 @@ export function ThemeManager({ manager, onClose, className, style }: ThemeManage
           ]}
           onChange={(v) => patch((d) => (d.text.orientation = v as ThemeSpec["text"]["orientation"]))}
         />
+        <RangeRow label="Size" value={spec.text.size} min={0.2} max={2} step={0.05} onChange={(v) => patch((d) => (d.text.size = v))} />
+        <RangeRow label="Scale (all labels)" value={spec.text.scale ?? 1} min={0.4} max={2.5} step={0.05} onChange={(v) => patch((d) => (d.text.scale = v))} />
+        <RangeRow label="Opacity" value={spec.text.opacity} min={0.1} max={1} step={0.02} onChange={(v) => patch((d) => (d.text.opacity = v))} />
+        <Vec3Row label="Offset (x, y, z) — all labels" value={spec.text.offset ?? [0, 0.3, 0]} onChange={(v) => patch((d) => (d.text.offset = v))} />
+
+        <div style={{ ...rowLabel, fontWeight: 700, marginTop: 4 }}>Label</div>
+        <ColorRow label="Colour" value={spec.text.color} onChange={(v) => patch((d) => (d.text.color = v))} />
         <Field key={`font-${themeId}`} label="Font URL (optional)" defaultValue={spec.text.font ?? ""} placeholder="https://…/font.woff" onCommit={(v) => patch((d) => (d.text.font = v.trim() || undefined))} />
+
+        <div style={{ ...rowLabel, fontWeight: 700, marginTop: 4 }}>Sublabel</div>
+        <ColorRow label="Colour" value={spec.text.sublabel?.color ?? spec.text.color} onChange={(v) => patch((d) => (d.text.sublabel = { ...(d.text.sublabel ?? {}), color: v }))} />
+        <RangeRow label="Size" value={spec.text.sublabel?.size ?? spec.text.size * 0.72} min={0.12} max={1.5} step={0.02} onChange={(v) => patch((d) => (d.text.sublabel = { ...(d.text.sublabel ?? {}), size: v }))} />
+        <Field key={`subfont-${themeId}`} label="Font URL (optional)" defaultValue={spec.text.sublabel?.font ?? ""} placeholder="https://…/font.woff" onCommit={(v) => patch((d) => (d.text.sublabel = { ...(d.text.sublabel ?? {}), font: v.trim() || undefined }))} />
       </Section>
 
       <Section title="Export / import">

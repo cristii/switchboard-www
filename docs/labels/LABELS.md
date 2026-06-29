@@ -69,6 +69,11 @@ theme is a scene, so this is the per-scene layer; committing a theme makes it th
 (see [`../themes/CREATING_THEMES.md`](../themes/CREATING_THEMES.md)). Per-individual overrides win over
 the theme.
 
+**Global label controls** (theme `text`, applied to *every* label): `offset` `[x,y,z]` (lift text
+higher / nudge it), `scale` (size multiplier), separate **label** vs **sublabel** colour / size / font
+(`text.color`/`text.font`/`text.size` for the title; `text.sublabel.{color,size,font}` for the second
+line), plus `style`, `orientation` and `mode`. All editable live in Theme manager → *Labels & text*.
+
 ### Component IA (Hybrid)
 - **Things you place** (nodes, incl. **Text / Note / Tag** under the palette's **Annotate** group)
   live in **"Add node"**. The *Tag* quick-add seeds a `text` node with `bubble` style.

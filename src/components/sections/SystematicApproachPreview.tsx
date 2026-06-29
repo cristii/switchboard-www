@@ -23,7 +23,7 @@ function Fallback() {
 
 export function SystematicApproachPreview() {
   return (
-    <div className="mx-auto h-[360px] w-full max-w-[920px] overflow-hidden rounded-[18px] border border-ink shadow-card sm:h-[440px]">
+    <div className="mx-auto h-[420px] w-full max-w-[920px] overflow-hidden rounded-[18px] border border-ink shadow-card sm:h-[460px]">
       <DiagramPreview
         diagram={servicesFlowDiagram}
         config={{

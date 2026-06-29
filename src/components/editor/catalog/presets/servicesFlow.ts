@@ -13,10 +13,10 @@ import type { Diagram } from "../../state/types";
 export const servicesFlowDiagram: Diagram = {
   version: 1,
   nodes: [
-    { id: "lead", kind: "trigger", label: "New lead", sublabel: "form · call · DM", x: 6, y: -6, color: "#b45309" },
-    { id: "ai", kind: "ai", label: "AI classification", sublabel: "intent + priority", x: 1.5, y: -1.5 },
-    { id: "crm", kind: "output", label: "CRM", x: -1.7, y: 5.3, color: "#3f7a4e" },
-    { id: "cal", kind: "output", label: "Calendar", x: -5.3, y: 1.7, color: "#3f7a4e" },
+    { id: "lead", kind: "trigger", label: "New lead", sublabel: "form · call · DM", x: 4, y: -4, color: "#b45309" },
+    { id: "ai", kind: "ai", label: "AI classification", sublabel: "intent + priority", x: 1, y: -1, color: "#6a4a8a" },
+    { id: "crm", kind: "output", label: "CRM", x: -1.2, y: 3.6, color: "#3f7a4e" },
+    { id: "cal", kind: "output", label: "Calendar", x: -3.6, y: 1.2, color: "#3f7a4e" },
   ],
   edges: [
     { id: "s1", source: "lead", target: "ai", connector: "boldArrow", routing: "direct", flow: "normal" },

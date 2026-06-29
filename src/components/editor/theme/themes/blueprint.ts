@@ -50,5 +50,14 @@ export const blueprintTheme: ThemeSpec = {
     routing: "orthogonal",
     connector: "cornerConnect",
   },
-  text: { color: "#15211f", opacity: 1, size: 0.5, orientation: "billboard", style: "bubble" },
+  text: {
+    color: "#15211f",
+    opacity: 1,
+    size: 0.52,
+    orientation: "billboard",
+    style: "bubble",
+    scale: 1.1,
+    offset: [0, 0.55, 0],
+    sublabel: { color: "#54605c", size: 0.36 },
+  },
 };

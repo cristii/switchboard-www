@@ -1,11 +1,10 @@
 // 3D in-canvas text — the `text` node kind, 3D edge labels, and the hovering node
-// "tooltips". Renders drei <Text> (troika) with four orientations:
-//   billboard — always faces the camera;   ground — lies flat, read from above;
-//   uprightX  — stands facing the +X plane; uprightZ — stands facing the +Z plane.
-// and five container STYLES ("tags") drawn behind the text so labels stay legible
-// in dense diagrams: plain (bare), bubble (pill), tips (dark callout + pointer),
-// info (card + pointer), note (paper tile). Font/size/colour/opacity/style/facing
-// come from the node `meta` (overrides) or the theme. See docs/labels/LABELS.md.
+// "tooltips". Renders drei <Text> (troika) with four orientations (billboard /
+// ground / uprightX / uprightZ) and five container STYLES ("tags": plain / bubble /
+// tips / info / note) drawn behind the text so labels stay legible. Label and
+// sublabel are separate lines with independent colour/size/font; a global
+// offset + scale (theme.text) positions and sizes every label. Per-object values
+// come from node/edge `meta` (overrides) or the theme. See docs/labels/LABELS.md.
 
 import { Billboard, RoundedBox, Text } from "@react-three/drei";
 import type { SceneTheme } from "../../../theme/sceneTheme";
@@ -21,8 +20,7 @@ export function isLabelStyle(v: unknown): v is LabelStyle {
   return typeof v === "string" && LABEL_STYLES.includes(v as LabelStyle);
 }
 
-/** Plate fill + text colour for a label style, kept theme-safe (high contrast in
- *  both light and dark themes). `plain` has no plate. */
+/** Plate fill + label colour for a style, kept theme-safe. `plain` has no plate. */
 export function labelPalette(style: LabelStyle, theme: SceneTheme): { plate?: string; text: string } {
   switch (style) {
     case "tips":
@@ -36,50 +34,59 @@ export function labelPalette(style: LabelStyle, theme: SceneTheme): { plate?: st
   }
 }
 
-function plateDims(text: string, size: number, isInfo: boolean) {
-  const lines = text.split("\n");
-  const maxChars = Math.max(1, ...lines.map((l) => l.length));
+function plateDims(lblLines: string[], subLines: string[], size: number, subSize: number, isInfo: boolean) {
   const charW = isInfo ? 0.5 : 0.56;
+  const labelChars = Math.max(1, ...lblLines.map((l) => l.length));
+  const subChars = subLines.length ? Math.max(1, ...subLines.map((l) => l.length)) * (subSize / size) : 0;
+  const maxChars = Math.max(labelChars, subChars);
   const w = maxChars * size * charW + size * 0.95;
-  const h = lines.length * size * 1.35 + size * 0.6;
+  const h = lblLines.length * size * 1.3 + subLines.length * subSize * 1.35 + size * 0.7;
   return { w, h };
 }
 
-/** The label content in its local XY plane (facing +Z): optional plate + pointer
- *  + the text. Orientation transforms wrap this. */
 function LabelBody({
-  text,
+  label,
+  sublabel,
   color,
-  opacity,
   size,
+  font,
+  subColor,
+  subSize,
+  subFont,
+  opacity,
   style,
   plate,
   selected,
   selectionColor,
-  font,
 }: {
-  text: string;
+  label: string;
+  sublabel?: string;
   color: string;
-  opacity: number;
   size: number;
+  font?: string;
+  subColor: string;
+  subSize: number;
+  subFont?: string;
+  opacity: number;
   style: LabelStyle;
   plate?: string;
   selected: boolean;
   selectionColor: string;
-  font?: string;
 }) {
   const isInfo = style === "info";
   const hasPlate = style !== "plain" && !!plate;
-  const { w, h } = plateDims(text, size, isInfo);
-  const common = {
-    fontSize: size,
-    color,
-    anchorY: "middle" as const,
-    fillOpacity: opacity,
-    outlineWidth: selected ? size * 0.05 : 0,
-    outlineColor: selectionColor,
-    ...(font ? { font } : {}),
-  };
+  const lblLines = label.split("\n");
+  const subLines = sublabel ? sublabel.split("\n") : [];
+  const { w, h } = plateDims(lblLines, subLines, size, subSize, isInfo);
+
+  // Stack label above sublabel, vertically centred in the plate.
+  const pad = size * 0.3;
+  const labelH = lblLines.length * size * 1.3;
+  const subH = subLines.length * subSize * 1.35;
+  const labelCenterY = h / 2 - pad - labelH / 2;
+  const subCenterY = labelCenterY - labelH / 2 - size * 0.12 - subH / 2;
+  const anchorX = isInfo ? ("left" as const) : ("center" as const);
+  const tx = isInfo ? -w / 2 + size * 0.47 : 0;
 
   return (
     <group>
@@ -99,84 +106,124 @@ function LabelBody({
           <meshBasicMaterial color={plate} toneMapped={false} />
         </mesh>
       ) : null}
-      {isInfo ? (
-        <Text {...common} anchorX="left" position={[-w / 2 + size * 0.47, 0, 0.001]} maxWidth={w - size * 0.95}>
-          {text}
+      <Text
+        fontSize={size}
+        color={color}
+        anchorX={anchorX}
+        anchorY="middle"
+        position={[tx, subLines.length ? labelCenterY : 0, 0.001]}
+        fillOpacity={opacity}
+        outlineWidth={selected ? size * 0.05 : 0}
+        outlineColor={selectionColor}
+        maxWidth={isInfo ? w - size * 0.95 : undefined}
+        {...(font ? { font } : {})}
+      >
+        {label}
+      </Text>
+      {subLines.length ? (
+        <Text
+          fontSize={subSize}
+          color={subColor}
+          anchorX={anchorX}
+          anchorY="middle"
+          position={[tx, subCenterY, 0.001]}
+          fillOpacity={opacity}
+          maxWidth={isInfo ? w - size * 0.95 : undefined}
+          {...(subFont ? { font: subFont } : {})}
+        >
+          {sublabel}
         </Text>
-      ) : (
-        <Text {...common} anchorX="center" position={[0, 0, 0.001]}>
-          {text}
-        </Text>
-      )}
+      ) : null}
     </group>
   );
 }
 
 export interface TextLabelProps {
-  text: string;
+  label: string;
+  sublabel?: string;
   color: string;
-  opacity: number;
   size: number;
-  orientation: TextOrientation;
-  /** Container style ("tag"). @default "plain" */
-  style?: LabelStyle;
-  /** Plate fill (from labelPalette); omit for `plain`. */
-  plate?: string;
   font?: string;
+  sublabelColor?: string;
+  sublabelSize?: number;
+  sublabelFont?: string;
+  opacity: number;
+  orientation: TextOrientation;
+  style?: LabelStyle;
+  plate?: string;
+  /** Global size multiplier (theme.text.scale). @default 1 */
+  scale?: number;
+  /** Global [x,y,z] offset (theme.text.offset). */
+  offset?: [number, number, number];
   selected?: boolean;
   selectionColor?: string;
-  /** World-space lift for non-ground orientations. */
+  /** Base world-space lift for non-ground orientations. */
   y?: number;
 }
 
-/** Low-level 3D label primitive (shared by text nodes, edge labels, node tooltips). */
+/** Low-level 3D label primitive (shared by text nodes, edge labels, tooltips). */
 export function TextLabel({
-  text,
+  label,
+  sublabel,
   color,
-  opacity,
   size,
+  font,
+  sublabelColor,
+  sublabelSize,
+  sublabelFont,
+  opacity,
   orientation,
   style = "plain",
   plate,
-  font,
+  scale = 1,
+  offset = [0, 0, 0],
   selected = false,
   selectionColor = "#fbbf24",
   y,
 }: TextLabelProps) {
-  const lift = y ?? Math.max(size * 0.7, 0.4);
+  const s = size * scale;
+  const subS = (sublabelSize ?? size * 0.72) * scale;
+  const lift = (y ?? Math.max(size * 0.7, 0.4)) + offset[1];
+  const [ox, , oz] = offset;
   const body = (
     <LabelBody
-      text={text}
+      label={label}
+      sublabel={sublabel}
       color={color}
+      size={s}
+      font={font}
+      subColor={sublabelColor ?? color}
+      subSize={subS}
+      subFont={sublabelFont}
       opacity={opacity}
-      size={size}
       style={style}
       plate={plate}
       selected={selected}
       selectionColor={selectionColor}
-      font={font}
     />
   );
 
   if (orientation === "billboard") {
-    return <Billboard position={[0, lift, 0]}>{body}</Billboard>;
+    return <Billboard position={[ox, lift, oz]}>{body}</Billboard>;
   }
   if (orientation === "ground") {
     return (
-      <group position={[0, 0.06, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <group position={[ox, 0.06 + offset[1], oz]} rotation={[-Math.PI / 2, 0, 0]}>
         {body}
       </group>
     );
   }
   if (orientation === "uprightX") {
     return (
-      <group position={[0, lift, 0]} rotation={[0, Math.PI / 2, 0]}>
+      <group position={[ox, lift, oz]} rotation={[0, Math.PI / 2, 0]}>
         {body}
       </group>
     );
   }
   // uprightZ
-  return <group position={[0, lift, 0]}>{body}</group>;
+  return (
+    <group position={[ox, lift, oz]}>{body}</group>
+  );
 }
 
 export interface TextNodeProps {
@@ -195,18 +242,23 @@ export function TextNode({ node, theme, selected }: TextNodeProps) {
   const pal = labelPalette(style, theme);
   const color = node.color ?? (typeof meta.labelColor === "string" ? meta.labelColor : pal.text);
   const opacity = node.opacity ?? theme.text.opacity;
-  const text = node.sublabel ? `${node.label}\n${node.sublabel}` : node.label;
 
   return (
     <TextLabel
-      text={text}
+      label={node.label}
+      sublabel={node.sublabel}
       color={color}
-      opacity={opacity}
       size={size}
+      font={font}
+      sublabelColor={theme.text.sublabel.color}
+      sublabelSize={theme.text.sublabel.size}
+      sublabelFont={theme.text.sublabel.font}
+      opacity={opacity}
       orientation={orientation}
       style={style}
       plate={pal.plate}
-      font={font}
+      scale={theme.text.scale}
+      offset={theme.text.offset}
       selected={selected}
       selectionColor={theme.selection}
     />

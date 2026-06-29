@@ -88,6 +88,12 @@ export interface ThemeSpec {
     /** Where node/edge labels render: 3D in-canvas hovering text (default) or
      *  flat DOM chips. @default "3d" */
     mode?: "3d" | "dom";
+    /** Global multiplier on label + sublabel size. @default 1 */
+    scale?: number;
+    /** Global [x,y,z] offset applied to every label (y lifts text higher). */
+    offset?: [number, number, number];
+    /** Sublabel-specific styling (the second line). */
+    sublabel?: { color?: string; size?: number; font?: string };
   };
 }
 
@@ -162,6 +168,7 @@ export function normalizeThemeSpec(input: unknown, base: ThemeSpec): ThemeSpec {
   const nodesIn = (o.nodes ?? {}) as Record<string, unknown>;
   const edgesIn = (o.edges ?? {}) as Record<string, unknown>;
   const textIn = (o.text ?? {}) as Record<string, unknown>;
+  const subIn = (textIn.sublabel ?? {}) as Record<string, unknown>;
   const bgIn = (o.background ?? {}) as Record<string, unknown>;
   const gridIn = (o.grid ?? {}) as Record<string, unknown>;
   const shadowIn = (o.shadow ?? {}) as Record<string, unknown>;
@@ -246,6 +253,13 @@ export function normalizeThemeSpec(input: unknown, base: ThemeSpec): ThemeSpec {
       orientation,
       style: labelStyle,
       mode: textIn.mode === "dom" ? "dom" : textIn.mode === "3d" ? "3d" : base.text.mode,
+      scale: num(textIn.scale, base.text.scale ?? 1),
+      offset: vec3(textIn.offset, base.text.offset ?? [0, 0.3, 0]),
+      sublabel: {
+        color: str(subIn.color, base.text.sublabel?.color ?? base.text.color),
+        size: num(subIn.size, base.text.sublabel?.size ?? base.text.size * 0.72),
+        font: typeof subIn.font === "string" ? subIn.font : base.text.sublabel?.font,
+      },
     },
   };
 }
