@@ -42,20 +42,20 @@ export function WorkIsoPreview({ diagram }: { diagram: Diagram }) {
       <div
         ref={ref}
         className="mx-auto h-[480px] w-full max-w-[1100px] overflow-hidden rounded-xl border border-line sm:h-[600px]"
+        style={{ background: signalTheme.background.color }}
       >
         {show ? (
           <DiagramPreview
             diagram={diagram}
             config={{
               theme: signalTheme,
-              transparent: true,
-              showGrid: false,
+              transparent: false,
+              showGrid: true,
               showGround: true,
               showLabels: true,
               cameraMovable: true,
               cameraFit: 0.95,
             }}
-            style={{ background: "transparent" }}
           />
         ) : null}
       </div>
