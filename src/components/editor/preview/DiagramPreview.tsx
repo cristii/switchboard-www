@@ -71,6 +71,7 @@ export function DiagramPreview({ diagram, config, className, style }: DiagramPre
           initialZoom={cfg.cameraZoom}
           initialTarget={cfg.cameraTarget}
           fitOnMount={fitOnMount}
+          fitScale={cfg.cameraFit}
           onReady={() => setReady(true)}
         />
         {cfg.showLabels && labelMode === "dom" ? (

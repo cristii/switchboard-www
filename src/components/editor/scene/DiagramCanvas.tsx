@@ -50,6 +50,8 @@ export interface DiagramCanvasProps {
   initialZoom?: number;
   initialTarget?: [number, number];
   fitOnMount?: boolean;
+  /** fit() zoom multiplier (<1 margin, >1 tighter). @default 0.98 */
+  fitScale?: number;
   onSelectEdge?: (id: string) => void;
   onBackgroundClick?: () => void;
   onReady?: () => void;
@@ -91,6 +93,7 @@ export function DiagramCanvas({
   initialZoom,
   initialTarget,
   fitOnMount,
+  fitScale,
   onSelectEdge,
   onBackgroundClick,
   onReady,
@@ -222,6 +225,7 @@ export function DiagramCanvas({
         initialZoom={initialZoom ?? spec.camera.zoom}
         initialTarget={initialTargetVal}
         fitOnMount={fitOnMount}
+        fitScale={fitScale}
       />
     </Canvas>
   );

@@ -249,8 +249,11 @@ bubble tag, right uprightZ info-card, bold arrows + dashed corner-connect links)
 **`PillarIsoPreview`** (lazy-mounts each scene on scroll to cap WebGL contexts).
 - [x] Wired the reference pillar ("Operations Assurance", `opsPillarDiagram`) into `/services` pillar
   04 + Storybook `Editor/Theming → Capabilities`.
-- [ ] After a browser look, roll out the other three pillars (each is one `buildPillarDiagram` call
-  with that pillar's icons/colours/copy) + tune slab/icon proportions and the stage layout.
+- [x] Rolled out the other three pillars (`leadRoutingPillarDiagram` / `backOfficePillarDiagram` /
+  `customerExpPillarDiagram` — each one `buildPillarDiagram` call, violet→orange→green stages). All four
+  `/services` capability cards now render an isometric scene.
+- [x] Camera fit gained a `fitScale` knob (preview `cameraFit`); the pillars use it (plus a capped
+  panel width) to fill the card. Still iterating on slab/icon proportions via screenshots.
 
 #### Phase 7.1 — "Signal" layered theme (polished reference look) ✅
 Reworked the pillar to match the polished reference rendering via a dedicated built-in theme rather

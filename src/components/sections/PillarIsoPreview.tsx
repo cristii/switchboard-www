@@ -52,13 +52,13 @@ export function PillarIsoPreview({ diagram }: { diagram: Diagram }) {
   return (
     <div
       ref={ref}
-      className="h-[440px] w-full overflow-hidden rounded-xl sm:h-[560px]"
+      className="mx-auto h-[440px] w-full max-w-[400px] overflow-hidden rounded-xl sm:h-[520px]"
       style={{ background: signalTheme.background.color }}
     >
       {show ? (
         <DiagramPreview
           diagram={diagram}
-          config={{ theme: signalTheme, showGrid: true, showGround: true, showLabels: true, cameraMovable: false }}
+          config={{ theme: signalTheme, showGrid: true, showGround: true, showLabels: true, cameraMovable: false, cameraFit: 1.04 }}
           style={{ background: "transparent" }}
         />
       ) : (

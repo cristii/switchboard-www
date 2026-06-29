@@ -14,6 +14,8 @@ export interface PreviewConfig {
   /** Explicit camera zoom; if both zoom and target are omitted the preview fits. */
   cameraZoom?: number;
   cameraTarget?: [number, number];
+  /** fit() zoom multiplier when fitting (<1 leaves margin, >1 fills tighter). */
+  cameraFit?: number;
   /** A registered theme id ("light" | "dark" | "aws" | …) OR an inline ThemeSpec. */
   theme: string | ThemeSpec;
 }
@@ -44,6 +46,7 @@ export function mergePreviewConfig(partial?: Partial<PreviewConfig> | null): Pre
     theme,
   };
   if (typeof p.cameraZoom === "number") cfg.cameraZoom = p.cameraZoom;
+  if (typeof p.cameraFit === "number") cfg.cameraFit = p.cameraFit;
   if (Array.isArray(p.cameraTarget) && p.cameraTarget.length === 2) {
     cfg.cameraTarget = [Number(p.cameraTarget[0]), Number(p.cameraTarget[1])];
   }

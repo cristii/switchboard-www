@@ -29,9 +29,9 @@ export interface PillarStage {
 // stacked along the diagonal (t, t) read as a VERTICAL on-screen line, the tag sits
 // LEFT at (c−TAG, c+TAG) (same screen row), and the description pill sits straight
 // BELOW at (c+UB, c+UB).
-const STEP = 8.0; // along (t,t) → vertical screen spacing (gap ≈ one node)
+const STEP = 6.0; // along (t,t) → vertical screen spacing between stages
 const TAG = 3.6; // left stage-tag offset
-const UB = 3.0; // description-pill drop below the icon
+const UB = 2.8; // description-pill drop below the icon
 const SLAB_W = 4.4; // slab footprint
 const SLAB_H = 0.55; // ONE layer height (flat); the slab = base + gap + top = 3 layers
 const ICON_W = 2.2;
@@ -108,4 +108,28 @@ export const opsPillarDiagram: Diagram = buildPillarDiagram([
     cardTitle: "Visibility & Insights",
     cardItems: ["Custom dashboards", "Reporting", "Real-time metrics"],
   },
+]);
+
+// The other three /services capability pillars. All use the same input → processing
+// → output colour semantics (violet → orange → green), like the reference.
+
+/** Pillar 01 — Intelligent Lead Routing & Sales. */
+export const leadRoutingPillarDiagram: Diagram = buildPillarDiagram([
+  { tag: "INPUT", icon: "mail", color: "#7a4ad4", label: "New enquiry arrives" },
+  { tag: "PROCESSING", icon: "send", color: "#f5821a", label: "Alert sent & lead routed" },
+  { tag: "OUTPUT", icon: "calendar", color: "#2bac61", label: "Job booked on calendar" },
+]);
+
+/** Pillar 02 — Back-Office & Operations. */
+export const backOfficePillarDiagram: Diagram = buildPillarDiagram([
+  { tag: "INPUT", icon: "check", color: "#7a4ad4", label: "Job marked complete" },
+  { tag: "PROCESSING", icon: "refresh", color: "#f5821a", label: "Invoice + review fire" },
+  { tag: "OUTPUT", icon: "bars", color: "#2bac61", label: "Paid & 5-star rated" },
+]);
+
+/** Pillar 03 — AI-Powered Customer Experience. */
+export const customerExpPillarDiagram: Diagram = buildPillarDiagram([
+  { tag: "INPUT", icon: "mail", color: "#7a4ad4", label: "Customer message arrives" },
+  { tag: "PROCESSING", icon: "spark", color: "#f5821a", label: "AI reads & classifies it" },
+  { tag: "OUTPUT", icon: "check", color: "#2bac61", label: "Answered or escalated" },
 ]);

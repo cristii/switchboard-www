@@ -50,6 +50,8 @@ export interface CameraControlsProps {
   initialTarget?: [number, number];
   /** Frame all nodes on first mount instead of using initialZoom/Target. */
   fitOnMount?: boolean;
+  /** fit() zoom multiplier — <1 leaves margin, >1 fills tighter. @default 0.98 */
+  fitScale?: number;
 }
 
 const ORTHO_DISTANCE = 40;
@@ -62,6 +64,7 @@ export function CameraControls({
   initialZoom = 38,
   initialTarget,
   fitOnMount = false,
+  fitScale = 0.98,
 }: CameraControlsProps) {
   const { camera, gl, raycaster, size } = useThree();
   const reduced = usePrefersReducedMotion();
@@ -96,6 +99,8 @@ export function CameraControls({
   reducedRef.current = reduced;
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
+  const fitScaleRef = useRef(fitScale);
+  fitScaleRef.current = fitScale;
   const cfgRef = useRef({ isPersp, dir, baseDistance, fov });
   cfgRef.current = { isPersp, dir, baseDistance, fov };
   const ix = initialTarget?.[0] ?? 0;
@@ -192,7 +197,7 @@ export function CameraControls({
       const spanU = (maxU - minU) / Math.SQRT2 + pad * 2;
       const spanV = (maxV - minV) / Math.SQRT2 + pad * 2;
       const { w, h } = sizeRef.current;
-      const zoom = Math.min(w / spanU, h / spanV) * 0.98;
+      const zoom = Math.min(w / spanU, h / spanV) * fitScaleRef.current;
       const uc = (minU + maxU) / 2;
       const vc = (minV + maxV) / 2;
       goTo((uc + vc) / 2, (vc - uc) / 2, zoom);

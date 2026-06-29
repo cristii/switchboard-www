@@ -15,7 +15,12 @@ import { BookCall } from "@/components/sections/BookCall";
 import { RotatingText } from "@/components/sections/RotatingText";
 import { SystematicApproachPreview } from "@/components/sections/SystematicApproachPreview";
 import { PillarIsoPreview } from "@/components/sections/PillarIsoPreview";
-import { opsPillarDiagram } from "@/components/editor/catalog/presets";
+import {
+  opsPillarDiagram,
+  leadRoutingPillarDiagram,
+  backOfficePillarDiagram,
+  customerExpPillarDiagram,
+} from "@/components/editor/catalog/presets";
 import type { Diagram } from "@/components/editor/state/types";
 
 // Editor-scoped tokens so --editor-* resolve for the embedded isometric preview.
@@ -104,6 +109,7 @@ const pillars: Pillar[] = [
       processing: { icon: sendIcon, iconColor: "var(--orange)", text: "Alert sent & lead routed" },
       output: { icon: calendarIcon, iconColor: "var(--green)", text: "Job booked on your calendar" },
     },
+    iso: leadRoutingPillarDiagram,
   },
   {
     num: "02",
@@ -125,6 +131,7 @@ const pillars: Pillar[] = [
       output: { icon: chartIcon, iconColor: "var(--green)", text: "Paid & 5-star rated" },
     },
     flip: true,
+    iso: backOfficePillarDiagram,
   },
   {
     num: "03",
@@ -145,6 +152,7 @@ const pillars: Pillar[] = [
       processing: { icon: assistantIcon, iconColor: "var(--violet)", text: "AI reads & classifies it" },
       output: { icon: checkIcon, iconColor: "var(--green)", text: "Answered, or escalated with context" },
     },
+    iso: customerExpPillarDiagram,
   },
   {
     num: "04",
