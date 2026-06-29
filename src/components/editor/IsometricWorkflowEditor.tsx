@@ -277,8 +277,8 @@ export function IsometricWorkflowEditor({
           </div>
           <MobileDrawer open={drawer === "add"} title="Add node" onClose={() => setDrawer("none")}>
             <NodePalette
-              onAdd={(k: NodeKind) => {
-                addNode(k);
+              onAdd={(k, partial) => {
+                addNode(k, partial);
                 setDrawer("none");
               }}
             />

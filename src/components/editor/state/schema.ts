@@ -40,7 +40,7 @@ export function toJSON(diagram: Diagram): string {
 }
 
 const STYLES: EdgeStyle[] = ["solid", "dashed"];
-const CONNECTORS: ConnectorStyle[] = ["line", "tube", "ribbonArrow"];
+const CONNECTORS: ConnectorStyle[] = ["line", "tube", "ribbonArrow", "boldArrow", "cornerConnect"];
 const FLOWS: EdgeFlow[] = ["off", "slow", "normal", "fast"];
 const ORIENTATIONS: TextOrientation[] = ["billboard", "ground", "uprightX", "uprightZ"];
 

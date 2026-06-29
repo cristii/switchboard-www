@@ -14,7 +14,7 @@ import { NodeGlyph } from "../icons/NodeGlyph";
 import { getNodeCatalogEntry } from "../catalog/nodeCatalog";
 import { useWorkflowStore } from "../state/useWorkflowStore";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
-import type { ConnectorStyle, EdgeFlow, NodeColorRole, TextOrientation } from "../state/types";
+import type { ConnectorStyle, EdgeFlow, LabelStyle, NodeColorRole, TextOrientation } from "../state/types";
 
 const SWATCHES: { role: NodeColorRole; hex: string }[] = [
   { role: "orange", hex: "#b45309" },
@@ -72,6 +72,29 @@ const deleteBtn: React.CSSProperties = {
 
 function Row({ children }: { children: React.ReactNode }) {
   return <div style={{ marginBottom: 12 }}>{children}</div>;
+}
+
+/** Named connection presets bundling routing + connector + dashed (the reference
+ *  "arrows & connect" set). Advanced selects below override individually. */
+const CONNECTION_PRESETS: Record<
+  string,
+  { label: string; routing: string; connector: ConnectorStyle; style: "solid" | "dashed" }
+> = {
+  basic: { label: "Basic arrow", routing: "direct", connector: "boldArrow", style: "solid" },
+  thin: { label: "Thin arrow", routing: "direct", connector: "line", style: "solid" },
+  dashed: { label: "Dashed arrow", routing: "direct", connector: "line", style: "dashed" },
+  corner: { label: "Corner", routing: "orthogonal", connector: "line", style: "solid" },
+  cornerConnect: { label: "Corner connect", routing: "orthogonal", connector: "cornerConnect", style: "dashed" },
+};
+
+function matchConnectionPreset(edge: { routing?: string; connector?: ConnectorStyle; style?: string }): string {
+  const routing = edge.routing ?? "orthogonal";
+  const connector = edge.connector ?? "line";
+  const style = edge.style ?? "solid";
+  for (const [key, p] of Object.entries(CONNECTION_PRESETS)) {
+    if (p.routing === routing && p.connector === connector && p.style === style) return key;
+  }
+  return "";
 }
 
 export interface InspectorProps {
@@ -202,6 +225,26 @@ export function Inspector({ className, style }: InspectorProps) {
             </Row>
           ) : null}
 
+          <Row>
+            <Select
+              label="Label style"
+              value={(node.meta?.labelStyle as string) ?? ""}
+              options={[
+                { value: "", label: "Theme default" },
+                { value: "plain", label: "Plain text" },
+                { value: "bubble", label: "Bubble tag" },
+                { value: "tips", label: "Tips (callout)" },
+                { value: "info", label: "Info card" },
+                { value: "note", label: "Note tile" },
+              ]}
+              onChange={(v) =>
+                updateNode(node.id, {
+                  meta: { ...node.meta, labelStyle: (v || undefined) as LabelStyle | undefined },
+                })
+              }
+            />
+          </Row>
+
           {node.kind !== "text" ? (
             <Row>
               <Select
@@ -314,6 +357,20 @@ export function Inspector({ className, style }: InspectorProps) {
           </Row>
           <Row>
             <Select
+              label="Connection style"
+              value={matchConnectionPreset(edge)}
+              options={[
+                ...(matchConnectionPreset(edge) ? [] : [{ value: "", label: "Custom" }]),
+                ...Object.entries(CONNECTION_PRESETS).map(([v, p]) => ({ value: v, label: p.label })),
+              ]}
+              onChange={(v) => {
+                const p = CONNECTION_PRESETS[v];
+                if (p) updateEdge(edge.id, { routing: p.routing, connector: p.connector, style: p.style });
+              }}
+            />
+          </Row>
+          <Row>
+            <Select
               label="Routing"
               value={edge.routing ?? "orthogonal"}
               options={[
@@ -330,8 +387,10 @@ export function Inspector({ className, style }: InspectorProps) {
               value={edge.connector ?? "line"}
               options={[
                 { value: "line", label: "Line" },
+                { value: "boldArrow", label: "Bold arrow" },
                 { value: "tube", label: "Tube" },
                 { value: "ribbonArrow", label: "Ribbon arrow" },
+                { value: "cornerConnect", label: "Corner connect" },
               ]}
               onChange={(v) => updateEdge(edge.id, { connector: v as ConnectorStyle })}
             />

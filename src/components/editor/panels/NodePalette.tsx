@@ -9,13 +9,14 @@ import * as React from "react";
 import { useWorkflowStore } from "../state/useWorkflowStore";
 import { catalogByCategory } from "../catalog/nodeCatalog";
 import { NodeGlyph } from "../icons/NodeGlyph";
-import type { NodeColorRole, NodeKind } from "../state/types";
+import type { NodeColorRole, NodeKind, WorkflowNode } from "../state/types";
 
 const roleVar = (role: NodeColorRole) => `var(--node-${role})`;
 
 export interface NodePaletteProps {
-  /** Called when a kind is chosen. Defaults to the store's addNode. */
-  onAdd?: (kind: NodeKind) => void;
+  /** Called when a kind is chosen. Defaults to the store's addNode. The optional
+   *  partial seeds node fields (used by Annotate quick-adds, e.g. a styled Tag). */
+  onAdd?: (kind: NodeKind, partial?: Partial<WorkflowNode>) => void;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -58,7 +59,8 @@ const item: React.CSSProperties = {
 
 export function NodePalette({ onAdd, className, style }: NodePaletteProps) {
   const addNode = useWorkflowStore((s) => s.addNode);
-  const handleAdd = onAdd ?? ((k: NodeKind) => void addNode(k));
+  const handleAdd =
+    onAdd ?? ((k: NodeKind, partial?: Partial<WorkflowNode>) => void addNode(k, partial));
   const groups = catalogByCategory();
 
   return (
@@ -97,6 +99,25 @@ export function NodePalette({ onAdd, className, style }: NodePaletteProps) {
                 <span>{entry.label}</span>
               </button>
             ))}
+            {group.category === "Annotate" ? (
+              <button
+                type="button"
+                style={item}
+                title="A styled label chip (bubble tag). Pick the style in the Inspector."
+                onClick={() => handleAdd("text", { label: "Tag", meta: { labelStyle: "bubble" } })}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "var(--editor-surface-2)";
+                  e.currentTarget.style.borderColor = "var(--editor-border-soft)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.borderColor = "transparent";
+                }}
+              >
+                <NodeGlyph name="type" size={17} color={roleVar("orange")} />
+                <span>Tag</span>
+              </button>
+            ) : null}
           </div>
         </div>
       ))}

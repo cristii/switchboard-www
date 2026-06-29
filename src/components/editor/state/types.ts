@@ -30,6 +30,12 @@ export type NodeColorRole = "orange" | "green" | "violet" | "amber" | "ink";
  *  See docs/themes/…theming_guide.md and the `text` node kind. */
 export type TextOrientation = "billboard" | "ground" | "uprightX" | "uprightZ";
 
+/** Container style for a 3D label ("tag"). `plain` is bare text; the others draw
+ *  a backing plate so labels stay legible in dense diagrams:
+ *  `bubble` (pill), `tips` (dark callout w/ pointer), `info` (card w/ title+body),
+ *  `note` (paper tile). Combine with TextOrientation for the reference "tags". */
+export type LabelStyle = "plain" | "bubble" | "tips" | "info" | "note";
+
 /** A connection point on a node. */
 export interface Port {
   id: string;
@@ -69,8 +75,10 @@ export interface WorkflowNode {
 
 export type EdgeRouting = "orthogonal" | "smooth" | "direct";
 export type EdgeStyle = "solid" | "dashed";
-/** How a connector is rendered between two nodes (Step 3 connector renderers). */
-export type ConnectorStyle = "line" | "tube" | "ribbonArrow";
+/** How a connector is rendered between two nodes.
+ *  `line` (thin/dashed via `style`), `tube`, `ribbonArrow` (flat painted arrow),
+ *  `boldArrow` (thick line + large head), `cornerConnect` (dashed + L-bracket ends). */
+export type ConnectorStyle = "line" | "tube" | "ribbonArrow" | "boldArrow" | "cornerConnect";
 /** Animated "data flow" pulse travelling along an edge. */
 export type EdgeFlow = "off" | "slow" | "normal" | "fast";
 

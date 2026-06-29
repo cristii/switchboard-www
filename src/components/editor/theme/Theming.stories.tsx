@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { IsometricWorkflowEditor } from "../IsometricWorkflowEditor";
 import { branchingSampleDiagram } from "../sampleDiagram";
-import { awsWebHostingDiagram } from "../catalog/presets";
+import { awsWebHostingDiagram, servicesFlowDiagram } from "../catalog/presets";
 
 // Editor-scoped theming: the same diagram in both themes. The toggle lives in
 // the toolbar (see Editor/Panels/Toolbar); here we force each theme to compare
@@ -41,6 +41,22 @@ export const AWS: StoryObj = {
       <IsometricWorkflowEditor
         defaultThemeId="aws"
         initialDiagram={awsWebHostingDiagram}
+        style={{ height: "100%" }}
+      />
+    </div>
+  ),
+};
+
+/** The Switchboard `blueprint` theme with the clean Service-flow example: bubble-tag
+ *  labels (decluttered), bold-arrow connectors, paper backdrop, brand accents. This
+ *  is what embeds on the /services "systematic approach" section. */
+export const Blueprint: StoryObj = {
+  parameters: { layout: "fullscreen" },
+  render: () => (
+    <div style={{ padding: 16, height: "82vh", boxSizing: "border-box" }}>
+      <IsometricWorkflowEditor
+        defaultThemeId="blueprint"
+        initialDiagram={servicesFlowDiagram}
         style={{ height: "100%" }}
       />
     </div>

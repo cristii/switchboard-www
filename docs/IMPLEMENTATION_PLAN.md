@@ -215,6 +215,26 @@ docs/
 - [x] Step 5 — **3D hovering labels/tooltips**: node/edge labels render as in-canvas 3D text (4
   orientations) by default; DOM chips kept as an opt-in `spec.text.mode = "dom"`; global / per-scene /
   per-object label styling. (`NodeLabels3D`, `text.mode`, Inspector + Theme-manager controls.)
+- [x] Step 6a — **declutter + tags/arrows + site embed**: plate-backed **tag styles**
+  (`plain/bubble/tips/info/note` via `text.style` + `node/edge.meta.labelStyle`) so labels stop
+  overlapping; new connectors **`boldArrow`** + **`cornerConnect`** and the 5-name Inspector
+  **Connection** preset; **Hybrid IA** (palette *Annotate* group + Inspector style pickers); the
+  Switchboard **`blueprint`** theme; templates relabelled **"(old)"** + a clean **Service flow**
+  example; and the `/services` "systematic approach" section now embeds a horizontal isometric
+  **`SystematicApproachPreview`** (`servicesFlowDiagram`).
+
+### Phase 6 — Architecture-diagram renderings (roadmap, not yet built)
+Goal: reproduce the supplied case-1 / case-2 references in Switchboard colors. Remaining pieces:
+1. **Procedural device-node shapes** — monitor / laptop / phone / browser-window / server-hex-stack
+   built from primitives (no binary assets needed), registered in `SHAPES`; GLB drop-in already works
+   via `node.meta.model`.
+2. **Round/elliptical group platform** — a soft disc variant of `GroupContainer` (the platform under
+   the server stack).
+3. **Bubble-tag arrows** — a `bubble`/`info` label riding a connector midpoint (reuse the edge-label
+   midpoint + a `boldArrow`), e.g. "Memory" / "Transfer" / "AI MODEL".
+4. **Title-bar embed chrome** — an optional header/footer frame around `DiagramPreview` for the
+   "Architecture Diagram" framing.
+5. **Theme polish** — tune `blueprint` against the references once devices land.
 
 ### Implementation notes / deviations
 - **`SceneCamera` folded into `CameraControls`** (a single `CameraSpec`-driven controller handles both

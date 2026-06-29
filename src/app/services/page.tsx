@@ -13,6 +13,10 @@ import {
 } from "@/components/ui";
 import { BookCall } from "@/components/sections/BookCall";
 import { RotatingText } from "@/components/sections/RotatingText";
+import { SystematicApproachPreview } from "@/components/sections/SystematicApproachPreview";
+
+// Editor-scoped tokens so --editor-* resolve for the embedded isometric preview.
+import "@/components/editor/theme/editor-tokens.css";
 
 import assistantIcon from "@/assets/icons/assistant.svg";
 import calendarIcon from "@/assets/icons/calendar.svg";
@@ -20,7 +24,6 @@ import chartIcon from "@/assets/icons/chart.svg";
 import checkIcon from "@/assets/icons/check.svg";
 import lightbulbIcon from "@/assets/icons/lightbulb.svg";
 import mailIcon from "@/assets/icons/mail.svg";
-import peopleIcon from "@/assets/icons/people.svg";
 import refreshIcon from "@/assets/icons/refresh.svg";
 import sendIcon from "@/assets/icons/send.svg";
 import workflowIcon from "@/assets/icons/workflow.svg";
@@ -430,41 +433,11 @@ export default function ServicesPage() {
             Here&apos;s what happens the instant a new lead arrives.
           </p>
 
-          <div className="mx-auto flex max-w-[920px] flex-col items-stretch justify-center gap-6 md:flex-row md:items-center md:gap-0">
-            {/* node 1 */}
-            <div className="flex-1">
-              <FlowLabel>Input</FlowLabel>
-              <div className="flex flex-col items-center gap-[10px] rounded-[14px] border border-ink bg-white px-[14px] py-5 shadow-card">
-                <Icon src={mailIcon} color="var(--orange)" size={30} />
-                <span className={`${display} text-[.96rem] font-bold`}>New lead</span>
-              </div>
-            </div>
-
-            <Wire />
-
-            {/* node 2 */}
-            <div className="flex-1">
-              <FlowLabel>Processing</FlowLabel>
-              <div
-                className="flex flex-col items-center gap-[10px] rounded-[14px] bg-white px-[14px] py-5 shadow-raised"
-                style={{ border: "2px solid var(--orange)" }}
-              >
-                <Icon src={assistantIcon} color="var(--orange)" size={30} />
-                <span className={`${display} text-[.96rem] font-bold`}>AI classification</span>
-              </div>
-            </div>
-
-            <Wire />
-
-            {/* node 3: dual output */}
-            <div className="flex-1">
-              <FlowLabel>Output</FlowLabel>
-              <div className="flex flex-col gap-[10px]">
-                <MiniCard icon={peopleIcon} text="CRM" />
-                <MiniCard icon={calendarIcon} text="Calendar" />
-              </div>
-            </div>
-          </div>
+          <SystematicApproachPreview />
+          <p className="mx-auto mt-4 max-w-[34em] text-[.82rem] text-ink-soft">
+            Input → processing → output. A new lead arrives, AI classifies it, and it&apos;s booked
+            straight to your CRM and calendar.
+          </p>
         </div>
       </Section>
 
@@ -534,32 +507,5 @@ export default function ServicesPage() {
         </div>
       </Section>
     </>
-  );
-}
-
-/* ---------- Signature-flow sub-components ---------- */
-
-function Wire() {
-  return (
-    <div
-      className="relative mx-1 mt-6 hidden h-[2px] w-16 flex-none md:block"
-      style={{
-        background:
-          "repeating-linear-gradient(90deg, color-mix(in srgb, var(--ink) 35%, transparent) 0 7px, transparent 7px 14px)",
-      }}
-    >
-      <span className="absolute -right-[6px] top-1/2 -translate-y-1/2 text-[1.1rem] text-orange">
-        ▶
-      </span>
-    </div>
-  );
-}
-
-function MiniCard({ icon, text }: { icon: IconSource; text: string }) {
-  return (
-    <div className="flex items-center justify-center gap-[9px] rounded-[12px] border border-ink bg-white px-3 py-[13px] shadow-card">
-      <Icon src={icon} color="var(--green)" size={20} />
-      <span className={`${display} text-[.88rem] font-bold`}>{text}</span>
-    </div>
   );
 }

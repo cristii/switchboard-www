@@ -6,7 +6,7 @@
 // `text` nodes are skipped (they are their own label). See docs/labels/LABELS.md.
 
 import { getNodeCatalogEntry } from "../catalog/nodeCatalog";
-import { TextLabel } from "./nodes/shapes/TextNode";
+import { TextLabel, isLabelStyle, labelPalette } from "./nodes/shapes/TextNode";
 import type { SceneTheme } from "../theme/sceneTheme";
 import type { Selection, WorkflowNode } from "../state/types";
 
@@ -27,7 +27,9 @@ export function NodeLabels3D({ nodes, selection, theme }: NodeLabels3DProps) {
         const hoverY = height + 0.55;
         const meta = (node.meta ?? {}) as Record<string, unknown>;
         const orientation = node.labelOrientation ?? theme.text.orientation;
-        const color = typeof meta.labelColor === "string" ? meta.labelColor : theme.text.color;
+        const style = isLabelStyle(meta.labelStyle) ? meta.labelStyle : theme.text.style;
+        const pal = labelPalette(style, theme);
+        const color = typeof meta.labelColor === "string" ? meta.labelColor : pal.text;
         const size = typeof meta.labelSize === "number" ? meta.labelSize : theme.text.size;
         const text = node.sublabel ? `${node.label}\n${node.sublabel}` : node.label;
         const selected = selection?.type === "node" && selection.id === node.id;
@@ -39,6 +41,8 @@ export function NodeLabels3D({ nodes, selection, theme }: NodeLabels3DProps) {
               opacity={theme.text.opacity}
               size={size}
               orientation={orientation}
+              style={style}
+              plate={pal.plate}
               font={theme.text.font}
               selected={selected}
               selectionColor={theme.selection}

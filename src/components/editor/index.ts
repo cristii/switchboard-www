@@ -44,6 +44,7 @@ export {
 export { lightTheme } from "./theme/themes/light";
 export { darkTheme } from "./theme/themes/dark";
 export { awsTheme } from "./theme/themes/aws";
+export { blueprintTheme } from "./theme/themes/blueprint";
 export { resolveSceneTheme, getSceneTheme } from "./theme/sceneTheme";
 export type { SceneTheme } from "./theme/sceneTheme";
 export { useResponsiveLayout } from "./hooks/useResponsiveLayout";
@@ -91,7 +92,7 @@ export {
   groupedSampleDiagram,
 } from "./sampleDiagram";
 
-export { PRESETS, n8nSampleDiagram, scoutsLeadsDiagram, awsWebHostingDiagram } from "./catalog/presets";
+export { PRESETS, n8nSampleDiagram, scoutsLeadsDiagram, awsWebHostingDiagram, servicesFlowDiagram } from "./catalog/presets";
 export type { PresetEntry } from "./catalog/presets";
 export { layeredLayout } from "./catalog/layout/autoLayout";
 

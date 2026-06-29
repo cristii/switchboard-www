@@ -37,19 +37,45 @@ Set the default per scene in the theme (`spec.text.orientation`); override per o
 
 ---
 
-## 3. Style: global / per-scene / per-individual
+## 3. Tag styles (label containers)
 
-| Scope | Font | Colour | Size | Opacity | Orientation |
+A label can wear a **container style** so it stays legible in dense diagrams (a bare text label on a
+busy canvas overlaps illegibly — the plate fixes that):
+
+| `labelStyle` | Looks like | Reference name |
+|---|---|---|
+| `plain` | bare text, no plate | Basic tag |
+| `bubble` | rounded pill plate (paper) + ink text | Bubble tag |
+| `tips` | dark (ink) callout plate + light text + pointer | Tips tag |
+| `info` | light card + left-aligned title/body + pointer | Info tag |
+| `note` | flat paper-tile card | Notes |
+
+The 7 reference "tags" = **style × orientation** (e.g. *bubble tag isometric* = `bubble` + `ground`;
+*notes* = `note` + `billboard`). Plates are theme-safe (high contrast in light and dark). Set the
+default per scene (`spec.text.style`) or override per object (`node.meta.labelStyle` /
+`edge.meta.labelStyle`); the **Inspector → Label style** select drives it.
+
+## 4. Style scopes: global / per-scene / per-individual
+
+| Scope | Style | Font | Colour | Size | Orientation |
 |---|---|---|---|---|---|
-| **Global / per-scene** (theme) | `spec.text.font` | `spec.text.color` | `spec.text.size` | `spec.text.opacity` | `spec.text.orientation` |
-| **Per node** | (theme) | `node.meta.labelColor` | `node.meta.labelSize` | (node `opacity`/theme) | `node.labelOrientation` |
-| **Per edge** | (theme) | `edge.meta.labelColor` | `edge.meta.labelSize` | (theme) | `edge.labelOrientation` |
-| **Per `text` node** | `node.meta.font` | `node.color` | `node.meta.size` | `node.opacity` | `node.meta.orientation` |
+| **Global / per-scene** (theme) | `spec.text.style` | `spec.text.font` | `spec.text.color` | `spec.text.size` | `spec.text.orientation` |
+| **Per node** | `node.meta.labelStyle` | (theme) | `node.meta.labelColor` | `node.meta.labelSize` | `node.labelOrientation` |
+| **Per edge** | `edge.meta.labelStyle` | (theme) | `edge.meta.labelColor` | `edge.meta.labelSize` | `edge.labelOrientation` |
+| **Per `text` node** | `node.meta.labelStyle` | `node.meta.font` | `node.color` | `node.meta.size` | `node.meta.orientation` |
 
 "Globally / per scene" = edit the theme (Theme manager → *Labels & text*, or the theme module). Each
 theme is a scene, so this is the per-scene layer; committing a theme makes it the shared global default
 (see [`../themes/CREATING_THEMES.md`](../themes/CREATING_THEMES.md)). Per-individual overrides win over
 the theme.
+
+### Component IA (Hybrid)
+- **Things you place** (nodes, incl. **Text / Note / Tag** under the palette's **Annotate** group)
+  live in **"Add node"**. The *Tag* quick-add seeds a `text` node with `bubble` style.
+- **How a label or connector looks** (its render *style*) lives in the **Inspector** — *Label style*
+  for any node's tooltip / text, and *Connection* for any edge (see
+  [`../paths/PATH_ALGORITHMS.md`](../paths/PATH_ALGORITHMS.md)). This avoids a combinatorial palette
+  and matches how edges are already edited.
 
 > Font is an optional **font-file URL** (troika); omit it for the default sans. Set it once on the
 > theme for a consistent look.

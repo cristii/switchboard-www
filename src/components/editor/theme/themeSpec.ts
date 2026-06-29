@@ -5,7 +5,7 @@
 // (theme/sceneTheme.ts) that the scene already consumes. The Theme manager pane
 // edits a ThemeSpec live. See docs/themes/CREATING_THEMES.md + IMPLEMENTATION_PLAN.md.
 
-import type { ConnectorStyle, NodeColorRole, TextOrientation } from "../state/types";
+import type { ConnectorStyle, LabelStyle, NodeColorRole, TextOrientation } from "../state/types";
 
 export type { ConnectorStyle };
 
@@ -83,6 +83,8 @@ export interface ThemeSpec {
     opacity: number;
     size: number;
     orientation: TextOrientation;
+    /** Default label container style ("tag"). @default "plain" */
+    style?: LabelStyle;
     /** Where node/edge labels render: 3D in-canvas hovering text (default) or
      *  flat DOM chips. @default "3d" */
     mode?: "3d" | "dom";
@@ -95,7 +97,8 @@ export function cloneThemeSpec(spec: ThemeSpec): ThemeSpec {
 }
 
 const ORIENTATIONS: TextOrientation[] = ["billboard", "ground", "uprightX", "uprightZ"];
-const CONNECTORS: ConnectorStyle[] = ["line", "tube", "ribbonArrow"];
+const LABEL_STYLES: LabelStyle[] = ["plain", "bubble", "tips", "info", "note"];
+const CONNECTORS: ConnectorStyle[] = ["line", "tube", "ribbonArrow", "boldArrow", "cornerConnect"];
 const COLOR_ROLES: NodeColorRole[] = ["orange", "green", "violet", "amber", "ink"];
 
 function num(v: unknown, fallback: number): number {
@@ -175,6 +178,9 @@ export function normalizeThemeSpec(input: unknown, base: ThemeSpec): ThemeSpec {
   const orientation = ORIENTATIONS.includes(textIn.orientation as TextOrientation)
     ? (textIn.orientation as TextOrientation)
     : base.text.orientation;
+  const labelStyle = LABEL_STYLES.includes(textIn.style as LabelStyle)
+    ? (textIn.style as LabelStyle)
+    : base.text.style;
   const connector = CONNECTORS.includes(edgesIn.connector as ConnectorStyle)
     ? (edgesIn.connector as ConnectorStyle)
     : base.edges.connector;
@@ -238,6 +244,7 @@ export function normalizeThemeSpec(input: unknown, base: ThemeSpec): ThemeSpec {
       opacity: num(textIn.opacity, base.text.opacity),
       size: num(textIn.size, base.text.size),
       orientation,
+      style: labelStyle,
       mode: textIn.mode === "dom" ? "dom" : textIn.mode === "3d" ? "3d" : base.text.mode,
     },
   };

@@ -7,9 +7,10 @@ import { cloneThemeSpec, normalizeThemeSpec, type ThemeSpec } from "./themeSpec"
 import { lightTheme } from "./themes/light";
 import { darkTheme } from "./themes/dark";
 import { awsTheme } from "./themes/aws";
+import { blueprintTheme } from "./themes/blueprint";
 
 /** Repo-shipped themes, in display order. Add a built-in by importing it here. */
-export const BUILT_IN_THEMES: ThemeSpec[] = [lightTheme, darkTheme, awsTheme];
+export const BUILT_IN_THEMES: ThemeSpec[] = [lightTheme, darkTheme, awsTheme, blueprintTheme];
 
 const BUILT_IN_BY_ID: Record<string, ThemeSpec> = Object.fromEntries(
   BUILT_IN_THEMES.map((t) => [t.id, t]),

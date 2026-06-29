@@ -15,7 +15,8 @@ export type NodeCategory =
   | "Data"
   | "Services"
   | "Output"
-  | "Layout";
+  | "Layout"
+  | "Annotate";
 
 export interface NodeCatalogEntry {
   kind: NodeKind;
@@ -159,7 +160,7 @@ export const NODE_CATALOG: Record<NodeKind, NodeCatalogEntry> = {
   },
   note: {
     kind: "note",
-    category: "Layout",
+    category: "Annotate",
     label: "Note",
     description: "An annotation tile.",
     shape: "paperTile",
@@ -170,7 +171,7 @@ export const NODE_CATALOG: Record<NodeKind, NodeCatalogEntry> = {
   },
   text: {
     kind: "text",
-    category: "Layout",
+    category: "Annotate",
     label: "Text",
     description: "Free-floating 3D label — billboard, flat on the ground, or upright.",
     // Rendered via TextNode (not the shape registry); `shape` is a harmless placeholder.
@@ -192,6 +193,7 @@ export const CATEGORIES: NodeCategory[] = [
   "Services",
   "Output",
   "Layout",
+  "Annotate",
 ];
 
 export function getNodeCatalogEntry(kind: NodeKind): NodeCatalogEntry {

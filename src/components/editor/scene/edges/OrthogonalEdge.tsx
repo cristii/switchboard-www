@@ -8,7 +8,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { getRoutingAlgorithm } from "./routing";
 import { CONNECTORS } from "./connectors";
-import { TextLabel } from "../nodes/shapes/TextNode";
+import { TextLabel, isLabelStyle, labelPalette } from "../nodes/shapes/TextNode";
 import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import type { SceneTheme } from "../../theme/sceneTheme";
 import type { EdgeFlow as EdgeFlowMode, WorkflowEdge, WorkflowNode } from "../../state/types";
@@ -90,8 +90,10 @@ export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0, sh
   const show3dLabel = showLabel && !!edge.label && (labelMode === "3d" || !!edge.labelOrientation);
   const midVec = vecs[Math.floor((vecs.length - 1) / 2)] ?? vecs[vecs.length - 1];
   const meta = (edge.meta ?? {}) as Record<string, unknown>;
-  const labelColor = typeof meta.labelColor === "string" ? meta.labelColor : theme.text.color;
-  const labelSize = typeof meta.labelSize === "number" ? meta.labelSize : theme.text.size * 0.8;
+  const labelStyle = isLabelStyle(meta.labelStyle) ? meta.labelStyle : theme.text.style;
+  const labelPal = labelPalette(labelStyle, theme);
+  const labelColor = typeof meta.labelColor === "string" ? meta.labelColor : labelPal.text;
+  const labelSize = typeof meta.labelSize === "number" ? meta.labelSize : theme.text.size * 0.85;
 
   return (
     <group>
@@ -119,6 +121,8 @@ export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0, sh
             opacity={theme.text.opacity}
             size={labelSize}
             orientation={labelOrientation}
+            style={labelStyle}
+            plate={labelPal.plate}
             font={theme.text.font}
             selected={selected}
             selectionColor={theme.selection}

@@ -23,7 +23,7 @@ those values are now **fields of the spec** instead of loose constants.
   connector), `text` (colour/opacity/size/orientation/font). Full type:
   `src/components/editor/theme/themeSpec.ts`.
 - **Registry + persistence:** `theme/themeRegistry.ts` merges **built-in** themes
-  (`theme/themes/{light,dark,aws}.ts`, shipped in the build) with **user** themes from
+  (`theme/themes/{light,dark,aws,blueprint}.ts`, shipped in the build) with **user** themes from
   `localStorage["sb-editor-themes"]`. `theme/useThemeManager.ts` owns the active theme +
   create/duplicate/rename/delete/import/export; `panels/ThemeManager.tsx` is the pane.
 - **Resolution:** `resolveSceneTheme(spec)` (in `sceneTheme.ts`) flattens a `ThemeSpec` into the
@@ -67,7 +67,7 @@ A single string — the **theme value** (`"light"` or `"dark"`, type `EditorThem
 src/components/editor/
   theme/
     themeSpec.ts          # ThemeSpec + LightSpec types, defaults, normalizeThemeSpec (import)
-    themes/{light,dark,aws}.ts  # built-in ThemeSpecs (shipped in the build)
+    themes/{light,dark,aws,blueprint}.ts  # built-in ThemeSpecs (shipped in the build)
     themeRegistry.ts      # built-in + localStorage user themes; getThemeSpec / resolveThemeFromConfig
     useThemeManager.ts    # active theme + CRUD/import/export (localStorage "sb-editor-theme(s)")
     sceneTheme.ts         # SceneTheme (resolved view) + resolveSceneTheme(spec) + getSceneTheme()

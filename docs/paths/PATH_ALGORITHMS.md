@@ -106,8 +106,24 @@ Renderers live in `scene/edges/connectors/` and are keyed by `ConnectorStyle`:
 | `connector` | Renderer | Look |
 |---|---|---|
 | `line` | `LineConnector` | thin drei `<Line>` + cone arrowhead (supports dashed) |
+| `boldArrow` | `BoldArrow` | thick line + large filled head — the reference "basic arrows" |
 | `tube` | `TubeConnector` | swept `TubeGeometry`, radius from line width, lit + cone arrow |
 | `ribbonArrow` | `RibbonArrowConnector` | flat orange **isometric arrow ribbon** (the AWS look) |
+| `cornerConnect` | `CornerConnect` | dashed line + squared **L-bracket terminals**, no arrowhead |
+
+### Named connection presets (Inspector)
+The Inspector's **"Connection"** dropdown bundles routing + connector + dashed into the five reference
+"arrows & connect" styles, so you pick one thing instead of three:
+
+| Preset | routing | connector | dashed |
+|---|---|---|---|
+| Basic arrow | `direct` | `boldArrow` | no |
+| Thin arrow | `direct` | `line` | no |
+| Dashed arrow | `direct` | `line` | yes |
+| Corner | `orthogonal` | `line` | no |
+| Corner connect | `orthogonal` | `cornerConnect` | yes |
+
+The routing / connector / style selects below the preset remain available for fine control.
 
 All take the same `ConnectorProps` (`points`, `color`, `width`, `arrowSize`, `dashed?`, `onSelect?`).
 Width + arrow size come from the theme (`spec.edges.width` / `widthSelected` / `arrowSize`) or a

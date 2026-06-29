@@ -5,7 +5,7 @@
 // the spec by DiagramCanvas; everything node/edge/text related lives here.
 // See description.md §9 (theming) and §3 (3D-vs-brand reconciliation).
 
-import type { NodeColorRole, TextOrientation } from "../state/types";
+import type { LabelStyle, NodeColorRole, TextOrientation } from "../state/types";
 import type { ConnectorStyle, ThemeSpec } from "./themeSpec";
 import { lightTheme } from "./themes/light";
 import { darkTheme } from "./themes/dark";
@@ -46,6 +46,8 @@ export interface SceneTheme {
     opacity: number;
     size: number;
     orientation: TextOrientation;
+    /** Default label container style ("tag"). */
+    style: LabelStyle;
   };
 }
 
@@ -77,6 +79,7 @@ export function resolveSceneTheme(spec: ThemeSpec): SceneTheme {
       opacity: spec.text.opacity,
       size: spec.text.size,
       orientation: spec.text.orientation,
+      style: spec.text.style ?? "plain",
     },
   };
 }
