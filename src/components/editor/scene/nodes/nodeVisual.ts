@@ -14,6 +14,7 @@ export interface NodeVisual {
   isGroup: boolean;
   isNote: boolean;
   isText: boolean;
+  isIcon: boolean;
   Shape: ComponentType<ShapeProps>;
   width: number;
   depth: number;
@@ -36,6 +37,7 @@ export function resolveNodeVisual(
   const entry = getNodeCatalogEntry(node.kind);
   const isGroup = node.kind === "group";
   const isText = node.kind === "text";
+  const isIcon = node.kind === "icon";
   const isNote = entry.shape === "paperTile" && !isText;
   const Shape = SHAPES[entry.shape] ?? SHAPES.box;
   const width = node.width ?? entry.defaultSize.width;
@@ -54,6 +56,7 @@ export function resolveNodeVisual(
     isGroup,
     isNote,
     isText,
+    isIcon,
     Shape,
     width,
     depth,

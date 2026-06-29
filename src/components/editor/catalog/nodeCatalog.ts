@@ -237,6 +237,18 @@ export const NODE_CATALOG: Record<NodeKind, NodeCatalogEntry> = {
     defaultPorts: [],
     defaultSize: { width: 1.6, depth: 0.6, height: 0.4 },
   },
+  icon: {
+    kind: "icon",
+    category: "Annotate",
+    label: "Icon",
+    description: "A simple 3D step-icon — set which via meta.icon (bars / gear / check / mail…).",
+    // Rendered via StepIcon (not the shape registry); `shape` is a harmless placeholder.
+    shape: "box",
+    colorRole: "ink",
+    glyph: "diamond",
+    defaultPorts: IN_OUT,
+    defaultSize: { width: 1.3, depth: 1.3, height: 1.0 },
+  },
 };
 
 export const CATALOG_LIST: NodeCatalogEntry[] = Object.values(NODE_CATALOG);

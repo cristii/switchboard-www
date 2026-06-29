@@ -105,8 +105,12 @@ ring: <circle cx="12" cy="12" r="7" />,
   `serverStack`) live under the **Devices** palette category; their shapes are primitives in
   `scene/nodes/shapes/*` (theme-aware screens via `deviceTones.ts`). Add more the same way, or supply a
   GLB via `meta.model`.
-- **Round platform** — a `group` node with `meta.platform: "disc"` renders a soft round zone instead
-  of the rectangular slab.
+- **Round / hex platform** — a `group` node with `meta.platform: "disc"` renders a soft round zone;
+  `meta.platform: "hex"` renders a **double-layer hexagon** (solid bottom + lighter inset top, soft
+  corners) for the architecture/capabilities look.
+- **Step icons** — the `icon` kind renders a simple procedural 3D icon chosen by `meta.icon`
+  (`bars` / `gear` / `check` / `mail` / `send` / `calendar` / `refresh` / `spark`); see `StepIcon`.
+  Build pillar scenes with `buildPillarDiagram(stages)` (`catalog/presets/pillarFlow.ts`).
 
 ---
 

@@ -238,6 +238,20 @@ Goal: reproduce the supplied case-1 / case-2 references in Switchboard colors.
   `Editor/Theming → Architecture`. **Theme polish** of `blueprint` against the references continues as
   a visual-tuning task (needs a browser pass).
 
+### Phase 7 — Capabilities sections as isometric scenes (in progress)
+Replace the `/services` "Capabilities" DOM `FlowDiagram`s with isometric scenes (reference image).
+Building blocks (shipped): global **label controls** (offset/scale, label+sublabel styling); a
+**double-layer hex platform** (`GroupContainer` `meta.platform: "hex"` — solid bottom + lighter inset
+top, rounded-bevel corners via `hexGeometry`); a procedural **`icon` node kind** + `StepIcon`
+(bars/gear/check/mail/send/calendar/refresh/spark, tinted, `meta.icon`); a data-driven
+**`buildPillarDiagram(stages)`** (stacked hex stages: centered icon + billboard label below, left
+bubble tag, right uprightZ info-card, bold arrows + dashed corner-connect links); and
+**`PillarIsoPreview`** (lazy-mounts each scene on scroll to cap WebGL contexts).
+- [x] Wired the reference pillar ("Operations Assurance", `opsPillarDiagram`) into `/services` pillar
+  04 + Storybook `Editor/Theming → Capabilities`.
+- [ ] After a browser look, roll out the other three pillars (each is one `buildPillarDiagram` call
+  with that pillar's icons/colours/copy) + tune hex/icon proportions and the stage layout.
+
 ### Implementation notes / deviations
 - **`SceneCamera` folded into `CameraControls`** (a single `CameraSpec`-driven controller handles both
   orthographic and perspective) rather than a separate component.

@@ -23,7 +23,9 @@ export type NodeKind =
   | "laptop"
   | "phone"
   | "browser"
-  | "serverStack";
+  | "serverStack"
+  // a procedural 3D step-icon (meta.icon picks which)
+  | "icon";
 
 /** Brand colour role a node maps onto (resolved to real colours per theme). */
 export type NodeColorRole = "orange" | "green" | "violet" | "amber" | "ink";

@@ -14,6 +14,9 @@ import {
 import { BookCall } from "@/components/sections/BookCall";
 import { RotatingText } from "@/components/sections/RotatingText";
 import { SystematicApproachPreview } from "@/components/sections/SystematicApproachPreview";
+import { PillarIsoPreview } from "@/components/sections/PillarIsoPreview";
+import { opsPillarDiagram } from "@/components/editor/catalog/presets";
+import type { Diagram } from "@/components/editor/state/types";
 
 // Editor-scoped tokens so --editor-* resolve for the embedded isometric preview.
 import "@/components/editor/theme/editor-tokens.css";
@@ -77,6 +80,8 @@ interface Pillar {
   features: string[];
   flow: { input: FlowItem; processing: FlowItem; output: FlowItem };
   flip?: boolean;
+  /** When set, the pillar renders this isometric scene instead of the DOM flow. */
+  iso?: Diagram;
 }
 
 const pillars: Pillar[] = [
@@ -161,6 +166,7 @@ const pillars: Pillar[] = [
       output: { icon: checkIcon, iconColor: "var(--green)", text: "Processed, nothing dropped" },
     },
     flip: true,
+    iso: opsPillarDiagram,
   },
 ];
 
@@ -410,7 +416,7 @@ export default function ServicesPage() {
                 </div>
                 {/* flow */}
                 <div className={p.flip ? "lg:order-1" : ""}>
-                  <FlowDiagram flow={p.flow} accent={p.accent} />
+                  {p.iso ? <PillarIsoPreview diagram={p.iso} /> : <FlowDiagram flow={p.flow} accent={p.accent} />}
                 </div>
               </div>
             </div>

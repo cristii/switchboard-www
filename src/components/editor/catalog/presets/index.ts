@@ -30,3 +30,5 @@ export { scoutsLeadsDiagram } from "./architecture";
 export { awsWebHostingDiagram } from "./aws";
 export { servicesFlowDiagram } from "./servicesFlow";
 export { architectureDeviceDiagram } from "./architectureDevices";
+export { buildPillarDiagram, opsPillarDiagram } from "./pillarFlow";
+export type { PillarStage } from "./pillarFlow";

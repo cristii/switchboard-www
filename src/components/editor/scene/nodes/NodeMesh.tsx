@@ -11,6 +11,7 @@ import * as THREE from "three";
 import { GroupContainer } from "./shapes/GroupContainer";
 import { TextNode } from "./shapes/TextNode";
 import { ModelNode } from "./shapes/ModelNode";
+import { StepIcon } from "./shapes/StepIcon";
 import { resolveNodeVisual } from "./nodeVisual";
 import { getNodeCatalogEntry } from "../../catalog/nodeCatalog";
 import { useWorkflowStore } from "../../state/useWorkflowStore";
@@ -64,6 +65,7 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
     entry,
     isGroup,
     isText,
+    isIcon,
     Shape,
     width,
     depth,
@@ -202,6 +204,17 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
           <GroupContainer node={node} theme={theme} selected={selected} />
         ) : isText ? (
           <TextNode node={node} theme={theme} selected={selected} />
+        ) : isIcon ? (
+          <StepIcon
+            icon={(node.meta?.icon as string) ?? "spark"}
+            width={width}
+            depth={depth}
+            height={height}
+            color={baseColor}
+            opacity={opacity}
+            roughness={roughness}
+            metalness={metalness}
+          />
         ) : modelUrl ? (
           <Suspense fallback={shapeEl}>
             <ModelNode url={modelUrl} width={width} depth={depth} height={height} color={baseColor} opacity={opacity} />

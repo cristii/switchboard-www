@@ -101,7 +101,10 @@ export {
   awsWebHostingDiagram,
   servicesFlowDiagram,
   architectureDeviceDiagram,
+  buildPillarDiagram,
+  opsPillarDiagram,
 } from "./catalog/presets";
+export type { PillarStage } from "./catalog/presets";
 export type { PresetEntry } from "./catalog/presets";
 export { layeredLayout } from "./catalog/layout/autoLayout";
 

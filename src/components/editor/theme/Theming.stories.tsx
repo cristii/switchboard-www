@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { IsometricWorkflowEditor } from "../IsometricWorkflowEditor";
 import { DiagramFrame } from "../preview/DiagramFrame";
 import { branchingSampleDiagram } from "../sampleDiagram";
-import { architectureDeviceDiagram, awsWebHostingDiagram, servicesFlowDiagram } from "../catalog/presets";
+import { architectureDeviceDiagram, awsWebHostingDiagram, opsPillarDiagram, servicesFlowDiagram } from "../catalog/presets";
 
 // Editor-scoped theming: the same diagram in both themes. The toggle lives in
 // the toolbar (see Editor/Panels/Toolbar); here we force each theme to compare
@@ -85,6 +85,24 @@ export const Architecture: StoryObj = {
           style={{ height: "100%", border: "none", borderRadius: 0, boxShadow: "none" }}
         />
       </DiagramFrame>
+    </div>
+  ),
+};
+
+/** A capabilities pillar (the reference "Operations Assurance") as stacked
+ *  double-layer hex platforms: a 3D step-icon + label per stage, a left bubble
+ *  tag, a right upright info-card, bold arrows + dashed links. This embeds on
+ *  /services in each capability card. */
+export const Capabilities: StoryObj = {
+  parameters: { layout: "fullscreen" },
+  render: () => (
+    <div style={{ padding: 24, height: "90vh", boxSizing: "border-box" }}>
+      <IsometricWorkflowEditor
+        chrome={false}
+        defaultThemeId="blueprint"
+        initialDiagram={opsPillarDiagram}
+        style={{ height: "100%" }}
+      />
     </div>
   ),
 };
