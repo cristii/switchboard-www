@@ -47,9 +47,10 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
     [hex, radius, topH],
   );
 
-  // Slab: a flat solid-colour base + an identical near-white cuboid FLOATING one
-  // layer-height above it (the gap = one layer). `height` is ONE layer's height, so
-  // the top surface (plate-top) is at y = 3·height — the icon's meta.elevation.
+  // Slab: a flat solid-colour base + an identical near-white cuboid, both FLOATING
+  // with one layer-height of air below the base and between the layers. `height` is
+  // ONE layer's height, so the layers sit at y=[1,2]·h and [3,4]·h and the top
+  // surface (plate-top) is at y = 4·height — the icon's meta.elevation.
   const layerH = Math.max(0.16, height);
   const slabRad = Math.min(0.6, Math.min(width, depth) * 0.16);
   const slabGeo = useMemo(
@@ -81,12 +82,12 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
     );
   }
 
-  // Slab: solid colour base + an identical near-white cuboid floating one layer-height
-  // above it (rounded vertical edges, sharp top/bottom; gap = one layer).
+  // Slab: solid colour base + an identical near-white cuboid, both floating (one
+  // layer of air below the base, one between the layers; rounded vertical edges).
   if (slab && slabGeo) {
     return (
       <group>
-        <mesh geometry={slabGeo} position={[0, 0, 0]} castShadow receiveShadow>
+        <mesh geometry={slabGeo} position={[0, layerH, 0]} castShadow receiveShadow>
           <meshStandardMaterial
             color={color}
             roughness={0.66}
@@ -95,7 +96,7 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
             emissiveIntensity={selected ? 0.3 : 0.05}
           />
         </mesh>
-        <mesh geometry={slabGeo} position={[0, layerH * 2, 0]} castShadow receiveShadow>
+        <mesh geometry={slabGeo} position={[0, layerH * 3, 0]} castShadow receiveShadow>
           <meshStandardMaterial
             color={lighten(color, 0.97)}
             roughness={0.78}

@@ -36,8 +36,8 @@ const SLAB_W = 4.4; // slab footprint
 const SLAB_H = 0.55; // ONE layer height (flat); the slab = base + gap + top = 3 layers
 const ICON_W = 2.2;
 const ICON_H = 1.5;
-// The slab's top surface (plate-top) sits at y = 3·layer (base + gap + top); seats the icon.
-const ELEV = SLAB_H * 3;
+// The slab's top surface (plate-top) sits at y = 4·layer (floor-gap + base + gap + top); seats the icon.
+const ELEV = SLAB_H * 4;
 
 /** Lerp a #rrggbb colour toward white by `amt` (0–1). Pure JS (no three) so this
  *  module stays importable from a Server Component. */
@@ -87,7 +87,7 @@ export const opsPillarDiagram: Diagram = buildPillarDiagram([
   {
     tag: "INPUT",
     icon: "bars",
-    color: "#7a57c2",
+    color: "#7a4ad4",
     label: "Traffic surge hits",
     cardTitle: "Monitoring & Resilience",
     cardItems: ["Uptime monitoring", "Failover & retry", "High-volume queues"],
@@ -95,7 +95,7 @@ export const opsPillarDiagram: Diagram = buildPillarDiagram([
   {
     tag: "PROCESSING",
     icon: "gear",
-    color: "#e8801f",
+    color: "#f5821a",
     label: "Queued, monitored, retried",
     cardTitle: "Pipeline",
     cardItems: ["Queue management", "Retry logic", "Backoff strategy"],
@@ -103,7 +103,7 @@ export const opsPillarDiagram: Diagram = buildPillarDiagram([
   {
     tag: "OUTPUT",
     icon: "check",
-    color: "#34a35b",
+    color: "#2bac61",
     label: "Processed, nothing dropped",
     cardTitle: "Visibility & Insights",
     cardItems: ["Custom dashboards", "Reporting", "Real-time metrics"],

@@ -21,14 +21,14 @@ export const signalTheme: ThemeSpec = {
   lights: [
     { id: "hemi", type: "hemisphere", sky: "#fbf9f2", ground: "#ded9cb", intensity: 0.62 },
     { id: "ambient", type: "ambient", color: "#f3f1ea", intensity: 0.5 },
-    // Key from the top-LEFT (per the reference's light direction), casting the soft
-    // layer-separating shadow.
-    { id: "key", type: "directional", color: "#fffaf2", intensity: 1.15, position: [-14, 26, 12], castShadow: true },
+    // Key from the top-LEFT for gentle side-modelling (the ground shadow is a separate
+    // top-down ContactShadows blob, so this light does NOT cast).
+    { id: "key", type: "directional", color: "#fffaf2", intensity: 1.15, position: [-14, 26, 12] },
     { id: "fill", type: "directional", color: "#e6e7dc", intensity: 0.3, position: [12, 12, -12] },
     { id: "warm", type: "point", color: "#f7b955", intensity: 0.18, position: [-8, 10, 10], distance: 44 },
   ],
-  // Soft, diffuse drop shadow (high blur radius, low opacity) like the reference.
-  shadow: { enabled: true, opacity: 0.14, radius: 18, bias: -0.0004 },
+  // Top-down soft, diffused ground shadow (drei ContactShadows) like the reference.
+  shadow: { enabled: true, opacity: 0.32, radius: 18, bias: -0.0004, contact: true },
   camera: { kind: "orthographic", isoDir: [1, 1, 1], zoom: 46 },
   nodes: {
     opacity: 1,
@@ -37,15 +37,15 @@ export const signalTheme: ThemeSpec = {
     emissive: 0.03,
     selectionEmissive: 0.42,
     colors: {
-      // Brightened on-brand stage hues (no blue): input / processing / output.
-      orange: "#e8801f",
-      green: "#34a35b",
-      violet: "#7a57c2",
+      // Vibrant on-brand stage hues (no blue): input / processing / output.
+      orange: "#f5821a",
+      green: "#2bac61",
+      violet: "#7a4ad4",
       amber: "#fbbf24",
       // Light paper-grey for incidental nodes.
       ink: "#e9e8e1",
     },
-    selection: "#e8801f",
+    selection: "#f5821a",
     paper: "#ffffff",
   },
   edges: {
