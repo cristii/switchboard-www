@@ -16,6 +16,7 @@ import {
   type PreviewDoc,
 } from "@/components/editor/preview/previewConfig";
 import { BUILT_IN_THEMES } from "@/components/editor/theme/themeRegistry";
+import { readHandoff } from "@/lib/diagramHandoff";
 
 const DiagramPreview = dynamic(
   () => import("@/components/editor/preview/DiagramPreview").then((m) => m.DiagramPreview),
@@ -60,8 +61,10 @@ function Chip({
 }
 
 export function PreviewPlayground() {
-  const [text, setText] = React.useState(() => serializePreviewDoc(INITIAL_DOC));
-  const [doc, setDoc] = React.useState<PreviewDoc>(INITIAL_DOC);
+  // A scene handed off from /diagram-library (one-shot), else the default sample.
+  const [seed] = React.useState<PreviewDoc>(() => readHandoff() ?? INITIAL_DOC);
+  const [text, setText] = React.useState(() => serializePreviewDoc(seed));
+  const [doc, setDoc] = React.useState<PreviewDoc>(seed);
   const [error, setError] = React.useState<string | null>(null);
   const [tab, setTab] = React.useState<Tab>("preview");
 

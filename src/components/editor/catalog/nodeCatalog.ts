@@ -249,6 +249,18 @@ export const NODE_CATALOG: Record<NodeKind, NodeCatalogEntry> = {
     defaultPorts: IN_OUT,
     defaultSize: { width: 1.3, depth: 1.3, height: 1.0 },
   },
+  nodeCard: {
+    kind: "nodeCard",
+    category: "Services",
+    label: "Node card",
+    description: "An n8n-style white slab with a flat 2D icon texture on top (meta.icon).",
+    // Rendered via NodeCardNode (not the shape registry); `shape` is a harmless placeholder.
+    shape: "slab",
+    colorRole: "ink",
+    glyph: "hub",
+    defaultPorts: IN_OUT,
+    defaultSize: { width: 2.0, depth: 2.0, height: 0.55 },
+  },
 };
 
 export const CATALOG_LIST: NodeCatalogEntry[] = Object.values(NODE_CATALOG);

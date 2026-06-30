@@ -12,6 +12,7 @@ import { GroupContainer } from "./shapes/GroupContainer";
 import { TextNode } from "./shapes/TextNode";
 import { ModelNode } from "./shapes/ModelNode";
 import { StepIcon } from "./shapes/StepIcon";
+import { NodeCardNode } from "./shapes/NodeCardNode";
 import { resolveNodeVisual } from "./nodeVisual";
 import { getNodeCatalogEntry } from "../../catalog/nodeCatalog";
 import { useWorkflowStore } from "../../state/useWorkflowStore";
@@ -66,6 +67,7 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
     isGroup,
     isText,
     isIcon,
+    isNodeCard,
     Shape,
     width,
     depth,
@@ -217,6 +219,10 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
               roughness={roughness}
               metalness={metalness}
             />
+          </group>
+        ) : isNodeCard ? (
+          <group position={[0, elevation, 0]}>
+            <NodeCardNode width={width} depth={depth} height={height} icon={node.meta?.icon as string | undefined} iconColor={baseColor} />
           </group>
         ) : modelUrl ? (
           <Suspense fallback={shapeEl}>
