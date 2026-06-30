@@ -42,3 +42,32 @@ npm run typecheck  # tsc --noEmit
 
 `next build` works with no environment variables set; integrations (Supabase, n8n,
 Cal.com) degrade gracefully when unconfigured. See `.env.example` for the full list.
+
+## Isometric diagram editor
+
+A 2.5D isometric **workflow + architecture diagram** editor (React Three Fiber / three.js),
+used to author the diagrams embedded across `/services`, `/process`, `/about` and `/work`.
+three.js is code-split (dynamic `import`, `ssr: false`) so it never ships on other routes;
+embedded diagrams render once to a static snapshot for performance.
+
+Three routes:
+
+| Route | What it is |
+|---|---|
+| **`/isometric-editor`** | The full editor — palette, inspector, theme manager, and a toolbar (undo/redo, zoom/fit/reset, link nodes, grid/shadows, **Copy JSON**, Export JSON/PNG). Built Tailwind-free with inline styles + `--editor-*` CSS vars so it stays self-contained and on-brand. |
+| **`/diagram-preview`** | A read-only playground: edit a `{ config, diagram }` JSON document and see it render live, with quick toggles for grid/shadows/labels/camera/theme. |
+| **`/diagram-library`** | Browsable galleries of ready-made **templates** and the **node components** they're built from (shadcn/Tailwind-Pro style). Right-click (or long-press on mobile) any card to **Open in editor**, **Copy JSON**, **Copy PNG**, **Copy embed code**, or **Open in playground**. |
+
+**Round-trip format.** Scenes serialize to a single `PreviewDoc` = `{ config, diagram }`
+(`config` carries the theme, grid/shadow/label flags and the framed camera; `diagram` carries
+nodes/edges). The library, the editor's **Copy JSON**, and the playground all share this format.
+
+**Authoring loop.** Open a library card in the editor → tweak camera/grid/theme/nodes →
+**Copy JSON** → paste it back into the library source (`src/lib/diagramLibrary.ts`) or the
+playground. Opening a card hands the scene to the editor/playground via a one-shot
+`localStorage` handoff (`src/lib/diagramHandoff.ts`).
+
+Detailed specs live under [`docs/`](./docs): the editor architecture in
+[`docs/editor`](./docs/editor), theming in [`docs/themes`](./docs/themes), the preview/embed
+format in [`docs/preview`](./docs/preview), and node/label/path references in
+[`docs/nodes`](./docs/nodes), [`docs/labels`](./docs/labels) and [`docs/paths`](./docs/paths).
