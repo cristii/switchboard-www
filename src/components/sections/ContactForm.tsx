@@ -87,7 +87,7 @@ export function ContactForm() {
     return (
       <div className="flex min-h-[600px] flex-col justify-center rounded-lg border-strong border-ink bg-white p-8 shadow-pop">
         <div className="mb-[30px] flex flex-col items-center text-center">
-          <span className="grid h-[72px] w-[72px] place-items-center rounded-full bg-green shadow-[5px_5px_0_rgba(21,33,31,0.14)]">
+          <span className="grid h-[72px] w-[72px] place-items-center rounded-full bg-green shadow-[5px_5px_0_rgba(var(--shadow-ink),0.14)]">
             <Check size={38} />
           </span>
           <h3 className="mb-[6px] mt-[18px] font-display text-[1.5rem] font-extrabold tracking-tight">

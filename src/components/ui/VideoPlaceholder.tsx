@@ -35,7 +35,7 @@ export function VideoPlaceholder({
         background: "linear-gradient(135deg, #1e2a28, #11201e)",
         display: "grid",
         placeItems: "center",
-        boxShadow: "var(--shadow-raised, 6px 6px 0 rgba(21,33,31,.14))",
+        boxShadow: "var(--shadow-raised, 6px 6px 0 rgba(var(--shadow-ink),.14))",
         ...style,
       }}
     >
@@ -49,7 +49,7 @@ export function VideoPlaceholder({
             display: "flex",
             justifyContent: "space-between",
             padding: "11px 14px",
-            color: "var(--paper)",
+            color: "var(--on-dark)",
             fontSize: ".82rem",
             fontWeight: 600,
             background: "linear-gradient(rgba(0,0,0,.55), transparent)",
@@ -72,7 +72,7 @@ export function VideoPlaceholder({
           border: "2px solid #fff",
         }}
       >
-        <svg viewBox="0 0 24 24" fill="var(--ink)" style={{ width: 26, height: 26, marginLeft: 4 }}>
+        <svg viewBox="0 0 24 24" fill="var(--dark)" style={{ width: 26, height: 26, marginLeft: 4 }}>
           <path d="M7 4v16l13-8z" />
         </svg>
       </span>
@@ -85,7 +85,7 @@ export function VideoPlaceholder({
             left: 0,
             right: 0,
             padding: 14,
-            color: "var(--paper)",
+            color: "var(--on-dark)",
           }}
         >
           {title && (

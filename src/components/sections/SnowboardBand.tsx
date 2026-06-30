@@ -3,7 +3,7 @@ import { Eyebrow, HandUnderline } from "@/components/ui";
 const heading = "font-display font-extrabold tracking-tight";
 
 const chip =
-  "inline-flex items-center gap-2 rounded-[20px] border border-ink bg-white px-[14px] py-[6px] text-[.84rem] font-medium shadow-[3px_3px_0_rgba(21,33,31,0.08)]";
+  "inline-flex items-center gap-2 rounded-[20px] border border-ink bg-white px-[14px] py-[6px] text-[.84rem] font-medium shadow-[3px_3px_0_rgba(var(--shadow-ink),0.08)]";
 
 /** Minimal 6-arm line snowflake. Decorative. */
 function Snowflake({ size = 16 }: { size?: number }) {
@@ -148,7 +148,7 @@ export function SnowboardBand() {
         <div className="relative mx-auto w-full max-w-[420px]">
           <div className="relative rounded-[18px] border-2 border-ink bg-white p-3 shadow-raised transition-transform hover:-translate-y-1">
             <div
-              className="absolute -left-3 -top-3 z-[3] flex items-center gap-[6px] rounded-[8px] border-[1.5px] border-ink bg-amber px-[10px] py-[5px] font-hand text-[1.12rem] font-semibold shadow-[3px_3px_0_rgba(21,33,31,0.18)]"
+              className="absolute -left-3 -top-3 z-[3] flex items-center gap-[6px] rounded-[8px] border-[1.5px] border-ink bg-amber px-[10px] py-[5px] font-hand text-[1.12rem] font-semibold shadow-[3px_3px_0_rgba(var(--shadow-ink),0.18)]"
               style={{ transform: "rotate(-5deg)" }}
             >
               {boardGlyph(18, "var(--ink)")}

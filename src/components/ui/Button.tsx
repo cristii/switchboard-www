@@ -63,13 +63,13 @@ export function Button({
       background: "transparent",
       color: "var(--ink)",
       borderColor: "var(--ink)",
-      boxShadow: "var(--shadow-btn-ghost, 3px 3px 0 rgba(21,33,31,.18))",
+      boxShadow: "var(--shadow-btn-ghost, 3px 3px 0 rgba(var(--shadow-ink),.18))",
     },
     light: {
       background: "var(--paper)",
       color: "var(--ink)",
       borderColor: "var(--ink)",
-      boxShadow: "var(--shadow-btn-ghost, 3px 3px 0 rgba(21,33,31,.18))",
+      boxShadow: "var(--shadow-btn-ghost, 3px 3px 0 rgba(var(--shadow-ink),.18))",
     },
   };
 
@@ -102,7 +102,7 @@ export function Button({
     e.currentTarget.style.boxShadow =
       variant === "primary"
         ? "var(--shadow-btn-hover, 5px 5px 0 var(--ink))"
-        : "5px 5px 0 rgba(21,33,31,.22)";
+        : "5px 5px 0 rgba(var(--shadow-ink),.22)";
   };
   const onLeave = (e: React.MouseEvent<HTMLElement>) => {
     if (disabled) return;

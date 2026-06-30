@@ -221,7 +221,7 @@ export function KnowledgeBase() {
     >
       <SearchGlyph size={big ? 19 : 16} />
       <span className="flex-1 text-left">{big ? "Try “webhook”, “timeout”, “idempotency”…" : "Search the docs…"}</span>
-      <kbd className="rounded-[5px] border-[1.5px] border-ink bg-paper px-[6px] py-[1px] font-mono text-[.68rem] text-ink shadow-[1px_1px_0_rgba(21,33,31,0.2)]">
+      <kbd className="rounded-[5px] border-[1.5px] border-ink bg-paper px-[6px] py-[1px] font-mono text-[.68rem] text-ink shadow-[1px_1px_0_rgba(var(--shadow-ink),0.2)]">
         ⌘K
       </kbd>
     </button>
@@ -347,7 +347,7 @@ export function KnowledgeBase() {
           onClick={() => setSearchOpen(false)}
         >
           <div
-            className="w-full max-w-[620px] overflow-hidden rounded-[16px] border border-ink bg-paper shadow-[10px_10px_0_rgba(21,33,31,0.18)]"
+            className="w-full max-w-[620px] overflow-hidden rounded-[16px] border border-ink bg-paper shadow-[10px_10px_0_rgba(var(--shadow-ink),0.18)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center gap-3 border-b border-ink bg-white px-[18px] py-4 text-ink-soft">
@@ -512,7 +512,7 @@ function ArticleView({
       </div>
 
       {article.artifact && (
-        <div className="my-8 rounded-[14px] border border-black bg-dark px-6 py-[22px] text-on-dark shadow-[6px_6px_0_rgba(21,33,31,0.15)]">
+        <div className="my-8 rounded-[14px] border border-black bg-dark px-6 py-[22px] text-on-dark shadow-[6px_6px_0_rgba(var(--shadow-ink),0.15)]">
           <div className={`${display} mb-2 flex items-center gap-2 text-[.72rem] font-bold uppercase tracking-[.06em] text-amber`}>
             <Icon src={linkIcon} color="var(--amber)" size={16} />
             The artifact

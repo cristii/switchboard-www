@@ -18,7 +18,9 @@ const backgrounds: Record<NonNullable<SectionProps["tone"]>, string> = {
   default: "transparent",
   alt: "var(--paper-2)",
   dark: "var(--dark)",
-  ink: "var(--ink)",
+  // Theme-stable inverse band: --ink flips to light in dark mode, so the "ink"
+  // band reads from --surface-inverse-2 to stay dark in both themes.
+  ink: "var(--surface-inverse-2)",
 };
 
 /**
@@ -41,7 +43,8 @@ export function Section({
       id={id}
       style={{
         background: backgrounds[tone],
-        color: onDark ? "var(--paper)" : "var(--ink)",
+        // --on-dark is theme-stable (always light); --paper would flip dark.
+        color: onDark ? "var(--on-dark)" : "var(--ink)",
         paddingTop: py,
         paddingBottom: py,
         ...style,

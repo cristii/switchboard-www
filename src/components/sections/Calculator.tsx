@@ -273,9 +273,9 @@ export function Calculator() {
   const sectionLabel = `${display} text-[.78rem] font-extrabold uppercase tracking-[.06em] text-ink`;
   const rangeStyle = { accentColor: "var(--orange)" } as React.CSSProperties;
   const modelCard = (sel: boolean) =>
-    `min-w-0 flex-1 cursor-pointer rounded-[11px] bg-white p-[11px] text-left shadow-[2px_2px_0_rgba(21,33,31,0.1)] transition-transform hover:-translate-y-[1px] ${sel ? "border-2 border-orange shadow-[3px_3px_0_var(--orange)]" : "border border-ink"}`;
+    `min-w-0 flex-1 cursor-pointer rounded-[11px] bg-white p-[11px] text-left shadow-[2px_2px_0_rgba(var(--shadow-ink),0.1)] transition-transform hover:-translate-y-[1px] ${sel ? "border-2 border-orange shadow-[3px_3px_0_var(--orange)]" : "border border-ink"}`;
   const pillOpt = (sel: boolean) =>
-    `${display} rounded-[9px] border px-3 py-2 text-[.8rem] font-bold transition-colors ${sel ? "border-ink bg-ink text-on-dark" : "border-ink bg-white text-ink-soft"}`;
+    `${display} rounded-[9px] border px-3 py-2 text-[.8rem] font-bold transition-colors ${sel ? "border-ink bg-dark text-on-dark" : "border-ink bg-white text-ink-soft"}`;
 
   return (
     <>
@@ -289,8 +289,8 @@ export function Calculator() {
             key={p.key}
             type="button"
             onClick={() => applyPreset(p.key)}
-            className={`${display} rounded-[10px] border-2 border-ink px-[15px] py-[10px] text-[.82rem] font-bold shadow-[3px_3px_0_rgba(21,33,31,0.18)] transition-transform hover:-translate-y-[2px] ${
-              s.preset === p.key ? "bg-ink text-on-dark shadow-[3px_3px_0_var(--orange)]" : "bg-paper text-ink"
+            className={`${display} rounded-[10px] border-2 border-ink px-[15px] py-[10px] text-[.82rem] font-bold shadow-[3px_3px_0_rgba(var(--shadow-ink),0.18)] transition-transform hover:-translate-y-[2px] ${
+              s.preset === p.key ? "bg-dark text-on-dark shadow-[3px_3px_0_var(--orange)]" : "bg-paper text-ink"
             }`}
           >
             {p.label}
@@ -327,7 +327,7 @@ export function Calculator() {
                   key={a.key}
                   type="button"
                   onClick={() => toggleApp(a.key)}
-                  className={`${display} inline-flex items-center gap-2 rounded-[10px] border px-[13px] py-[9px] text-[.82rem] font-bold shadow-[2px_2px_0_rgba(21,33,31,0.12)] transition-transform hover:-translate-y-[1px] ${
+                  className={`${display} inline-flex items-center gap-2 rounded-[10px] border px-[13px] py-[9px] text-[.82rem] font-bold shadow-[2px_2px_0_rgba(var(--shadow-ink),0.12)] transition-transform hover:-translate-y-[1px] ${
                     on ? "border-orange-deep bg-orange text-white shadow-[2px_2px_0_var(--ink)]" : "border-ink bg-white text-ink"
                   }`}
                 >
@@ -539,14 +539,14 @@ export function Calculator() {
             <div className="flex gap-[10px]">
               <a
                 href="/contact"
-                className={`${display} flex min-h-[46px] flex-1 items-center justify-center rounded-[10px] border-2 border-ink bg-paper text-[.84rem] font-bold uppercase tracking-[.02em] text-ink no-underline shadow-[3px_3px_0_rgba(21,33,31,0.18)]`}
+                className={`${display} flex min-h-[46px] flex-1 items-center justify-center rounded-[10px] border-2 border-ink bg-paper text-[.84rem] font-bold uppercase tracking-[.02em] text-ink no-underline shadow-[3px_3px_0_rgba(var(--shadow-ink),0.18)]`}
               >
                 Get exact quote
               </a>
               <button
                 type="button"
                 onClick={download}
-                className={`${display} flex min-h-[46px] flex-1 items-center justify-center gap-[6px] rounded-[10px] border-2 border-ink bg-white text-[.84rem] font-bold uppercase tracking-[.02em] text-ink shadow-[3px_3px_0_rgba(21,33,31,0.18)]`}
+                className={`${display} flex min-h-[46px] flex-1 items-center justify-center gap-[6px] rounded-[10px] border-2 border-ink bg-white text-[.84rem] font-bold uppercase tracking-[.02em] text-ink shadow-[3px_3px_0_rgba(var(--shadow-ink),0.18)]`}
               >
                 Download
               </button>

@@ -34,14 +34,18 @@
   --border:        var(--bw) solid var(--ink);
   --border-strong: var(--bw-strong) solid var(--ink);
 
-  /* ---- HARD offset shadows (x y blur=0) ---- */
-  --shadow-card:    4px 4px 0 rgba(21,33,31,0.10);  /* resting card */
-  --shadow-raised:  6px 6px 0 rgba(21,33,31,0.14);  /* video / portrait */
-  --shadow-pop:     8px 8px 0 rgba(21,33,31,0.16);  /* chat widget */
-  --shadow-btn:     3px 3px 0 var(--ink);           /* primary button */
-  --shadow-btn-hover: 5px 5px 0 var(--ink);         /* button lifted */
-  --shadow-btn-ghost: 3px 3px 0 rgba(21,33,31,0.18);
-  --shadow-accent:  5px 5px 0 var(--orange);        /* featured plan */
+  /* ---- HARD offset shadows (x y blur=0; NEVER add blur) ----
+     The tint comes from --shadow-ink so the whole set survives dark
+     mode: an ink shadow vanishes on a dark surface, so dark flips
+     --shadow-ink to black (see colors-era override below / dark scope). */
+  --shadow-ink:     21,33,31;                          /* shadow tint as r,g,b */
+  --shadow-card:    4px 4px 0 rgba(var(--shadow-ink),0.10);  /* resting card */
+  --shadow-raised:  6px 6px 0 rgba(var(--shadow-ink),0.14);  /* video / portrait */
+  --shadow-pop:     8px 8px 0 rgba(var(--shadow-ink),0.16);  /* chat widget */
+  --shadow-btn:     3px 3px 0 var(--ink);              /* primary button (flips with --ink) */
+  --shadow-btn-hover: 5px 5px 0 var(--ink);            /* button lifted */
+  --shadow-btn-ghost: 3px 3px 0 rgba(var(--shadow-ink),0.18);
+  --shadow-accent:  5px 5px 0 var(--orange);           /* featured plan */
 
   /* ---- Motion ---- */
   --ease:        ease;
@@ -54,4 +58,12 @@
   --radius-card:   var(--r);
   --radius-input:  var(--r-sm);
   --shadow-default: var(--shadow-card);
+}
+
+/* Dark theme: the shadow tint is "ink-coloured", and ink is now light, so the
+   hard offset blocks invert to a light edge on dark — the exact mirror of the
+   dark blocks on paper. --shadow-btn (= var(--ink)) flips on its own. The
+   shadows stay HARD and zero-blur. See src/styles/colors.css for the palette. */
+:root[data-theme="dark"] {
+  --shadow-ink: 233,232,223;
 }

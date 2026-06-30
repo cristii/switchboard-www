@@ -13,6 +13,19 @@ import "../src/styles/global.css";
 
 const preview: Preview = {
   globalTypes: {
+    siteTheme: {
+      description: "Site light/dark theme (data-theme on <html>)",
+      defaultValue: "light",
+      toolbar: {
+        title: "Site theme",
+        icon: "mirror",
+        items: [
+          { value: "light", title: "Site: Light" },
+          { value: "dark", title: "Site: Dark" },
+        ],
+        dynamicTitle: true,
+      },
+    },
     editorTheme: {
       description: "Editor-scoped light/dark theme (data-editor-theme)",
       defaultValue: "light",
@@ -39,6 +52,7 @@ const preview: Preview = {
         { name: "paper-2", value: "#E1E2D7" },
         { name: "white", value: "#FFFFFF" },
         { name: "dark", value: "#11201E" },
+        { name: "page-dark", value: "#0E1A18" },
       ],
     },
     options: {
@@ -59,6 +73,12 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const editorTheme = (context.globals.editorTheme as string) ?? "light";
+      const siteTheme = (context.globals.siteTheme as string) ?? "light";
+      // Site dark tokens are scoped to :root[data-theme="dark"], so the flag
+      // must live on the document element, not a wrapper.
+      React.useEffect(() => {
+        document.documentElement.dataset.theme = siteTheme;
+      }, [siteTheme]);
       return (
         <div data-editor-theme={editorTheme} style={{ padding: "28px" }}>
           <Story />

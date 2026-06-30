@@ -34,10 +34,18 @@
     line-height: var(--lh-body);
     background-color: var(--paper);
     background-image:
-      repeating-linear-gradient(0deg, rgba(21, 33, 31, 0.022) 0 1px, transparent 1px 32px),
-      repeating-linear-gradient(90deg, rgba(21, 33, 31, 0.022) 0 1px, transparent 1px 32px),
+      repeating-linear-gradient(0deg, var(--grid-ink) 0 1px, transparent 1px 32px),
+      repeating-linear-gradient(90deg, var(--grid-ink) 0 1px, transparent 1px 32px),
       url("../assets/grain.svg");
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* Smooth the swap between light and dark. Only the colour-bearing properties
+     transition (never layout); the reduced-motion block below disables it. */
+  html[data-theme] body,
+  html[data-theme] body * {
+    transition: background-color var(--dur, 0.25s) ease,
+      border-color var(--dur, 0.25s) ease, color var(--dur, 0.25s) ease;
   }
 
   a {

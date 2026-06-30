@@ -39,7 +39,7 @@ export function Card({
           ? "none"
           : featured
             ? "var(--shadow-accent, 5px 5px 0 var(--orange))"
-            : "var(--shadow-card, 4px 4px 0 rgba(21,33,31,.1))",
+            : "var(--shadow-card, 4px 4px 0 rgba(var(--shadow-ink),.1))",
         padding: "22px 24px",
         ...style,
       }}

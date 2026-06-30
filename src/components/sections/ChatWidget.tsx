@@ -98,7 +98,7 @@ export function ChatWidget({
       className={`flex ${heightClass} flex-col overflow-hidden rounded-lg border-strong border-ink bg-white shadow-pop`}
     >
       {/* head */}
-      <div className="flex items-center gap-[11px] bg-dark px-4 py-[14px] text-paper">
+      <div className="flex items-center gap-[11px] bg-dark px-4 py-[14px] text-on-dark">
         <span className="grid h-[34px] w-[34px] flex-none place-items-center rounded-sm bg-orange">
           <svg
             viewBox="0 0 24 24"

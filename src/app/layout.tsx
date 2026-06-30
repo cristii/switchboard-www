@@ -44,9 +44,19 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+// Runs before first paint (in <head>, blocking) so the page never flashes the
+// wrong theme. Reads the saved preference ("light"/"dark"); with none, follows
+// the OS via prefers-color-scheme. Mirrors the key used by src/lib/useTheme.ts.
+const themeBootstrap = `(function(){try{var t=localStorage.getItem("sb-theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.dataset.theme=t;}catch(e){document.documentElement.dataset.theme="light";}})();`;
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
+        {/* Browser UI colour; kept in sync with the active theme by useTheme. */}
+        <meta name="theme-color" content="#E9E8DF" />
+      </head>
       <body>
         <SiteChrome>{children}</SiteChrome>
         <Analytics />

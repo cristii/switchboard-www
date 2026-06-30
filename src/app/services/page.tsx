@@ -505,7 +505,7 @@ export default function ServicesPage() {
       {/* ============ FINAL CTA ============ */}
       <Section tone="ink" innerStyle={{ textAlign: "center" }}>
         <h2
-          className={`${heading} mx-auto max-w-[15em] text-[clamp(1.9rem,3.6vw,2.8rem)] leading-[1.06] text-paper`}
+          className={`${heading} mx-auto max-w-[15em] text-[clamp(1.9rem,3.6vw,2.8rem)] leading-[1.06] text-on-dark`}
         >
           Still researching? <span className="text-orange">Let&apos;s map it out together.</span>
         </h2>

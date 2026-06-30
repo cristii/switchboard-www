@@ -6,6 +6,8 @@
    ============================================================ */
 
 :root {
+  color-scheme: light;
+
   /* ---- Paper neutrals (backgrounds, surfaces) ---- */
   --paper:        #E9E8DF; /* page background */
   --paper-2:      #E1E2D7; /* alternating section / inset surface */
@@ -20,6 +22,7 @@
   /* ---- Lines ---- */
   --line:         #B9C2B6; /* default hairline / input border */
   --line-soft:    #CBD2C5; /* faint divider */
+  --grid-ink:     rgba(21, 33, 31, 0.022); /* faint 32px canvas grid line */
 
   /* ---- Brand accent (burnt orange) ---- */
   --orange:       #B45309; /* primary accent, links, CTA fill */
@@ -47,6 +50,10 @@
   --bg-page:        var(--paper);
   --bg-alt:         var(--paper-2);
   --bg-inverse:     var(--dark);
+  /* Second inverse-band surface (the "ink" Section tone). Theme-stable: it must
+     stay a dark band in BOTH themes, so it can't ride on --ink (which inverts to
+     light in dark mode). Light = the ink shade; dark scope re-points it below. */
+  --surface-inverse-2: var(--ink);
   --surface-card:   var(--white);
   --surface-sunken: var(--paper-3);
 
@@ -64,4 +71,62 @@
   --accent-deep:    var(--orange-deep);
   --link:           var(--orange);
   --focus-ring:     var(--orange);
+}
+
+/* ============================================================
+   Dark theme — "ink & paper"
+   The same warm palette, inverted: the recycled-paper canvas
+   becomes a deep pine-ink surface ladder, text points at the
+   on-dark scale already shipped above, and the burnt-orange
+   accent brightens just enough to clear AA on near-black.
+   Scoped to [data-theme="dark"] on <html> so nothing leaks into
+   light mode; Tailwind + the Tailwind-free DS components read
+   these same vars, so the whole product flips from this block.
+   Activated by the no-flash bootstrap in src/app/layout.tsx.
+   ============================================================ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* ---- Ink surface ladder (was the four paper steps) ---- */
+  --paper:        #0E1A18; /* page background (deep ink-black) */
+  --paper-2:      #15211F; /* alternating section / inset surface */
+  --paper-3:      #0B1413; /* deepest well, chips & sunken */
+  --white:        #1C2A27; /* raised surface fill (cards, inputs) — not literal white here */
+
+  /* ---- Ink (primary text AND the signature hard outline) ----
+     One token drives both, so it must stay readable as text. We invert
+     it to the light on-dark primary: text reads crisply, and the hard
+     1.5–2px outline becomes a light edge on dark — the exact mirror of
+     light mode's dark outline on paper. */
+  --ink:          #E9E8DF; /* primary text + hard border (= on-dark) */
+  --ink-soft:     #9AA49D; /* secondary / muted text (= on-dark-muted) */
+  --dark:         #0B1413; /* darkest band (footer) stays darkest */
+
+  /* ---- Lines ---- */
+  --line:         #243330; /* default hairline / input border */
+  --line-soft:    #1F2C29; /* faint divider */
+  --grid-ink:     rgba(233, 232, 223, 0.02); /* faint light grid line on dark */
+
+  /* ---- Brand accent (brightened burnt orange for AA on dark) ---- */
+  --orange:       #D9772B; /* primary accent, links, CTA fill */
+  --orange-deep:  #B45309; /* accent border / pressed (the light primary) */
+
+  /* ---- Tag tints (deep translucent bg, brighter fg) ---- */
+  --tint-green-bg:  rgba(91, 160, 107, 0.16); --tint-green-fg:  #7FB98C;
+  --tint-amber-bg:  rgba(251, 191, 36, 0.16); --tint-amber-fg:  #F0C964;
+  --tint-violet-bg: rgba(154, 120, 192, 0.18); --tint-violet-fg: #B79BD6;
+
+  /* ============ Semantic aliases ============
+     Most aliases reference tokens that already flipped above
+     (e.g. --text-strong → --ink, --surface-card → --white), so they
+     need no override. Only the two that hardcode a paper-era value do:
+       • --text-body was a literal hex
+       • --text-on-dark was var(--paper), which now flips dark — keep it light
+     --text-on-accent stays #FFFFFF: white still reads on the orange fill. */
+  --text-body:      #C8CEC6;        /* running body text on dark */
+  --text-on-dark:   var(--on-dark);
+
+  /* Keep the "ink" inverse band dark (--ink itself flipped to light above).
+     --paper-2 is #15211F here, so the band stays a lifted dark surface. */
+  --surface-inverse-2: var(--paper-2);
 }

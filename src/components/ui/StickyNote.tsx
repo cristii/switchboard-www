@@ -28,7 +28,7 @@ export function StickyNote({
         borderRadius: "10px",
         padding: "18px 20px",
         transform: `rotate(${rotate}deg)`,
-        boxShadow: "var(--shadow-card, 4px 4px 0 rgba(21,33,31,.1))",
+        boxShadow: "var(--shadow-card, 4px 4px 0 rgba(var(--shadow-ink),.1))",
         ...style,
       }}
     >

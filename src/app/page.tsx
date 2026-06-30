@@ -101,7 +101,7 @@ export default function HomePage() {
             >
               <p className="text-base leading-[1.5]">&quot;{q.quote}&quot;</p>
               <div className="mt-3 text-[.82rem] text-on-dark-muted">
-                <b className="font-display font-semibold text-paper">Sample testimonial</b>, swap
+                <b className="font-display font-semibold text-on-dark">Sample testimonial</b>, swap
                 in a real client quote here
               </div>
             </div>
@@ -311,7 +311,7 @@ export default function HomePage() {
           ))}
         </div>
 
-        <div className="mt-9 flex flex-wrap items-center justify-between gap-5 rounded bg-ink px-[26px] py-5 text-paper">
+        <div className="mt-9 flex flex-wrap items-center justify-between gap-5 rounded bg-dark px-[26px] py-5 text-on-dark">
           <div className="flex items-center gap-[13px] text-[1.05rem] font-medium">
             <svg viewBox="0 0 24 24" fill="none" stroke="#B45309" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 flex-none">
               <path d="M12 3a6 6 0 0 1 6 6c0 3-2 4-2 7H8c0-3-2-4-2-7a6 6 0 0 1 6-6zM9 20h6M10 22h4" />
@@ -582,7 +582,7 @@ export default function HomePage() {
       <Section tone="ink" id="footcta" py="40px">
         <div className="flex flex-wrap items-center justify-between gap-[30px]">
           <div>
-            <h2 className={`${heading} text-[clamp(1.6rem,3vw,2.3rem)] text-paper`}>
+            <h2 className={`${heading} text-[clamp(1.6rem,3vw,2.3rem)] text-on-dark`}>
               Don&apos;t read another section.
               <br />
               <span className="text-orange">Try the assistant.</span>

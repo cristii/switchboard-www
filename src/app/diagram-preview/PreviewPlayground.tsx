@@ -50,7 +50,7 @@ function Chip({
       onClick={onClick}
       className={`rounded-pill border px-3 py-1 text-sm transition-colors ${
         active
-          ? "border-ink bg-ink text-paper"
+          ? "border-ink bg-dark text-on-dark"
           : "border-line bg-white text-ink hover:border-ink"
       }`}
     >

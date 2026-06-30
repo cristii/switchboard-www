@@ -34,7 +34,7 @@ export function ServiceCard({
         gridTemplateColumns: number ? "auto 1fr" : "1fr",
         gap: 20,
         alignItems: "start",
-        boxShadow: "var(--shadow-card, 4px 4px 0 rgba(21,33,31,.1))",
+        boxShadow: "var(--shadow-card, 4px 4px 0 rgba(var(--shadow-ink),.1))",
         ...style,
       }}
     >

@@ -167,7 +167,7 @@ const contactRows: { icon: React.ReactNode; label: string; value: string; href?:
 /* ---------- Reusable bits ---------- */
 
 const factChip =
-  "inline-flex items-center gap-2 rounded-[20px] border border-ink bg-white px-[15px] py-[7px] text-[.86rem] font-medium shadow-[3px_3px_0_rgba(21,33,31,0.08)]";
+  "inline-flex items-center gap-2 rounded-[20px] border border-ink bg-white px-[15px] py-[7px] text-[.86rem] font-medium shadow-[3px_3px_0_rgba(var(--shadow-ink),0.08)]";
 
 const stackTag = "rounded-[9px] border border-ink bg-paper px-[13px] py-[6px] text-[.9rem] font-semibold";
 
@@ -237,7 +237,7 @@ export default function AboutPage() {
           {/* portrait */}
           <div className="relative mx-auto w-full max-w-[340px]">
             <div
-              className="absolute -right-2 -top-4 z-[3] rounded-[8px] border border-ink bg-amber px-3 py-[5px] font-hand text-[1.18rem] font-semibold shadow-[3px_3px_0_rgba(21,33,31,0.18)]"
+              className="absolute -right-2 -top-4 z-[3] rounded-[8px] border border-ink bg-amber px-3 py-[5px] font-hand text-[1.18rem] font-semibold shadow-[3px_3px_0_rgba(var(--shadow-ink),0.18)]"
               style={{ transform: "rotate(4deg)" }}
             >
               ↳ that&apos;s me

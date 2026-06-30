@@ -145,7 +145,7 @@ export default function FaqPage() {
           <BookCall arrow>Book a 15-min call</BookCall>
           <a
             href={socialLinks.email}
-            className={`${display} inline-flex items-center justify-center rounded-[10px] border-2 border-paper bg-transparent px-[1.6em] py-[.85em] text-[.86rem] font-bold uppercase tracking-[.02em] text-paper no-underline`}
+            className={`${display} inline-flex items-center justify-center rounded-[10px] border-2 border-on-dark bg-transparent px-[1.6em] py-[.85em] text-[.86rem] font-bold uppercase tracking-[.02em] text-on-dark no-underline`}
           >
             Email me
           </a>

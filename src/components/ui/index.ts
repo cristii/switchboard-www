@@ -59,3 +59,6 @@ export type { VideoPlaceholderProps } from "./VideoPlaceholder";
 
 export { Portrait } from "./Portrait";
 export type { PortraitProps } from "./Portrait";
+
+export { ThemeToggle } from "./ThemeToggle";
+export type { ThemeToggleProps } from "./ThemeToggle";

@@ -3,7 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ThemeToggle } from "@/components/ui";
 import { primaryNav, isActiveRoute } from "@/lib/nav";
+import { useTheme } from "@/lib/useTheme";
 import { BookCall } from "./BookCall";
 
 /**
@@ -15,6 +17,7 @@ export function MobileNav() {
   const [open, setOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement>(null);
   const pathname = usePathname() ?? "/";
+  const { theme, toggle } = useTheme();
 
   React.useEffect(() => {
     if (!open) return;
@@ -72,6 +75,12 @@ export function MobileNav() {
                 </Link>
               );
             })}
+            <div className="flex items-center justify-between border-b border-line-soft py-[14px]">
+              <span className="font-display text-base font-semibold text-ink">
+                {theme === "dark" ? "Dark theme" : "Light theme"}
+              </span>
+              <ThemeToggle theme={theme} onToggle={toggle} />
+            </div>
             <div className="py-4">
               <BookCall size="md" arrow onClick={() => setOpen(false)} style={{ width: "100%" }}>
                 Book a 15-min call

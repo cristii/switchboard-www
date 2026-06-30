@@ -114,7 +114,7 @@ export function SiteFooter() {
         {/* oversized ghost wordmark */}
         <div
           aria-hidden="true"
-          className="mb-[-10px] mt-[46px] select-none whitespace-nowrap font-display text-[9.6rem] font-extrabold leading-[.82] tracking-[-.04em] text-[color-mix(in_srgb,var(--paper)_6%,transparent)]"
+          className="mb-[-10px] mt-[46px] select-none whitespace-nowrap font-display text-[9.6rem] font-extrabold leading-[.82] tracking-[-.04em] text-[color-mix(in_srgb,var(--on-dark)_6%,transparent)]"
         >
           Switchboard
         </div>

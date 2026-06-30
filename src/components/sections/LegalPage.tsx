@@ -75,7 +75,7 @@ export function LegalPage({ title, lead, summary, sections, disclaimer, updated 
         <Eyebrow>Legal</Eyebrow>
         <h1 className={`${heading} mb-[14px] mt-3 text-[clamp(2.1rem,4.4vw,3.2rem)] leading-[1.04]`}>{title}</h1>
         <p className="m-0 max-w-[42em] text-lead text-ink-body">{lead}</p>
-        <div className="mt-5 inline-flex items-center gap-2 rounded-[20px] border border-ink bg-white px-[14px] py-[6px] text-[.82rem] font-medium shadow-[3px_3px_0_rgba(21,33,31,0.08)]">
+        <div className="mt-5 inline-flex items-center gap-2 rounded-[20px] border border-ink bg-white px-[14px] py-[6px] text-[.82rem] font-medium shadow-[3px_3px_0_rgba(var(--shadow-ink),0.08)]">
           <span className="h-[7px] w-[7px] rounded-full bg-green" />
           Last updated · {updated}
         </div>
@@ -104,7 +104,7 @@ export function LegalPage({ title, lead, summary, sections, disclaimer, updated 
 
           {/* Article */}
           <article className="max-w-[720px]">
-            <p className="mb-[30px] rounded-[12px] border border-ink bg-white px-[18px] py-4 text-[.94rem] text-ink-soft shadow-[4px_4px_0_rgba(21,33,31,0.08)]">
+            <p className="mb-[30px] rounded-[12px] border border-ink bg-white px-[18px] py-4 text-[.94rem] text-ink-soft shadow-[4px_4px_0_rgba(var(--shadow-ink),0.08)]">
               {summary}
             </p>
 

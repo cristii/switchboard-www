@@ -30,7 +30,7 @@ export function Portrait({
         borderRadius: "var(--r, 14px)",
         overflow: "hidden",
         aspectRatio: ratio,
-        boxShadow: "var(--shadow-raised, 6px 6px 0 rgba(21,33,31,.14))",
+        boxShadow: "var(--shadow-raised, 6px 6px 0 rgba(var(--shadow-ink),.14))",
         display: "grid",
         placeItems: "center",
         position: "relative",

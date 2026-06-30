@@ -30,6 +30,15 @@ function readActiveId(): string | null {
   }
 }
 
+// With no saved editor theme, follow the site's light/dark mode (set on <html>
+// by the no-flash bootstrap in src/app/layout.tsx) instead of defaulting to
+// light. Maps onto the built-in "light"/"dark" editor themes. Once the user
+// picks an editor theme explicitly, that choice is persisted and wins.
+function siteThemeId(): "light" | "dark" {
+  if (typeof document === "undefined") return "light";
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+}
+
 function writeActiveId(id: string): void {
   if (typeof window === "undefined") return;
   try {
@@ -66,7 +75,7 @@ export interface ThemeManagerApi {
 }
 
 export function useThemeManager(initialId?: string): ThemeManagerApi {
-  const startId = initialId ?? readActiveId() ?? "light";
+  const startId = initialId ?? readActiveId() ?? siteThemeId();
   const [themeId, setThemeIdState] = useState<string>(startId);
   const [spec, setSpec] = useState<ThemeSpec>(() => getThemeSpec(startId));
   // Bumped on any persistence change so the themes list refreshes.

@@ -27,7 +27,7 @@ function FolkStrip({ id }: { id: string }) {
 function TricolorTag() {
   return (
     <div
-      className="absolute -right-3 -top-3 z-[3] flex overflow-hidden rounded-[6px] border-[1.5px] border-ink shadow-[3px_3px_0_rgba(21,33,31,0.18)]"
+      className="absolute -right-3 -top-3 z-[3] flex overflow-hidden rounded-[6px] border-[1.5px] border-ink shadow-[3px_3px_0_rgba(var(--shadow-ink),0.18)]"
       style={{ transform: "rotate(5deg)" }}
       aria-hidden="true"
     >
