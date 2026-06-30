@@ -36,28 +36,28 @@ export default function NotFound() {
             className="max-w-full overflow-visible"
           >
             {/* left node */}
-            <rect x="6" y="34" width="56" height="56" rx="14" fill="#fff" stroke="#15211F" strokeWidth="2" />
-            <path d="M27 62h14M34 55v14" stroke="#15211F" strokeWidth="2" strokeLinecap="round" />
-            <circle cx="62" cy="62" r="4.5" fill="#15211F" />
+            <rect x="6" y="34" width="56" height="56" rx="14" fill="var(--white)" stroke="var(--ink)" strokeWidth="2" />
+            <path d="M27 62h14M34 55v14" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+            <circle cx="62" cy="62" r="4.5" fill="var(--ink)" />
             {/* broken wire halves */}
-            <path d="M70 62 H140" stroke="#15211F" strokeWidth="2" strokeDasharray="7 7" strokeLinecap="round" />
-            <path d="M196 62 H262" stroke="#15211F" strokeWidth="2" strokeDasharray="7 7" strokeLinecap="round" />
+            <path d="M70 62 H140" stroke="var(--ink)" strokeWidth="2" strokeDasharray="7 7" strokeLinecap="round" />
+            <path d="M196 62 H262" stroke="var(--ink)" strokeWidth="2" strokeDasharray="7 7" strokeLinecap="round" />
             {/* frayed ends */}
             <path d="M140 62 l8 -7 M140 62 l8 7" stroke="#C12A2A" strokeWidth="2" strokeLinecap="round" />
             <path d="M196 62 l-8 -7 M196 62 l-8 7" stroke="#C12A2A" strokeWidth="2" strokeLinecap="round" />
             {/* moving packet that dies at the break */}
             <g style={{ transform: "translate(70px,62px)" }}>
-              <circle className="nf-packet" r="5" fill="#B45309" />
+              <circle className="nf-packet" r="5" fill="var(--orange)" />
             </g>
             {/* spark at break */}
             <g transform="translate(168 62)">
               <g className="nf-spark">
-                <path d="M2 -14 L-4 0 L3 0 L-2 14 L9 -3 L2 -3 Z" fill="#FBBF24" stroke="#15211F" strokeWidth="1.4" strokeLinejoin="round" />
+                <path d="M2 -14 L-4 0 L3 0 L-2 14 L9 -3 L2 -3 Z" fill="#FBBF24" stroke="var(--ink)" strokeWidth="1.4" strokeLinejoin="round" />
               </g>
             </g>
             {/* right node (error) */}
-            <rect x="268" y="34" width="56" height="56" rx="14" fill="#fff" stroke="#15211F" strokeWidth="2" />
-            <circle cx="268" cy="62" r="4.5" fill="#15211F" />
+            <rect x="268" y="34" width="56" height="56" rx="14" fill="var(--white)" stroke="var(--ink)" strokeWidth="2" />
+            <circle cx="268" cy="62" r="4.5" fill="var(--ink)" />
             <path d="M296 48 l11 19 h-22 z" fill="none" stroke="#C12A2A" strokeWidth="2" strokeLinejoin="round" />
             <path d="M296 56 v6" stroke="#C12A2A" strokeWidth="2" strokeLinecap="round" />
             <circle cx="296" cy="65.5" r=".9" fill="#C12A2A" />

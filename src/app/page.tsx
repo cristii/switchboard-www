@@ -155,7 +155,7 @@ export default function HomePage() {
               <svg
                 viewBox="0 0 40 40"
                 fill="none"
-                stroke="#15211F"
+                stroke="var(--ink)"
                 strokeWidth={1.8}
                 strokeLinejoin="round"
                 className="mb-3 h-10 w-10"
@@ -193,11 +193,11 @@ export default function HomePage() {
             <ServiceCard
               number="01"
               icon={
-                <svg viewBox="0 0 34 34" fill="none" stroke="#B45309" strokeWidth={1.8} strokeLinejoin="round" className="h-[34px] w-[34px]">
+                <svg viewBox="0 0 34 34" fill="none" stroke="var(--orange)" strokeWidth={1.8} strokeLinejoin="round" className="h-[34px] w-[34px]">
                   <rect x="6" y="10" width="22" height="15" rx="3" />
                   <path d="M17 10V6M13 4.5h8" />
-                  <circle cx="12.5" cy="17" r="1.6" fill="#B45309" stroke="none" />
-                  <circle cx="21.5" cy="17" r="1.6" fill="#B45309" stroke="none" />
+                  <circle cx="12.5" cy="17" r="1.6" fill="var(--orange)" stroke="none" />
+                  <circle cx="21.5" cy="17" r="1.6" fill="var(--orange)" stroke="none" />
                   <path d="M12 29l3-4M22 29l-3-4" />
                 </svg>
               }
@@ -209,7 +209,7 @@ export default function HomePage() {
             <ServiceCard
               number="02"
               icon={
-                <svg viewBox="0 0 34 34" fill="none" stroke="#B45309" strokeWidth={1.8} strokeLinejoin="round" className="h-[34px] w-[34px]">
+                <svg viewBox="0 0 34 34" fill="none" stroke="var(--orange)" strokeWidth={1.8} strokeLinejoin="round" className="h-[34px] w-[34px]">
                   <path d="M5 7h24l-9 11v9l-6 3v-12z" />
                 </svg>
               }
@@ -221,7 +221,7 @@ export default function HomePage() {
             <ServiceCard
               number="03"
               icon={
-                <svg viewBox="0 0 34 34" fill="none" stroke="#B45309" strokeWidth={1.8} strokeLinejoin="round" className="h-[34px] w-[34px]">
+                <svg viewBox="0 0 34 34" fill="none" stroke="var(--orange)" strokeWidth={1.8} strokeLinejoin="round" className="h-[34px] w-[34px]">
                   <rect x="4" y="13" width="9" height="8" rx="2" />
                   <rect x="21" y="13" width="9" height="8" rx="2" />
                   <path d="M13 17h8M9 13V9h16v4" />
@@ -313,7 +313,7 @@ export default function HomePage() {
 
         <div className="mt-9 flex flex-wrap items-center justify-between gap-5 rounded bg-dark px-[26px] py-5 text-on-dark">
           <div className="flex items-center gap-[13px] text-[1.05rem] font-medium">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#B45309" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 flex-none">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 flex-none">
               <path d="M12 3a6 6 0 0 1 6 6c0 3-2 4-2 7H8c0-3-2-4-2-7a6 6 0 0 1 6-6zM9 20h6M10 22h4" />
             </svg>
             <span>
@@ -359,8 +359,8 @@ export default function HomePage() {
                 <>
                   <rect x="8" y="11" width="22" height="15" rx="3" />
                   <path d="M19 11V7M15 5h8" />
-                  <circle cx="14" cy="18" r="1.6" fill="#15211F" stroke="none" />
-                  <circle cx="24" cy="18" r="1.6" fill="#15211F" stroke="none" />
+                  <circle cx="14" cy="18" r="1.6" fill="var(--ink)" stroke="none" />
+                  <circle cx="24" cy="18" r="1.6" fill="var(--ink)" stroke="none" />
                 </>
               ),
               title: "QA & testing",
@@ -395,7 +395,7 @@ export default function HomePage() {
               arrow={i < arr.length - 1}
               title={s.title}
               icon={
-                <svg viewBox="0 0 38 38" fill="none" stroke="#15211F" strokeWidth={1.7} strokeLinejoin="round" className="h-[38px] w-[38px]">
+                <svg viewBox="0 0 38 38" fill="none" stroke="var(--ink)" strokeWidth={1.7} strokeLinejoin="round" className="h-[38px] w-[38px]">
                   {s.icon}
                 </svg>
               }
@@ -405,10 +405,10 @@ export default function HomePage() {
           ))}
         </div>
         <div className="mt-[30px] flex items-center gap-4 rounded border border-ink bg-paper px-6 py-5 shadow-card">
-          <svg viewBox="0 0 34 34" fill="none" stroke="#B45309" strokeWidth={1.8} className="h-[34px] w-[34px] flex-none">
+          <svg viewBox="0 0 34 34" fill="none" stroke="var(--orange)" strokeWidth={1.8} className="h-[34px] w-[34px] flex-none">
             <circle cx="17" cy="17" r="13" />
             <circle cx="17" cy="17" r="7" />
-            <circle cx="17" cy="17" r="1.5" fill="#B45309" />
+            <circle cx="17" cy="17" r="1.5" fill="var(--orange)" />
           </svg>
           <b className="font-display text-[1.1rem] font-bold">
             Every engagement runs like one of the automations I build: discover, build, test, hand
@@ -426,7 +426,7 @@ export default function HomePage() {
         <div className="mt-9 grid gap-[18px] sm:grid-cols-2 lg:grid-cols-3">
           <PricingPlan
             icon={
-              <svg viewBox="0 0 30 30" fill="none" stroke="#15211F" strokeWidth={1.7} strokeLinejoin="round" className="h-[30px] w-[30px]">
+              <svg viewBox="0 0 30 30" fill="none" stroke="var(--ink)" strokeWidth={1.7} strokeLinejoin="round" className="h-[30px] w-[30px]">
                 <rect x="5" y="8" width="20" height="13" rx="3" />
                 <path d="M15 8V5M12 3.5h6" />
               </svg>
@@ -441,7 +441,7 @@ export default function HomePage() {
           <PricingPlan
             featured
             icon={
-              <svg viewBox="0 0 30 30" fill="none" stroke="#B45309" strokeWidth={1.7} strokeLinejoin="round" className="h-[30px] w-[30px]">
+              <svg viewBox="0 0 30 30" fill="none" stroke="var(--orange)" strokeWidth={1.7} strokeLinejoin="round" className="h-[30px] w-[30px]">
                 <rect x="5" y="5" width="20" height="20" rx="3" />
                 <path d="M10 12h10M10 16h7M9 21l3-2 3 2" />
               </svg>
@@ -455,7 +455,7 @@ export default function HomePage() {
           />
           <PricingPlan
             icon={
-              <svg viewBox="0 0 30 30" fill="none" stroke="#15211F" strokeWidth={1.7} strokeLinejoin="round" className="h-[30px] w-[30px]">
+              <svg viewBox="0 0 30 30" fill="none" stroke="var(--ink)" strokeWidth={1.7} strokeLinejoin="round" className="h-[30px] w-[30px]">
                 <circle cx="9" cy="9" r="4" />
                 <circle cx="21" cy="21" r="4" />
                 <path d="M13 9h5a3 3 0 0 1 3 3v5M17 21h-5a3 3 0 0 1-3-3v-5" />
@@ -507,7 +507,7 @@ export default function HomePage() {
                   { icon: <path d="M4 20V8M11 20V4M18 20v-8" />, text: "Handoff with clear docs, then optional monitoring" },
                 ].map((b, i) => (
                   <li key={i} className="flex gap-[11px] text-[.9rem]">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#B45309" strokeWidth={1.8} strokeLinejoin="round" className="mt-[2px] h-[22px] w-[22px] flex-none">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--orange)" strokeWidth={1.8} strokeLinejoin="round" className="mt-[2px] h-[22px] w-[22px] flex-none">
                       {b.icon}
                     </svg>
                     {b.text}

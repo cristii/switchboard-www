@@ -7,14 +7,16 @@ const heading = "font-display font-extrabold tracking-tight";
 function FolkStrip({ id }: { id: string }) {
   return (
     <div className="bg-paper-3" aria-hidden="true">
-      <svg width="100%" height="22" className="block">
+      {/* currentColor (= text-ink) for the diamond outline so it flips with the
+          theme; the orange accents read from var(--orange) via inline style. */}
+      <svg width="100%" height="22" className="block text-ink">
         <defs>
           <pattern id={id} width="36" height="22" patternUnits="userSpaceOnUse">
-            <path d="M9 4 L15 11 L9 18 L3 11 Z" fill="none" stroke="#15211F" strokeWidth="1.3" />
-            <path d="M27 4 L33 11 L27 18 L21 11 Z" fill="none" stroke="#15211F" strokeWidth="1.3" />
-            <path d="M18 7.5 L21.5 11 L18 14.5 L14.5 11 Z" fill="#B45309" />
-            <path d="M0 7.5 L3.5 11 L0 14.5 L-3.5 11 Z" fill="#B45309" />
-            <path d="M36 7.5 L39.5 11 L36 14.5 L32.5 11 Z" fill="#B45309" />
+            <path d="M9 4 L15 11 L9 18 L3 11 Z" fill="none" stroke="currentColor" strokeWidth="1.3" />
+            <path d="M27 4 L33 11 L27 18 L21 11 Z" fill="none" stroke="currentColor" strokeWidth="1.3" />
+            <path d="M18 7.5 L21.5 11 L18 14.5 L14.5 11 Z" style={{ fill: "var(--orange)" }} />
+            <path d="M0 7.5 L3.5 11 L0 14.5 L-3.5 11 Z" style={{ fill: "var(--orange)" }} />
+            <path d="M36 7.5 L39.5 11 L36 14.5 L32.5 11 Z" style={{ fill: "var(--orange)" }} />
           </pattern>
         </defs>
         <rect width="100%" height="22" fill={`url(#${id})`} />
@@ -57,7 +59,8 @@ export function BucharestBand() {
               height="16"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#B45309"
+              stroke="currentColor"
+              className="text-orange"
               strokeWidth={1.8}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -96,11 +99,11 @@ export function BucharestBand() {
             <svg
               viewBox="0 0 160 140"
               fill="none"
-              stroke="#15211F"
+              stroke="currentColor"
               strokeWidth={1.8}
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="mx-auto block h-auto w-full max-w-[240px]"
+              className="mx-auto block h-auto w-full max-w-[240px] text-ink"
               role="img"
               aria-label="Line drawing of the Arcul de Triumf in Bucharest"
             >
@@ -119,7 +122,7 @@ export function BucharestBand() {
               {/* central archway */}
               <path d="M66 126 V88 a14 14 0 0 1 28 0 V126" />
               {/* keystone */}
-              <path d="M80 74 v8" stroke="#B45309" strokeWidth={2.2} />
+              <path d="M80 74 v8" style={{ stroke: "var(--orange)" }} strokeWidth={2.2} />
             </svg>
             <div className="mt-3 text-center font-hand text-[1.2rem] text-ink-soft">
               Arcul de Triumf · București
