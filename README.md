@@ -71,3 +71,20 @@ Detailed specs live under [`docs/`](./docs): the editor architecture in
 [`docs/editor`](./docs/editor), theming in [`docs/themes`](./docs/themes), the preview/embed
 format in [`docs/preview`](./docs/preview), and node/label/path references in
 [`docs/nodes`](./docs/nodes), [`docs/labels`](./docs/labels) and [`docs/paths`](./docs/paths).
+
+## Skills
+
+Loadable skill files live under [`references/`](./references). Each is a
+`SKILL.md` with YAML frontmatter that an agent (e.g. Claude Code) can load on
+request to get expert, file-anchored context about a subsystem.
+
+- **`references/design-system/SKILL.md`** — brand guidelines, tokens, fonts,
+  assets, and UI-kit components for designing on-brand interfaces.
+- **`references/isometric-editor/SKILL.md`** — a complete mental model of the
+  Isometric Workflow Editor (`src/components/editor`): architecture, data model,
+  scene/rendering, isometric & camera math, state/undo, edge routing, theming,
+  the node catalog, and extension points. Load it before working on the
+  `/isometric-editor` feature.
+
+Load a skill by telling the agent to load it by name (e.g. "load the
+isometric-editor skill") or via its slash command.
