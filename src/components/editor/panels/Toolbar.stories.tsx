@@ -19,6 +19,7 @@ function Demo({ initialTheme }: { initialTheme: EditorTheme }) {
     zoomIn: () => {},
     zoomOut: () => {},
     capturePng: () => null,
+    getCamera: () => ({ zoom: 1, target: [0, 0] }),
   });
   const [theme, setTheme] = useState<EditorTheme>(initialTheme);
 

@@ -1,8 +1,10 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import type { CSSProperties } from "react";
+import { readHandoff } from "@/lib/diagramHandoff";
 
 // The editor is heavy (three.js) and DOM/WebGL-only, so it loads client-side
 // via a code-split chunk (ssr: false). This keeps three.js off every other
@@ -80,6 +82,11 @@ function EditorLoading() {
 
 /** Full-screen, chromeless shell: a thin top bar + the editor filling the rest. */
 export function EditorMount() {
+  // A scene handed off from /diagram-library (one-shot localStorage). Read once on
+  // mount; falls back to the editor's default seed when there's nothing pending.
+  const [handoff] = React.useState(() => readHandoff());
+  const handoffThemeId = typeof handoff?.config.theme === "string" ? handoff.config.theme : undefined;
+
   return (
     <div
       data-editor-theme="light"
@@ -105,6 +112,8 @@ export function EditorMount() {
 
       <div style={{ flex: 1, minHeight: 0 }}>
         <IsometricWorkflowEditor
+          initialDiagram={handoff?.diagram}
+          defaultThemeId={handoffThemeId}
           style={{ height: "100%", borderRadius: 0, border: "none", boxShadow: "none" }}
         />
       </div>

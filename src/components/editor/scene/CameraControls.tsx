@@ -34,6 +34,8 @@ export interface CameraApi {
   zoomIn: () => void;
   zoomOut: () => void;
   capturePng: () => string | null;
+  /** Current framed camera: orthographic zoom (or perspective distance) + target. */
+  getCamera: () => { zoom: number; target: [number, number] };
 }
 
 export interface CameraControlsProps {
@@ -223,6 +225,11 @@ export function CameraControls({
   const zoomOut = () =>
     goTo(desiredTarget.current.x, desiredTarget.current.z, cfgRef.current.isPersp ? baseline() * 1.2 : baseline() / 1.2);
 
+  const getCamera = (): { zoom: number; target: [number, number] } => ({
+    zoom: cfgRef.current.isPersp ? dist.current : ortho().zoom,
+    target: [target.current.x, target.current.z],
+  });
+
   useFrame(() => {
     if (!tweening.current) return;
     target.current.lerp(desiredTarget.current, 0.18);
@@ -254,6 +261,7 @@ export function CameraControls({
       api.current.fit = fit;
       api.current.zoomIn = zoomIn;
       api.current.zoomOut = zoomOut;
+      api.current.getCamera = getCamera;
     }
 
     const onPointerDown = (e: PointerEvent) => {

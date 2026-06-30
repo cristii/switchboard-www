@@ -33,6 +33,8 @@ export interface ToolbarProps {
   /** Theme manager pane toggle. */
   onToggleThemeManager?: () => void;
   themeManagerOpen?: boolean;
+  /** Copy the current scene as a { config, diagram } doc to the clipboard. */
+  onCopyJson?: () => void;
 }
 
 const templateSelectStyle: React.CSSProperties = {
@@ -72,6 +74,7 @@ export function Toolbar({
   onToggleGround,
   onToggleThemeManager,
   themeManagerOpen = false,
+  onCopyJson,
 }: ToolbarProps) {
   const undo = useWorkflowStore((s) => s.undo);
   const redo = useWorkflowStore((s) => s.redo);
@@ -146,6 +149,7 @@ export function Toolbar({
         <IconButton label="Toggle shadows" glyph="shadow" active={showGround} onClick={onToggleGround} />
       ) : null}
       <Divider />
+      {onCopyJson ? <IconButton label="Copy JSON (config + diagram)" glyph="copy" onClick={onCopyJson} /> : null}
       <IconButton label="Export JSON" glyph="download" onClick={exportJson} />
       <IconButton label="Export PNG" glyph="image" onClick={exportPng} />
       {compact ? <Divider /> : <div style={{ flex: 1 }} />}

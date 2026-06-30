@@ -42,6 +42,7 @@ const NOOP_API: CameraApi = {
   zoomIn: () => {},
   zoomOut: () => {},
   capturePng: () => null,
+  getCamera: () => ({ zoom: 1, target: [0, 0] }),
 };
 
 export interface IsoSnapshotPreviewProps {
@@ -53,9 +54,11 @@ export interface IsoSnapshotPreviewProps {
   background?: string;
   /** Delay after first paint before snapshotting (lets fit + scale-in settle). */
   settleMs?: number;
+  /** Fired with the captured PNG data URL (e.g. for a "Copy PNG" action). */
+  onSnapshot?: (dataUrl: string) => void;
 }
 
-export function IsoSnapshotPreview({ diagram, config, className, background, settleMs = 1100 }: IsoSnapshotPreviewProps) {
+export function IsoSnapshotPreview({ diagram, config, className, background, settleMs = 1100, onSnapshot }: IsoSnapshotPreviewProps) {
   const ref = React.useRef<HTMLDivElement>(null);
   const apiRef = React.useRef<CameraApi>({ ...NOOP_API });
   const released = React.useRef(false);
@@ -99,6 +102,7 @@ export function IsoSnapshotPreview({ diagram, config, className, background, set
       if (url) {
         setImg(url);
         setPhase("image");
+        onSnapshot?.(url);
       }
       window.setTimeout(() => {
         if (!released.current) {
@@ -107,7 +111,7 @@ export function IsoSnapshotPreview({ diagram, config, className, background, set
         }
       }, 120);
     }, settleMs);
-  }, [settleMs]);
+  }, [settleMs, onSnapshot]);
 
   const style = { background } as React.CSSProperties;
 

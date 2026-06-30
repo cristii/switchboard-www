@@ -25,6 +25,7 @@ import { useWorkflowStore } from "./state/useWorkflowStore";
 import { PRESETS } from "./catalog/presets";
 import { layeredLayout } from "./catalog/layout/autoLayout";
 import { mvpSampleDiagram } from "./sampleDiagram";
+import { serializePreviewDoc, type PreviewDoc } from "./preview/previewConfig";
 import type { Diagram, EditorTheme, NodeKind } from "./state/types";
 
 export interface IsometricWorkflowEditorProps {
@@ -48,6 +49,7 @@ const NOOP_API: CameraApi = {
   zoomIn: () => {},
   zoomOut: () => {},
   capturePng: () => null,
+  getCamera: () => ({ zoom: 1, target: [0, 0] }),
 };
 
 type Drawer = "none" | "add" | "inspect" | "theme";
@@ -87,6 +89,25 @@ export function IsometricWorkflowEditor({
   React.useEffect(() => {
     loadDiagram(initialDiagram);
   }, [initialDiagram, loadDiagram]);
+
+  // Copy the current scene as a { config, diagram } doc (the playground / library
+  // format) — captures the live camera + the active theme (background/grid/lights).
+  const handleCopyJson = React.useCallback(() => {
+    const cam = apiRef.current.getCamera();
+    const json: PreviewDoc = {
+      config: {
+        theme: spec,
+        showGrid: spec.grid.show,
+        showGround: spec.shadow.enabled,
+        showLabels: true,
+        cameraMovable: true,
+        cameraZoom: cam.zoom,
+        cameraTarget: cam.target,
+      },
+      diagram: useWorkflowStore.getState().exportDiagram(),
+    };
+    void navigator.clipboard.writeText(serializePreviewDoc(json)).catch(() => {});
+  }, [spec]);
 
   // Minimal keyboard handling (full shortcuts in P13): delete selection; escape
   // cancels a connect drag or clears the selection.
@@ -250,6 +271,7 @@ export function IsometricWorkflowEditor({
           onToggleGround={() => manager.patch((d) => (d.shadow.enabled = !d.shadow.enabled))}
           onToggleThemeManager={toggleThemeManager}
           themeManagerOpen={isMobile ? drawer === "theme" : themePanel}
+          onCopyJson={handleCopyJson}
         />
       ) : null}
 
