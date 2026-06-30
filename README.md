@@ -42,3 +42,20 @@ npm run typecheck  # tsc --noEmit
 
 `next build` works with no environment variables set; integrations (Supabase, n8n,
 Cal.com) degrade gracefully when unconfigured. See `.env.example` for the full list.
+
+## Skills
+
+Loadable skill files live under [`references/`](./references). Each is a
+`SKILL.md` with YAML frontmatter that an agent (e.g. Claude Code) can load on
+request to get expert, file-anchored context about a subsystem.
+
+- **`references/design-system/SKILL.md`** — brand guidelines, tokens, fonts,
+  assets, and UI-kit components for designing on-brand interfaces.
+- **`references/isometric-editor/SKILL.md`** — a complete mental model of the
+  Isometric Workflow Editor (`src/components/editor`): architecture, data model,
+  scene/rendering, isometric & camera math, state/undo, edge routing, theming,
+  the node catalog, and extension points. Load it before working on the
+  `/isometric-editor` feature.
+
+Load a skill by telling the agent to load it by name (e.g. "load the
+isometric-editor skill") or via its slash command.
