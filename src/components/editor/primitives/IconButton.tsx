@@ -23,15 +23,18 @@ export function IconButton({
   onClick,
   active = false,
   disabled = false,
-  size = 32,
+  size,
   children,
 }: IconButtonProps) {
+  // Default size reads --editor-iconbtn-size so a container (e.g. the compact
+  // mobile toolbar) can bump every button to a ≥44px touch target at once.
+  const dim: number | string = size ?? "var(--editor-iconbtn-size, 32px)";
   const style: React.CSSProperties = {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    width: size,
-    height: size,
+    width: dim,
+    height: dim,
     borderRadius: 8,
     border: "1.5px solid",
     borderColor: active ? "var(--editor-accent)" : "transparent",
@@ -60,7 +63,7 @@ export function IconButton({
         e.currentTarget.style.background = "transparent";
       }}
     >
-      {glyph ? <NodeGlyph name={glyph} size={Math.round(size * 0.56)} /> : children}
+      {glyph ? <NodeGlyph name={glyph} size={Math.round((size ?? 32) * 0.56)} /> : children}
     </button>
   );
 }

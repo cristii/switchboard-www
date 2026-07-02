@@ -245,8 +245,26 @@ export function DiagramCanvas({
       }}
       camera={initialCamera(spec.camera, initialZoom)}
       style={{ width: "100%", height: "100%", display: "block", touchAction: "none" }}
-      onCreated={({ gl }) => {
-        apiRef.current.capturePng = () => gl.domElement.toDataURL("image/png");
+      onCreated={(state) => {
+        // Capture at ≥2x for a crisp export: temporarily bump the pixel ratio,
+        // force a synchronous render, read the buffer, then restore.
+        apiRef.current.capturePng = () => {
+          const { gl, scene: threeScene, camera } = state;
+          const prev = gl.getPixelRatio();
+          const want = Math.max(prev, 2);
+          try {
+            if (want !== prev) {
+              gl.setPixelRatio(want);
+              gl.render(threeScene, camera);
+            }
+            return gl.domElement.toDataURL("image/png");
+          } finally {
+            if (want !== prev) {
+              gl.setPixelRatio(prev);
+              gl.render(threeScene, camera);
+            }
+          }
+        };
         onReady?.();
       }}
     >
@@ -275,9 +293,16 @@ export function DiagramCanvas({
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, -0.01, 0]}
-        onPointerDown={
-          interactive && onMarqueeSelect ? (e) => marqueeStartRef.current?.(e) : undefined
-        }
+        onPointerDown={(e) => {
+          const ne = e.nativeEvent;
+          // One-finger touch pans (editor + live embeds); a bare mouse-drag pans
+          // read-only previews ("drag to pan") and marquee-selects in the editor.
+          if (cameraEnabled && ne.isPrimary && (ne.pointerType === "touch" || !interactive)) {
+            if (ne.button === 0 && !ne.ctrlKey) apiRef.current.beginPan(ne);
+            return;
+          }
+          if (interactive && onMarqueeSelect) marqueeStartRef.current?.(e);
+        }}
         onClick={
           onBackgroundClick
             ? (e) => {

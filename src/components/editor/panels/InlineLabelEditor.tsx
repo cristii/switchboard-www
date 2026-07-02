@@ -74,7 +74,7 @@ export function InlineLabelEditor() {
           fontFamily: "var(--font-display, sans-serif)",
           fontWeight: 700,
           fontSize: "0.82rem",
-          outline: "none",
+
         }}
       />
     </div>

@@ -43,6 +43,7 @@ const NOOP_API: CameraApi = {
   zoomOut: () => {},
   capturePng: () => null,
   zoomTo: () => {},
+  beginPan: () => {},
   getCamera: () => ({ zoom: 1, target: [0, 0] }),
   groundAt: () => null,
 };

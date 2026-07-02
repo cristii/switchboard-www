@@ -18,11 +18,30 @@ export interface MobileDrawerProps {
 
 export function MobileDrawer({ open, title, onClose, children }: MobileDrawerProps) {
   const reduced = usePrefersReducedMotion();
+  const [dragY, setDragY] = React.useState(0);
   const spring = useSpring({
     transform: open ? "translateY(0%)" : "translateY(101%)",
     immediate: reduced,
     config: { tension: 320, friction: 32 },
   });
+
+  React.useEffect(() => {
+    if (!open) setDragY(0);
+  }, [open]);
+
+  // Swipe-to-dismiss: drag the handle/header down; past the threshold closes.
+  const onHandlePointerDown = (e: React.PointerEvent) => {
+    const startY = e.clientY;
+    const onMove = (ev: PointerEvent) => setDragY(Math.max(0, ev.clientY - startY));
+    const onUp = (ev: PointerEvent) => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      if (ev.clientY - startY > 70) onClose();
+      setDragY(0);
+    };
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+  };
 
   return (
     <>
@@ -47,19 +66,36 @@ export function MobileDrawer({ open, title, onClose, children }: MobileDrawerPro
           borderTopRightRadius: "var(--r-lg, 18px)",
           boxShadow: "var(--editor-shadow-pop)",
           zIndex: 19,
-          transform: spring.transform,
+          transform: spring.transform.to((t) => `${t} translateY(${dragY}px)`),
           pointerEvents: open ? "auto" : "none",
         }}
       >
         <div
+          onPointerDown={onHandlePointerDown}
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
             padding: "8px 10px 8px 14px",
             borderBottom: "1.5px solid var(--editor-border-soft)",
+            touchAction: "none",
+            cursor: "grab",
+            position: "relative",
           }}
         >
+          <span
+            aria-hidden
+            style={{
+              position: "absolute",
+              top: 5,
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: 40,
+              height: 4,
+              borderRadius: 999,
+              background: "var(--editor-border-soft)",
+            }}
+          />
           <span
             style={{
               fontFamily: "var(--font-display, sans-serif)",

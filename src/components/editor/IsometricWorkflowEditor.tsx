@@ -55,6 +55,7 @@ const NOOP_API: CameraApi = {
   zoomOut: () => {},
   capturePng: () => null,
   zoomTo: () => {},
+  beginPan: () => {},
   getCamera: () => ({ zoom: 1, target: [0, 0] }),
   groundAt: () => null,
 };
@@ -524,7 +525,7 @@ export function IsometricWorkflowEditor({
             />
           </MobileDrawer>
           <MobileDrawer open={drawer === "inspect"} title="Inspector" onClose={() => setDrawer("none")}>
-            <Inspector />
+            <Inspector roleColors={spec.nodes.colors} />
           </MobileDrawer>
           <MobileDrawer open={drawer === "theme"} title="Theme manager" onClose={() => setDrawer("none")}>
             <ThemeManager manager={manager} />
@@ -539,6 +540,7 @@ export function IsometricWorkflowEditor({
           />
           {stage}
           <Inspector
+            roleColors={spec.nodes.colors}
             style={{ flex: "none", width: 264, height: "100%", borderLeft: "1.5px solid var(--editor-border-soft)" }}
           />
           {themePanel ? (

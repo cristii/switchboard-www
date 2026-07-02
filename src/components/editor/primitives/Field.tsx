@@ -35,7 +35,7 @@ const inputStyle: React.CSSProperties = {
   color: "var(--editor-text)",
   fontFamily: "var(--font-body, sans-serif)",
   fontSize: "0.82rem",
-  outline: "none",
+
 };
 
 export function Field({ label, defaultValue, placeholder, type = "text", onCommit }: FieldProps) {

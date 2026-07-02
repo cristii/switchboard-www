@@ -36,6 +36,9 @@ export interface CameraApi {
   zoomOut: () => void;
   /** Jump to an absolute orthographic zoom (100% = 38), keeping the target. */
   zoomTo: (zoom: number) => void;
+  /** Start a pan following this pointer (one-finger touch pan / preview drag).
+   *  A second pointer (pinch) cancels it. No-op when the camera is locked. */
+  beginPan: (e: PointerEvent) => void;
   capturePng: () => string | null;
   /** Current framed camera: orthographic zoom (or perspective distance) + target. */
   getCamera: () => { zoom: number; target: [number, number] };
@@ -277,6 +280,37 @@ export function CameraControls({
     target: [target.current.x, target.current.z],
   });
 
+  const beginPan = (e: PointerEvent) => {
+    if (!enabledRef.current) return;
+    tweening.current = false;
+    let lastX = e.clientX;
+    let lastY = e.clientY;
+    let done = false;
+    const cleanup = () => {
+      done = true;
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointerdown", onSecond);
+    };
+    const onMove = (ev: PointerEvent) => {
+      if (done || !ev.isPrimary) return;
+      const before = groundAt(lastX, lastY);
+      const after = groundAt(ev.clientX, ev.clientY);
+      if (before && after) {
+        target.current.add(before.sub(after));
+        desiredTarget.current.copy(target.current);
+        applyCamera();
+      }
+      lastX = ev.clientX;
+      lastY = ev.clientY;
+    };
+    const onUp = () => cleanup();
+    const onSecond = () => cleanup(); // a second finger starts a pinch — hand over
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointerdown", onSecond);
+  };
+
   const groundAtApi = (clientX: number, clientY: number): [number, number] | null => {
     const rect = gl.domElement.getBoundingClientRect();
     if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) {
@@ -318,6 +352,7 @@ export function CameraControls({
       api.current.zoomIn = zoomIn;
       api.current.zoomOut = zoomOut;
       api.current.zoomTo = zoomTo;
+      api.current.beginPan = beginPan;
       api.current.getCamera = getCamera;
       api.current.groundAt = groundAtApi;
     }

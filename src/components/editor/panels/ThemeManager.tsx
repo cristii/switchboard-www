@@ -222,7 +222,7 @@ export function ThemeManager({ manager, onClose, className, style }: ThemeManage
       <Select
         label="Active theme"
         value={themeId}
-        options={themes.map((t) => ({ value: t.id, label: t.builtIn ? `${t.name}` : `${t.name} ·` }))}
+        options={themes.map((t) => ({ value: t.id, label: t.builtIn ? `${t.name}` : `${t.name} (custom)` }))}
         onChange={(v) => manager.setThemeId(v)}
       />
       <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
@@ -448,7 +448,7 @@ export function ThemeManager({ manager, onClose, className, style }: ThemeManage
           }}
           aria-label="Theme JSON"
         />
-        {ioError ? <span style={{ ...rowLabel, color: "var(--editor-accent)", fontSize: "0.7rem" }}>⚠ {ioError}</span> : null}
+        {ioError ? <span style={{ ...rowLabel, color: "var(--editor-accent)", fontSize: "0.7rem" }}>Error: {ioError}</span> : null}
         <span style={{ ...rowLabel, color: "var(--editor-text-muted)", fontSize: "0.68rem" }}>
           Edits autosave to this browser. To ship a theme to everyone, Export and commit it into
           <code style={{ fontFamily: "var(--font-mono, monospace)" }}> theme/themes/</code>.

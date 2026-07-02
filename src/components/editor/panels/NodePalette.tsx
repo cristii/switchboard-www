@@ -79,8 +79,24 @@ export function NodePalette({ onAdd, onDropNode, className, style }: NodePalette
   const addNode = useWorkflowStore((s) => s.addNode);
   const handleAdd =
     onAdd ?? ((k: NodeKind, partial?: Partial<WorkflowNode>) => void addNode(k, partial));
-  const groups = catalogByCategory();
   const [ghost, setGhost] = React.useState<Ghost | null>(null);
+  const [query, setQuery] = React.useState("");
+  const [collapsed, setCollapsed] = React.useState<Record<string, boolean>>({});
+
+  const q = query.trim().toLowerCase();
+  const groups = catalogByCategory()
+    .map((g) => ({
+      ...g,
+      entries: q
+        ? g.entries.filter(
+            (e) =>
+              e.label.toLowerCase().includes(q) ||
+              e.kind.toLowerCase().includes(q) ||
+              e.description.toLowerCase().includes(q),
+          )
+        : g.entries,
+    }))
+    .filter((g) => g.entries.length > 0 || (!q && g.category === "Annotate"));
 
   const itemHandlers = (
     kind: NodeKind,
@@ -132,10 +148,57 @@ export function NodePalette({ onAdd, onDropNode, className, style }: NodePalette
       }}
     >
       <div style={heading}>Add node</div>
+      <input
+        type="search"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search nodes…"
+        aria-label="Search nodes"
+        style={{
+          width: "100%",
+          height: 32,
+          marginBottom: 12,
+          padding: "0 10px",
+          borderRadius: 8,
+          border: "1.5px solid var(--editor-border-soft)",
+          background: "var(--editor-surface-2)",
+          color: "var(--editor-text)",
+          fontFamily: "var(--font-body, sans-serif)",
+          fontSize: "0.78rem",
+        }}
+      />
       {groups.map((group) => (
         <div key={group.category} style={{ marginBottom: 12 }}>
-          <div style={categoryLabel}>{group.category}</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <button
+            type="button"
+            onClick={() =>
+              setCollapsed((c) => ({ ...c, [group.category]: !c[group.category] }))
+            }
+            aria-expanded={!collapsed[group.category]}
+            style={{
+              ...categoryLabel,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+              border: "none",
+              background: "transparent",
+              cursor: "pointer",
+              padding: 0,
+            }}
+          >
+            {group.category}
+            <span aria-hidden style={{ fontSize: "0.7rem", lineHeight: 1 }}>
+              {collapsed[group.category] && !q ? "+" : "–"}
+            </span>
+          </button>
+          <div
+            style={{
+              display: collapsed[group.category] && !q ? "none" : "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
             {group.entries.map((entry) => (
               <button
                 key={entry.kind}
@@ -148,7 +211,7 @@ export function NodePalette({ onAdd, onDropNode, className, style }: NodePalette
                 <span>{entry.label}</span>
               </button>
             ))}
-            {group.category === "Annotate" ? (
+            {group.category === "Annotate" && (!q || "tag".includes(q)) ? (
               <button
                 type="button"
                 style={itemStyle}

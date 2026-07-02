@@ -38,7 +38,7 @@ const selectStyle: React.CSSProperties = {
   color: "var(--editor-text)",
   fontFamily: "var(--font-body, sans-serif)",
   fontSize: "0.82rem",
-  outline: "none",
+
   cursor: "pointer",
 };
 

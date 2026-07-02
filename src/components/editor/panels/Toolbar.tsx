@@ -106,12 +106,14 @@ export function Toolbar({
         alignItems: "center",
         gap: 2,
         flex: "none",
-        height: 46,
+        height: compact ? 54 : 46,
         padding: "0 10px",
         background: "var(--editor-surface)",
         borderBottom: "1.5px solid var(--editor-border-soft)",
         color: "var(--editor-text)",
         overflowX: compact ? "auto" : "visible",
+        // ≥44px touch targets for every IconButton when compact (mobile).
+        ["--editor-iconbtn-size" as string]: compact ? "44px" : "32px",
       }}
     >
       {templates && templates.length > 0 ? (
@@ -138,8 +140,8 @@ export function Toolbar({
           <Divider />
         </>
       ) : null}
-      <IconButton label="Undo" glyph="undo" onClick={undo} disabled={pastLen === 0} />
-      <IconButton label="Redo" glyph="redo" onClick={redo} disabled={futureLen === 0} />
+      <IconButton label="Undo (Ctrl+Z)" glyph="undo" onClick={undo} disabled={pastLen === 0} />
+      <IconButton label="Redo (Shift+Ctrl+Z)" glyph="redo" onClick={redo} disabled={futureLen === 0} />
       <Divider />
       <IconButton label="Zoom in" glyph="zoomIn" onClick={() => apiRef.current.zoomIn()} />
       <IconButton label="Zoom out" glyph="zoomOut" onClick={() => apiRef.current.zoomOut()} />

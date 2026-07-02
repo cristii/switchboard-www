@@ -20,6 +20,7 @@ function Demo({ initialTheme }: { initialTheme: EditorTheme }) {
     zoomOut: () => {},
     capturePng: () => null,
     zoomTo: () => {},
+    beginPan: () => {},
     getCamera: () => ({ zoom: 1, target: [0, 0] }),
     groundAt: () => null,
   });

@@ -16,13 +16,15 @@ import { useWorkflowStore } from "../state/useWorkflowStore";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
 import type { ConnectorStyle, EdgeFlow, LabelStyle, NodeColorRole, TextOrientation } from "../state/types";
 
-const SWATCHES: { role: NodeColorRole; hex: string }[] = [
-  { role: "orange", hex: "#b45309" },
-  { role: "green", hex: "#3f7a4e" },
-  { role: "violet", hex: "#6a4a8a" },
-  { role: "amber", hex: "#fbbf24" },
-  { role: "ink", hex: "#15211f" },
-];
+/** Fallback role colours when no theme palette is provided (the light theme). */
+const DEFAULT_ROLE_COLORS: Record<NodeColorRole, string> = {
+  orange: "#b45309",
+  green: "#3f7a4e",
+  violet: "#6a4a8a",
+  amber: "#fbbf24",
+  ink: "#15211f",
+};
+const ROLES: NodeColorRole[] = ["orange", "green", "violet", "amber", "ink"];
 
 const heading: React.CSSProperties = {
   fontFamily: "var(--font-display, sans-serif)",
@@ -98,11 +100,14 @@ function matchConnectionPreset(edge: { routing?: string; connector?: ConnectorSt
 }
 
 export interface InspectorProps {
+  /** Active theme's node role colours (drives the colour swatches); falls back
+   *  to the light-theme palette when omitted. */
+  roleColors?: Record<NodeColorRole, string>;
   className?: string;
   style?: React.CSSProperties;
 }
 
-export function Inspector({ className, style }: InspectorProps) {
+export function Inspector({ roleColors, className, style }: InspectorProps) {
   const selection = useWorkflowStore((s) => s.selection);
   const nodes = useWorkflowStore((s) => s.nodes);
   const edges = useWorkflowStore((s) => s.edges);
@@ -112,7 +117,11 @@ export function Inspector({ className, style }: InspectorProps) {
   const deleteEdge = useWorkflowStore((s) => s.deleteEdge);
   const selectEdge = useWorkflowStore((s) => s.selectEdge);
   const beginLink = useWorkflowStore((s) => s.beginLink);
+  const importDiagram = useWorkflowStore((s) => s.importDiagram);
+  const importInputRef = React.useRef<HTMLInputElement>(null);
 
+  const palette = roleColors ?? DEFAULT_ROLE_COLORS;
+  const multiIds = selection?.type === "node" && selection.ids.length > 1 ? selection.ids : null;
   const node = selection?.type === "node" ? nodes.find((n) => n.id === selection.id) : undefined;
   const edge = selection?.type === "edge" ? edges.find((e) => e.id === selection.id) : undefined;
 
@@ -146,7 +155,49 @@ export function Inspector({ className, style }: InspectorProps) {
       <div style={heading}>Inspector</div>
 
       <animated.div style={styles}>
-      {node ? (
+      {multiIds ? (
+        <>
+          <Row>
+            <div style={sectionLabel}>Selection</div>
+            <div style={value}>{multiIds.length} nodes selected</div>
+          </Row>
+          <Row>
+            <div style={sectionLabel}>Align</div>
+            <div style={{ display: "flex", gap: 5, marginBottom: 5 }}>
+              <MiniAction label="Left" onClick={() => useWorkflowStore.getState().alignSelection("left")} />
+              <MiniAction label="Mid" onClick={() => useWorkflowStore.getState().alignSelection("centerX")} />
+              <MiniAction label="Right" onClick={() => useWorkflowStore.getState().alignSelection("right")} />
+            </div>
+            <div style={{ display: "flex", gap: 5 }}>
+              <MiniAction label="Top" onClick={() => useWorkflowStore.getState().alignSelection("top")} />
+              <MiniAction label="Mid" onClick={() => useWorkflowStore.getState().alignSelection("centerY")} />
+              <MiniAction label="Bottom" onClick={() => useWorkflowStore.getState().alignSelection("bottom")} />
+            </div>
+          </Row>
+          <Row>
+            <div style={sectionLabel}>Distribute</div>
+            <div style={{ display: "flex", gap: 5 }}>
+              <MiniAction label="Spread X" onClick={() => useWorkflowStore.getState().distributeSelection("x")} />
+              <MiniAction label="Spread Y" onClick={() => useWorkflowStore.getState().distributeSelection("y")} />
+            </div>
+          </Row>
+          <Row>
+            <div style={{ display: "flex", gap: 5 }}>
+              <MiniAction label="Duplicate" onClick={() => void useWorkflowStore.getState().duplicateSelection()} />
+              <MiniAction label="Copy" onClick={() => useWorkflowStore.getState().copySelection()} />
+            </div>
+          </Row>
+          <button
+            type="button"
+            style={deleteBtn}
+            onClick={() => useWorkflowStore.getState().deleteSelection()}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--editor-accent)")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--editor-border-soft)")}
+          >
+            <NodeGlyph name="trash" size={15} /> Delete {multiIds.length} nodes
+          </button>
+        </>
+      ) : node ? (
         <>
           <Row>
             <div style={sectionLabel}>Type</div>
@@ -166,19 +217,22 @@ export function Inspector({ className, style }: InspectorProps) {
           <Row>
             <div style={sectionLabel}>Colour</div>
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-              {SWATCHES.map((s) => (
+              {ROLES.map((role) => (
                 <button
-                  key={s.role}
+                  key={role}
                   type="button"
-                  title={s.role}
-                  aria-label={`Colour ${s.role}`}
-                  onClick={() => updateNode(node.id, { color: s.hex })}
+                  title={role}
+                  aria-label={`Colour ${role}`}
+                  onClick={() => updateNode(node.id, { color: palette[role] })}
                   style={{
-                    width: 22,
-                    height: 22,
-                    borderRadius: 6,
-                    border: node.color === s.hex ? "2px solid var(--editor-text)" : "1.5px solid var(--editor-border-soft)",
-                    background: `var(--node-${s.role})`,
+                    width: 26,
+                    height: 26,
+                    borderRadius: 7,
+                    border:
+                      node.color === palette[role]
+                        ? "2px solid var(--editor-text)"
+                        : "1.5px solid var(--editor-border-soft)",
+                    background: palette[role],
                     cursor: "pointer",
                     flex: "none",
                   }}
@@ -486,12 +540,69 @@ export function Inspector({ className, style }: InspectorProps) {
           </button>
         </>
       ) : (
-        <p style={{ ...value, color: "var(--editor-text-muted)", fontStyle: "italic", fontSize: "0.8rem" }}>
-          Select a node or connection to inspect it. Drag from a node&apos;s orange handle to connect.
-        </p>
+        <>
+          <p style={{ ...value, color: "var(--editor-text-muted)", fontStyle: "italic", fontSize: "0.8rem" }}>
+            Select a node or connection to inspect it. Drag from a node&apos;s orange handle to connect.
+          </p>
+          <button
+            type="button"
+            style={{ ...deleteBtn, marginTop: 14 }}
+            onClick={() => importInputRef.current?.click()}
+            onMouseEnter={(e) => (e.currentTarget.style.borderColor = "var(--editor-accent)")}
+            onMouseLeave={(e) => (e.currentTarget.style.borderColor = "var(--editor-border-soft)")}
+          >
+            <NodeGlyph name="download" size={15} /> Import JSON
+          </button>
+          <input
+            ref={importInputRef}
+            type="file"
+            accept="application/json,.json"
+            style={{ display: "none" }}
+            onChange={(e) => {
+              const file = e.currentTarget.files?.[0];
+              e.currentTarget.value = "";
+              if (!file) return;
+              void file.text().then((text) => {
+                try {
+                  importDiagram(text);
+                } catch {
+                  /* invalid file — leave the document untouched */
+                }
+              });
+            }}
+          />
+        </>
       )}
       </animated.div>
     </div>
+  );
+}
+
+/** Small uppercase action chip used by the multi-select panel. */
+function MiniAction({ label, onClick }: { label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        flex: 1,
+        padding: "7px 4px",
+        border: "1.5px solid var(--editor-border-soft)",
+        borderRadius: 7,
+        background: "transparent",
+        color: "var(--editor-text)",
+        fontFamily: "var(--font-display, sans-serif)",
+        fontWeight: 700,
+        fontSize: "0.62rem",
+        letterSpacing: "0.04em",
+        textTransform: "uppercase",
+        cursor: "pointer",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "var(--editor-surface-2)")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+    >
+      {label}
+    </button>
   );
 }
 
