@@ -74,6 +74,7 @@ export function DiagramPreview({ diagram, config, className, style, apiRef: exte
           edgeLabelsRef={edgeLabelsRef}
           apiRef={apiRef}
           cameraEnabled={cfg.cameraMovable}
+          animateNodes={cfg.cameraMovable}
           initialZoom={cfg.cameraZoom}
           initialTarget={cfg.cameraTarget}
           fitOnMount={fitOnMount}

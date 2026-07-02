@@ -52,6 +52,8 @@ export interface SceneTheme {
     scale: number;
     /** Global [x,y,z] offset applied to every label. */
     offset: [number, number, number];
+    /** Counter-scale labels against camera zoom for consistent on-screen size. */
+    screenFit: boolean;
     /** Sublabel (second line) styling. */
     sublabel: { color: string; size: number; font?: string };
   };
@@ -88,6 +90,7 @@ export function resolveSceneTheme(spec: ThemeSpec): SceneTheme {
       style: spec.text.style ?? "plain",
       scale: spec.text.scale ?? 1,
       offset: spec.text.offset ?? [0, 0.3, 0],
+      screenFit: spec.text.screenFit ?? true,
       sublabel: {
         color: spec.text.sublabel?.color ?? spec.text.color,
         size: spec.text.sublabel?.size ?? spec.text.size * 0.72,

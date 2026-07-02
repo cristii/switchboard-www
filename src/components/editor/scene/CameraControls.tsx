@@ -11,6 +11,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion";
+import { nodeFootprint, nodeTopY } from "./nodes/nodeMetrics";
 import type { WorkflowNode } from "../state/types";
 
 const MIN_ZOOM = 8;
@@ -186,32 +187,70 @@ export function CameraControls({
       const distance = need / Math.max(0.1, Math.tan(half));
       goTo(cx, cz, distance);
     } else {
-      // Frame the actual on-screen footprint: the iso view projects (x−z) → the
-      // screen-x axis and (x+z) → screen-y. Using these per-node extents (not the
-      // square world bbox) lets a diagonal/vertical layout fill a tall frame
-      // instead of being width-limited, and a horizontal row fill a wide one.
+      // Frame the actual on-screen extent: project each node's 3D bounds through
+      // the iso view basis. Corners are taken at ground level AND at the node's
+      // visual top (platform stacking + elevation via nodeMetrics), plus label
+      // headroom — so tall stacks and hovering tags stay inside the frame.
+      const d = cfgRef.current.dir;
+      const right = new THREE.Vector3(d.z, 0, -d.x);
+      if (right.lengthSq() < 1e-6) {
+        // Degenerate (top-down) view: fall back to the plain world bbox.
+        const { w, h } = sizeRef.current;
+        const zoom = Math.min(w / worldW, h / worldH) * fitScaleRef.current;
+        goTo(cx, cz, zoom);
+        return;
+      }
+      right.normalize();
+      const upv = new THREE.Vector3().crossVectors(d, right); // screen-up in world space
       let minU = Infinity;
       let maxU = -Infinity;
       let minV = Infinity;
       let maxV = -Infinity;
+      const include = (x: number, y: number, z: number) => {
+        const u = x * right.x + z * right.z; // right.y is always 0
+        const v = x * upv.x + y * upv.y + z * upv.z;
+        if (u < minU) minU = u;
+        if (u > maxU) maxU = u;
+        if (v < minV) minV = v;
+        if (v > maxV) maxV = v;
+      };
       for (const n of ns) {
-        // Expand each node by its footprint so the frame includes the meshes, not
-        // just centre points (otherwise a single node fits to a point → max zoom).
-        const ext = ((n.width ?? 1.2) + (n.depth ?? 1.2)) / 2;
-        const u = n.x - n.y;
-        const v = n.x + n.y;
-        if (u - ext < minU) minU = u - ext;
-        if (u + ext > maxU) maxU = u + ext;
-        if (v - ext < minV) minV = v - ext;
-        if (v + ext > maxV) maxV = v + ext;
+        let { hw, hd } = nodeFootprint(n);
+        if (n.kind === "text") {
+          // Billboard tags have no real footprint; approximate the plate width.
+          const meta = (n.meta ?? {}) as { size?: unknown };
+          const size = typeof meta.size === "number" ? meta.size : 0.5;
+          const longest = Math.max(
+            1,
+            ...`${n.label}\n${n.sublabel ?? ""}`.split("\n").map((l) => l.length),
+          );
+          hw = longest * size * 0.31;
+          hd = 0.2;
+        }
+        const top = nodeTopY(n) + (n.label && n.kind !== "text" && n.kind !== "group" ? 1.0 : 0);
+        for (const cxx of [n.x - hw, n.x + hw]) {
+          for (const czz of [n.y - hd, n.y + hd]) {
+            include(cxx, 0, czz);
+            include(cxx, top, czz);
+          }
+        }
       }
-      const spanU = (maxU - minU) / Math.SQRT2 + pad * 2;
-      const spanV = (maxV - minV) / Math.SQRT2 + pad * 2;
+      const spanU = maxU - minU + pad * 2;
+      const spanV = maxV - minV + pad * 2;
       const { w, h } = sizeRef.current;
       const zoom = Math.min(w / spanU, h / spanV) * fitScaleRef.current;
+      // Solve for the ground target whose projection lands on the bbox centre:
+      // t·right = uc and t·up = vc with t = (tx, 0, tz).
       const uc = (minU + maxU) / 2;
       const vc = (minV + maxV) / 2;
-      goTo((uc + vc) / 2, (vc - uc) / 2, zoom);
+      const det = right.x * upv.z - right.z * upv.x;
+      if (Math.abs(det) < 1e-6) {
+        goTo(cx, cz, zoom);
+        return;
+      }
+      const tx = (uc * upv.z - right.z * vc) / det;
+      const tz = (right.x * vc - uc * upv.x) / det;
+      goTo(tx, tz, zoom);
     }
   };
 

@@ -94,6 +94,9 @@ export interface ThemeSpec {
     scale?: number;
     /** Global [x,y,z] offset applied to every label (y lifts text higher). */
     offset?: [number, number, number];
+    /** Keep labels a consistent on-screen size as the camera zooms (clamped
+     *  counter-scaling; billboards/uprights only). @default true */
+    screenFit?: boolean;
     /** Sublabel-specific styling (the second line). */
     sublabel?: { color?: string; size?: number; font?: string };
   };
@@ -258,6 +261,7 @@ export function normalizeThemeSpec(input: unknown, base: ThemeSpec): ThemeSpec {
       mode: textIn.mode === "dom" ? "dom" : textIn.mode === "3d" ? "3d" : base.text.mode,
       scale: num(textIn.scale, base.text.scale ?? 1),
       offset: vec3(textIn.offset, base.text.offset ?? [0, 0.3, 0]),
+      screenFit: bool(textIn.screenFit, base.text.screenFit ?? true),
       sublabel: {
         color: str(subIn.color, base.text.sublabel?.color ?? base.text.color),
         size: num(subIn.size, base.text.sublabel?.size ?? base.text.size * 0.72),

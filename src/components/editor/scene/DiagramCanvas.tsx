@@ -47,6 +47,9 @@ export interface DiagramCanvasProps {
   apiRef: React.MutableRefObject<CameraApi>;
   /** Allow pan/zoom ("camera movable"). @default true */
   cameraEnabled?: boolean;
+  /** Staggered mount motion for preview nodes (live embeds only — snapshots must
+   *  stay static so a capture can't catch a node mid-animation). @default false */
+  animateNodes?: boolean;
   initialZoom?: number;
   initialTarget?: [number, number];
   fitOnMount?: boolean;
@@ -92,6 +95,7 @@ export function DiagramCanvas({
   edgeLabelsRef,
   apiRef,
   cameraEnabled = true,
+  animateNodes = false,
   initialZoom,
   initialTarget,
   fitOnMount,
@@ -112,8 +116,16 @@ export function DiagramCanvas({
   const initialTargetVal = initialTarget ?? spec.camera.target;
   const showShadows = showGround && spec.shadow.enabled;
 
-  // Stagger parallel edges that share a source so they don't perfectly overlap.
-  const laneBySource: Record<string, number> = {};
+  // Lane bookkeeping: edges sharing a source (fan-out) or target (fan-in) get
+  // symmetric lane indices so routing can spread them along the node side.
+  const outCount: Record<string, number> = {};
+  const inCount: Record<string, number> = {};
+  for (const e of edges) {
+    outCount[e.source] = (outCount[e.source] ?? 0) + 1;
+    inCount[e.target] = (inCount[e.target] ?? 0) + 1;
+  }
+  const outSeen: Record<string, number> = {};
+  const inSeen: Record<string, number> = {};
 
   return (
     <Canvas
@@ -181,8 +193,10 @@ export function DiagramCanvas({
       </mesh>
 
       {edges.map((edge) => {
-        const lane = laneBySource[edge.source] ?? 0;
-        laneBySource[edge.source] = lane + 1;
+        const lane = outSeen[edge.source] ?? 0;
+        outSeen[edge.source] = lane + 1;
+        const laneIn = inSeen[edge.target] ?? 0;
+        inSeen[edge.target] = laneIn + 1;
         return (
           <OrthogonalEdge
             key={edge.id}
@@ -191,13 +205,16 @@ export function DiagramCanvas({
             theme={scene}
             selected={selection?.type === "edge" && selection.id === edge.id}
             laneIndex={lane}
+            laneCount={outCount[edge.source] ?? 1}
+            laneInIndex={laneIn}
+            laneInCount={inCount[edge.target] ?? 1}
             showLabel={showLabels}
             onSelect={interactive ? onSelectEdge : undefined}
           />
         );
       })}
 
-      {nodes.map((node) =>
+      {nodes.map((node, i) =>
         interactive ? (
           <NodeMesh
             key={node.id}
@@ -206,7 +223,7 @@ export function DiagramCanvas({
             selected={selection?.type === "node" && selection.id === node.id}
           />
         ) : (
-          <PreviewNode key={node.id} node={node} theme={scene} />
+          <PreviewNode key={node.id} node={node} theme={scene} animate={animateNodes} index={i} />
         ),
       )}
 

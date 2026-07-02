@@ -10,6 +10,8 @@
 import * as React from "react";
 import dynamic from "next/dynamic";
 import { signalTheme } from "@/components/editor/theme/themes/signal";
+import { signalDarkTheme } from "@/components/editor/theme/themes/signalDark";
+import { useSiteColorScheme } from "@/lib/useSiteColorScheme";
 import type { Diagram } from "@/components/editor/state/types";
 
 const DiagramPreview = dynamic(
@@ -20,6 +22,10 @@ const DiagramPreview = dynamic(
 export function WorkIsoPreview({ diagram }: { diagram: Diagram }) {
   const ref = React.useRef<HTMLDivElement>(null);
   const [show, setShow] = React.useState(false);
+  // Follow the site's light/dark toggle live (the canvas stays mounted; the
+  // theme prop swap re-lights the scene in place).
+  const scheme = useSiteColorScheme();
+  const theme = scheme === "dark" ? signalDarkTheme : signalTheme;
 
   React.useEffect(() => {
     const el = ref.current;
@@ -42,13 +48,13 @@ export function WorkIsoPreview({ diagram }: { diagram: Diagram }) {
       <div
         ref={ref}
         className="mx-auto h-[480px] w-full max-w-[1100px] overflow-hidden rounded-xl border border-line sm:h-[600px]"
-        style={{ background: signalTheme.background.color }}
+        style={{ background: theme.background.color }}
       >
         {show ? (
           <DiagramPreview
             diagram={diagram}
             config={{
-              theme: signalTheme,
+              theme,
               transparent: false,
               showGrid: true,
               showGround: true,

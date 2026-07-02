@@ -124,18 +124,32 @@ export function GroupContainer({ node, theme, selected }: GroupContainerProps) {
   // Colored "base" tray: one solid rounded slab, resizable to group nodeCards.
   // FLOATS one base-height off the ground (gap below) so it casts a soft shadow on
   // the floor, like the /services slabs. nodeCards sit on top via meta.elevation =
-  // 2·baseH (the floated top).
+  // 2·baseH (the floated top). A slightly lighter inset top plate gives the tray a
+  // designed two-tone surface (the premium "deck" read) without touching geometry.
   if (base && baseGeo) {
     return (
-      <mesh geometry={baseGeo} position={[0, baseH, 0]} castShadow receiveShadow>
-        <meshStandardMaterial
-          color={color}
-          roughness={0.7}
-          metalness={0}
-          emissive={selected ? theme.selection : color}
-          emissiveIntensity={selected ? 0.3 : 0.05}
-        />
-      </mesh>
+      <group>
+        <mesh geometry={baseGeo} position={[0, baseH, 0]} castShadow receiveShadow>
+          <meshStandardMaterial
+            color={color}
+            roughness={0.7}
+            metalness={0}
+            emissive={selected ? theme.selection : color}
+            emissiveIntensity={selected ? 0.3 : 0.05}
+          />
+        </mesh>
+        <mesh position={[0, baseH * 2 + 0.008, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+          <planeGeometry args={[Math.max(0.1, width - 0.36), Math.max(0.1, depth - 0.36)]} />
+          <meshStandardMaterial
+            color={lighten(color, 0.14)}
+            roughness={0.78}
+            metalness={0}
+            transparent
+            opacity={0.85}
+            depthWrite={false}
+          />
+        </mesh>
+      </group>
     );
   }
 

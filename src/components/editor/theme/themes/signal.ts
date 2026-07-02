@@ -52,16 +52,21 @@ export const signalTheme: ThemeSpec = {
     paper: "#ffffff",
   },
   edges: {
-    color: "#aab0a6",
-    width: 2,
-    widthSelected: 3.5,
+    // Mid sage-ink: clearly visible on the white ground without shouting.
+    color: "#66736b",
+    width: 2.5,
+    widthSelected: 4,
     flow: "#e8801f",
-    // Arrowless: the reference flow is a quiet continuous line, no arrowheads.
-    arrowSize: 0,
-    routing: "direct",
+    arrowSize: 0.9,
+    // Premium iso elbows: side ports, ground rail under the floating slabs,
+    // rounded corners, lane spread (scene/edges/routing/iso.ts).
+    routing: "iso",
     connector: "line",
   },
   text: {
+    // Brand display font (self-hosted TTF; troika can't read woff2). Served from
+    // public/ — see src/styles/fonts.css for the DOM-side face.
+    font: "/fonts/bricolage-grotesque-600.ttf",
     color: "#1b2a26",
     opacity: 1,
     size: 0.5,
@@ -70,6 +75,6 @@ export const signalTheme: ThemeSpec = {
     style: "bubble",
     scale: 1,
     offset: [0, 0.5, 0],
-    sublabel: { color: "#46524d", size: 0.4 },
+    sublabel: { color: "#46524d", size: 0.4, font: "/fonts/bricolage-grotesque-600.ttf" },
   },
 };

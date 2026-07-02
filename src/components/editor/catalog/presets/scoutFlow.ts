@@ -143,14 +143,14 @@ function buildScoutFlow(): Diagram {
     }
   }
 
+  // Routing/colour/width come from the theme (signal/signalDark → "iso" elbows:
+  // side ports, ground rail under the floating trays, lane spread). The slow flow
+  // pulse only animates in the live /work embed (reduced-motion aware).
   const edges: WorkflowEdge[] = EDGES.map(([source, target], i) => ({
     id: `e${i}`,
     source,
     target,
-    connector: "line",
-    routing: "direct",
-    color: "#8a958f",
-    flow: "off",
+    flow: "slow",
   }));
 
   return { version: 1, nodes, edges };

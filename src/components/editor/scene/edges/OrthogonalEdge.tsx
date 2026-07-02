@@ -19,6 +19,11 @@ export interface OrthogonalEdgeProps {
   theme: SceneTheme;
   selected: boolean;
   laneIndex?: number;
+  /** Total edges sharing this edge's source (for symmetric lane spread). */
+  laneCount?: number;
+  /** Index/count among edges sharing this edge's TARGET (fan-in spread). */
+  laneInIndex?: number;
+  laneInCount?: number;
   /** Master label toggle from the host/preview. @default true */
   showLabel?: boolean;
   /** Called on click when set (editor). Omit for read-only previews. */
@@ -64,20 +69,38 @@ function EdgeFlow({ points, color, speed }: { points: THREE.Vector3[]; color: st
   );
 }
 
-export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0, showLabel = true, onSelect }: OrthogonalEdgeProps) {
+export function OrthogonalEdge({
+  edge,
+  nodes,
+  theme,
+  selected,
+  laneIndex = 0,
+  laneCount = 1,
+  laneInIndex = 0,
+  laneInCount = 1,
+  showLabel = true,
+  onSelect,
+}: OrthogonalEdgeProps) {
   const source = nodes.find((n) => n.id === edge.source);
   const target = nodes.find((n) => n.id === edge.target);
   const routing = edge.routing ?? theme.routing;
 
   const nodesKey = nodes.map((n) => `${n.id}:${n.x.toFixed(3)},${n.y.toFixed(3)}`).join("|");
   const points = useMemo(() => {
-    if (!source || !target) return [] as { x: number; y: number }[];
-    return getRoutingAlgorithm(routing)(source, target, nodes, { laneIndex });
+    if (!source || !target) return [] as { x: number; y: number; h?: number }[];
+    return getRoutingAlgorithm(routing)(source, target, nodes, {
+      laneIndex,
+      laneCount,
+      laneInIndex,
+      laneInCount,
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [routing, source?.x, source?.y, target?.x, target?.y, nodesKey, laneIndex]);
+  }, [routing, source?.x, source?.y, target?.x, target?.y, nodesKey, laneIndex, laneCount, laneInIndex, laneInCount]);
 
+  // Algorithms that emit per-point heights (iso stubs/rails) win; others get the
+  // legacy mid-air lift with a tiny per-lane stagger.
   const y = 0.5 + laneIndex * 0.04;
-  const vecs = useMemo(() => points.map((p) => new THREE.Vector3(p.x, y, p.y)), [points, y]);
+  const vecs = useMemo(() => points.map((p) => new THREE.Vector3(p.x, p.h ?? y, p.y)), [points, y]);
 
   if (!source || !target || vecs.length < 2) return null;
 
@@ -126,6 +149,7 @@ export function OrthogonalEdge({ edge, nodes, theme, selected, laneIndex = 0, sh
             font={theme.text.font}
             scale={theme.text.scale}
             offset={theme.text.offset}
+            screenFit={theme.text.screenFit}
             selected={selected}
             selectionColor={theme.selection}
           />

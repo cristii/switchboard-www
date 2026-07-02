@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { serializePreviewDoc } from "@/components/editor/preview/previewConfig";
 import { resolveThemeFromConfig } from "@/components/editor/theme/themeRegistry";
 import { writeHandoff } from "@/lib/diagramHandoff";
+import { useSiteColorScheme } from "@/lib/useSiteColorScheme";
 import type { LibraryItem } from "@/lib/diagramLibrary";
 import { IsoSnapshotPreview } from "./IsoSnapshotPreview";
 
@@ -155,7 +156,12 @@ function LibraryCard({
   onSnapshot: (url: string) => void;
   onMenu: (x: number, y: number) => void;
 }) {
-  const bg = React.useMemo(() => resolveThemeFromConfig(item.doc.config.theme).background.color, [item.doc.config.theme]);
+  // Display only: signal-themed cards follow the site's light/dark toggle
+  // (re-keyed so they re-snapshot); copy/open actions keep the authored doc.
+  const scheme = useSiteColorScheme();
+  const displayTheme =
+    scheme === "dark" && item.doc.config.theme === "signal" ? "signalDark" : item.doc.config.theme;
+  const bg = React.useMemo(() => resolveThemeFromConfig(displayTheme).background.color, [displayTheme]);
   const longPress = React.useRef<number | null>(null);
 
   const clearLong = () => {
@@ -181,10 +187,11 @@ function LibraryCard({
         onTouchEnd={clearLong}
       >
         <IsoSnapshotPreview
+          key={scheme}
           diagram={item.doc.diagram}
           className="h-[240px] w-full"
           background={bg}
-          config={{ ...item.doc.config, cameraMovable: false, transparent: false }}
+          config={{ ...item.doc.config, theme: displayTheme, cameraMovable: false, transparent: false }}
           onSnapshot={onSnapshot}
         />
       </div>

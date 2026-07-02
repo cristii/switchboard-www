@@ -3,9 +3,11 @@
 // here (or call registerRoutingAlgorithm at startup). See PATH_ALGORITHMS.md.
 
 import { directRoute, orthogonalRoute, smoothRoute } from "./builtins";
+import { isoRoute } from "./iso";
 import type { RouteAlgorithm } from "./types";
 
 export const ROUTING_ALGORITHMS: Record<string, RouteAlgorithm> = {
+  iso: isoRoute,
   orthogonal: orthogonalRoute,
   smooth: smoothRoute,
   direct: directRoute,

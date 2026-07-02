@@ -16,7 +16,7 @@ const WORLD_MAX = 24;
 const GRID = 48;
 const CELL = (WORLD_MAX - WORLD_MIN) / GRID;
 
-interface Cell {
+export interface Cell {
   i: number;
   j: number;
 }
@@ -34,7 +34,7 @@ function center(node: WorkflowNode): RoutePoint {
 }
 
 /** Build a blocked-cell grid from the given blocker nodes (with light padding). */
-function createGrid(blockers: WorkflowNode[]): number[][] {
+export function createGrid(blockers: WorkflowNode[]): number[][] {
   const grid = Array.from({ length: GRID }, () => new Array<number>(GRID).fill(0));
   for (const n of blockers) {
     const { hw, hd } = footprint(n);
@@ -56,7 +56,7 @@ function createGrid(blockers: WorkflowNode[]): number[][] {
 
 const heuristic = (a: Cell, b: Cell) => Math.abs(a.i - b.i) + Math.abs(a.j - b.j);
 
-function aStar(grid: number[][], start: Cell, end: Cell): Cell[] | null {
+export function aStar(grid: number[][], start: Cell, end: Cell): Cell[] | null {
   const key = (i: number, j: number) => `${i},${j}`;
   const open = new Set<string>([key(start.i, start.j)]);
   const cameFrom = new Map<string, string>();
@@ -111,9 +111,13 @@ function aStar(grid: number[][], start: Cell, end: Cell): Cell[] | null {
 }
 
 const clampCell = (v: number) => Math.max(0, Math.min(GRID - 1, v));
-const toCell = (x: number, y: number): Cell => ({
+export const toCell = (x: number, y: number): Cell => ({
   i: clampCell(Math.floor((x - WORLD_MIN) / CELL)),
   j: clampCell(Math.floor((y - WORLD_MIN) / CELL)),
+});
+export const cellCenter = (c: Cell): RoutePoint => ({
+  x: WORLD_MIN + (c.i + 0.5) * CELL,
+  y: WORLD_MIN + (c.j + 0.5) * CELL,
 });
 
 /** Anchor on a node's bounding rect, nearest to a target point. */

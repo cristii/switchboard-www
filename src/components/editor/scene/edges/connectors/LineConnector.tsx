@@ -12,6 +12,10 @@ export function LineConnector({ points, color, width, arrowSize, dashed, onSelec
   const prev = points[points.length - 2] ?? points[0];
   const dir = new THREE.Vector3().subVectors(end, prev).normalize();
   const quat = new THREE.Quaternion().setFromUnitVectors(UP, dir);
+  const arrowLen = 0.3 * arrowSize;
+  // Seat the cone so its TIP lands exactly on the endpoint (instead of poking past
+  // it into the node side).
+  const arrowPos = new THREE.Vector3().copy(end).addScaledVector(dir, -arrowLen / 2);
   return (
     <group>
       <Line
@@ -23,10 +27,12 @@ export function LineConnector({ points, color, width, arrowSize, dashed, onSelec
         gapSize={0.18}
         onClick={onSelect}
       />
-      <mesh position={end} quaternion={quat}>
-        <coneGeometry args={[0.11 * arrowSize, 0.26 * arrowSize, 12]} />
-        <meshBasicMaterial color={color} />
-      </mesh>
+      {arrowSize > 0 ? (
+        <mesh position={arrowPos} quaternion={quat}>
+          <coneGeometry args={[0.1 * arrowSize, arrowLen, 12]} />
+          <meshBasicMaterial color={color} toneMapped={false} />
+        </mesh>
+      ) : null}
     </group>
   );
 }

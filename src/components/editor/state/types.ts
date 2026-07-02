@@ -83,7 +83,7 @@ export interface WorkflowNode {
   meta?: Record<string, unknown>;
 }
 
-export type EdgeRouting = "orthogonal" | "smooth" | "direct";
+export type EdgeRouting = "iso" | "orthogonal" | "smooth" | "direct";
 export type EdgeStyle = "solid" | "dashed";
 /** How a connector is rendered between two nodes.
  *  `line` (thin/dashed via `style`), `tube`, `ribbonArrow` (flat painted arrow),

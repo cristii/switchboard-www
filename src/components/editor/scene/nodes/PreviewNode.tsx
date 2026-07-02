@@ -1,27 +1,45 @@
 // Read-only node for the preview: same look as NodeMesh (shared resolver) but no
-// interaction, no port handles, no store coupling — so multiple previews are fully
-// independent. Renders statically (NO scale-in) so a snapshot of the preview can
-// never catch a node mid-animation. Highlight/dim props arrive with preview phase 2.
+// editing, no port handles, no store coupling — so multiple previews are fully
+// independent. In LIVE embeds (`animate`) nodes settle in with a small staggered
+// drop and lift slightly on hover (playful, reduced-motion aware); in snapshot
+// previews everything renders statically so a capture can't catch mid-animation.
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
+import { animated, to as springTo, useSpring } from "@react-spring/three";
 import { GroupContainer } from "./shapes/GroupContainer";
 import { TextNode } from "./shapes/TextNode";
 import { ModelNode } from "./shapes/ModelNode";
 import { StepIcon } from "./shapes/StepIcon";
 import { NodeCardNode } from "./shapes/NodeCardNode";
 import { resolveNodeVisual } from "./nodeVisual";
+import { usePrefersReducedMotion } from "../../hooks/usePrefersReducedMotion";
 import type { SceneTheme } from "../../theme/sceneTheme";
 import type { WorkflowNode } from "../../state/types";
 
 export interface PreviewNodeProps {
   node: WorkflowNode;
   theme: SceneTheme;
+  /** Staggered mount + hover motion (live embeds). @default false */
+  animate?: boolean;
+  /** Mount-stagger index. */
+  index?: number;
 }
 
-export function PreviewNode({ node, theme }: PreviewNodeProps) {
+export function PreviewNode({ node, theme, animate = false, index = 0 }: PreviewNodeProps) {
   const { isGroup, isText, isIcon, isNodeCard, Shape, width, depth, height, color, emissive, emissiveIntensity, opacity, roughness, metalness, elevation } =
     resolveNodeVisual(node, theme, false);
   const modelUrl = typeof node.meta?.model === "string" ? (node.meta.model as string) : null;
+  const reduced = usePrefersReducedMotion();
+  const [hovered, setHovered] = useState(false);
+
+  const liftable = animate && !isGroup && !isText;
+  const spring = useSpring({
+    from: { drop: animate ? 1 : 0, lift: 0 },
+    to: { drop: 0, lift: liftable && hovered ? 0.14 : 0 },
+    delay: animate ? index * 45 : 0,
+    immediate: reduced || !animate,
+    config: { tension: 260, friction: 24 },
+  });
 
   const shapeEl = (
     <Shape
@@ -38,7 +56,14 @@ export function PreviewNode({ node, theme }: PreviewNodeProps) {
   );
 
   return (
-    <group position={[node.x, 0, node.y]}>
+    <animated.group
+      position-x={node.x}
+      position-z={node.y}
+      position-y={springTo([spring.drop, spring.lift], (d, l) => d * 0.45 + l)}
+      scale={spring.drop.to((d) => 1 - d * 0.1)}
+      onPointerOver={liftable ? (e) => { e.stopPropagation(); setHovered(true); } : undefined}
+      onPointerOut={liftable ? () => setHovered(false) : undefined}
+    >
       {isGroup ? (
         <GroupContainer node={node} theme={theme} selected={false} />
       ) : isText ? (
@@ -67,6 +92,6 @@ export function PreviewNode({ node, theme }: PreviewNodeProps) {
       ) : (
         shapeEl
       )}
-    </group>
+    </animated.group>
   );
 }

@@ -6,9 +6,32 @@
 // offset + scale (theme.text) positions and sizes every label. Per-object values
 // come from node/edge `meta` (overrides) or the theme. See docs/labels/LABELS.md.
 
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import { Billboard, RoundedBox, Text } from "@react-three/drei";
+import type * as THREE from "three";
 import type { SceneTheme } from "../../../theme/sceneTheme";
 import type { LabelStyle, TextOrientation, WorkflowNode } from "../../../state/types";
+
+// Screen-fit: labels are authored in world units at this reference orthographic
+// zoom; a clamped counter-scale keeps them a consistent on-screen size as the
+// camera zooms (so tags never shrink to illegible at fit-zoom-out, and never
+// balloon when zoomed close). Clamps keep them loosely anchored to the scene.
+const REF_ZOOM = 38;
+const FIT_MIN = 0.8;
+const FIT_MAX = 1.75;
+
+function ScreenFit({ enabled, children }: { enabled: boolean; children: React.ReactNode }) {
+  const ref = useRef<THREE.Group>(null);
+  useFrame(({ camera }) => {
+    if (!enabled || !ref.current) return;
+    const ortho = camera as THREE.OrthographicCamera;
+    if (!ortho.isOrthographicCamera) return;
+    const s = Math.min(FIT_MAX, Math.max(FIT_MIN, REF_ZOOM / ortho.zoom));
+    if (Math.abs(ref.current.scale.x - s) > 1e-3) ref.current.scale.setScalar(s);
+  });
+  return <group ref={ref}>{children}</group>;
+}
 
 const ORIENTATIONS: TextOrientation[] = ["billboard", "ground", "uprightX", "uprightZ"];
 export function isOrientation(v: unknown): v is TextOrientation {
@@ -182,6 +205,9 @@ export interface TextLabelProps {
   scale?: number;
   /** Global [x,y,z] offset (theme.text.offset). */
   offset?: [number, number, number];
+  /** Counter-scale against camera zoom for a consistent on-screen size
+   *  (billboard/upright only; theme.text.screenFit). @default true */
+  screenFit?: boolean;
   selected?: boolean;
   selectionColor?: string;
   /** Base world-space lift for non-ground orientations. */
@@ -206,6 +232,7 @@ export function TextLabel({
   bold,
   scale = 1,
   offset = [0, 0, 0],
+  screenFit = true,
   selected = false,
   selectionColor = "#fbbf24",
   y,
@@ -215,23 +242,25 @@ export function TextLabel({
   const lift = (y ?? Math.max(size * 0.7, 0.4)) + offset[1];
   const [ox, , oz] = offset;
   const body = (
-    <LabelBody
-      label={label}
-      sublabel={sublabel}
-      color={color}
-      size={s}
-      font={font}
-      subColor={sublabelColor ?? color}
-      subSize={subS}
-      subFont={sublabelFont}
-      opacity={opacity}
-      style={style}
-      plate={plate}
-      border={border}
-      bold={bold}
-      selected={selected}
-      selectionColor={selectionColor}
-    />
+    <ScreenFit enabled={screenFit && orientation !== "ground"}>
+      <LabelBody
+        label={label}
+        sublabel={sublabel}
+        color={color}
+        size={s}
+        font={font}
+        subColor={sublabelColor ?? color}
+        subSize={subS}
+        subFont={sublabelFont}
+        opacity={opacity}
+        style={style}
+        plate={plate}
+        border={border}
+        bold={bold}
+        selected={selected}
+        selectionColor={selectionColor}
+      />
+    </ScreenFit>
   );
 
   if (orientation === "billboard") {
@@ -301,6 +330,7 @@ export function TextNode({ node, theme, selected }: TextNodeProps) {
       bold={bold}
       scale={theme.text.scale}
       offset={theme.text.offset}
+      screenFit={theme.text.screenFit}
       y={lift}
       selected={selected}
       selectionColor={theme.selection}

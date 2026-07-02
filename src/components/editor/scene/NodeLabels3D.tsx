@@ -24,8 +24,11 @@ export function NodeLabels3D({ nodes, selection, theme }: NodeLabels3DProps) {
         if (!node.label) return null;
         const entry = getNodeCatalogEntry(node.kind);
         const height = node.height ?? entry.defaultSize.height;
-        const hoverY = height + 0.55;
         const meta = (node.meta ?? {}) as Record<string, unknown>;
+        // Hover above the node's REAL top — include meta.elevation so labels on
+        // platform-seated nodes (cards on trays) don't sink into the geometry.
+        const elevation = typeof meta.elevation === "number" ? meta.elevation : 0;
+        const hoverY = elevation + height + 0.55;
         const orientation = node.labelOrientation ?? theme.text.orientation;
         const style = isLabelStyle(meta.labelStyle) ? meta.labelStyle : theme.text.style;
         const pal = labelPalette(style, theme);
@@ -49,6 +52,7 @@ export function NodeLabels3D({ nodes, selection, theme }: NodeLabels3DProps) {
               plate={pal.plate}
               scale={theme.text.scale}
               offset={theme.text.offset}
+              screenFit={theme.text.screenFit}
               selected={selected}
               selectionColor={theme.selection}
               y={0}

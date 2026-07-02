@@ -37,15 +37,17 @@ export function getIconTexture(key: string): THREE.Texture | null {
   if (hit) return hit;
   if (typeof document === "undefined") return null; // SSR guard
 
-  const size = 256;
+  // 512px + high anisotropy keeps thin strokes crisp at the grazing iso angle
+  // (the top face is heavily foreshortened + minified).
+  const size = 512;
   const canvas = document.createElement("canvas");
   canvas.width = size;
   canvas.height = size;
   const tex = new THREE.CanvasTexture(canvas);
   tex.colorSpace = THREE.SRGBColorSpace;
-  tex.anisotropy = 4;
+  tex.anisotropy = 16;
 
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[key]}</svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">${ICONS[key]}</svg>`;
   const img = new Image();
   img.onload = () => {
     const ctx = canvas.getContext("2d");

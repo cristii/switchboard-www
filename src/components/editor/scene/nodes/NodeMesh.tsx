@@ -4,7 +4,7 @@
 // out-handle starts a connection; on pointer-up the scene is raycast for a
 // target node (tagged via group userData.nodeId). See description.md §7/§8.
 
-import { Suspense, useMemo } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { type ThreeEvent, useThree } from "@react-three/fiber";
 import { animated, useSpring } from "@react-spring/three";
 import * as THREE from "three";
@@ -97,10 +97,13 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
     />
   );
 
-  // Scale-in on mount, a gentle pop when selected. Disabled under reduced motion.
-  const { scale } = useSpring({
-    from: { scale: 0.85 },
-    to: { scale: selected ? 1.06 : 1 },
+  // Scale-in on mount, a gentle pop when selected, a small lift on hover so the
+  // canvas answers the cursor. Disabled under reduced motion.
+  const [hovered, setHovered] = useState(false);
+  const liftable = !isGroup && !isText;
+  const { scale, lift } = useSpring({
+    from: { scale: 0.85, lift: 0 },
+    to: { scale: selected ? 1.06 : 1, lift: liftable && hovered ? 0.12 : 0 },
     immediate: reduced,
     config: { tension: 320, friction: 22 },
   });
@@ -197,12 +200,21 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
           selectNode(node.id);
           openContextMenu(node.id, ne.clientX, ne.clientY);
         }}
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          setHovered(true);
+          gl.domElement.style.cursor = linkMode ? "crosshair" : "pointer";
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          gl.domElement.style.cursor = linkMode ? "crosshair" : "default";
+        }}
       >
         <boxGeometry args={[width + 0.25, height + 0.25, depth + 0.25]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
 
-      <animated.group scale={scale}>
+      <animated.group scale={scale} position-y={lift}>
         {isGroup ? (
           <GroupContainer node={node} theme={theme} selected={selected} />
         ) : isText ? (
