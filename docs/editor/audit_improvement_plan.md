@@ -165,3 +165,42 @@ editor section touch-up. Full verification matrix.
 ## Deferred (explicitly out)
 Minimap; CodeMirror-grade JSON editor; user-saved library items; Simple-Icons brand textures; card quick-view
 lightbox; PNG re-render-at-2× for library copy (uses existing snapshot).
+
+---
+
+## Implementation status (2026-07-02)
+
+All six phases shipped on `claude/dreamy-johnson-ikxp6p`:
+
+- **Phase 0** — merged site dark mode from main; this doc committed.
+- **Phase 1** (`feat(diagrams)`) — "iso" elbow routing (side ports, ground rail
+  under floating platforms, lane spread, obstacle avoidance), screen-fit labels
+  (+ Bricolage Grotesque TTF for troika), 512px icon textures, tray top plates,
+  `signalDark` + retuned `dark`, site-theme-aware embeds via
+  `lib/useSiteColorScheme` (live swap + snapshot re-key), height-aware camera
+  fit, hover lift + flow pulses + staggered mount (reduced-motion aware).
+- **Phase 2** (`feat(editor)` core UX) — multi-select (shift-click, marquee,
+  ⌘A) with align/distribute, clipboard (⌘C/V/D, alt-drag clone), delta drag
+  with grid snap + smart guides, node/edge/canvas context menus, fat edge hit
+  targets, inline rename (double-click), autosave + restore toast, zoom %
+  readout, shortcut sheet, empty-canvas onboarding, full keyboard map.
+- **Phase 3** (editor chrome/mobile/a11y) — palette search + collapsible
+  groups, theme-driven Inspector swatches + multi panel + Import JSON, 44px
+  compact touch targets, drawer drag-handle + swipe dismiss, one-finger touch
+  pan (+ mouse-drag pan in read-only embeds), `:focus-visible` + color-scheme,
+  2x PNG export.
+- **Phase 4** — shared `ui/Menu` (accessible anchored menu), `ui/Tabs`,
+  `ui/Toast` (+ stories); /diagram-library sticky nav + search + skeletons +
+  accessible card menu.
+- **Phase 5** — /diagram-preview examples picker, Format/Copy/Share-link
+  (#hash permalink), line-number gutter + line:col errors, camera fields +
+  "Grab camera", fullscreen, real Tabs + Toast.
+
+**Needs a browser eyeball (WebGL, not verifiable headless):** iso edge look on
+/work + editor, label screen-fit at extreme zooms, signalDark scenes in site
+dark mode, snapshot re-key on theme toggle, marquee/drag feel, preset
+`cameraFit` values after the height-aware fit change.
+
+**Still deferred:** minimap; CodeMirror-grade JSON editor; user-saved library
+items; Simple-Icons brand textures; card quick-view lightbox; TextInput/
+TextArea ui primitives.

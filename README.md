@@ -48,7 +48,16 @@ Cal.com) degrade gracefully when unconfigured. See `.env.example` for the full l
 A 2.5D isometric **workflow + architecture diagram** editor (React Three Fiber / three.js),
 used to author the diagrams embedded across `/services`, `/process`, `/about` and `/work`.
 three.js is code-split (dynamic `import`, `ssr: false`) so it never ships on other routes;
-embedded diagrams render once to a static snapshot for performance.
+embedded diagrams render once to a static snapshot for performance, follow the site's
+light/dark toggle (the dark scenes use the `signalDark` theme), and connect nodes with
+iso-orthogonal "signal trace" elbows routed under the floating platforms.
+
+The editor is a full tool: multi-select (shift-click / marquee), copy/paste/duplicate,
+alt-drag clone, grid snap + smart alignment guides, drag-and-drop from the palette,
+inline rename, context menus, autosave with session restore, a keyboard-shortcut sheet
+(`?`), and touch-first mobile ergonomics. See
+[`docs/editor/audit_improvement_plan.md`](./docs/editor/audit_improvement_plan.md) for the
+audit + phased implementation record.
 
 Three routes:
 
