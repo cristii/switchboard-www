@@ -39,6 +39,9 @@ export type GlyphName =
   | "palette"
   | "link"
   | "copy"
+  | "magnet"
+  | "help"
+  | "edit"
   // device glyphs
   | "monitor"
   | "laptop"
@@ -148,6 +151,24 @@ const PATHS: Record<GlyphName, React.ReactNode> = {
     <>
       <rect x="8" y="8" width="12" height="12" rx="2" />
       <path d="M16 8 V5 a2 2 0 0 0 -2 -2 H5 a2 2 0 0 0 -2 2 v9 a2 2 0 0 0 2 2 h3" />
+    </>
+  ),
+  magnet: (
+    <>
+      <path d="M5 4 v7 a7 7 0 0 0 14 0 V4" />
+      <path d="M5 4 h4 v6 M15 4 h4 v6" />
+    </>
+  ),
+  help: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.2 9.2 a2.8 2.8 0 0 1 5.4 0.9 c0 1.8 -2.6 2 -2.6 3.6 M12 16.6 h0.01" />
+    </>
+  ),
+  edit: (
+    <>
+      <path d="M17 3 l4 4 L8 20 H4 v-4 Z" />
+      <path d="M14.5 5.5 l4 4" />
     </>
   ),
   monitor: (

@@ -125,8 +125,13 @@ export interface Viewport {
 
 export type EditorTheme = "light" | "dark";
 
-/** What is currently selected in the editor (a node or an edge). */
-export type Selection = { type: "node"; id: string } | { type: "edge"; id: string } | null;
+/** What is currently selected in the editor. Node selection is a SET (shift-click
+ *  / marquee): `ids` holds every selected node and `id` is the primary one (last
+ *  clicked — drives the Inspector). Single selection is `ids: [id]`. */
+export type Selection =
+  | { type: "node"; id: string; ids: string[] }
+  | { type: "edge"; id: string }
+  | null;
 
 /** The serialisable document. `version` enables forward migrations. */
 export interface Diagram {

@@ -34,9 +34,14 @@ export interface CameraApi {
   fit: () => void;
   zoomIn: () => void;
   zoomOut: () => void;
+  /** Jump to an absolute orthographic zoom (100% = 38), keeping the target. */
+  zoomTo: (zoom: number) => void;
   capturePng: () => string | null;
   /** Current framed camera: orthographic zoom (or perspective distance) + target. */
   getCamera: () => { zoom: number; target: [number, number] };
+  /** Raycast a client-coordinate point onto the ground plane (world x/z), e.g.
+   *  for palette drag-and-drop. Null when the point misses the canvas. */
+  groundAt: (clientX: number, clientY: number) => [number, number] | null;
 }
 
 export interface CameraControlsProps {
@@ -264,10 +269,22 @@ export function CameraControls({
   const zoomOut = () =>
     goTo(desiredTarget.current.x, desiredTarget.current.z, cfgRef.current.isPersp ? baseline() * 1.2 : baseline() / 1.2);
 
+  const zoomTo = (z: number) =>
+    goTo(desiredTarget.current.x, desiredTarget.current.z, cfgRef.current.isPersp ? clampDist(z) : clampZoom(z));
+
   const getCamera = (): { zoom: number; target: [number, number] } => ({
     zoom: cfgRef.current.isPersp ? dist.current : ortho().zoom,
     target: [target.current.x, target.current.z],
   });
+
+  const groundAtApi = (clientX: number, clientY: number): [number, number] | null => {
+    const rect = gl.domElement.getBoundingClientRect();
+    if (clientX < rect.left || clientX > rect.right || clientY < rect.top || clientY > rect.bottom) {
+      return null; // point is outside the canvas (e.g. a palette drop that missed)
+    }
+    const pt = groundAt(clientX, clientY);
+    return pt ? [pt.x, pt.z] : null;
+  };
 
   useFrame(() => {
     if (!tweening.current) return;
@@ -300,7 +317,9 @@ export function CameraControls({
       api.current.fit = fit;
       api.current.zoomIn = zoomIn;
       api.current.zoomOut = zoomOut;
+      api.current.zoomTo = zoomTo;
       api.current.getCamera = getCamera;
+      api.current.groundAt = groundAtApi;
     }
 
     const onPointerDown = (e: PointerEvent) => {

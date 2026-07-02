@@ -17,16 +17,21 @@ import { Toolbar } from "./panels/Toolbar";
 import { Inspector } from "./panels/Inspector";
 import { ThemeManager } from "./panels/ThemeManager";
 import { NodeContextMenu } from "./panels/NodeContextMenu";
+import { InlineLabelEditor } from "./panels/InlineLabelEditor";
+import { ShortcutSheet } from "./panels/ShortcutSheet";
 import { MobileDrawer } from "./panels/MobileDrawer";
 import { NodeGlyph } from "./icons/NodeGlyph";
 import { useThemeManager } from "./theme/useThemeManager";
 import { useResponsiveLayout } from "./hooks/useResponsiveLayout";
-import { useWorkflowStore } from "./state/useWorkflowStore";
+import { findFreeSpot, useWorkflowStore } from "./state/useWorkflowStore";
 import { PRESETS } from "./catalog/presets";
 import { layeredLayout } from "./catalog/layout/autoLayout";
 import { mvpSampleDiagram } from "./sampleDiagram";
 import { serializePreviewDoc, type PreviewDoc } from "./preview/previewConfig";
-import type { Diagram, EditorTheme, NodeKind } from "./state/types";
+import type { Diagram, EditorTheme, NodeKind, WorkflowNode } from "./state/types";
+
+const AUTOSAVE_KEY = "sb-editor-doc";
+const REF_ZOOM = 38; // orthographic zoom that reads as "100%"
 
 export interface IsometricWorkflowEditorProps {
   /** Seed document loaded on mount. @default mvpSampleDiagram */
@@ -49,7 +54,9 @@ const NOOP_API: CameraApi = {
   zoomIn: () => {},
   zoomOut: () => {},
   capturePng: () => null,
+  zoomTo: () => {},
   getCamera: () => ({ zoom: 1, target: [0, 0] }),
+  groundAt: () => null,
 };
 
 type Drawer = "none" | "add" | "inspect" | "theme";
@@ -85,10 +92,69 @@ export function IsometricWorkflowEditor({
   const clearSelection = useWorkflowStore((s) => s.clearSelection);
   const linkMode = useWorkflowStore((s) => s.linkMode);
   const linkSourceId = useWorkflowStore((s) => s.linkSourceId);
+  const snap = useWorkflowStore((s) => s.snap);
+  const setSnap = useWorkflowStore((s) => s.setSnap);
+  const guides = useWorkflowStore((s) => s.guides);
+  const openContextMenu = useWorkflowStore((s) => s.openContextMenu);
+
+  const [shortcutsOpen, setShortcutsOpen] = React.useState(false);
+  const [zoomPct, setZoomPct] = React.useState(100);
+
+  // Autosaved doc captured SYNCHRONOUSLY before the seed effect can overwrite it.
+  const [savedAtMount] = React.useState<Diagram | null>(() => {
+    if (typeof window === "undefined") return null;
+    try {
+      const raw = window.localStorage.getItem(AUTOSAVE_KEY);
+      const parsed = raw ? (JSON.parse(raw) as Diagram) : null;
+      return parsed && Array.isArray(parsed.nodes) && parsed.nodes.length > 0 ? parsed : null;
+    } catch {
+      return null;
+    }
+  });
+  // Offer a restore only when we opened with the default sample (an explicit
+  // initialDiagram — a library/playground handoff — always wins).
+  const [restoreOffer, setRestoreOffer] = React.useState<boolean>(
+    () => chrome && initialDiagram === mvpSampleDiagram && savedAtMount !== null,
+  );
 
   React.useEffect(() => {
     loadDiagram(initialDiagram);
   }, [initialDiagram, loadDiagram]);
+
+  // Autosave the working document (debounced) so a reload never loses work.
+  React.useEffect(() => {
+    if (!chrome) return;
+    let t: number | undefined;
+    const unsub = useWorkflowStore.subscribe((s, prev) => {
+      if (s.nodes === prev.nodes && s.edges === prev.edges) return;
+      window.clearTimeout(t);
+      t = window.setTimeout(() => {
+        try {
+          window.localStorage.setItem(
+            AUTOSAVE_KEY,
+            JSON.stringify(useWorkflowStore.getState().exportDiagram()),
+          );
+        } catch {
+          /* quota / privacy mode */
+        }
+      }, 800);
+    });
+    return () => {
+      window.clearTimeout(t);
+      unsub();
+    };
+  }, [chrome]);
+
+  // Live zoom readout (poll — cheap, avoids threading camera state through R3F).
+  React.useEffect(() => {
+    if (!chrome) return;
+    const t = window.setInterval(() => {
+      const z = apiRef.current.getCamera().zoom;
+      const pct = Math.max(1, Math.round((z / REF_ZOOM) * 100));
+      setZoomPct((p) => (p === pct ? p : pct));
+    }, 300);
+    return () => window.clearInterval(t);
+  }, [chrome]);
 
   // Copy the current scene as a { config, diagram } doc (the playground / library
   // format) — captures the live camera + the active theme (background/grid/lights).
@@ -109,18 +175,72 @@ export function IsometricWorkflowEditor({
     void navigator.clipboard.writeText(serializePreviewDoc(json)).catch(() => {});
   }, [spec]);
 
-  // Minimal keyboard handling (full shortcuts in P13): delete selection; escape
-  // cancels a connect drag or clears the selection.
+  // Full keyboard map: undo/redo, clipboard, duplicate, select-all, delete,
+  // arrow nudge, "?" cheat sheet, Escape cascade. Never fires while typing.
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const tag = (document.activeElement?.tagName ?? "").toLowerCase();
-      if (tag === "input" || tag === "textarea" || tag === "select") return;
+      const el = e.target as HTMLElement | null;
+      if (
+        el &&
+        (el.closest("input, textarea, select") || (el as HTMLElement).isContentEditable)
+      ) {
+        return;
+      }
       const s = useWorkflowStore.getState();
+      const mod = e.metaKey || e.ctrlKey;
+      const k = e.key.toLowerCase();
+
+      if (mod && k === "z") {
+        e.preventDefault();
+        if (e.shiftKey) s.redo();
+        else s.undo();
+        return;
+      }
+      if (mod && k === "y") {
+        e.preventDefault();
+        s.redo();
+        return;
+      }
+      if (mod && k === "a") {
+        e.preventDefault();
+        s.selectAll();
+        return;
+      }
+      if (mod && k === "c") {
+        s.copySelection();
+        return;
+      }
+      if (mod && k === "v") {
+        s.pasteClipboard();
+        return;
+      }
+      if (mod && k === "d") {
+        e.preventDefault();
+        void s.duplicateSelection();
+        return;
+      }
       if (e.key === "Delete" || e.key === "Backspace") {
-        if (s.selection?.type === "node") s.deleteNode(s.selection.id);
-        else if (s.selection?.type === "edge") s.deleteEdge(s.selection.id);
-      } else if (e.key === "Escape") {
-        if (s.linkMode) s.cancelLink();
+        e.preventDefault();
+        s.deleteSelection();
+        return;
+      }
+      if (e.key === "?") {
+        setShortcutsOpen((v) => !v);
+        return;
+      }
+      if (e.key.startsWith("Arrow")) {
+        if (s.selection?.type !== "node") return;
+        e.preventDefault();
+        const step = e.shiftKey ? 2 : 0.5;
+        const dx = e.key === "ArrowLeft" ? -step : e.key === "ArrowRight" ? step : 0;
+        const dy = e.key === "ArrowUp" ? -step : e.key === "ArrowDown" ? step : 0;
+        s.nudgeSelection(dx, dy);
+        return;
+      }
+      if (e.key === "Escape") {
+        setShortcutsOpen(false);
+        if (s.labelEditor) s.closeLabelEditor();
+        else if (s.linkMode) s.cancelLink();
         else if (s.connectSourceId) s.endConnect();
         else s.clearSelection();
         s.closeContextMenu();
@@ -146,6 +266,38 @@ export function IsometricWorkflowEditor({
     const s = useWorkflowStore.getState();
     s.arrange(layeredLayout(s.nodes, s.edges));
   };
+
+  // Click-to-add places at the viewport centre (nearest free spot, snapped);
+  // dragging a palette item drops it exactly at the pointer's ground point.
+  const snapVal = (v: number) => (useWorkflowStore.getState().snap ? Math.round(v * 2) / 2 : v);
+  const handlePaletteAdd = React.useCallback(
+    (kind: NodeKind, partial?: Partial<WorkflowNode>) => {
+      const s = useWorkflowStore.getState();
+      const [tx, ty] = apiRef.current.getCamera().target;
+      const spot = findFreeSpot(s.nodes, snapVal(tx), snapVal(ty));
+      addNode(kind, { x: snapVal(spot.x), y: snapVal(spot.y), ...partial });
+    },
+    [addNode],
+  );
+  const handleDropNode = React.useCallback(
+    (kind: NodeKind, partial: Partial<WorkflowNode> | undefined, clientX: number, clientY: number) => {
+      const pt = apiRef.current.groundAt(clientX, clientY);
+      if (!pt) return; // dropped outside the canvas
+      addNode(kind, { x: snapVal(pt[0]), y: snapVal(pt[1]), ...partial });
+    },
+    [addNode],
+  );
+
+  const handleMarqueeSelect = React.useCallback((ids: string[], additive: boolean) => {
+    const s = useWorkflowStore.getState();
+    if (additive && s.selection?.type === "node") {
+      s.selectNodes(Array.from(new Set([...s.selection.ids, ...ids])));
+    } else if (ids.length > 0) {
+      s.selectNodes(ids);
+    } else if (!additive) {
+      s.clearSelection();
+    }
+  }, []);
 
   const toggleThemeManager = () => {
     if (isMobile) setDrawer((d) => (d === "theme" ? "none" : "theme"));
@@ -181,8 +333,69 @@ export function IsometricWorkflowEditor({
         showGround={spec.shadow.enabled}
         onSelectEdge={selectEdge}
         onBackgroundClick={clearSelection}
+        onEdgeContextMenu={(id, x, y) => {
+          selectEdge(id);
+          openContextMenu("edge", id, x, y);
+        }}
+        onCanvasContextMenu={(x, y) => openContextMenu("canvas", null, x, y)}
+        onMarqueeSelect={handleMarqueeSelect}
+        guides={guides}
         onReady={() => setReady(true)}
       />
+      {ready && nodes.length === 0 && chrome ? (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "grid",
+            placeItems: "center",
+            pointerEvents: "none",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 10,
+              padding: "18px 22px",
+              borderRadius: 12,
+              border: "1.5px dashed var(--editor-border-soft)",
+              background: "var(--editor-surface)",
+              color: "var(--editor-text-muted)",
+              fontFamily: "var(--font-body, sans-serif)",
+              fontSize: "0.84rem",
+              textAlign: "center",
+              maxWidth: 320,
+            }}
+          >
+            <span>
+              The canvas is empty. {isMobile ? "Tap Add below" : "Click or drag a node from the palette"} —
+              or start from a template.
+            </span>
+            <button
+              type="button"
+              onClick={() => handlePickTemplate(PRESETS[0]?.id ?? "clear")}
+              style={{
+                pointerEvents: "auto",
+                padding: "7px 14px",
+                borderRadius: 999,
+                border: "1.5px solid var(--editor-accent)",
+                background: "transparent",
+                color: "var(--editor-accent)",
+                fontFamily: "var(--font-display, sans-serif)",
+                fontWeight: 700,
+                fontSize: "0.74rem",
+                letterSpacing: "0.03em",
+                textTransform: "uppercase",
+                cursor: "pointer",
+              }}
+            >
+              Load a sample
+            </button>
+          </div>
+        </div>
+      ) : null}
       {labelMode === "dom" ? (
         <>
           <LabelsLayer nodes={nodes} selection={selection} labelsRef={labelsRef} />
@@ -269,6 +482,11 @@ export function IsometricWorkflowEditor({
           showGround={spec.shadow.enabled}
           onToggleGrid={() => manager.patch((d) => (d.grid.show = !d.grid.show))}
           onToggleGround={() => manager.patch((d) => (d.shadow.enabled = !d.shadow.enabled))}
+          snap={snap}
+          onToggleSnap={() => setSnap(!snap)}
+          zoomPercent={zoomPct}
+          onZoomTo100={() => apiRef.current.zoomTo(REF_ZOOM)}
+          onShowShortcuts={() => setShortcutsOpen(true)}
           onToggleThemeManager={toggleThemeManager}
           themeManagerOpen={isMobile ? drawer === "theme" : themePanel}
           onCopyJson={handleCopyJson}
@@ -300,7 +518,7 @@ export function IsometricWorkflowEditor({
           <MobileDrawer open={drawer === "add"} title="Add node" onClose={() => setDrawer("none")}>
             <NodePalette
               onAdd={(k, partial) => {
-                addNode(k, partial);
+                handlePaletteAdd(k, partial);
                 setDrawer("none");
               }}
             />
@@ -315,6 +533,8 @@ export function IsometricWorkflowEditor({
       ) : (
         <div style={{ position: "relative", display: "flex", flex: 1, minHeight: 0 }}>
           <NodePalette
+            onAdd={handlePaletteAdd}
+            onDropNode={handleDropNode}
             style={{ flex: "none", width: 208, height: "100%", borderRight: "1.5px solid var(--editor-border-soft)" }}
           />
           {stage}
@@ -340,7 +560,77 @@ export function IsometricWorkflowEditor({
         </div>
       )}
 
-      {chrome ? <NodeContextMenu /> : null}
+      {chrome ? <NodeContextMenu onFitView={() => apiRef.current.fit()} /> : null}
+      {chrome ? <InlineLabelEditor /> : null}
+      {chrome ? <ShortcutSheet open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} /> : null}
+
+      {restoreOffer ? (
+        <div
+          role="status"
+          style={{
+            position: "absolute",
+            bottom: isMobile ? 62 : 14,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 30,
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "9px 14px",
+            borderRadius: 12,
+            border: "1.5px solid var(--editor-border-soft)",
+            background: "var(--editor-surface)",
+            color: "var(--editor-text)",
+            boxShadow: "var(--editor-shadow)",
+            fontFamily: "var(--font-body, sans-serif)",
+            fontSize: "0.8rem",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Restore your last session?
+          <button
+            type="button"
+            onClick={() => {
+              if (savedAtMount) useWorkflowStore.getState().importDiagram(savedAtMount);
+              setRestoreOffer(false);
+            }}
+            style={{
+              padding: "5px 12px",
+              borderRadius: 999,
+              border: "1.5px solid var(--editor-accent)",
+              background: "var(--editor-accent)",
+              color: "#fff",
+              fontFamily: "var(--font-display, sans-serif)",
+              fontWeight: 700,
+              fontSize: "0.7rem",
+              letterSpacing: "0.03em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+            }}
+          >
+            Restore
+          </button>
+          <button
+            type="button"
+            onClick={() => setRestoreOffer(false)}
+            style={{
+              padding: "5px 12px",
+              borderRadius: 999,
+              border: "1.5px solid var(--editor-border-soft)",
+              background: "transparent",
+              color: "var(--editor-text-muted)",
+              fontFamily: "var(--font-display, sans-serif)",
+              fontWeight: 700,
+              fontSize: "0.7rem",
+              letterSpacing: "0.03em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+            }}
+          >
+            Dismiss
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

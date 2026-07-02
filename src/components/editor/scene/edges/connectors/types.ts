@@ -15,4 +15,6 @@ export interface ConnectorProps {
   arrowSize: number;
   dashed?: boolean;
   onSelect?: (e: ThreeEvent<MouseEvent>) => void;
+  /** Right-click on the connector (opens the edge context menu). */
+  onContextMenu?: (e: ThreeEvent<MouseEvent>) => void;
 }

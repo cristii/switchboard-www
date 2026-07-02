@@ -59,6 +59,7 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
   const linkSourceId = useWorkflowStore((s) => s.linkSourceId);
   const linkClick = useWorkflowStore((s) => s.linkClick);
   const openContextMenu = useWorkflowStore((s) => s.openContextMenu);
+  const openLabelEditor = useWorkflowStore((s) => s.openLabelEditor);
   const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), []);
 
   const reduced = usePrefersReducedMotion();
@@ -100,6 +101,7 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
   // Scale-in on mount, a gentle pop when selected, a small lift on hover so the
   // canvas answers the cursor. Disabled under reduced motion.
   const [hovered, setHovered] = useState(false);
+  const [portHovered, setPortHovered] = useState(false);
   const liftable = !isGroup && !isText;
   const { scale, lift } = useSpring({
     from: { scale: 0.85, lift: 0 },
@@ -108,11 +110,11 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
     config: { tension: 320, friction: 22 },
   });
 
-  // On drop, assign/clear this node's group membership by footprint containment.
-  const assignMembership = () => {
+  // On drop, assign/clear a node's group membership by footprint containment.
+  const assignMembership = (id: string) => {
     const st = useWorkflowStore.getState();
-    const moved = st.nodes.find((n) => n.id === node.id);
-    if (!moved) return;
+    const moved = st.nodes.find((n) => n.id === id);
+    if (!moved || moved.kind === "group") return;
     let parent: string | null = null;
     for (const g of st.nodes) {
       if (g.kind !== "group") continue;
@@ -124,7 +126,7 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
         break;
       }
     }
-    if ((moved.parentId ?? null) !== parent) setParent(node.id, parent);
+    if ((moved.parentId ?? null) !== parent) setParent(id, parent);
   };
 
   const ndcFromEvent = (ev: PointerEvent) => {
@@ -135,24 +137,105 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
     );
   };
 
+  const groundFromEvent = (ev: PointerEvent): THREE.Vector3 | null => {
+    raycaster.setFromCamera(ndcFromEvent(ev), camera);
+    const point = new THREE.Vector3();
+    return raycaster.ray.intersectPlane(plane, point) ? point : null;
+  };
+
   const handleBodyPointerDown = (e: ThreeEvent<PointerEvent>) => {
     if (linkMode) return; // a click links; never drag while linking
     if (e.button !== 0 || e.nativeEvent.ctrlKey) return; // ctrl/middle/right = camera pan
     e.stopPropagation();
-    selectNode(node.id);
-    beginInteraction();
+
+    // Shift-click toggles this node in the selection set (no drag).
+    if (e.nativeEvent.shiftKey) {
+      selectNode(node.id, true);
+      return;
+    }
+
+    const stBefore = useWorkflowStore.getState();
+    const wasInSelection =
+      stBefore.selection?.type === "node" && stBefore.selection.ids.includes(node.id);
+    if (!wasInSelection) selectNode(node.id);
+
+    // Alt-drag clones the selection and drags the clones (duplicateSelection
+    // snapshots history itself; a plain drag snapshots here).
+    let anchorId = node.id;
+    if (e.nativeEvent.altKey) {
+      const map = useWorkflowStore.getState().duplicateSelection();
+      if (map) anchorId = map[node.id] ?? anchorId;
+    } else {
+      beginInteraction();
+    }
+
+    // Drag the whole selected set, delta-based from the grab point (the node no
+    // longer jumps its centre to the cursor). Children whose parent group is
+    // also dragged are skipped — the group cascade already moves them.
+    const st = useWorkflowStore.getState();
+    const selIds =
+      st.selection?.type === "node" && st.selection.ids.includes(anchorId)
+        ? st.selection.ids
+        : [anchorId];
+    const idSet = new Set(selIds);
+    const dragIds = selIds.filter((id) => {
+      const n = st.nodes.find((m) => m.id === id);
+      return !(n?.parentId && idSet.has(n.parentId));
+    });
+    const starts = new Map(
+      dragIds.flatMap((id) => {
+        const n = st.nodes.find((m) => m.id === id);
+        return n ? [[id, { x: n.x, y: n.y }] as const] : [];
+      }),
+    );
+    const startPoint = groundFromEvent(e.nativeEvent);
+    if (!startPoint || starts.size === 0) return;
+
     gl.domElement.style.cursor = "grabbing";
+    let moved = false;
 
     const onMove = (ev: PointerEvent) => {
-      raycaster.setFromCamera(ndcFromEvent(ev), camera);
-      const point = new THREE.Vector3();
-      if (raycaster.ray.intersectPlane(plane, point)) moveNode(node.id, point.x, point.z);
+      const point = groundFromEvent(ev);
+      if (!point) return;
+      let dx = point.x - startPoint.x;
+      let dz = point.z - startPoint.z;
+      if (!moved && Math.hypot(dx, dz) > 0.03) moved = true;
+      if (!moved) return;
+
+      // Smart guides + grid snap, applied to the anchor node's target position.
+      const a = starts.get(anchorId);
+      const stNow = useWorkflowStore.getState();
+      if (a) {
+        let ax = a.x + dx;
+        let az = a.y + dz;
+        const TH = 0.22;
+        let gx: number | null = null;
+        let gz: number | null = null;
+        for (const n of stNow.nodes) {
+          if (idSet.has(n.id) || n.kind === "text") continue;
+          if (gx === null && Math.abs(n.x - ax) < TH) gx = n.x;
+          if (gz === null && Math.abs(n.y - az) < TH) gz = n.y;
+          if (gx !== null && gz !== null) break;
+        }
+        ax = gx ?? (stNow.snap ? Math.round(ax * 2) / 2 : ax);
+        az = gz ?? (stNow.snap ? Math.round(az * 2) / 2 : az);
+        stNow.setGuides({ x: gx, z: gz });
+        dx = ax - a.x;
+        dz = az - a.y;
+      }
+      for (const [id, s0] of starts) moveNode(id, s0.x + dx, s0.y + dz);
     };
     const onUp = () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
       gl.domElement.style.cursor = "default";
-      if (!isGroup) assignMembership();
+      useWorkflowStore.getState().setGuides({ x: null, z: null });
+      if (moved) {
+        for (const id of dragIds) assignMembership(id);
+      } else if (wasInSelection && selIds.length > 1 && !e.nativeEvent.altKey) {
+        // A plain click inside a multi-selection collapses it to that node.
+        selectNode(node.id);
+      }
     };
     window.addEventListener("pointermove", onMove);
     window.addEventListener("pointerup", onUp);
@@ -186,19 +269,24 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
         position={[0, height / 2, 0]}
         onPointerDown={handleBodyPointerDown}
         onClick={(e) => {
+          // Selection happens on pointerdown; click only completes link mode.
           e.stopPropagation();
-          if (linkMode) {
-            linkClick(node.id);
-            return;
-          }
-          selectNode(node.id);
+          if (linkMode) linkClick(node.id);
+        }}
+        onDoubleClick={(e) => {
+          e.stopPropagation();
+          if (linkMode || isText) return;
+          const ne = e.nativeEvent as MouseEvent;
+          openLabelEditor(node.id, ne.clientX, ne.clientY);
         }}
         onContextMenu={(e) => {
           e.stopPropagation();
           const ne = e.nativeEvent as MouseEvent;
           ne.preventDefault?.();
-          selectNode(node.id);
-          openContextMenu(node.id, ne.clientX, ne.clientY);
+          const st = useWorkflowStore.getState();
+          const inSel = st.selection?.type === "node" && st.selection.ids.includes(node.id);
+          if (!inSel) selectNode(node.id);
+          openContextMenu("node", node.id, ne.clientX, ne.clientY);
         }}
         onPointerOver={(e) => {
           e.stopPropagation();
@@ -251,12 +339,25 @@ export const NodeMesh = ({ node, theme, selected }: NodeMeshProps) => {
           </mesh>
         ) : null}
         {hasOut ? (
-          <mesh position={[width / 2 + 0.16, height * 0.5, 0]} onPointerDown={handleOutPointerDown}>
+          <mesh
+            position={[width / 2 + 0.16, height * 0.5, 0]}
+            scale={portHovered ? 1.45 : 1}
+            onPointerDown={handleOutPointerDown}
+            onPointerOver={(e) => {
+              e.stopPropagation();
+              setPortHovered(true);
+              gl.domElement.style.cursor = "crosshair";
+            }}
+            onPointerOut={() => {
+              setPortHovered(false);
+              gl.domElement.style.cursor = hovered ? "pointer" : "default";
+            }}
+          >
             <sphereGeometry args={[0.12, 16, 16]} />
             <meshStandardMaterial
               color={theme.nodeColors.orange}
               emissive={theme.nodeColors.orange}
-              emissiveIntensity={0.45}
+              emissiveIntensity={portHovered ? 0.8 : 0.45}
               roughness={0.5}
             />
           </mesh>

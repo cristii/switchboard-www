@@ -30,6 +30,14 @@ export interface ToolbarProps {
   showGround?: boolean;
   onToggleGrid?: () => void;
   onToggleGround?: () => void;
+  /** Snap-to-grid toggle. */
+  snap?: boolean;
+  onToggleSnap?: () => void;
+  /** Live zoom readout (100 = the reference zoom); click resets to 100%. */
+  zoomPercent?: number;
+  onZoomTo100?: () => void;
+  /** Open the keyboard-shortcut sheet. */
+  onShowShortcuts?: () => void;
   /** Theme manager pane toggle. */
   onToggleThemeManager?: () => void;
   themeManagerOpen?: boolean;
@@ -72,6 +80,11 @@ export function Toolbar({
   showGround = true,
   onToggleGrid,
   onToggleGround,
+  snap = true,
+  onToggleSnap,
+  zoomPercent,
+  onZoomTo100,
+  onShowShortcuts,
   onToggleThemeManager,
   themeManagerOpen = false,
   onCopyJson,
@@ -130,6 +143,31 @@ export function Toolbar({
       <Divider />
       <IconButton label="Zoom in" glyph="zoomIn" onClick={() => apiRef.current.zoomIn()} />
       <IconButton label="Zoom out" glyph="zoomOut" onClick={() => apiRef.current.zoomOut()} />
+      {zoomPercent !== undefined ? (
+        <button
+          type="button"
+          title="Zoom to 100%"
+          aria-label={`Zoom ${zoomPercent}% — click for 100%`}
+          onClick={onZoomTo100}
+          style={{
+            height: 32,
+            minWidth: 46,
+            padding: "0 6px",
+            borderRadius: 8,
+            border: "1.5px solid transparent",
+            background: "transparent",
+            color: "var(--editor-text-muted)",
+            fontFamily: "var(--font-display, sans-serif)",
+            fontWeight: 700,
+            fontSize: "0.7rem",
+            letterSpacing: "0.02em",
+            cursor: "pointer",
+            flex: "none",
+          }}
+        >
+          {zoomPercent}%
+        </button>
+      ) : null}
       <IconButton label="Fit to content" glyph="fit" onClick={() => apiRef.current.fit()} />
       <IconButton label="Reset view" glyph="reset" onClick={() => apiRef.current.reset()} />
       {onAutoArrange ? (
@@ -148,11 +186,17 @@ export function Toolbar({
       {onToggleGround ? (
         <IconButton label="Toggle shadows" glyph="shadow" active={showGround} onClick={onToggleGround} />
       ) : null}
+      {onToggleSnap ? (
+        <IconButton label="Snap to grid" glyph="magnet" active={snap} onClick={onToggleSnap} />
+      ) : null}
       <Divider />
       {onCopyJson ? <IconButton label="Copy JSON (config + diagram)" glyph="copy" onClick={onCopyJson} /> : null}
       <IconButton label="Export JSON" glyph="download" onClick={exportJson} />
       <IconButton label="Export PNG" glyph="image" onClick={exportPng} />
       {compact ? <Divider /> : <div style={{ flex: 1 }} />}
+      {onShowShortcuts ? (
+        <IconButton label="Keyboard shortcuts (?)" glyph="help" onClick={onShowShortcuts} />
+      ) : null}
       {onToggleThemeManager ? (
         <IconButton label="Theme manager" glyph="palette" active={themeManagerOpen} onClick={onToggleThemeManager} />
       ) : null}

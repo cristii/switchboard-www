@@ -35,7 +35,9 @@ const NOOP_API: CameraApi = {
   zoomIn: () => {},
   zoomOut: () => {},
   capturePng: () => null,
+  zoomTo: () => {},
   getCamera: () => ({ zoom: 1, target: [0, 0] }),
+  groundAt: () => null,
 };
 
 export function DiagramPreview({ diagram, config, className, style, apiRef: externalApiRef, onReady }: DiagramPreviewProps) {

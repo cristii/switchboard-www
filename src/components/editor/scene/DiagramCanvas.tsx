@@ -9,8 +9,10 @@
 // ConnectPreview for the static PreviewNode.
 
 import * as THREE from "three";
-import { Canvas } from "@react-three/fiber";
-import { SoftShadows } from "@react-three/drei";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { Canvas, useThree, type ThreeEvent } from "@react-three/fiber";
+import { Line, SoftShadows } from "@react-three/drei";
 import { Backdrop } from "./Backdrop";
 import { Grid } from "./Grid";
 import { Lights } from "./Lights";
@@ -59,7 +61,101 @@ export interface DiagramCanvasProps {
   transparent?: boolean;
   onSelectEdge?: (id: string) => void;
   onBackgroundClick?: () => void;
+  /** Right-click on an edge / on empty canvas (editor context menus). */
+  onEdgeContextMenu?: (id: string, x: number, y: number) => void;
+  onCanvasContextMenu?: (x: number, y: number) => void;
+  /** Marquee (desktop left-drag on empty ground) selection result. */
+  onMarqueeSelect?: (ids: string[], additive: boolean) => void;
+  /** Live smart-guide lines while dragging (world x / z). */
+  guides?: { x: number | null; z: number | null };
   onReady?: () => void;
+}
+
+/** Marquee select: left-drag on empty ground (mouse only) draws a screen rect
+ *  (portaled next to the canvas so editor tokens resolve) and selects the nodes
+ *  whose projected centres fall inside. Sets `suppressRef` so the ground click
+ *  that follows pointer-up doesn't immediately clear the fresh selection. */
+function MarqueeController({
+  nodes,
+  startRef,
+  suppressRef,
+  onSelect,
+}: {
+  nodes: WorkflowNode[];
+  startRef: React.MutableRefObject<((e: ThreeEvent<PointerEvent>) => void) | null>;
+  suppressRef: React.MutableRefObject<boolean>;
+  onSelect: (ids: string[], additive: boolean) => void;
+}) {
+  const { gl, camera } = useThree();
+  const [rect, setRect] = useState<{ x0: number; y0: number; x1: number; y1: number } | null>(null);
+  const nodesRef = useRef(nodes);
+  nodesRef.current = nodes;
+  const onSelectRef = useRef(onSelect);
+  onSelectRef.current = onSelect;
+
+  useEffect(() => {
+    startRef.current = (e) => {
+      const ne = e.nativeEvent;
+      if (ne.pointerType !== "mouse" || ne.button !== 0 || ne.ctrlKey) return;
+      const x0 = ne.clientX;
+      const y0 = ne.clientY;
+      let live: { x0: number; y0: number; x1: number; y1: number } | null = null;
+      const onMove = (ev: PointerEvent) => {
+        live = { x0, y0, x1: ev.clientX, y1: ev.clientY };
+        setRect(live);
+      };
+      const onUp = (ev: PointerEvent) => {
+        window.removeEventListener("pointermove", onMove);
+        window.removeEventListener("pointerup", onUp);
+        setRect(null);
+        if (!live || (Math.abs(live.x1 - live.x0) < 6 && Math.abs(live.y1 - live.y0) < 6)) return;
+        suppressRef.current = true;
+        const b = gl.domElement.getBoundingClientRect();
+        const minX = Math.min(live.x0, live.x1);
+        const maxX = Math.max(live.x0, live.x1);
+        const minY = Math.min(live.y0, live.y1);
+        const maxY = Math.max(live.y0, live.y1);
+        const ids: string[] = [];
+        const v = new THREE.Vector3();
+        for (const n of nodesRef.current) {
+          if (n.kind === "group") continue;
+          v.set(n.x, 0.4, n.y).project(camera);
+          const sx = b.left + ((v.x + 1) / 2) * b.width;
+          const sy = b.top + ((1 - v.y) / 2) * b.height;
+          if (sx >= minX && sx <= maxX && sy >= minY && sy <= maxY) ids.push(n.id);
+        }
+        onSelectRef.current(ids, ev.shiftKey);
+      };
+      window.addEventListener("pointermove", onMove);
+      window.addEventListener("pointerup", onUp);
+    };
+    return () => {
+      startRef.current = null;
+    };
+  }, [gl, camera, startRef, suppressRef]);
+
+  const host = gl.domElement.parentElement;
+  if (!rect || !host) return null;
+  const b = gl.domElement.getBoundingClientRect();
+  return createPortal(
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        left: Math.min(rect.x0, rect.x1) - b.left,
+        top: Math.min(rect.y0, rect.y1) - b.top,
+        width: Math.abs(rect.x1 - rect.x0),
+        height: Math.abs(rect.y1 - rect.y0),
+        border: "1.5px dashed var(--editor-accent)",
+        background: "var(--editor-surface-2)",
+        opacity: 0.35,
+        borderRadius: 4,
+        pointerEvents: "none",
+        zIndex: 5,
+      }}
+    />,
+    host,
+  );
 }
 
 /** Initial three.js camera props derived from the theme camera spec. */
@@ -103,9 +199,17 @@ export function DiagramCanvas({
   transparent = false,
   onSelectEdge,
   onBackgroundClick,
+  onEdgeContextMenu,
+  onCanvasContextMenu,
+  onMarqueeSelect,
+  guides,
   onReady,
 }: DiagramCanvasProps) {
   const scene = resolveSceneTheme(spec);
+  // Marquee plumbing: ground pointer-down starts it; the finished drag flags the
+  // following ground click so it doesn't clear the fresh selection.
+  const marqueeStartRef = useRef<((e: ThreeEvent<PointerEvent>) => void) | null>(null);
+  const suppressGroundClickRef = useRef(false);
   const isOrtho = spec.camera.kind !== "perspective";
   const cameraSpec: CameraSpec = {
     kind: spec.camera.kind,
@@ -167,15 +271,32 @@ export function DiagramCanvas({
         </mesh>
       ) : null}
 
-      {/* invisible ground for empty-space clicks + double-click reset */}
+      {/* invisible ground for empty-space clicks, marquee + double-click reset */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, -0.01, 0]}
+        onPointerDown={
+          interactive && onMarqueeSelect ? (e) => marqueeStartRef.current?.(e) : undefined
+        }
         onClick={
           onBackgroundClick
             ? (e) => {
                 e.stopPropagation();
+                if (suppressGroundClickRef.current) {
+                  suppressGroundClickRef.current = false;
+                  return;
+                }
                 onBackgroundClick();
+              }
+            : undefined
+        }
+        onContextMenu={
+          onCanvasContextMenu
+            ? (e) => {
+                e.stopPropagation();
+                const ne = e.nativeEvent as MouseEvent;
+                ne.preventDefault?.();
+                onCanvasContextMenu(ne.clientX, ne.clientY);
               }
             : undefined
         }
@@ -191,6 +312,43 @@ export function DiagramCanvas({
         <planeGeometry args={[400, 400]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
+
+      {interactive && onMarqueeSelect ? (
+        <MarqueeController
+          nodes={nodes}
+          startRef={marqueeStartRef}
+          suppressRef={suppressGroundClickRef}
+          onSelect={onMarqueeSelect}
+        />
+      ) : null}
+
+      {/* smart alignment guides while dragging */}
+      {guides?.x != null ? (
+        <Line
+          points={[
+            [guides.x, 0.03, -60],
+            [guides.x, 0.03, 60],
+          ]}
+          color={scene.selection}
+          lineWidth={1.5}
+          dashed
+          dashSize={0.5}
+          gapSize={0.3}
+        />
+      ) : null}
+      {guides?.z != null ? (
+        <Line
+          points={[
+            [-60, 0.03, guides.z],
+            [60, 0.03, guides.z],
+          ]}
+          color={scene.selection}
+          lineWidth={1.5}
+          dashed
+          dashSize={0.5}
+          gapSize={0.3}
+        />
+      ) : null}
 
       {edges.map((edge) => {
         const lane = outSeen[edge.source] ?? 0;
@@ -210,6 +368,7 @@ export function DiagramCanvas({
             laneInCount={inCount[edge.target] ?? 1}
             showLabel={showLabels}
             onSelect={interactive ? onSelectEdge : undefined}
+            onContextMenu={interactive ? onEdgeContextMenu : undefined}
           />
         );
       })}
@@ -220,7 +379,7 @@ export function DiagramCanvas({
             key={node.id}
             node={node}
             theme={scene}
-            selected={selection?.type === "node" && selection.id === node.id}
+            selected={selection?.type === "node" && selection.ids.includes(node.id)}
           />
         ) : (
           <PreviewNode key={node.id} node={node} theme={scene} animate={animateNodes} index={i} />

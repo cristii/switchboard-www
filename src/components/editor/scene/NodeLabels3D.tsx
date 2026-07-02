@@ -34,7 +34,7 @@ export function NodeLabels3D({ nodes, selection, theme }: NodeLabels3DProps) {
         const pal = labelPalette(style, theme);
         const color = typeof meta.labelColor === "string" ? meta.labelColor : pal.text;
         const size = typeof meta.labelSize === "number" ? meta.labelSize : theme.text.size;
-        const selected = selection?.type === "node" && selection.id === node.id;
+        const selected = selection?.type === "node" && selection.ids.includes(node.id);
         return (
           <group key={node.id} position={[node.x, hoverY, node.y]}>
             <TextLabel

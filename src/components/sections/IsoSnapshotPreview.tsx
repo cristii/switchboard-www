@@ -42,7 +42,9 @@ const NOOP_API: CameraApi = {
   zoomIn: () => {},
   zoomOut: () => {},
   capturePng: () => null,
+  zoomTo: () => {},
   getCamera: () => ({ zoom: 1, target: [0, 0] }),
+  groundAt: () => null,
 };
 
 export interface IsoSnapshotPreviewProps {

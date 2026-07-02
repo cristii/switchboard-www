@@ -34,7 +34,7 @@ export function LabelsLayer({ nodes, selection, labelsRef }: LabelsLayerProps) {
   return (
     <div style={overlayStyle} aria-hidden>
       {nodes.map((node) => {
-        const isSelected = selection?.type === "node" && selection.id === node.id;
+        const isSelected = selection?.type === "node" && selection.ids.includes(node.id);
         const labelStyle: React.CSSProperties = {
           display: "inline-flex",
           flexDirection: "column",

@@ -28,6 +28,8 @@ export interface OrthogonalEdgeProps {
   showLabel?: boolean;
   /** Called on click when set (editor). Omit for read-only previews. */
   onSelect?: (id: string) => void;
+  /** Right-click (editor: opens the edge context menu at client coords). */
+  onContextMenu?: (id: string, x: number, y: number) => void;
 }
 
 const FLOW_SPEED: Record<Exclude<EdgeFlowMode, "off">, number> = {
@@ -80,6 +82,7 @@ export function OrthogonalEdge({
   laneInCount = 1,
   showLabel = true,
   onSelect,
+  onContextMenu,
 }: OrthogonalEdgeProps) {
   const source = nodes.find((n) => n.id === edge.source);
   const target = nodes.find((n) => n.id === edge.target);
@@ -131,6 +134,16 @@ export function OrthogonalEdge({
             ? (e) => {
                 e.stopPropagation();
                 onSelect(edge.id);
+              }
+            : undefined
+        }
+        onContextMenu={
+          onContextMenu
+            ? (e) => {
+                e.stopPropagation();
+                const ne = e.nativeEvent as MouseEvent;
+                ne.preventDefault?.();
+                onContextMenu(edge.id, ne.clientX, ne.clientY);
               }
             : undefined
         }
