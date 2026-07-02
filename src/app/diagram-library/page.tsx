@@ -29,7 +29,25 @@ export default function DiagramLibraryPage() {
         </p>
       </Section>
 
-      <Section id="templates" py="8px" width="1240px">
+      {/* sticky section nav */}
+      <div className="sticky top-0 z-30 border-b border-line bg-paper/95 py-3 backdrop-none">
+        <div className="mx-auto flex max-w-[1240px] items-center gap-3 px-5">
+          <a
+            href="#templates"
+            className="rounded-pill border border-line bg-white px-4 py-1.5 font-display text-[.78rem] font-semibold text-ink transition-colors hover:border-ink"
+          >
+            Templates ({diagramTemplates.length})
+          </a>
+          <a
+            href="#nodes"
+            className="rounded-pill border border-line bg-white px-4 py-1.5 font-display text-[.78rem] font-semibold text-ink transition-colors hover:border-ink"
+          >
+            Node components ({nodeComponents.length})
+          </a>
+        </div>
+      </div>
+
+      <Section id="templates" py="32px" width="1240px">
         <h2 className={`${heading} mb-1 text-[clamp(1.5rem,2.6vw,2rem)]`}>Templates</h2>
         <p className="mb-6 max-w-[44em] text-base text-ink-soft">
           Polished, ready-to-use diagrams. Open one in the editor, tweak it, then copy the JSON.

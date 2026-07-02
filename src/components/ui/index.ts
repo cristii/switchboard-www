@@ -62,3 +62,14 @@ export type { PortraitProps } from "./Portrait";
 
 export { ThemeToggle } from "./ThemeToggle";
 export type { ThemeToggleProps } from "./ThemeToggle";
+
+// --- Interaction primitives (editor/library/playground surfaces) ---
+
+export { Menu } from "./Menu";
+export type { MenuAction, MenuProps } from "./Menu";
+
+export { Toast, useToast } from "./Toast";
+export type { ToastProps } from "./Toast";
+
+export { Tabs } from "./Tabs";
+export type { TabsProps } from "./Tabs";
