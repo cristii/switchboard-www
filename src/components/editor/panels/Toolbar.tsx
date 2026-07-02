@@ -41,6 +41,9 @@ export interface ToolbarProps {
   /** Theme manager pane toggle. */
   onToggleThemeManager?: () => void;
   themeManagerOpen?: boolean;
+  /** Live "Document JSON" pane toggle. */
+  onToggleJson?: () => void;
+  jsonOpen?: boolean;
   /** Copy the current scene as a { config, diagram } doc to the clipboard. */
   onCopyJson?: () => void;
 }
@@ -87,6 +90,8 @@ export function Toolbar({
   onShowShortcuts,
   onToggleThemeManager,
   themeManagerOpen = false,
+  onToggleJson,
+  jsonOpen = false,
   onCopyJson,
 }: ToolbarProps) {
   const undo = useWorkflowStore((s) => s.undo);
@@ -198,6 +203,9 @@ export function Toolbar({
       {compact ? <Divider /> : <div style={{ flex: 1 }} />}
       {onShowShortcuts ? (
         <IconButton label="Keyboard shortcuts (?)" glyph="help" onClick={onShowShortcuts} />
+      ) : null}
+      {onToggleJson ? (
+        <IconButton label="Document JSON (live)" glyph="code" active={jsonOpen} onClick={onToggleJson} />
       ) : null}
       {onToggleThemeManager ? (
         <IconButton label="Theme manager" glyph="palette" active={themeManagerOpen} onClick={onToggleThemeManager} />

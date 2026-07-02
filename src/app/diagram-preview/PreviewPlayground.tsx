@@ -23,11 +23,22 @@ import { BUILT_IN_THEMES } from "@/components/editor/theme/themeRegistry";
 import type { CameraApi } from "@/components/editor/scene/CameraControls";
 import { diagramTemplates, nodeComponents } from "@/lib/diagramLibrary";
 import { readHandoff } from "@/lib/diagramHandoff";
+import { useSiteColorScheme } from "@/lib/useSiteColorScheme";
 import { Tabs, Toast, useToast } from "@/components/ui";
 
 const DiagramPreview = dynamic(
   () => import("@/components/editor/preview/DiagramPreview").then((m) => m.DiagramPreview),
   { ssr: false, loading: () => <PreviewFallback /> },
+);
+
+const JsonEditor = dynamic(
+  () => import("@/components/editor/json/JsonEditor").then((m) => m.JsonEditor),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="grid h-full place-items-center text-xs text-ink-soft">Loading editor…</div>
+    ),
+  },
 );
 
 function PreviewFallback() {
@@ -70,18 +81,23 @@ function readHashDoc(): PreviewDoc | null {
   }
 }
 
-/** line:col from a "position N" JSON.parse message (best effort). */
-function errorLocation(message: string, text: string): string | null {
-  const m = message.match(/position (\d+)/);
-  if (!m) return null;
-  const pos = Math.min(Number(m[1]), text.length);
-  const before = text.slice(0, pos);
-  const line = before.split("\n").length;
-  const col = pos - before.lastIndexOf("\n");
-  return `line ${line}, column ${col}`;
-}
-
 type Tab = "preview" | "json";
+
+/** Doc-shape validation for the in-editor linter (JSON syntax is linted by
+ *  CodeMirror itself; this catches "parses but isn't a PreviewDoc"). */
+function validateDoc(text: string): string | null {
+  try {
+    parsePreviewDoc(text);
+    return null;
+  } catch (e) {
+    try {
+      JSON.parse(text);
+    } catch {
+      return null; // syntax error — the JSON linter already flags it precisely
+    }
+    return e instanceof Error ? e.message : String(e);
+  }
+}
 
 function Chip({
   active,
@@ -119,9 +135,8 @@ export function PreviewPlayground() {
   const [tab, setTab] = React.useState<Tab>("preview");
   const [fullscreen, setFullscreen] = React.useState(false);
   const toast = useToast();
+  const scheme = useSiteColorScheme();
   const apiRef = React.useRef<CameraApi>({ ...NOOP_API });
-  const textRef = React.useRef<HTMLTextAreaElement>(null);
-  const gutterRef = React.useRef<HTMLDivElement>(null);
 
   const apply = (next: PreviewDoc) => {
     setDoc(next);
@@ -165,8 +180,6 @@ export function PreviewPlayground() {
   };
 
   const cfg = doc.config;
-  const lineCount = text.split("\n").length;
-  const errLoc = error ? errorLocation(error, text) : null;
 
   const editorCard = (
     <div className="flex h-full flex-col overflow-hidden rounded-lg border-strong border-ink bg-white shadow-card">
@@ -307,39 +320,13 @@ export function PreviewPlayground() {
           Grab camera
         </Chip>
       </div>
-      <div className="relative flex min-h-[240px] flex-1 overflow-hidden">
-        <div
-          ref={gutterRef}
-          aria-hidden
-          className="w-11 flex-none select-none overflow-hidden border-r border-line bg-paper-2 py-3 text-right text-xs text-ink-soft"
-          style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", lineHeight: 1.5 }}
-        >
-          {Array.from({ length: lineCount }, (_, i) => (
-            <div key={i} className="pr-2">
-              {i + 1}
-            </div>
-          ))}
-        </div>
-        <textarea
-          ref={textRef}
-          value={text}
-          onChange={(e) => onChangeText(e.target.value)}
-          onScroll={() => {
-            if (gutterRef.current && textRef.current) {
-              gutterRef.current.scrollTop = textRef.current.scrollTop;
-            }
-          }}
-          spellCheck={false}
-          className="min-w-0 flex-1 resize-none border-0 bg-white p-3 text-xs text-ink outline-none"
-          style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", lineHeight: 1.5 }}
-          aria-label="Diagram JSON"
-        />
+      {/* CodeMirror JSON editor, themed by the editor tokens (follows site theme) */}
+      <div className="min-h-[240px] flex-1 overflow-hidden" data-editor-theme={scheme}>
+        <JsonEditor value={text} onChange={onChangeText} validate={validateDoc} />
       </div>
       <div className="border-t border-line p-2 text-xs">
         {error ? (
-          <span className="font-semibold text-orange">
-            Error{errLoc ? ` (${errLoc})` : ""}: {error}
-          </span>
+          <span className="font-semibold text-orange">Error: {error}</span>
         ) : (
           <span className="text-ink-soft">
             Valid · {doc.diagram.nodes.length} nodes · {doc.diagram.edges.length} edges

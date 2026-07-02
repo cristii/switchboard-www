@@ -42,6 +42,7 @@ export type GlyphName =
   | "magnet"
   | "help"
   | "edit"
+  | "code"
   // device glyphs
   | "monitor"
   | "laptop"
@@ -171,6 +172,7 @@ const PATHS: Record<GlyphName, React.ReactNode> = {
       <path d="M14.5 5.5 l4 4" />
     </>
   ),
+  code: <path d="M16 18 L22 12 L16 6 M8 6 L2 12 L8 18" />,
   monitor: (
     <>
       <rect x="3" y="4" width="18" height="12" rx="1.5" />

@@ -18,6 +18,7 @@ import { Inspector } from "./panels/Inspector";
 import { ThemeManager } from "./panels/ThemeManager";
 import { NodeContextMenu } from "./panels/NodeContextMenu";
 import { InlineLabelEditor } from "./panels/InlineLabelEditor";
+import { JsonPanel } from "./panels/JsonPanel";
 import { ShortcutSheet } from "./panels/ShortcutSheet";
 import { MobileDrawer } from "./panels/MobileDrawer";
 import { NodeGlyph } from "./icons/NodeGlyph";
@@ -60,7 +61,7 @@ const NOOP_API: CameraApi = {
   groundAt: () => null,
 };
 
-type Drawer = "none" | "add" | "inspect" | "theme";
+type Drawer = "none" | "add" | "inspect" | "theme" | "json";
 
 export function IsometricWorkflowEditor({
   initialDiagram = mvpSampleDiagram,
@@ -76,6 +77,7 @@ export function IsometricWorkflowEditor({
   const [ready, setReady] = React.useState(false);
   const [drawer, setDrawer] = React.useState<Drawer>("none");
   const [themePanel, setThemePanel] = React.useState(false);
+  const [jsonPanel, setJsonPanel] = React.useState(false);
   const rootRef = React.useRef<HTMLDivElement>(null);
   const mode = useResponsiveLayout(rootRef);
   const isMobile = mode === "mobile";
@@ -300,9 +302,20 @@ export function IsometricWorkflowEditor({
     }
   }, []);
 
+  // The right-side overlay panes (theme / JSON) are mutually exclusive.
   const toggleThemeManager = () => {
     if (isMobile) setDrawer((d) => (d === "theme" ? "none" : "theme"));
-    else setThemePanel((v) => !v);
+    else {
+      setJsonPanel(false);
+      setThemePanel((v) => !v);
+    }
+  };
+  const toggleJsonPanel = () => {
+    if (isMobile) setDrawer((d) => (d === "json" ? "none" : "json"));
+    else {
+      setThemePanel(false);
+      setJsonPanel((v) => !v);
+    }
   };
 
   const rootStyle: React.CSSProperties = {
@@ -490,6 +503,8 @@ export function IsometricWorkflowEditor({
           onShowShortcuts={() => setShortcutsOpen(true)}
           onToggleThemeManager={toggleThemeManager}
           themeManagerOpen={isMobile ? drawer === "theme" : themePanel}
+          onToggleJson={toggleJsonPanel}
+          jsonOpen={isMobile ? drawer === "json" : jsonPanel}
           onCopyJson={handleCopyJson}
         />
       ) : null}
@@ -530,6 +545,9 @@ export function IsometricWorkflowEditor({
           <MobileDrawer open={drawer === "theme"} title="Theme manager" onClose={() => setDrawer("none")}>
             <ThemeManager manager={manager} />
           </MobileDrawer>
+          <MobileDrawer open={drawer === "json"} title="Document JSON" onClose={() => setDrawer("none")}>
+            <JsonPanel onCopyFullDoc={handleCopyJson} style={{ height: "48vh" }} />
+          </MobileDrawer>
         </div>
       ) : (
         <div style={{ position: "relative", display: "flex", flex: 1, minHeight: 0 }}>
@@ -552,6 +570,22 @@ export function IsometricWorkflowEditor({
                 top: 0,
                 right: 0,
                 width: 300,
+                height: "100%",
+                borderLeft: "1.5px solid var(--editor-border-soft)",
+                boxShadow: "var(--editor-shadow)",
+                zIndex: 12,
+              }}
+            />
+          ) : null}
+          {jsonPanel ? (
+            <JsonPanel
+              onClose={() => setJsonPanel(false)}
+              onCopyFullDoc={handleCopyJson}
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                width: 380,
                 height: "100%",
                 borderLeft: "1.5px solid var(--editor-border-soft)",
                 boxShadow: "var(--editor-shadow)",
